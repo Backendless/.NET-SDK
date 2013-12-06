@@ -1,0 +1,74 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="Examples.MessagingService.GeoServiceDemo.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    shell:SystemTray.IsVisible="True">
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+  <Grid x:Name="LayoutRoot" Background="Transparent">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+
+    <!--TitlePanel contains the name of the application and page title-->
+    <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
+      <TextBlock x:Name="ApplicationTitle" Text="BACKENDLESS" Style="{StaticResource PhoneTextNormalStyle}"/>
+      <TextBlock x:Name="PageTitle" Text="Geo Service" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+    </StackPanel>
+
+    <!--ContentPanel - place additional content here-->
+    <Grid  Grid.Row="1" Margin="20,60,20,0" VerticalAlignment="Center">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+      <TextBlock Text="Your coordinates:" Grid.Row="0" FontWeight="Bold" />
+      <Grid Grid.Row="1" HorizontalAlignment="Center">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto"/>
+          <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="latitude:" HorizontalAlignment="Right" Grid.Row="0" Grid.Column="0"/>
+        <TextBlock Name="LatitudeField" Text="0" Grid.Row="0" Grid.Column="1" Margin="20,0,0,0"/>
+        <TextBlock Text="longitude:" HorizontalAlignment="Right" Grid.Row="1" Grid.Column="0"/>
+        <TextBlock Name="LongitudeField" Text="0" Grid.Row="1" Grid.Column="1" Margin="20,0,0,0"/>
+      </Grid>
+      <TextBlock Text="Search nearby cities:" Grid.Row="2" FontWeight="Bold" Margin="0,60,0,0"/>
+      <Grid Grid.Row="3">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto"/>
+          <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Text="radius (km):" Grid.Column="0" Margin="0,0,10,0"/>
+        <TextBlock Name="RadiusField" Text="0" Grid.Column="1"/>
+      </Grid>
+      <Slider Name="RadiusSlider" Grid.Row="4" Grid.Column="0" Maximum="40000" Margin="0,0,0,-40" ValueChanged="RadiusSlider_OnMovedSlider"/>
+      <TextBlock Text="0" Grid.Row="5" HorizontalAlignment="Left"/>
+      <TextBlock Text="40,000" Grid.Row="5" HorizontalAlignment="Right"/>
+      <Button Content="Search" HorizontalAlignment="Right" Grid.Row="6" Margin="0,20,0,0" Click="SearchButton_Click"/>
+    </Grid>
+  </Grid>
+
+</phone:PhoneApplicationPage>

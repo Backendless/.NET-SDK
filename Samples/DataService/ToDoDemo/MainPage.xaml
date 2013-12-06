@@ -1,0 +1,87 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="ToDoDemo.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toDoDemo="clr-namespace:Examples.MessagingService.ToDoDemo"
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    shell:SystemTray.IsVisible="True">
+
+  <phone:PhoneApplicationPage.Resources>
+    <toDoDemo:DoneFieldConverter x:Key="DoneFieldConverter" />
+  </phone:PhoneApplicationPage.Resources>
+  
+  <!--LayoutRoot is the root grid where all page content is placed-->
+  <Grid x:Name="LayoutRoot" Background="Transparent">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+
+    <!--TitlePanel contains the name of the application and page title-->
+    <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
+      <TextBlock x:Name="ApplicationTitle" Text="BACKENDLESS" Style="{StaticResource PhoneTextNormalStyle}"/>
+      <TextBlock x:Name="PageTitle" Text="Data Service" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+    </StackPanel>
+
+    <ProgressBar Grid.Row="1" Name="ProgressBar" IsIndeterminate="True" Visibility="Collapsed"/>
+    
+    <!--ContentPanel - place additional content here-->
+      <Grid Grid.Row="1" Name="ContentPanel" Margin="12,0,12,0">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="Auto"/>
+      </Grid.RowDefinitions>
+      <TextBlock  Grid.Row="0" Text="To do:" HorizontalAlignment="Center" Margin="201,0"/>
+      <TextBox Name="NewToDoField"  Grid.Row="1" KeyDown="NewToDoFIeld_KeyDown" Text="What needs to be done?" ManipulationStarted="NewToDoField_Click"/>
+
+      <ListBox Name="EntitiesDataGrid" Grid.Row="2" ItemsSource="{Binding}" ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="50,0,50,0" >
+        <ListBox.ItemContainerStyle>
+          <Style TargetType="ListBoxItem">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+          </Style>
+        </ListBox.ItemContainerStyle>
+        <ListBox.ItemTemplate>
+          <DataTemplate>
+            <Grid d:DataContext="{d:DesignInstance toDoDemo:ToDoEntity}">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+              </Grid.ColumnDefinitions>
+              <CheckBox Grid.Column="0" IsChecked="{Binding Path=Done, Mode=TwoWay}" />
+              <TextBlock Grid.Column="1" Text="{Binding Path=Text, Mode=TwoWay}" VerticalAlignment="Center"/>
+              <Image Grid.Column="2" Height="60" Source="/appbar.delete.rest.png" Visibility="{Binding Path=Done, Mode=TwoWay, BindsDirectlyToSource=True, Converter={StaticResource DoneFieldConverter}}" />
+              <!--Tap="ItemDeleteButton_Click"-->
+            </Grid>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+
+      <Grid Name="Footer" Grid.Row="3" Margin="0,12,0,12">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Rectangle Grid.Row="0" Fill="White" Height="1" Margin="40,0,40,7"/>
+        <Rectangle Grid.Row="1" Fill="DarkTurquoise"/>
+        <Grid Grid.Row="1" Margin="15">
+          <TextBlock Text="0 items left" Foreground="Black" VerticalAlignment="Center"/>
+          <HyperlinkButton Content="Clear 2 completed items" HorizontalAlignment="Right" Foreground="Black" FontWeight="Bold" VerticalAlignment="Center"/>
+        </Grid>
+        <TextBlock Grid.Row="2" Text="Double click items to edit" Margin="0,7,0,0"/>
+      </Grid>
+    </Grid>
+  </Grid>
+
+</phone:PhoneApplicationPage>

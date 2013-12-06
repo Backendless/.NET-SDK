@@ -1,0 +1,63 @@
+﻿<phone:PhoneApplicationPage
+    x:Class="Examples.MessagingService.UserServiceDemo.RegistrationPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d"
+    shell:SystemTray.IsVisible="True">
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+  <Grid Background="Transparent" Margin="12">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+
+    <!--ContentPanel - place additional content here-->
+    <Grid Grid.Row="0" VerticalAlignment="Center" Margin="40,0,0,0">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+      <TextBlock Text="Name:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0"/>
+      <TextBox Name="NameField" Grid.Row="0" Grid.Column="1" Margin="20,0,0,0" InputScope="LogOnName"/>
+
+      <TextBlock Text="Password:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0"/>
+      <PasswordBox Name="PasswordField" Grid.Row="1" Grid.Column="1" Margin="20,0,0,0"/>
+
+      <TextBlock Text="Verify Password:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="2" Grid.Column="0"/>
+      <PasswordBox Name="verifyPasswordField" Grid.Row="2" Grid.Column="1" Margin="20,0,0,0"/>
+
+      <TextBlock Text="Email:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="3" Grid.Column="0"/>
+      <TextBox Name="EmailField" Grid.Row="3" Grid.Column="1" Margin="20,0,0,0" InputScope="EmailUserName"/>
+
+      <TextBlock Text="Sex:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="4" Grid.Column="0"/>
+      <StackPanel Grid.Row="4" Grid.Column="1" HorizontalAlignment="Center" Orientation="Horizontal">
+        <RadioButton Name="MaleRadioButton" Content="M" GroupName="GenderGroup" IsChecked="True"/>
+        <RadioButton Content="F" GroupName="GenderGroup"/>
+      </StackPanel>
+
+      <TextBlock Text="Date of birth:" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="5" Grid.Column="0"/>
+      <toolkit:DatePicker Name="DateOfBirthField" Grid.Row="5" Grid.Column="1" Margin="20,0,0,0"/>
+    </Grid>
+    
+    <Button Content="Register" Grid.Row="1" HorizontalAlignment="Center" Click="RegisterButton_Click"/>
+  </Grid>
+
+</phone:PhoneApplicationPage>

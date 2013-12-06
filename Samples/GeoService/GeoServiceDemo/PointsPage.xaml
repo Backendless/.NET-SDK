@@ -1,0 +1,74 @@
+﻿<phone:PhoneApplicationPage
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:Examples.MessagingService.GeoServiceDemo"
+
+    x:Class="Examples.MessagingService.GeoServiceDemo.PointsPage"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d"
+    shell:SystemTray.IsVisible="True">
+
+  <Grid Background="Transparent" Margin="20,0,20,0">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+
+    <Grid Grid.Row="0" Margin="0,10,0,0">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+      <TextBlock Text="radius (km):" Grid.Column="0" Margin="0,0,10,0"/>
+      <TextBlock Name="RadiusField" Grid.Column="1"/>
+    </Grid>
+    <Slider x:Name="RadiusSlider" Grid.Row="1" Maximum="40000" Margin="0,-10,0,-40" ManipulationCompleted="RadiusSlider_OnValueChanged" ValueChanged="RadiusSlider_OnMovedSlider"/>
+    <TextBlock Text="0" Grid.Row="2" HorizontalAlignment="Left"/>
+    <TextBlock Text="40,000" Grid.Row="2" HorizontalAlignment="Right"/>
+
+    <Grid Background="DimGray" Grid.Row="3" Margin="0,20,0,0">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition/>
+        <ColumnDefinition/>
+        <ColumnDefinition/>
+      </Grid.ColumnDefinitions>
+      <TextBlock Text="City" Grid.Column="0" FontWeight="Bold" Margin="10,0,0,0" />
+      <TextBlock Text="Lat" Grid.Column="1"  FontWeight="Bold" Margin="10,0,0,0" />
+      <TextBlock Text="Lon" Grid.Column="2" FontWeight="Bold" Margin="10,0,0,0" />
+    </Grid>
+
+    <ProgressBar Name="ProgressBar" IsIndeterminate="True" Visibility="Collapsed" Grid.Row="4"/>
+      <ListBox Name="CityPointsDataGrid" Grid.Row="4" ItemsSource="{Binding}" ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="0,15,0,15" >
+      <ListBox.ItemContainerStyle>
+        <Style TargetType="ListBoxItem">
+          <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        </Style>
+      </ListBox.ItemContainerStyle>
+      <ListBox.ItemTemplate>
+        <DataTemplate>
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition/>
+              <ColumnDefinition/>
+              <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+              <TextBlock Grid.Column="0" Text="{Binding Path=City}" Margin="0,0,10,0"/>
+            <TextBlock Grid.Column="1" Text="{Binding Path=Latitude}" Margin="0,0,10,0" />
+            <TextBlock Grid.Column="2" Text="{Binding Path=Longitude}" Margin="0,0,10,0"/>
+          </Grid>
+        </DataTemplate>
+      </ListBox.ItemTemplate>
+    </ListBox>
+
+  </Grid>
+</phone:PhoneApplicationPage>

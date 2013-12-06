@@ -1,0 +1,6 @@
+Z:\mark\dev\backendless\sources.backendless.com\src\client\sdk\windowsphone\Backendless\bin\Debug\Backendless.dll
+Z:\mark\dev\backendless\sources.backendless.com\src\client\sdk\windowsphone\Backendless\bin\Debug\Backendless.pdb
+Z:\mark\dev\backendless\sources.backendless.com\src\client\sdk\windowsphone\Backendless\bin\Debug\weborb.dll
+Z:\mark\dev\backendless\sources.backendless.com\src\client\sdk\windowsphone\Backendless\obj\Debug\ResolveAssemblyReference.cache
+Z:\mark\dev\backendless\sources.backendless.com\src\client\sdk\windowsphone\Backendless\obj\Debug\Backendless.dll
+Z:\mark\dev\backendless\sources.backendless.com\src\client\sdk\windowsphone\Backendless\obj\Debug\Backendless.pdb

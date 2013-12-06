@@ -1,0 +1,40 @@
+﻿<phone:PhoneApplicationPage
+    x:Class="Examples.MessagingService.PubSubDemo.ChatPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d"
+    shell:SystemTray.IsVisible="True">
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+  <Grid Background="Transparent">
+    <!--TitlePanel contains the name of the application and page title-->
+    
+    <!--ContentPanel - place additional content here-->
+    <Grid Name="ContentPanel" Margin="12,0,12,12">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="*" />
+        <RowDefinition Height="Auto" />
+      </Grid.RowDefinitions>
+        <ScrollViewer Grid.Row="0">
+          <TextBlock Name="HistoryField"  TextWrapping="Wrap" />
+        </ScrollViewer>
+      <Grid Grid.Row="1" >
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="5*" />
+          <ColumnDefinition Width="2*" />
+        </Grid.ColumnDefinitions>
+        <TextBox Grid.Column="0" Name="MessageField" Height="72" TextWrapping="NoWrap" KeyUp="MessageField_OnKeyUp"/>
+        <Button Grid.Column="1" Click="SendButton_Click" Content="Send" />
+      </Grid>
+    </Grid>
+  </Grid>
+
+</phone:PhoneApplicationPage>

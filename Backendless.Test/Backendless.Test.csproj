@@ -1,0 +1,191 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{AC2B0944-2CB1-4224-AE27-0221E01ED5BE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BackendlessAPI.Test</RootNamespace>
+    <AssemblyName>Backendless.Test</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DEBUG2.0|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\DEBUG2.0\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WP_Release|AnyCPU'">
+    <OutputPath>bin\WP_Release\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="weborb">
+      <HintPath>..\Backendless\Dependency\.NET4.0\bin\weborb.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">
+      <Visible>False</Visible>
+    </CodeAnalysisDependentAssemblyPaths>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Defaults.cs" />
+    <Compile Include="FileService\AsyncTests\DeleteTest.cs" />
+    <Compile Include="FileService\AsyncTests\TestsFrame.cs" />
+    <Compile Include="FileService\AsyncTests\UploadTests.cs" />
+    <Compile Include="GeoService\AsyncTests\AddPointTest.cs" />
+    <Compile Include="GeoService\AsyncTests\CategoryTest.cs" />
+    <Compile Include="GeoService\AsyncTests\GetPointsTest.cs" />
+    <Compile Include="GeoService\AsyncTests\RetrievingCategoriesTest.cs" />
+    <Compile Include="GeoService\AsyncTests\TestsFrame.cs" />
+    <Compile Include="GeoService\SyncTests\AddPointTest.cs" />
+    <Compile Include="GeoService\SyncTests\CategoryTest.cs" />
+    <Compile Include="GeoService\SyncTests\GetPointsTest.cs" />
+    <Compile Include="GeoService\SyncTests\RetrievingCategoriesTest.cs" />
+    <Compile Include="GeoService\SyncTests\TestsFrame.cs" />
+    <Compile Include="IAsyncTest.cs" />
+    <Compile Include="ITest.cs" />
+    <Compile Include="MessagingService\SyncTests\PublishTest.cs" />
+    <Compile Include="MessagingService\SyncTests\SubscriptionTest.cs" />
+    <Compile Include="MessagingService\SyncTests\TestsFrame.cs" />
+    <Compile Include="PersistenceService\AsyncEntities\WPPersonAsync.cs" />
+    <Compile Include="PersistenceService\AsyncEntities\BaseEntities\CreatedEntityAsync.cs" />
+    <Compile Include="PersistenceService\AsyncEntities\BaseEntities\ObjectIdEntityAsync.cs" />
+    <Compile Include="PersistenceService\AsyncEntities\BaseEntities\UpdatedEntityAsync.cs" />
+    <Compile Include="PersistenceService\AsyncEntities\CollectionEntities\GetPageEntityAsync.cs" />
+    <Compile Include="PersistenceService\AsyncEntities\CollectionEntities\NextPageEntityAsync.cs" />
+    <Compile Include="PersistenceService\AsyncEntities\DeleteEntities\BaseDeleteEntityAsync.cs" />
+    <Compile Include="PersistenceService\AsyncEntities\FindEntities\BaseFindEntityAsync.cs" />
+    <Compile Include="PersistenceService\AsyncEntities\FindEntities\FindAllEntityAsync.cs" />
+    <Compile Include="PersistenceService\AsyncEntities\FindEntities\FindBasePropertiesAsync.cs" />
+    <Compile Include="PersistenceService\AsyncEntities\FindEntities\FindEmptyTableEntityAsync.cs" />
+    <Compile Include="PersistenceService\AsyncEntities\FindEntities\FindFirstEntityAsync.cs" />
+    <Compile Include="PersistenceService\AsyncEntities\FindEntities\FindLastEntityAsync.cs" />
+    <Compile Include="PersistenceService\AsyncEntities\FindEntities\FindTooBigOffsetAsync.cs" />
+    <Compile Include="PersistenceService\AsyncEntities\FindEntities\FindTooBigPagesizeAsync.cs" />
+    <Compile Include="PersistenceService\AsyncEntities\FindEntities\FindWithPageSizeAndOffsetEntityAsync.cs" />
+    <Compile Include="PersistenceService\AsyncEntities\FindEntities\FindWithPropertiesEntityAsync.cs" />
+    <Compile Include="PersistenceService\AsyncEntities\FindEntities\FindWithWhereEntityAsync.cs" />
+    <Compile Include="PersistenceService\AsyncEntities\PrimitiveEntities\BooleanEntityAsync.cs" />
+    <Compile Include="PersistenceService\AsyncEntities\PrimitiveEntities\DateEntityAsync.cs" />
+    <Compile Include="PersistenceService\AsyncEntities\PrimitiveEntities\DoubleEntityAsync.cs" />
+    <Compile Include="PersistenceService\AsyncEntities\PrimitiveEntities\IntEntityAsync.cs" />
+    <Compile Include="PersistenceService\AsyncEntities\PrimitiveEntities\StringEntityAsync.cs" />
+    <Compile Include="PersistenceService\AsyncEntities\UniqueWPPersonAsync.cs" />
+    <Compile Include="PersistenceService\AsyncEntities\UpdateEntities\BaseUpdateEntityAsync.cs" />
+    <Compile Include="PersistenceService\AsyncTests\CollectionTest.cs" />
+    <Compile Include="PersistenceService\AsyncTests\DeleteObjectTest.cs" />
+    <Compile Include="PersistenceService\AsyncTests\FindObjectTest.cs" />
+    <Compile Include="PersistenceService\AsyncTests\RetrievePropertiesTest.cs" />
+    <Compile Include="PersistenceService\AsyncTests\SaveNewObjectTest.cs" />
+    <Compile Include="PersistenceService\AsyncTests\TestsFrame.cs" />
+    <Compile Include="PersistenceService\AsyncTests\UpdateRecordTest.cs" />
+    <Compile Include="PersistenceService\Entities\BaseEntities\CreatedEntity.cs" />
+    <Compile Include="PersistenceService\Entities\BaseEntities\ObjectIdEntity.cs" />
+    <Compile Include="PersistenceService\Entities\BaseEntities\UpdatedEntity.cs" />
+    <Compile Include="PersistenceService\Entities\CollectionEntities\GetPageEntity.cs" />
+    <Compile Include="PersistenceService\Entities\CollectionEntities\NextPageEntity.cs" />
+    <Compile Include="PersistenceService\Entities\DeleteEntities\BaseDeleteEntity.cs" />
+    <Compile Include="PersistenceService\Entities\FindEntities\BaseFindEntity.cs" />
+    <Compile Include="PersistenceService\Entities\FindEntities\FindAllEntity.cs" />
+    <Compile Include="PersistenceService\Entities\FindEntities\FindBaseProperties.cs" />
+    <Compile Include="PersistenceService\Entities\FindEntities\FindEmptyTableEntity.cs" />
+    <Compile Include="PersistenceService\Entities\FindEntities\FindFirstEntity.cs" />
+    <Compile Include="PersistenceService\Entities\FindEntities\FindLastEntity.cs" />
+    <Compile Include="PersistenceService\Entities\FindEntities\FindTooBigOffset.cs" />
+    <Compile Include="PersistenceService\Entities\FindEntities\FindTooBigPagesize.cs" />
+    <Compile Include="PersistenceService\Entities\FindEntities\FindWithPageSizeAndOffsetEntity.cs" />
+    <Compile Include="PersistenceService\Entities\FindEntities\FindWithPropertiesEntity.cs" />
+    <Compile Include="PersistenceService\Entities\FindEntities\FindWithWhereEntity.cs" />
+    <Compile Include="PersistenceService\Entities\PrimitiveEntities\BooleanEntity.cs" />
+    <Compile Include="PersistenceService\Entities\PrimitiveEntities\DateEntity.cs" />
+    <Compile Include="PersistenceService\Entities\PrimitiveEntities\DoubleEntity.cs" />
+    <Compile Include="PersistenceService\Entities\PrimitiveEntities\IntEntity.cs" />
+    <Compile Include="PersistenceService\Entities\PrimitiveEntities\StringEntity.cs" />
+    <Compile Include="PersistenceService\Entities\UniqueWPPerson.cs" />
+    <Compile Include="PersistenceService\Entities\UpdateEntities\BaseUpdateEntity.cs" />
+    <Compile Include="PersistenceService\Entities\WPPerson.cs" />
+    <Compile Include="PersistenceService\SyncTests\CollectionTest.cs" />
+    <Compile Include="PersistenceService\SyncTests\DeleteObjectTest.cs" />
+    <Compile Include="PersistenceService\SyncTests\FindObjectTest.cs" />
+    <Compile Include="PersistenceService\SyncTests\RetrievePropertiesTest.cs" />
+    <Compile Include="PersistenceService\SyncTests\SaveNewObjectTest.cs" />
+    <Compile Include="PersistenceService\SyncTests\TestsFrame.cs" />
+    <Compile Include="PersistenceService\SyncTests\UpdateRecordTest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserService\AsyncTests\LoginTest.cs" />
+    <Compile Include="UserService\AsyncTests\LogoutTest.cs" />
+    <Compile Include="UserService\AsyncTests\RegistrationTest.cs" />
+    <Compile Include="UserService\AsyncTests\RestorePasswordTest.cs" />
+    <Compile Include="UserService\AsyncTests\TestsFrame.cs" />
+    <Compile Include="UserService\AsyncTests\UpdateTest.cs" />
+    <Compile Include="UserService\AsyncTests\UserPropertiesTest.cs" />
+    <Compile Include="UserService\SyncTests\LoginTest.cs" />
+    <Compile Include="UserService\SyncTests\LogoutTest.cs" />
+    <Compile Include="UserService\SyncTests\RegistrationTests.cs" />
+    <Compile Include="UserService\SyncTests\RestorePasswordTest.cs" />
+    <Compile Include="UserService\SyncTests\TestsFrame.cs" />
+    <Compile Include="UserService\SyncTests\InitTest.cs" />
+    <Compile Include="UserService\SyncTests\UpdateTest.cs" />
+    <Compile Include="UserService\SyncTests\UserPropertiesTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="weborb.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Backendless\Backendless.NET.csproj">
+      <Project>{7c582fca-1f66-4e53-93d6-0673b43b5160}</Project>
+      <Name>Backendless.NET</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
