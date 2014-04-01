@@ -83,7 +83,12 @@ namespace BackendlessAPI.Service
       string boundary = DateTime.Now.Ticks.ToString( "x" );
       byte[] boundaryBytes = Encoding.UTF8.GetBytes( "\r\n--" + boundary + "--\r\n" );
 
-      var fileName = Path.GetFileName( fileStream.Name );
+      var fileName = Path.GetFileName(fileStream.Name);
+
+      //You cannot get name of IsolatedStorageFileStream the normal way, it always returns [Unknown] (making it pass the checks against null)
+      if (fileStream.GetType() == typeof(System.IO.IsolatedStorage.IsolatedStorageFileStream))
+          fileName = Path.GetFileName(((System.IO.IsolatedStorage.IsolatedStorageFileStream)fileStream).Name);
+
       var sb = new StringBuilder();
       sb.Append( "--" );
       sb.Append( boundary );
