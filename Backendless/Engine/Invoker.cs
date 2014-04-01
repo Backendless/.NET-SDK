@@ -1,6 +1,8 @@
 ﻿using System.Threading;
+using System.Collections;
 using BackendlessAPI.Async;
 using BackendlessAPI.Exception;
+using BackendlessAPI.Utils;
 using Weborb.Client;
 
 namespace BackendlessAPI.Engine
@@ -14,6 +16,11 @@ namespace BackendlessAPI.Engine
                                                            DESTINATION );
 
     public static T InvokeSync<T>( string className, string methodName, object[] args )
+    {
+      return InvokeSync<T>( className, methodName, args, false );
+    }
+ 
+    public static T InvokeSync<T>( string className, string methodName, object[] args, bool enableUnderFlowInspection )
     {
       T result = default(T);
       BackendlessFault backendlessFault = null;
@@ -30,7 +37,12 @@ namespace BackendlessAPI.Engine
           } );
       try
       {
-        client.Invoke<T>( className, methodName, args, HeadersManager.GetInstance().Headers, responder );
+        ResponseThreadConfigurator responseConfig = null;
+
+        if( enableUnderFlowInspection )
+          responseConfig = new ResponseThreadConfigurator( SetupUnderFlowListener );
+
+        client.Invoke<T>( className, methodName, args, null, HeadersManager.GetInstance().Headers, responder, responseConfig );
         waiter.WaitOne( Timeout.Infinite );
       }
       catch( System.Exception ex )
@@ -44,7 +56,20 @@ namespace BackendlessAPI.Engine
       return result;
     }
 
+    public static void SetupUnderFlowListener()
+    {
+      IDictionary props = Weborb.Util.ThreadContext.getProperties();
+      
+      if( !props.Contains( "UnderFlowReceiver" ) )
+        props.Add( "UnderFlowReceiver", new Weborb.Reader.ObjectUnderflow( UnderflowStore.ReportObjectUnderFlow ) );
+    }
+
     public static void InvokeAsync<T>( string className, string methodName, object[] args, AsyncCallback<T> callback )
+    {
+      InvokeAsync<T>( className, methodName, args, false, callback );
+    }
+
+    public static void InvokeAsync<T>( string className, string methodName, object[] args, bool enableUnderFlowInspection, AsyncCallback<T> callback )
     {
       var responder = new Responder<T>( response =>
         {
@@ -61,7 +86,12 @@ namespace BackendlessAPI.Engine
 
       try
       {
-        client.Invoke<T>( className, methodName, args, HeadersManager.GetInstance().Headers, responder );
+        ResponseThreadConfigurator responseConfig = null;
+
+        if( enableUnderFlowInspection )
+          responseConfig = new ResponseThreadConfigurator( SetupUnderFlowListener );
+
+        client.Invoke<T>( className, methodName, args, null, HeadersManager.GetInstance().Headers, responder, responseConfig );
       }
       catch( System.Exception ex )
       {

@@ -124,7 +124,8 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="weborb">
+    <Reference Include="weborb, Version=5.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>Dependency\.NET2.0\bin\weborb.dll</HintPath>
     </Reference>
   </ItemGroup>
@@ -135,6 +136,10 @@
     <Compile Include="BackendlessUser.cs" />
     <Compile Include="Data\DataStoreFactory.cs" />
     <Compile Include="Geo\SearchMatchesResult.cs" />
+    <Compile Include="IO\BackendlessUserFactory.cs" />
+    <Compile Include="IO\BackendlessUserWriter.cs" />
+    <Compile Include="IO\UnderflowWriter.cs" />
+    <Compile Include="Messaging\BodyParts.cs" />
     <Compile Include="Messaging\DeviceRegistrationDto.cs" />
     <Compile Include="Exception\BackendlessException.cs" />
     <Compile Include="Exception\ExceptionMessage.cs" />
@@ -172,7 +177,9 @@
     <Compile Include="Property\ObjectProperty.cs" />
     <Compile Include="Property\UserProperty.cs" />
     <Compile Include="Service\UserService.cs" />
+    <Compile Include="Utils\UnderflowStore.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSHARP.Targets" />
   <ProjectExtensions>
     <VisualStudio AllowExistingFolder="true" />

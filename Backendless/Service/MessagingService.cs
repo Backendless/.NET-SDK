@@ -13,9 +13,8 @@ namespace BackendlessAPI.Service
   public class MessagingService
   {
     private static string MESSAGING_MANAGER_SERVER_ALIAS = "com.backendless.services.messaging.MessagingService";
-
-    private static string DEVICE_REGISTRATION_MANAGER_SERVER_ALIAS =
-      "com.backendless.services.messaging.DeviceRegistrationService";
+    private static string EMAIL_MANAGER_SERVER_ALIAS = "com.backendless.services.mail.CustomersEmailService";
+    private static string DEVICE_REGISTRATION_MANAGER_SERVER_ALIAS = "com.backendless.services.messaging.DeviceRegistrationService";
 
     private static string DEFAULT_CHANNEL_NAME = "default";
 
@@ -252,7 +251,7 @@ namespace BackendlessAPI.Service
 
     #endregion
 
-    #region PUBLIC ASYNC
+    #region PUBLISH ASYNC
 
     public void Publish( object message, string channelName, AsyncCallback<MessageStatus> callback )
     {
@@ -295,7 +294,7 @@ namespace BackendlessAPI.Service
         throw new ArgumentNullException( ExceptionMessage.NULL_MESSAGE_ID );
 
       return Invoker.InvokeSync<bool>( MESSAGING_MANAGER_SERVER_ALIAS, "cancel",
-                                       new Object[] {Backendless.AppId, Backendless.VersionNum, messageId} );
+                                       new Object[] { Backendless.AppId, Backendless.VersionNum, messageId } );
     }
 
     public void Cancel( string messageId, AsyncCallback<bool> callback )
@@ -304,7 +303,7 @@ namespace BackendlessAPI.Service
         throw new ArgumentNullException( ExceptionMessage.NULL_MESSAGE_ID );
 
       Invoker.InvokeAsync( MESSAGING_MANAGER_SERVER_ALIAS, "cancel",
-                           new Object[] {Backendless.AppId, Backendless.VersionNum, messageId}, callback );
+                           new Object[] { Backendless.AppId, Backendless.VersionNum, messageId }, callback );
     }
 
     #region SUBSCRIBE SYNC (DEFAULT CHANNEL)
@@ -480,9 +479,59 @@ namespace BackendlessAPI.Service
         throw new ArgumentNullException( ExceptionMessage.NULL_SUBSCRIPTION_ID );
 
       Invoker.InvokeAsync( MESSAGING_MANAGER_SERVER_ALIAS, "pollMessages",
-                           new object[] {Backendless.AppId, Backendless.VersionNum, channelName, subscriptionId},
+                           new object[] { Backendless.AppId, Backendless.VersionNum, channelName, subscriptionId },
                            callback );
     }
+
+    #region SEND EMAIL
+    public void SendTextEmail( String subject, String messageBody, List<String> recipients, AsyncCallback<object> responder )
+    {
+      SendEmail( subject, new BodyParts( messageBody, null ), recipients, new List<String>(), responder );
+    }
+
+    public void SendTextEmail( String subject, String messageBody, String recipient, AsyncCallback<object> responder )
+    {
+      SendEmail( subject, new BodyParts( messageBody, null ), new List<String>() { recipient }, new List<String>(), responder );
+    }
+
+    public void SendHTMLEmail( String subject, String messageBody, List<String> recipients, AsyncCallback<object> responder )
+    {
+      SendEmail( subject, new BodyParts( null, messageBody ), recipients, new List<String>(), responder );
+    }
+
+    public void SendHTMLEmail( String subject, String messageBody, String recipient, AsyncCallback<object> responder )
+    {
+      SendEmail( subject, new BodyParts( null, messageBody ), new List<String>() { recipient }, new List<String>(), responder );
+    }
+
+    public void SendEmail( String subject, BodyParts bodyParts, String recipient, List<String> attachments, AsyncCallback<object> responder )
+    {
+      SendEmail( subject, bodyParts, new List<String>() { recipient }, attachments, responder );
+    }
+
+    public void SendEmail( String subject, BodyParts bodyParts, String recipient, AsyncCallback<object> responder )
+    {
+      SendEmail( subject, bodyParts, new List<String>() { recipient }, new List<String>(), responder );
+    }
+
+    public void SendEmail( String subject, BodyParts bodyParts, List<String> recipients, List<String> attachments,
+                           AsyncCallback<object> responder )
+    {
+      if( subject == null )
+        throw new ArgumentNullException( ExceptionMessage.NULL_SUBJECT );
+
+      if( bodyParts == null )
+        throw new ArgumentNullException( ExceptionMessage.NULL_BODYPARTS );
+
+      if( recipients == null || recipients.Count == 0 )
+        throw new ArgumentNullException( ExceptionMessage.NULL_RECIPIENTS );
+
+      if( attachments == null )
+        throw new ArgumentNullException( ExceptionMessage.NULL_ATTACHMENTS );
+
+      Invoker.InvokeAsync( EMAIL_MANAGER_SERVER_ALIAS, "send", new Object[] { Backendless.AppId, Backendless.VersionNum, subject, bodyParts, recipients, attachments }, responder );
+    }
+    #endregion
 
     private string subscribeForPollingAccess( string channelName, Messaging.SubscriptionOptions subscriptionOptions )
     {
@@ -492,8 +541,7 @@ namespace BackendlessAPI.Service
         subscriptionOptions = new Messaging.SubscriptionOptions();
 
       return Invoker.InvokeSync<string>( MESSAGING_MANAGER_SERVER_ALIAS, "subscribeForPollingAccess",
-                                         new Object[]
-                                           {Backendless.AppId, Backendless.VersionNum, channelName, subscriptionOptions} );
+                                         new Object[] { Backendless.AppId, Backendless.VersionNum, channelName, subscriptionOptions } );
     }
 
     private void subscribeForPollingAccess( string channelName, Messaging.SubscriptionOptions subscriptionOptions,
@@ -505,7 +553,7 @@ namespace BackendlessAPI.Service
         subscriptionOptions = new Messaging.SubscriptionOptions();
 
       Invoker.InvokeAsync( MESSAGING_MANAGER_SERVER_ALIAS, "subscribeForPollingAccess",
-                           new Object[] {Backendless.AppId, Backendless.VersionNum, channelName, subscriptionOptions},
+                           new Object[] { Backendless.AppId, Backendless.VersionNum, channelName, subscriptionOptions },
                            callback );
     }
 

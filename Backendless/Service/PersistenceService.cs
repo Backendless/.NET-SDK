@@ -11,6 +11,9 @@ using BackendlessAPI.Property;
 using Weborb.Client;
 using Weborb.Service;
 using Weborb.Types;
+using Weborb.Writer;
+using BackendlessAPI.IO;
+using BackendlessAPI.Utils;
 
 namespace BackendlessAPI.Service
 {
@@ -65,14 +68,14 @@ namespace BackendlessAPI.Service
 
       AddWeborbPropertyMapping<T>();
       return Invoker.InvokeSync<T>( PERSISTENCE_MANAGER_SERVER_ALIAS, "create",
-                                    new object[] {Backendless.AppId, Backendless.VersionNum, typeof( T ).Name, entity} );
+                                    new object[] { Backendless.AppId, Backendless.VersionNum, GetTypeName( typeof( T ) ), entity }, true );
     }
 
     internal void Create<T>( T entity, AsyncCallback<T> callback )
     {
       AddWeborbPropertyMapping<T>();
       Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "create",
-                           new object[] {Backendless.AppId, Backendless.VersionNum, typeof( T ).Name, entity}, callback );
+                           new object[] {Backendless.AppId, Backendless.VersionNum, GetTypeName( typeof( T ) ), entity}, true, callback );
     }
 
     internal T Update<T>( T entity )
@@ -81,15 +84,16 @@ namespace BackendlessAPI.Service
         throw new ArgumentNullException( ExceptionMessage.NULL_ENTITY );
 
       AddWeborbPropertyMapping<T>();
-      return Invoker.InvokeSync<T>( PERSISTENCE_MANAGER_SERVER_ALIAS, "update",
-                                    new Object[] {Backendless.AppId, Backendless.VersionNum, typeof( T ).Name, entity} );
+      T result = Invoker.InvokeSync<T>( PERSISTENCE_MANAGER_SERVER_ALIAS, "update",
+                                    new Object[] {Backendless.AppId, Backendless.VersionNum, GetTypeName( typeof( T ) ), entity}, true );
+      return result;
     }
 
     internal void Update<T>( T entity, AsyncCallback<T> callback )
     {
       AddWeborbPropertyMapping<T>();
       Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "update",
-                           new object[] {Backendless.AppId, Backendless.VersionNum, typeof( T ).Name, entity}, callback );
+                           new object[] {Backendless.AppId, Backendless.VersionNum, GetTypeName( typeof( T ) ), entity}, true, callback );
     }
 
     internal long Remove<T>( T entity )
@@ -104,7 +108,7 @@ namespace BackendlessAPI.Service
 
       AddWeborbPropertyMapping<T>();
       return Invoker.InvokeSync<long>( PERSISTENCE_MANAGER_SERVER_ALIAS, "remove",
-                                       new Object[] {Backendless.AppId, Backendless.VersionNum, typeof( T ).Name, id} );
+                                       new Object[] {Backendless.AppId, Backendless.VersionNum, GetTypeName( typeof( T ) ), id} );
     }
 
     internal void Remove<T>( T entity, AsyncCallback<long> callback )
@@ -119,30 +123,56 @@ namespace BackendlessAPI.Service
 
       AddWeborbPropertyMapping<T>();
       Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "remove",
-                           new Object[] {Backendless.AppId, Backendless.VersionNum, typeof( T ).Name, id}, callback );
+                           new Object[] {Backendless.AppId, Backendless.VersionNum, GetTypeName( typeof( T ) ), id}, callback );
     }
 
     internal T FindById<T>( string id, IList<string> relations )
     {
-      if( id == null )
-        throw new ArgumentNullException( ExceptionMessage.NULL_ID );
-
-      AddWeborbPropertyMapping<T>();
-      return Invoker.InvokeSync<T>( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById",
-                                    new Object[] {Backendless.AppId, Backendless.VersionNum, typeof( T ).Name, id, relations} );
+      return FindById<T>( id, relations, 0 );
     }
 
-    internal void FindById<T>( string id, IList<string> relations, AsyncCallback<T> callback )
+    internal T FindById<T>( string id, IList<string> relations, int relationsDepth )
     {
       if( id == null )
         throw new ArgumentNullException( ExceptionMessage.NULL_ID );
 
+      if( relations == null )
+        relations = new List<String>();
+
+      AddWeborbPropertyMapping<T>();
+      return Invoker.InvokeSync<T>( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById",
+                                    new Object[] { Backendless.AppId, Backendless.VersionNum, GetTypeName( typeof( T ) ), id, relations, relationsDepth }, true );
+    }
+
+    internal void FindById<T>( string id, IList<string> relations, AsyncCallback<T> callback )
+    {
+      FindById<T>( id, relations, 0, callback );
+    }
+
+    internal void FindById<T>( string id, IList<string> relations, int relationsDepth, AsyncCallback<T> callback )
+    {
+      if( id == null )
+        throw new ArgumentNullException( ExceptionMessage.NULL_ID );
+
+      if( relations == null )
+        relations = new List<String>();
+
       AddWeborbPropertyMapping<T>();
       Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById",
-                           new Object[] {Backendless.AppId, Backendless.VersionNum, typeof( T ).Name, id, relations}, callback );
+                           new Object[] { Backendless.AppId, Backendless.VersionNum, GetTypeName( typeof( T ) ), id, relations, relationsDepth }, true, callback );
     }
 
     internal void LoadRelations<T>( T entity, IList<string> relations )
+    {
+      LoadRelations<T>( entity, relations, 0 );
+    }
+
+    internal void LoadRelations<T>( T entity, int relationsDepth )
+    {
+      LoadRelations<T>( entity, null, relationsDepth );
+    }
+
+    internal void LoadRelations<T>( T entity, IList<string> relations, int relationsDepth )
     {
       if( entity == null )
         throw new ArgumentNullException( ExceptionMessage.NULL_ENTITY );
@@ -152,16 +182,31 @@ namespace BackendlessAPI.Service
       if( id == null )
         throw new ArgumentNullException( ExceptionMessage.NULL_ID );
 
-      var loadedRelations = Invoker.InvokeSync<T>( PERSISTENCE_MANAGER_SERVER_ALIAS, "loadRelations",
-                                                   new Object[]
-                                                     {
-                                                       Backendless.AppId, Backendless.VersionNum, typeof( T ).Name, id,
-                                                       relations
-                                                     } );
+      if( relations == null )
+        relations = new List<String>();
+
+      Object[] methodArgs = null;
+
+      if( relationsDepth == 0 )
+        methodArgs = new Object[] { Backendless.AppId, Backendless.VersionNum, GetTypeName( typeof( T ) ), id, relations };
+      else
+        methodArgs = new Object[] { Backendless.AppId, Backendless.VersionNum, GetTypeName( typeof( T ) ), id, relations, relationsDepth };
+        
+      var loadedRelations = Invoker.InvokeSync<T>( PERSISTENCE_MANAGER_SERVER_ALIAS, "loadRelations", methodArgs, true );
       LoadRelationsToEntity( entity, loadedRelations, relations );
     }
 
+    internal void LoadRelations<T>( T entity, int relationsDepth, AsyncCallback<T> callback )
+    {
+      LoadRelations<T>( entity, null, relationsDepth, callback );
+    }
+
     internal void LoadRelations<T>( T entity, IList<string> relations, AsyncCallback<T> callback )
+    {
+      LoadRelations<T>( entity, relations, 0, callback );
+    }
+
+    internal void LoadRelations<T>( T entity, IList<string> relations, int relationsDepth, AsyncCallback<T> callback )
     {
       if( entity == null )
         throw new ArgumentNullException( ExceptionMessage.NULL_ENTITY );
@@ -182,19 +227,31 @@ namespace BackendlessAPI.Service
               callback.ErrorHandler.Invoke( fault );
           } );
       Invoker.InvokeAsync<T>( PERSISTENCE_MANAGER_SERVER_ALIAS, "loadRelations",
-                              new Object[] {Backendless.AppId, Backendless.VersionNum, typeof( T ).Name, id, relations},
+                              new Object[] {Backendless.AppId, Backendless.VersionNum, GetTypeName( typeof( T ) ), id, relations, relationsDepth },
+                              true,
                               responder );
     }
 
     private void LoadRelationsToEntity<T>( T entity, T response, IList<string> relations )
     {
-      FieldInfo[] fields = typeof( T ).GetFields();
-      foreach( var fieldInfo in fields )
+      if( typeof( T ).Equals( typeof( BackendlessUser ) ) )
       {
-        if( !relations.Contains( fieldInfo.Name ) )
-          continue;
+        object source = entity;
+        object updated = response;
+        BackendlessUser userWithRelations = (BackendlessUser) updated;
+        BackendlessUser sourceUser = (BackendlessUser) source;
+        sourceUser.PutProperties( userWithRelations.Properties );
+      }
+      else
+      {
+        FieldInfo[] fields = typeof( T ).GetFields();
+        foreach( var fieldInfo in fields )
+        {
+          if( !relations.Contains( fieldInfo.Name ) )
+            continue;
 
-        fieldInfo.SetValue( entity, fieldInfo.GetValue( response ) );
+          fieldInfo.SetValue( entity, fieldInfo.GetValue( response ) );
+        }
       }
     }
 
@@ -225,8 +282,8 @@ namespace BackendlessAPI.Service
                                                                  new object[]
                                                                    {
                                                                      Backendless.AppId, Backendless.VersionNum,
-                                                                     typeof( T ).Name, dataQuery
-                                                                   } );
+                                                                     GetTypeName( typeof( T ) ), dataQuery
+                                                                   }, true );
       result.Query = dataQuery;
 
       return result;
@@ -250,36 +307,115 @@ namespace BackendlessAPI.Service
 
       AddWeborbPropertyMapping<T>();
       Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "find",
-                           new object[] {Backendless.AppId, Backendless.VersionNum, typeof( T ).Name, dataQuery},
+                           new object[] {Backendless.AppId, Backendless.VersionNum, GetTypeName( typeof( T ) ), dataQuery},
+                           true,
                            responder );
     }
 
     public T First<T>()
     {
+      return First<T>( null, 0 );
+    }
+
+    public T First<T>( int relationsDepth )
+    {
+      return First<T>( null, relationsDepth );
+    }
+
+    public T First<T>( IList<String> relations )
+    {
+      return First<T>( relations, 0 );
+    }
+
+    public T First<T>( IList<String> relations, int relationsDepth )
+    {
+      if( relations == null )
+        relations = new List<String>();
+
       AddWeborbPropertyMapping<T>();
       return Invoker.InvokeSync<T>( PERSISTENCE_MANAGER_SERVER_ALIAS, "first",
-                                    new Object[] {Backendless.AppId, Backendless.VersionNum, typeof( T ).Name} );
+                                    new Object[] { Backendless.AppId, Backendless.VersionNum, GetTypeName( typeof( T ) ), relations, relationsDepth },
+                                    true );
     }
 
     public void First<T>( AsyncCallback<T> callback )
     {
+      First<T>( null, 0, callback );
+    }
+
+    public void First<T>( int relationsDepth, AsyncCallback<T> callback )
+    {
+      First<T>( null, relationsDepth, callback );
+    }
+
+    public void First<T>( IList<String> relations, AsyncCallback<T> callback )
+    {
+      First<T>( relations, 0, callback );
+    }
+
+    public void First<T>( IList<String> relations, int relationsDepth, AsyncCallback<T> callback )
+    {
+      if( relations == null )
+        relations = new List<String>();
+
       AddWeborbPropertyMapping<T>();
       Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "first",
-                           new Object[] {Backendless.AppId, Backendless.VersionNum, typeof( T ).Name}, callback );
+                           new Object[] { Backendless.AppId, Backendless.VersionNum, GetTypeName( typeof( T ) ), relations, relationsDepth }, 
+                           true,
+                           callback );
     }
 
     public T Last<T>()
     {
+      return Last<T>( null, 0 );
+    }
+
+    public T Last<T>( int relationsDepth )
+    {
+      return Last<T>( null, relationsDepth );
+    }
+
+    public T Last<T>( IList<String> relations )
+    {
+      return Last<T>( relations, 0 );
+    }
+
+    public T Last<T>( IList<String> relations, int relationsDepth )
+    {
+      if( relations == null )
+        relations = new List<String>();
+
       AddWeborbPropertyMapping<T>();
       return Invoker.InvokeSync<T>( PERSISTENCE_MANAGER_SERVER_ALIAS, "last",
-                                    new Object[] {Backendless.AppId, Backendless.VersionNum, typeof( T ).Name} );
+                                    new Object[] { Backendless.AppId, Backendless.VersionNum, GetTypeName( typeof( T ) ), relations, relationsDepth },
+                                    true );
     }
 
     public void Last<T>( AsyncCallback<T> callback )
     {
+      Last<T>( null, 0, callback );
+    }
+
+    public void Last<T>( int relationsDepth, AsyncCallback<T> callback )
+    {
+      Last<T>( null, relationsDepth, callback );
+    }
+
+    public void Last<T>( IList<String> relations, AsyncCallback<T> callback )
+    {
+      Last<T>( relations, 0, callback );
+    }
+
+    public void Last<T>( IList<String> relations, int relationsDepth, AsyncCallback<T> callback )
+    {
+      if( relations == null )
+        relations = new List<String>();
+
       AddWeborbPropertyMapping<T>();
       Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "last",
-                           new Object[] {Backendless.AppId, Backendless.VersionNum, typeof( T ).Name}, callback );
+                           new Object[] { Backendless.AppId, Backendless.VersionNum, GetTypeName( typeof( T ) ), relations, relationsDepth }, 
+                           true,
+                           callback );
     }
 
     public IDataStore<T> Of<T>()
@@ -287,11 +423,23 @@ namespace BackendlessAPI.Service
       return DataStoreFactory.CreateDataStore<T>();
     }
 
+    public void MapTableToType( string tableName, Type type )
+    {
+      Weborb.Types.Types.AddClientClassMapping( tableName, type );
+    }
+
     private static string GetEntityId<T>( T entity )
     {
       try
       {
         Type entityType = entity.GetType();
+
+        if( entityType.Equals( typeof( BackendlessUser ) ) )
+        {
+          object entityObject = entity;
+          return ( (BackendlessUser) entityObject ).UserId;
+        }
+
         PropertyInfo objectIdProp = entityType.GetProperty( DEFAULT_OBJECT_ID_PROPERTY_NAME_DOTNET_STYLE );
 
         if( objectIdProp == null )
@@ -299,6 +447,11 @@ namespace BackendlessAPI.Service
 
         if( objectIdProp != null )
           return objectIdProp.GetValue( entity, null ) as string;
+
+        IDictionary<string, object> underflow = UnderflowStore.GetObjectUnderflow( entity );
+
+        if( underflow != null && underflow.ContainsKey( DEFAULT_OBJECT_ID_PROPERTY_NAME_JAVA_STYLE ) )
+          return (string) underflow[ DEFAULT_OBJECT_ID_PROPERTY_NAME_JAVA_STYLE ];
       }
       catch( System.Exception e )
       {
@@ -444,6 +597,14 @@ namespace BackendlessAPI.Service
 
       if( dataQuery.PageSize < 0 )
         throw new ArgumentException( ExceptionMessage.WRONG_PAGE_SIZE );
+    }
+
+    private static string GetTypeName( Type type )
+    {
+      if( type.Equals( typeof( BackendlessUser ) ) )
+        return "Users";
+      else
+        return type.Name;
     }
   }
 }

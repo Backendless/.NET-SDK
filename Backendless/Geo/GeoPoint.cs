@@ -35,6 +35,9 @@ namespace BackendlessAPI.Geo
     [SetClientClassMemberName( "longitude" )]
     public double Longitude { get; set; }
 
+    [SetClientClassMemberName( "distance" )]
+    public double Distance { get; set; }
+
     [SetClientClassMemberName( "categories" )]
     public List<string> Categories
     {

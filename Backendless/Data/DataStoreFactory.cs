@@ -38,9 +38,39 @@ namespace BackendlessAPI.Data
         return Backendless.Persistence.First<T>();
       }
 
+      public T FindFirst( int relationsDepth )
+      {
+        return Backendless.Persistence.First<T>( relationsDepth );
+      }
+
+      public T FindFirst( IList<string> relations )
+      {
+        return Backendless.Persistence.First<T>( relations );
+      }
+
+      public T FindFirst( IList<string> relations, int relationsDepth )
+      {
+        return Backendless.Persistence.First<T>( relations, relationsDepth );
+      }
+
       public void FindFirst( AsyncCallback<T> responder )
       {
         Backendless.Persistence.First( responder );
+      }
+
+      public void FindFirst( int relationsDepth, AsyncCallback<T> responder )
+      {
+        Backendless.Persistence.First( relationsDepth, responder );
+      }
+
+      public void FindFirst( IList<string> relations, AsyncCallback<T> responder )
+      {
+        Backendless.Persistence.First( relations, responder );
+      }
+
+      public void FindFirst( IList<string> relations, int relationsDepth, AsyncCallback<T> responder )
+      {
+        Backendless.Persistence.First( relations, relationsDepth, responder );
       }
 
       public T FindLast()
@@ -48,9 +78,39 @@ namespace BackendlessAPI.Data
         return Backendless.Persistence.Last<T>();
       }
 
+      public T FindLast( int relationsDepth )
+      {
+        return Backendless.Persistence.Last<T>( relationsDepth );
+      }
+
+      public T FindLast( IList<string> relations )
+      {
+        return Backendless.Persistence.Last<T>( relations );
+      }
+
+      public T FindLast( IList<string> relations, int relationsDepth )
+      {
+        return Backendless.Persistence.Last<T>( relations, relationsDepth );
+      }
+
       public void FindLast( AsyncCallback<T> responder )
       {
         Backendless.Persistence.Last( responder );
+      }
+
+      public void FindLast( int relationsDepth, AsyncCallback<T> responder )
+      {
+        Backendless.Persistence.Last( relationsDepth, responder );
+      }
+
+      public void FindLast( IList<string> relations, AsyncCallback<T> responder )
+      {
+        Backendless.Persistence.Last( relations, responder );
+      }
+
+      public void FindLast( IList<string> relations, int relationsDepth, AsyncCallback<T> responder )
+      {
+        Backendless.Persistence.Last( relations, relationsDepth, responder );
       }
 
       public BackendlessCollection<T> Find()
@@ -78,9 +138,9 @@ namespace BackendlessAPI.Data
         return Backendless.Persistence.FindById<T>( id, null );
       }
 
-      public void FindById( string id, AsyncCallback<T> responder )
+      public T FindById( string id, int relationsDepth )
       {
-        Backendless.Persistence.FindById( id, null, responder );
+        return Backendless.Persistence.FindById<T>( id, null, relationsDepth );
       }
 
       public T FindById( string id, IList<string> relations )
@@ -88,9 +148,29 @@ namespace BackendlessAPI.Data
         return Backendless.Persistence.FindById<T>( id, relations );
       }
 
+      public T FindById( string id, IList<string> relations, int relationsDepth )
+      {
+        return Backendless.Persistence.FindById<T>( id, relations, relationsDepth );
+      }
+
+      public void FindById( string id, AsyncCallback<T> responder )
+      {
+        Backendless.Persistence.FindById( id, null, responder );
+      }
+
+      public void FindById( string id, int relationsDepth, AsyncCallback<T> responder )
+      {
+        Backendless.Persistence.FindById( id, null, relationsDepth, responder );
+      }
+
       public void FindById( string id, IList<string> relations, AsyncCallback<T> responder )
       {
         Backendless.Persistence.FindById( id, relations, responder );
+      }
+
+      public void FindById( string id, IList<string> relations, int relationsDepth, AsyncCallback<T> responder )
+      {
+        Backendless.Persistence.FindById( id, relations, relationsDepth, responder );
       }
 
       public void LoadRelations( T entity, IList<string> relations )
@@ -98,9 +178,29 @@ namespace BackendlessAPI.Data
         Backendless.Persistence.LoadRelations( entity, relations );
       }
 
+      public void LoadRelations( T entity, int relationsDepth )
+      {
+        Backendless.Persistence.LoadRelations( entity, relationsDepth );
+      }
+
+      public void LoadRelations( T entity, IList<string> relations, int relationsDepth )
+      {
+        Backendless.Persistence.LoadRelations( entity, relations, relationsDepth );
+      }
+
       public void LoadRelations( T entity, IList<string> relations, AsyncCallback<T> responder )
       {
         Backendless.Persistence.LoadRelations( entity, relations, responder );
+      }
+
+      public void LoadRelations( T entity, int relationsDepth, AsyncCallback<T> responder )
+      {
+        Backendless.Persistence.LoadRelations( entity, relationsDepth, responder );
+      }
+
+      public void LoadRelations( T entity, IList<string> relations, int relationsDepth, AsyncCallback<T> responder )
+      {
+        Backendless.Persistence.LoadRelations( entity, relations, relationsDepth, responder );
       }
     }
   }

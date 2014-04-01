@@ -8,6 +8,8 @@ using Weborb.Config;
 using Weborb.Types;
 using Weborb.Util;
 using Weborb.V3Types;
+using Weborb.Writer;
+using BackendlessAPI.IO;
 
 namespace BackendlessAPI
 {
@@ -62,6 +64,10 @@ namespace BackendlessAPI
       Messaging = new MessagingService();
       Files = new FileService();
       UserService = new UserService();
+
+      MessageWriter.DefaultWriter = new UnderflowWriter();
+      MessageWriter.AddAdditionalTypeWriter( typeof( BackendlessUser ), new BackendlessUserWriter() );
+      ORBConfig.GetInstance().getObjectFactories().AddArgumentObjectFactory( typeof( BackendlessUser ).FullName, new BackendlessUserFactory() );
 
       HeadersManager.CleanHeaders();
     }

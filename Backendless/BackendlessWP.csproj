@@ -63,7 +63,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Net" />
     <Reference Include="mscorlib.extensions" />
-    <Reference Include="WeborbPhoneClient, Version=5.1.0.14, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="WeborbPhoneClient, Version=5.1.0.27, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Dependency\WeborbPhoneClient.dll</HintPath>
     </Reference>
@@ -88,6 +88,10 @@
     <Compile Include="Geo\GeoCategory.cs" />
     <Compile Include="Geo\GeoPoint.cs" />
     <Compile Include="Geo\Units.cs" />
+    <Compile Include="IO\BackendlessUserFactory.cs" />
+    <Compile Include="IO\BackendlessUserWriter.cs" />
+    <Compile Include="IO\UnderflowWriter.cs" />
+    <Compile Include="Messaging\BodyParts.cs" />
     <Compile Include="Messaging\DeliveryOptions.cs" />
     <Compile Include="Messaging\DeviceRegistrationDto.cs" />
     <Compile Include="Messaging\Message.cs" />
@@ -114,15 +118,16 @@
     <Compile Include="Service\PersistenceService.cs" />
     <Compile Include="Service\UserService.cs" />
     <Compile Include="Utils\Json.cs" />
+    <Compile Include="Utils\UnderflowStore.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />
   <ProjectExtensions />
   <PropertyGroup>
-    <PostBuildEvent>copy /Y BackendlessPhone.dll ..\..\..\..\Samples\Dependency
-copy /Y BackendlessPhone.pdb ..\..\..\..\Samples\Dependency
-copy /Y WeborbPhoneClient.dll ..\..\..\..\Samples\Dependency
-copy /Y WeborbPhoneClient.pdb ..\..\..\..\Samples\Dependency</PostBuildEvent>
+    <PostBuildEvent>rem copy /Y BackendlessPhone.dll ..\..\..\..\Samples\Dependency
+rem copy /Y BackendlessPhone.pdb ..\..\..\..\Samples\Dependency
+rem copy /Y WeborbPhoneClient.dll ..\..\..\..\Samples\Dependency
+rem copy /Y WeborbPhoneClient.pdb ..\..\..\..\Samples\Dependency</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

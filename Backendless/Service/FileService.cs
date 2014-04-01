@@ -25,14 +25,12 @@ namespace BackendlessAPI.Service
     {
     }
 
-    public void Upload( FileStream fileStream, string remotePath,
-                        AsyncCallback<BackendlessFile> callback )
+    public void Upload( FileStream fileStream, string remotePath, AsyncCallback<BackendlessFile> callback )
     {
       Upload( fileStream, remotePath, new EmptyUploadCallback(), callback );
     }
 
-    public void Upload( FileStream fileStream, string remotePath, UploadCallback uploadCallback,
-                        AsyncCallback<BackendlessFile> callback )
+    public void Upload( FileStream fileStream, string remotePath, UploadCallback uploadCallback, AsyncCallback<BackendlessFile> callback )
     {
       if( string.IsNullOrEmpty( remotePath ) )
         throw new ArgumentNullException( ExceptionMessage.NULL_PATH );
