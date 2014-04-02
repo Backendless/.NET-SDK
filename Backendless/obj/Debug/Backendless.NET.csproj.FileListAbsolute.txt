@@ -7,16 +7,6 @@ Z:\mark\dev\backendless\sources.backendless.com\src\client\sdk\windowsphone\Back
 Z:\mark\dev\backendless-git\backendless-sdk-net\Backendless\bin\Debug\Backendless.dll
 Z:\mark\dev\backendless-git\backendless-sdk-net\Backendless\bin\Debug\Backendless.pdb
 Z:\mark\dev\backendless-git\backendless-sdk-net\Backendless\bin\Debug\weborb.dll
-Z:\mark\dev\backendless-git\backendless-sdk-net\Backendless\bin\Debug\NHibernate.dll
-Z:\mark\dev\backendless-git\backendless-sdk-net\Backendless\bin\Debug\Npgsql.dll
-Z:\mark\dev\backendless-git\backendless-sdk-net\Backendless\bin\Debug\Oracle.DataAccess.dll
-Z:\mark\dev\backendless-git\backendless-sdk-net\Backendless\bin\Debug\Apache.NMS.dll
-Z:\mark\dev\backendless-git\backendless-sdk-net\Backendless\bin\Debug\MySql.Data.dll
-Z:\mark\dev\backendless-git\backendless-sdk-net\Backendless\bin\Debug\AWSSDK.dll
-Z:\mark\dev\backendless-git\backendless-sdk-net\Backendless\bin\Debug\Iesi.Collections.dll
-Z:\mark\dev\backendless-git\backendless-sdk-net\Backendless\bin\Debug\Antlr3.Runtime.dll
-Z:\mark\dev\backendless-git\backendless-sdk-net\Backendless\bin\Debug\log4net.dll
-Z:\mark\dev\backendless-git\backendless-sdk-net\Backendless\bin\Debug\Mono.Security.dll
 Z:\mark\dev\backendless-git\backendless-sdk-net\Backendless\obj\Debug\Backendless.dll
 Z:\mark\dev\backendless-git\backendless-sdk-net\Backendless\obj\Debug\Backendless.pdb
 Z:\mark\dev\backendless-git\backendless-sdk-net\Backendless\obj\Debug\Backendless.NET.csprojResolveAssemblyReference.cache
