@@ -14,6 +14,9 @@ namespace BackendlessAPI.IO
       if( argument is NamedObject )
         argument = ( (NamedObject) argument ).TypedObject;
 
+      if( argument is NullType )
+        return null;
+
       Dictionary<string, object> props = (Dictionary<string, object>) argument.adapt( typeof( Dictionary<string, object> ) );
       BackendlessUser backendlessUser = new BackendlessUser();
       backendlessUser.PutProperties( props );
