@@ -81,17 +81,14 @@ namespace BackendlessAPI.Service
             return SavePoint(latitude, longitude, null, metadata);
         }
 
-        public void SavePoint(double latitude, double longitude, Dictionary<string, string> metadata,
-                               AsyncCallback<GeoPoint> callback)
+        public void SavePoint(double latitude, double longitude, Dictionary<string, string> metadata, AsyncCallback<GeoPoint> callback)
         {
             SavePoint(latitude, longitude, null, metadata, callback);
         }
 
-        public GeoPoint SavePoint(double latitude, double longitude, List<string> categoryNames,
-                                   Dictionary<string, string> metadata)
+        public GeoPoint SavePoint(double latitude, double longitude, List<string> categoryNames, Dictionary<string, string> metadata)
         {
             CheckCoordinates(latitude, longitude);
-
             return Invoker.InvokeSync<GeoPoint>(GEO_MANAGER_SERVER_ALIAS, "addPoint",
                                                  new object[]
                                              {
@@ -100,8 +97,7 @@ namespace BackendlessAPI.Service
                                              });
         }
 
-        public void SavePoint(double latitude, double longitude, List<string> categoryNames,
-                               Dictionary<string, string> metadata, AsyncCallback<GeoPoint> callback)
+        public void SavePoint(double latitude, double longitude, List<string> categoryNames, Dictionary<string, string> metadata, AsyncCallback<GeoPoint> callback)
         {
             try
             {
@@ -123,6 +119,11 @@ namespace BackendlessAPI.Service
             }
         }
 
+        public GeoPoint AddPoint( GeoPoint geoPoint )
+        {
+          return SavePoint( geoPoint );
+        }
+
         public GeoPoint SavePoint(GeoPoint geoPoint)
         {
             if (geoPoint == null)
@@ -130,8 +131,15 @@ namespace BackendlessAPI.Service
 
             CheckCoordinates(geoPoint.Latitude, geoPoint.Longitude);
 
-            return Invoker.InvokeSync<GeoPoint>(GEO_MANAGER_SERVER_ALIAS, "addPoint",
+            String methodName = geoPoint.ObjectId == null ? "addPoint" : "updatePoint";
+
+            return Invoker.InvokeSync<GeoPoint>(GEO_MANAGER_SERVER_ALIAS, methodName,
                                                  new object[] { Backendless.AppId, Backendless.VersionNum, geoPoint });
+        }
+
+        public void AddPoint( GeoPoint geoPoint, AsyncCallback<GeoPoint> callback )
+        {
+          SavePoint( geoPoint, callback );
         }
 
         public void SavePoint(GeoPoint geoPoint, AsyncCallback<GeoPoint> callback)
@@ -142,8 +150,8 @@ namespace BackendlessAPI.Service
                     throw new ArgumentNullException(ExceptionMessage.NULL_GEOPOINT);
 
                 CheckCoordinates(geoPoint.Latitude, geoPoint.Longitude);
-
-                Invoker.InvokeAsync(GEO_MANAGER_SERVER_ALIAS, "addPoint",
+                String methodName = geoPoint.ObjectId == null ? "addPoint" : "updatePoint";
+                Invoker.InvokeAsync(GEO_MANAGER_SERVER_ALIAS, methodName,
                                      new object[] { Backendless.AppId, Backendless.VersionNum, geoPoint }, callback);
             }
             catch (System.Exception ex)
@@ -153,6 +161,35 @@ namespace BackendlessAPI.Service
                 else
                     throw;
             }
+        }
+
+        public void removePoint( GeoPoint geoPoint )
+        {
+          if( geoPoint == null )
+            throw new ArgumentNullException( ExceptionMessage.NULL_GEOPOINT );
+
+          CheckCoordinates( geoPoint.Latitude, geoPoint.Longitude );
+          Invoker.InvokeSync<GeoPoint>( GEO_MANAGER_SERVER_ALIAS, "removePoint",
+                                               new object[] { Backendless.AppId, Backendless.VersionNum, geoPoint.ObjectId } );
+        }
+
+        public void RemovePoint( GeoPoint geoPoint, AsyncCallback<GeoPoint> callback )
+        {
+          try
+          {
+            if( geoPoint == null )
+              throw new ArgumentNullException( ExceptionMessage.NULL_GEOPOINT );
+
+            Invoker.InvokeAsync( GEO_MANAGER_SERVER_ALIAS, "removePoint",
+                                 new object[] { Backendless.AppId, Backendless.VersionNum, geoPoint.ObjectId }, callback );
+          }
+          catch( System.Exception ex )
+          {
+            if( callback != null )
+              callback.ErrorHandler.Invoke( new BackendlessFault( ex ) );
+            else
+              throw;
+          }
         }
 
         public BackendlessCollection<GeoPoint> GetPoints(BackendlessGeoQuery geoQuery)

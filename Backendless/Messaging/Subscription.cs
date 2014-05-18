@@ -22,12 +22,15 @@ namespace BackendlessAPI.Messaging
       this._pollingInterval = pollingInterval;
     }
 
+    // returns a unique subscription identifier (assigned by Backendless)
     [SetClientClassMemberName( "subscriptionId" )]
     public string SubscriptionId { get; set; }
 
+    // returns the name of the channel the subscription gets messages from
     [SetClientClassMemberName( "channelName" )]
     public string ChannelName { get; set; }
 
+    // controls how frequently the client polls for messages
     [SetClientClassMemberNameAttribute( "pollingInterval" )]
     public int PollingInterval
     {
@@ -35,6 +38,7 @@ namespace BackendlessAPI.Messaging
       set { this._pollingInterval = value; }
     }
 
+    // cancels the subscription
     public bool CancelSubscription()
     {
       if( _timer != null )
@@ -47,6 +51,7 @@ namespace BackendlessAPI.Messaging
       return true;
     }
 
+    // suspends the subscription (the client stops receiving new messages)
     public void PauseSubscription()
     {
       if( _timer != null )
@@ -55,6 +60,7 @@ namespace BackendlessAPI.Messaging
       }
     }
 
+    // resumes the subscription
     public void ResumeSubscription()
     {
       if( SubscriptionId == null || ChannelName == null || _timer == null )

@@ -11,3 +11,4 @@ Z:\mark\dev\backendless-git\backendless-sdk-net\Backendless\obj\Debug\Backendles
 Z:\mark\dev\backendless-git\backendless-sdk-net\Backendless\obj\Debug\BackendlessPhone.pdb
 Z:\mark\dev\backendless-git\backendless-sdk-net\Backendless\Bin\WP\Debug\WeborbPhoneClient.dll
 Z:\mark\dev\backendless-git\backendless-sdk-net\Backendless\Bin\WP\Debug\WeborbPhoneClient.pdb
+Z:\mark\dev\backendless-git\backendless-sdk-net\Backendless\obj\Debug\BackendlessWP.csprojResolveAssemblyReference.cache

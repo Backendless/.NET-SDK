@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Backendless.NET", "Backendless\Backendless.NET.csproj", "{7C582FCA-1F66-4E53-93D6-0673B43B5160}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackendlessWP", "Backendless\BackendlessWP.csproj", "{963FF539-3147-4A8C-B0C0-794C7C5E00BE}"
@@ -14,7 +14,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackendlessConsoleDemo", "C:\dev\projects\BackendlessConsoleDemo\BackendlessConsoleDemo.csproj", "{2C19033F-1E41-4023-9BB4-FB65123EDD8D}"
+EndProject
 Global
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Backendless.NET.vsmdi
 	EndGlobalSection
@@ -203,12 +209,63 @@ Global
 		{AC2B0944-2CB1-4224-AE27-0221E01ED5BE}.WP_Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{AC2B0944-2CB1-4224-AE27-0221E01ED5BE}.WP_Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{AC2B0944-2CB1-4224-AE27-0221E01ED5BE}.WP_Release|x86.ActiveCfg = WP_Release|Any CPU
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.Debug|x86.ActiveCfg = Debug|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.Debug|x86.Build.0 = Debug|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.NET_20_DEBUG|Any CPU.ActiveCfg = Release|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.NET_20_DEBUG|Mixed Platforms.ActiveCfg = Release|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.NET_20_DEBUG|Mixed Platforms.Build.0 = Release|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.NET_20_DEBUG|x86.ActiveCfg = Release|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.NET_20_DEBUG|x86.Build.0 = Release|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.NET_20_RELEASE|Any CPU.ActiveCfg = Release|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.NET_20_RELEASE|Mixed Platforms.ActiveCfg = Release|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.NET_20_RELEASE|Mixed Platforms.Build.0 = Release|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.NET_20_RELEASE|x86.ActiveCfg = Release|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.NET_20_RELEASE|x86.Build.0 = Release|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.NET_35_DEBUG|Any CPU.ActiveCfg = Release|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.NET_35_DEBUG|Mixed Platforms.ActiveCfg = Release|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.NET_35_DEBUG|Mixed Platforms.Build.0 = Release|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.NET_35_DEBUG|x86.ActiveCfg = Release|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.NET_35_DEBUG|x86.Build.0 = Release|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.NET_35_RELEASE|Any CPU.ActiveCfg = Release|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.NET_35_RELEASE|Mixed Platforms.ActiveCfg = Release|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.NET_35_RELEASE|Mixed Platforms.Build.0 = Release|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.NET_35_RELEASE|x86.ActiveCfg = Release|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.NET_35_RELEASE|x86.Build.0 = Release|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.NET_40_DEBUG|Any CPU.ActiveCfg = Release|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.NET_40_DEBUG|Mixed Platforms.ActiveCfg = Release|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.NET_40_DEBUG|Mixed Platforms.Build.0 = Release|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.NET_40_DEBUG|x86.ActiveCfg = Release|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.NET_40_DEBUG|x86.Build.0 = Release|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.NET_40_RELEASE|Any CPU.ActiveCfg = Release|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.NET_40_RELEASE|Mixed Platforms.ActiveCfg = Release|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.NET_40_RELEASE|Mixed Platforms.Build.0 = Release|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.NET_40_RELEASE|x86.ActiveCfg = Release|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.NET_40_RELEASE|x86.Build.0 = Release|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.NET_45_DEBUG|Any CPU.ActiveCfg = Release|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.NET_45_DEBUG|Mixed Platforms.ActiveCfg = Release|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.NET_45_DEBUG|Mixed Platforms.Build.0 = Release|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.NET_45_DEBUG|x86.ActiveCfg = Release|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.NET_45_DEBUG|x86.Build.0 = Release|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.NET_45_RELEASE|Any CPU.ActiveCfg = Release|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.NET_45_RELEASE|Mixed Platforms.ActiveCfg = Release|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.NET_45_RELEASE|Mixed Platforms.Build.0 = Release|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.NET_45_RELEASE|x86.ActiveCfg = Release|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.NET_45_RELEASE|x86.Build.0 = Release|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.Release|Any CPU.ActiveCfg = Release|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.Release|Mixed Platforms.Build.0 = Release|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.Release|x86.ActiveCfg = Release|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.Release|x86.Build.0 = Release|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.WP_Release|Any CPU.ActiveCfg = Release|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.WP_Release|Mixed Platforms.ActiveCfg = Release|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.WP_Release|Mixed Platforms.Build.0 = Release|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.WP_Release|x86.ActiveCfg = Release|x86
+		{2C19033F-1E41-4023-9BB4-FB65123EDD8D}.WP_Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(SubversionScc) = preSolution
-		Svn-Managed = True
-		Manager = AnkhSVN - Subversion Support for Visual Studio
 	EndGlobalSection
 EndGlobal
