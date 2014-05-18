@@ -1,6 +1,0 @@
-Z:\mark\dev\backendless-git\backendless-sdk-net\Backendless\obj\NET_20_Release\Backendless.NET.csprojResolveAssemblyReference.cache
-Z:\mark\dev\backendless-git\backendless-sdk-net\Backendless\bin\NET_20\Release\Backendless.dll
-Z:\mark\dev\backendless-git\backendless-sdk-net\Backendless\bin\NET_20\Release\Backendless.pdb
-Z:\mark\dev\backendless-git\backendless-sdk-net\Backendless\bin\NET_20\Release\weborb.dll
-Z:\mark\dev\backendless-git\backendless-sdk-net\Backendless\obj\NET_20_Release\Backendless.dll
-Z:\mark\dev\backendless-git\backendless-sdk-net\Backendless\obj\NET_20_Release\Backendless.pdb
