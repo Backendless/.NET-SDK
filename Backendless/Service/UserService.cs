@@ -206,6 +206,17 @@ namespace BackendlessAPI.Service
                           responder );
     }
 
+    public void RestoreSession(string userToken)
+    {
+      HeadersManager.GetInstance()
+                    .AddHeader(HeadersEnum.USER_TOKEN_KEY, userToken);
+    }
+
+    public string GetSession()
+    {
+        return HeadersManager.GetInstance().Headers[HeadersEnum.USER_TOKEN_KEY.ToString()];
+    }
+
     public void RestorePassword( string identity )
     {
       if( identity == null )
