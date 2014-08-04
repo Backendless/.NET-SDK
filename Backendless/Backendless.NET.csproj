@@ -131,9 +131,13 @@
   <ItemGroup>
     <Compile Include="Async\AsyncCallback.cs" />
     <Compile Include="Backendless.cs" />
+    <Compile Include="Caching\Cache.cs" />
+    <Compile Include="Caching\CacheService.cs" />
+    <Compile Include="Caching\ICache.cs" />
     <Compile Include="Data\BackendlessCollection.cs" />
     <Compile Include="BackendlessUser.cs" />
     <Compile Include="Data\DataStoreFactory.cs" />
+    <Compile Include="Events\Events.cs" />
     <Compile Include="Geo\SearchMatchesResult.cs" />
     <Compile Include="IO\BackendlessUserFactory.cs" />
     <Compile Include="IO\BackendlessUserWriter.cs" />
@@ -176,6 +180,7 @@
     <Compile Include="Property\ObjectProperty.cs" />
     <Compile Include="Property\UserProperty.cs" />
     <Compile Include="Service\UserService.cs" />
+    <Compile Include="Utils\LoginStorage.cs" />
     <Compile Include="Utils\UnderflowStore.cs" />
   </ItemGroup>
   <ItemGroup />

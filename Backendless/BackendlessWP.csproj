@@ -73,8 +73,12 @@
     <Compile Include="Async\UploadCallback.cs" />
     <Compile Include="Backendless.cs" />
     <Compile Include="BackendlessUser.cs" />
+    <Compile Include="Caching\Cache.cs" />
+    <Compile Include="Caching\CacheService.cs" />
+    <Compile Include="Caching\ICache.cs" />
     <Compile Include="Data\BackendlessCollection.cs" />
     <Compile Include="Data\DataStoreFactory.cs" />
+    <Compile Include="Events\Events.cs" />
     <Compile Include="Geo\SearchMatchesResult.cs" />
     <Compile Include="Data\IBackendlessQuery.cs" />
     <Compile Include="Data\IDataStore.cs" />
@@ -118,6 +122,7 @@
     <Compile Include="Service\PersistenceService.cs" />
     <Compile Include="Service\UserService.cs" />
     <Compile Include="Utils\Json.cs" />
+    <Compile Include="Utils\LoginStorage.cs" />
     <Compile Include="Utils\UnderflowStore.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />

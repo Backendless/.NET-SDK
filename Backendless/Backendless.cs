@@ -10,6 +10,8 @@ using Weborb.Util;
 using Weborb.V3Types;
 using Weborb.Writer;
 using BackendlessAPI.IO;
+using BackendlessAPI.Utils;
+using BackendlessAPI.Caching;
 
 namespace BackendlessAPI
 {
@@ -22,6 +24,8 @@ namespace BackendlessAPI
     public static MessagingService Messaging;
     public static FileService Files;
     public static UserService UserService;
+    public static BackendlessAPI.Events Events;
+    public static Cache Cache;
 
     public static string AppId { get; private set; }
 
@@ -64,12 +68,18 @@ namespace BackendlessAPI
       Messaging = new MessagingService();
       Files = new FileService();
       UserService = new UserService();
+      Events = Events.GetInstance();
+      Cache = Cache.GetInstance();
 
       MessageWriter.DefaultWriter = new UnderflowWriter();
       MessageWriter.AddAdditionalTypeWriter( typeof( BackendlessUser ), new BackendlessUserWriter() );
       ORBConfig.GetInstance().getObjectFactories().AddArgumentObjectFactory( typeof( BackendlessUser ).FullName, new BackendlessUserFactory() );
 
       HeadersManager.CleanHeaders();
+      LoginStorage loginStorage = new LoginStorage();
+
+      if( !loginStorage.NewPrefs )
+        HeadersManager.GetInstance().AddHeader( HeadersEnum.USER_TOKEN_KEY, loginStorage.UserToken );
     }
   }
 }

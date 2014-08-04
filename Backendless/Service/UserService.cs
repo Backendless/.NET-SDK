@@ -8,6 +8,7 @@ using BackendlessAPI.Async;
 using BackendlessAPI.Engine;
 using BackendlessAPI.Exception;
 using BackendlessAPI.Property;
+using BackendlessAPI.Utils;
 using Weborb.Types;
 
 namespace BackendlessAPI.Service
@@ -131,7 +132,22 @@ namespace BackendlessAPI.Service
       }
     }
 
+    public String LoggedInUserId()
+    {
+      LoginStorage loginStorage = new LoginStorage();
+
+      if( loginStorage.NewPrefs )
+        return null;
+
+      return loginStorage.UserId;
+    }
+
     public BackendlessUser Login( string login, string password )
+    {
+      return Login( login, password, false );
+    }
+
+    public BackendlessUser Login( string login, string password, bool stayLoggedIn )
     {
       if( CurrentUser != null )
         Logout();
@@ -148,12 +164,17 @@ namespace BackendlessAPI.Service
                                                                                    Backendless.AppId,
                                                                                    Backendless.VersionNum,
                                                                                    login, password
-                                                                               } ) );
+                                                                               } ), stayLoggedIn );
 
       return CurrentUser;
     }
 
     public void Login( string login, string password, AsyncCallback<BackendlessUser> callback )
+    {
+      Login( login, password, callback, false );
+    }
+
+    public void Login( string login, string password, AsyncCallback<BackendlessUser> callback, bool stayLoggedIn )
     {
       try
       {
@@ -165,7 +186,7 @@ namespace BackendlessAPI.Service
 
         Invoker.InvokeAsync( USER_MANAGER_SERVER_ALIAS, "login",
                             new Object[] { Backendless.AppId, Backendless.VersionNum, login, password },
-                            GetUserLoginAsyncHandler( callback ) );
+                            GetUserLoginAsyncHandler( callback, stayLoggedIn ) );
       }
       catch( System.Exception ex )
       {
@@ -176,13 +197,53 @@ namespace BackendlessAPI.Service
       }
     }
 
+    public bool IsValidLogin()
+    {
+      LoginStorage loginStorage = new LoginStorage();
+
+      if( !loginStorage.NewPrefs && loginStorage.UserToken != null && loginStorage.UserToken.Length > 0 )
+          return Invoker.InvokeSync<Boolean>( USER_MANAGER_SERVER_ALIAS, "isValidUserToken",
+                                     new object[] { Backendless.AppId, Backendless.VersionNum, loginStorage.UserToken } );
+      else
+        return CurrentUser != null;
+    }
+
+    public void IsValidLogin( AsyncCallback<Boolean> callback )
+    {
+      LoginStorage loginStorage = new LoginStorage();
+
+      if( !loginStorage.NewPrefs && loginStorage.UserToken != null && loginStorage.UserToken.Length > 0 )
+        Invoker.InvokeAsync<Boolean>( USER_MANAGER_SERVER_ALIAS, "isValidUserToken",
+                                   new object[] { Backendless.AppId, Backendless.VersionNum, loginStorage.UserToken }, callback );
+      else
+        callback.ResponseHandler( CurrentUser != null );
+    }
+
     public void Logout()
     {
-      Invoker.InvokeSync<object>( USER_MANAGER_SERVER_ALIAS, "logout",
-                                 new object[] { Backendless.AppId, Backendless.VersionNum } );
+      try
+      {
+
+        Invoker.InvokeSync<object>( USER_MANAGER_SERVER_ALIAS, "logout",
+                                   new object[] { Backendless.AppId, Backendless.VersionNum } );
+      }
+      catch( BackendlessException exception )
+      {
+        BackendlessFault fault = exception.BackendlessFault;
+
+        if( fault != null )
+        {
+          int faultCode = int.Parse( fault.FaultCode );
+
+          if( faultCode != 3064 && faultCode != 3091 && faultCode != 3090 && faultCode != 3023 )
+            throw exception;
+        }
+      }
 
       CurrentUser = null;
       HeadersManager.GetInstance().RemoveHeader( HeadersEnum.USER_TOKEN_KEY );
+      LoginStorage loginStorage = new LoginStorage();
+      loginStorage.DeleteFiles();
     }
 
     public void Logout( AsyncCallback<object> callback )
@@ -191,6 +252,8 @@ namespace BackendlessAPI.Service
           {
             CurrentUser = null;
             HeadersManager.GetInstance().RemoveHeader( HeadersEnum.USER_TOKEN_KEY );
+            LoginStorage loginStorage = new LoginStorage();
+            loginStorage.DeleteFiles();
 
             if( callback != null )
               callback.ResponseHandler.Invoke( null );
@@ -355,7 +418,7 @@ namespace BackendlessAPI.Service
         throw new ArgumentNullException( ExceptionMessage.NULL_PASSWORD );
     }
 
-    private void HandleUserLogin( Dictionary<string, object> invokeResult )
+    private void HandleUserLogin( Dictionary<string, object> invokeResult, bool stayLoggedIn )
     {
       HeadersManager.GetInstance()
                     .AddHeader( HeadersEnum.USER_TOKEN_KEY,
@@ -365,20 +428,22 @@ namespace BackendlessAPI.Service
         CurrentUser = new BackendlessUser();
 
       CurrentUser.PutProperties( invokeResult );
+
+      if( stayLoggedIn )
+      {
+        LoginStorage loginStorage = new LoginStorage();
+        loginStorage.UserToken = invokeResult[ HeadersEnum.USER_TOKEN_KEY.Header ].ToString();
+        loginStorage.UserId = Backendless.UserService.CurrentUser.UserId;
+        loginStorage.SaveData();
+      }
     }
 
     private AsyncCallback<Dictionary<string, object>> GetUserLoginAsyncHandler(
-        AsyncCallback<BackendlessUser> callback )
+        AsyncCallback<BackendlessUser> callback, bool stayLoggedIn )
     {
       return new AsyncCallback<Dictionary<string, object>>( r =>
           {
-            HeadersManager.GetInstance()
-                          .AddHeader( HeadersEnum.USER_TOKEN_KEY, r[ HeadersEnum.USER_TOKEN_KEY.Header ].ToString() );
-
-            if( CurrentUser == null )
-              CurrentUser = new BackendlessUser();
-
-            CurrentUser.PutProperties( r );
+            HandleUserLogin( r, stayLoggedIn );
 
             if( callback != null )
               callback.ResponseHandler.Invoke( CurrentUser );
@@ -457,7 +522,7 @@ namespace BackendlessAPI.Service
                         webBrowser.ScriptNotify += (sender, args) =>
                             {
                                 var result = (new Utils.Json()).Deserialize(args.Value);
-                                GetUserLoginAsyncHandler(callback).ResponseHandler.Invoke(result);
+                                GetUserLoginAsyncHandler(callback, false).ResponseHandler.Invoke(result);
                             };
                         webBrowser.Navigate(uri);
                     }), fault =>
