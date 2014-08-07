@@ -76,6 +76,9 @@
     <Compile Include="Caching\Cache.cs" />
     <Compile Include="Caching\CacheService.cs" />
     <Compile Include="Caching\ICache.cs" />
+    <Compile Include="Counters\AtomicImpl.cs" />
+    <Compile Include="Counters\CounterService.cs" />
+    <Compile Include="Counters\IAtomic.cs" />
     <Compile Include="Data\BackendlessCollection.cs" />
     <Compile Include="Data\DataStoreFactory.cs" />
     <Compile Include="Events\Events.cs" />

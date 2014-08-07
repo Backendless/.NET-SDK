@@ -12,6 +12,7 @@ using Weborb.Writer;
 using BackendlessAPI.IO;
 using BackendlessAPI.Utils;
 using BackendlessAPI.Caching;
+using BackendlessAPI.Counters;
 
 namespace BackendlessAPI
 {
@@ -26,6 +27,7 @@ namespace BackendlessAPI
     public static UserService UserService;
     public static BackendlessAPI.Events Events;
     public static Cache Cache;
+    public static CounterService Counters;
 
     public static string AppId { get; private set; }
 
@@ -70,6 +72,7 @@ namespace BackendlessAPI
       UserService = new UserService();
       Events = Events.GetInstance();
       Cache = Cache.GetInstance();
+      Counters = CounterService.GetInstance();
 
       MessageWriter.DefaultWriter = new UnderflowWriter();
       MessageWriter.AddAdditionalTypeWriter( typeof( BackendlessUser ), new BackendlessUserWriter() );
