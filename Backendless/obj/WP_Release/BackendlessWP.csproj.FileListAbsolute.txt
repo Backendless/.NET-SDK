@@ -1,6 +1,0 @@
-Z:\mark\dev\backendless-git\backendless-sdk-net\Backendless\Bin\WP\Release\BackendlessPhone.dll
-Z:\mark\dev\backendless-git\backendless-sdk-net\Backendless\Bin\WP\Release\BackendlessPhone.pdb
-Z:\mark\dev\backendless-git\backendless-sdk-net\Backendless\Bin\WP\Release\WeborbPhoneClient.dll
-Z:\mark\dev\backendless-git\backendless-sdk-net\Backendless\Bin\WP\Release\WeborbPhoneClient.pdb
-Z:\mark\dev\backendless-git\backendless-sdk-net\Backendless\obj\WP_Release\BackendlessPhone.dll
-Z:\mark\dev\backendless-git\backendless-sdk-net\Backendless\obj\WP_Release\BackendlessPhone.pdb
