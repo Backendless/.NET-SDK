@@ -153,6 +153,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Persistence\BackendlessEntity.cs" />
+    <Compile Include="Service\BaseService.cs" />
     <Compile Include="Service\FileService.cs" />
     <Compile Include="File\BackendlessFile.cs" />
     <Compile Include="Async\UploadCallback.cs" />

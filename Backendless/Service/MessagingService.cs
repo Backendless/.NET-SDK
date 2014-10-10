@@ -484,6 +484,53 @@ namespace BackendlessAPI.Service
     }
 
     #region SEND EMAIL
+    public void SendTextEmail( String subject, String messageBody, List<String> recipients )
+    {
+      SendEmail( subject, new BodyParts( messageBody, null ), recipients, new List<String>() );
+    }
+
+    public void SendTextEmail( String subject, String messageBody, String recipient )
+    {
+      SendEmail( subject, new BodyParts( messageBody, null ), new List<String>() { recipient }, new List<String>() );
+    }
+
+    public void SendHTMLEmail( String subject, String messageBody, List<String> recipients )
+    {
+      SendEmail( subject, new BodyParts( null, messageBody ), recipients, new List<String>() );
+    }
+
+    public void SendHTMLEmail( String subject, String messageBody, String recipient )
+    {
+      SendEmail( subject, new BodyParts( null, messageBody ), new List<String>() { recipient }, new List<String>() );
+    }
+
+    public void SendEmail( String subject, BodyParts bodyParts, String recipient, List<String> attachments )
+    {
+      SendEmail( subject, bodyParts, new List<String>() { recipient }, attachments );
+    }
+
+    public void SendEmail( String subject, BodyParts bodyParts, String recipient )
+    {
+      SendEmail( subject, bodyParts, new List<String>() { recipient }, new List<String>() );
+    }
+
+    public void SendEmail( String subject, BodyParts bodyParts, List<String> recipients, List<String> attachments )
+    {
+      if( subject == null )
+        throw new ArgumentNullException( ExceptionMessage.NULL_SUBJECT );
+
+      if( bodyParts == null )
+        throw new ArgumentNullException( ExceptionMessage.NULL_BODYPARTS );
+
+      if( recipients == null || recipients.Count == 0 )
+        throw new ArgumentNullException( ExceptionMessage.NULL_RECIPIENTS );
+
+      if( attachments == null )
+        throw new ArgumentNullException( ExceptionMessage.NULL_ATTACHMENTS );
+
+      Invoker.InvokeSync<object>( EMAIL_MANAGER_SERVER_ALIAS, "send", new Object[] { Backendless.AppId, Backendless.VersionNum, subject, bodyParts, recipients, attachments } );
+    }
+
     public void SendTextEmail( String subject, String messageBody, List<String> recipients, AsyncCallback<object> responder )
     {
       SendEmail( subject, new BodyParts( messageBody, null ), recipients, new List<String>(), responder );
