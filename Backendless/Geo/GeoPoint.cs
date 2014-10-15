@@ -6,7 +6,7 @@ namespace BackendlessAPI.Geo
   public class GeoPoint
   {
     private List<string> _categories;
-    private Dictionary<string, string> _metadata;
+    private Dictionary<string, object> _metadata;
 
     public GeoPoint()
     {
@@ -19,6 +19,16 @@ namespace BackendlessAPI.Geo
     }
 
     public GeoPoint( double latitude, double longitude, List<string> categories, Dictionary<string, string> metadata )
+    {
+      Latitude = latitude;
+      Longitude = longitude;
+      Categories = categories;
+
+      foreach( KeyValuePair<string, string> keyValue in metadata )
+        Metadata.Add( keyValue.Key, keyValue.Value );
+    }
+
+    public GeoPoint( double latitude, double longitude, List<string> categories, Dictionary<string, object> metadata )
     {
       Latitude = latitude;
       Longitude = longitude;
@@ -46,9 +56,9 @@ namespace BackendlessAPI.Geo
     }
 
     [SetClientClassMemberName( "metadata" )]
-    public Dictionary<string, string> Metadata
+    public Dictionary<string, object> Metadata
     {
-      get { return _metadata ?? (_metadata = new Dictionary<string, string>()); }
+      get { return _metadata ?? (_metadata = new Dictionary<string, object>()); }
       set { _metadata = value; }
     }
   }

@@ -81,42 +81,39 @@ namespace BackendlessAPI.Service
             return SavePoint(latitude, longitude, null, metadata);
         }
 
-        public void SavePoint(double latitude, double longitude, Dictionary<string, string> metadata, AsyncCallback<GeoPoint> callback)
+        public void SavePoint( double latitude, double longitude, Dictionary<string, string> metadata, AsyncCallback<GeoPoint> callback )
         {
-            SavePoint(latitude, longitude, null, metadata, callback);
+          SavePoint( latitude, longitude, null, metadata, callback );
         }
 
-        public GeoPoint SavePoint(double latitude, double longitude, List<string> categoryNames, Dictionary<string, string> metadata)
+        public GeoPoint SavePoint( double latitude, double longitude, Dictionary<string, object> metadata )
         {
-            CheckCoordinates(latitude, longitude);
-            return Invoker.InvokeSync<GeoPoint>(GEO_MANAGER_SERVER_ALIAS, "addPoint",
-                                                 new object[]
-                                             {
-                                               Backendless.AppId, Backendless.VersionNum,
-                                               new GeoPoint( latitude, longitude, categoryNames, metadata )
-                                             });
+          return SavePoint( latitude, longitude, null, metadata );
         }
 
-        public void SavePoint(double latitude, double longitude, List<string> categoryNames, Dictionary<string, string> metadata, AsyncCallback<GeoPoint> callback)
+        public void SavePoint( double latitude, double longitude, Dictionary<string, object> metadata, AsyncCallback<GeoPoint> callback )
         {
-            try
-            {
-                CheckCoordinates(latitude, longitude);
+          SavePoint( latitude, longitude, null, metadata, callback );
+        }
 
-                Invoker.InvokeAsync(GEO_MANAGER_SERVER_ALIAS, "addPoint",
-                                     new object[]
-                               {
-                                 Backendless.AppId, Backendless.VersionNum,
-                                 new GeoPoint( latitude, longitude, categoryNames, metadata )
-                               }, callback);
-            }
-            catch (System.Exception ex)
-            {
-                if (callback != null)
-                    callback.ErrorHandler.Invoke(new BackendlessFault(ex));
-                else
-                    throw;
-            }
+        public GeoPoint SavePoint( double latitude, double longitude, List<string> categoryNames, Dictionary<string, string> metadata )
+        {
+          return SavePoint( new GeoPoint( latitude, longitude, categoryNames, metadata ) );
+        }
+
+        public GeoPoint SavePoint(double latitude, double longitude, List<string> categoryNames, Dictionary<string, object> metadata)
+        {
+            return SavePoint( new GeoPoint( latitude, longitude, categoryNames, metadata ) );
+        }
+
+        public void SavePoint( double latitude, double longitude, List<string> categoryNames, Dictionary<string, object> metadata, AsyncCallback<GeoPoint> callback )
+        {
+          SavePoint( new GeoPoint( latitude, longitude, categoryNames, metadata ), callback );
+        }
+
+        public void SavePoint( double latitude, double longitude, List<string> categoryNames, Dictionary<string, string> metadata, AsyncCallback<GeoPoint> callback )
+        {
+          SavePoint( new GeoPoint( latitude, longitude, categoryNames, metadata ), callback );
         }
 
         public GeoPoint AddPoint( GeoPoint geoPoint )
