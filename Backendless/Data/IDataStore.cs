@@ -62,6 +62,14 @@ namespace BackendlessAPI.Data
 
     T FindById( string id, IList<string> relations, int relationsDepth );
 
+    T FindById( T entity );
+
+    T FindById( T entity, int relationsDepth );
+
+    T FindById( T entity, IList<string> relations );
+
+    T FindById( T entity, IList<string> relations, int relationsDepth );
+
     void FindById( string id, AsyncCallback<T> responder );
 
     void FindById( string id, int relationsDepth, AsyncCallback<T> responder );
@@ -69,6 +77,14 @@ namespace BackendlessAPI.Data
     void FindById( string id, IList<string> relations, AsyncCallback<T> responder );
 
     void FindById( string id, IList<string> relations, int relationsDepth, AsyncCallback<T> responder );
+
+    void FindById( T entity, AsyncCallback<T> responder );
+
+    void FindById( T entity, int relationsDepth, AsyncCallback<T> responder );
+
+    void FindById( T entity, IList<string> relations, AsyncCallback<T> responder );
+
+    void FindById( T entity, IList<string> relations, int relationsDepth, AsyncCallback<T> responder );
 
     void LoadRelations( T entity, IList<string> relations );
 

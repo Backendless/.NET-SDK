@@ -13,6 +13,7 @@ namespace BackendlessAPI.Data
 
     private class DataStoreImpl<T> : IDataStore<T>
     {
+      #region Save
       public T Save( T entity )
       {
         return Backendless.Persistence.Save( entity );
@@ -22,7 +23,8 @@ namespace BackendlessAPI.Data
       {
         Backendless.Persistence.Save( entity, responder );
       }
-
+      #endregion
+      #region Remove
       public long Remove( T entity )
       {
         return Backendless.Persistence.Remove( entity );
@@ -32,7 +34,8 @@ namespace BackendlessAPI.Data
       {
         Backendless.Persistence.Remove( entity, responder );
       }
-
+      #endregion
+      #region FindFirst
       public T FindFirst()
       {
         return Backendless.Persistence.First<T>();
@@ -72,7 +75,8 @@ namespace BackendlessAPI.Data
       {
         Backendless.Persistence.First( relations, relationsDepth, responder );
       }
-
+      #endregion
+      #region FindLast
       public T FindLast()
       {
         return Backendless.Persistence.Last<T>();
@@ -112,7 +116,8 @@ namespace BackendlessAPI.Data
       {
         Backendless.Persistence.Last( relations, relationsDepth, responder );
       }
-
+      #endregion
+      #region Find
       public BackendlessCollection<T> Find()
       {
         return Backendless.Persistence.Find<T>( null );
@@ -132,6 +137,8 @@ namespace BackendlessAPI.Data
       {
         Backendless.Persistence.Find( dataQueryOptions, responder );
       }
+      #endregion
+      #region FindById with ID
 
       public T FindById( string id )
       {
@@ -173,6 +180,50 @@ namespace BackendlessAPI.Data
         Backendless.Persistence.FindById( id, relations, relationsDepth, responder );
       }
 
+      #endregion
+      #region FindById with Object
+
+      public T FindById( T entity )
+      {
+        return Backendless.Persistence.FindById<T>( entity );
+      }
+
+      public T FindById( T entity, int relationsDepth )
+      {
+        return Backendless.Persistence.FindById<T>( entity, relationsDepth );
+      }
+
+      public T FindById( T entity, IList<string> relations )
+      {
+        return Backendless.Persistence.FindById<T>( entity, relations );
+      }
+
+      public T FindById( T entity, IList<string> relations, int relationsDepth )
+      {
+        return Backendless.Persistence.FindById<T>( entity, relations, relationsDepth );
+      }
+
+      public void FindById( T entity, AsyncCallback<T> responder )
+      {
+        Backendless.Persistence.FindById<T>( entity, responder );
+      }
+
+      public void FindById( T entity, int relationsDepth, AsyncCallback<T> responder )
+      {
+        Backendless.Persistence.FindById<T>( entity, relationsDepth, responder );
+      }
+
+      public void FindById( T entity, IList<string> relations, AsyncCallback<T> responder )
+      {
+        Backendless.Persistence.FindById<T>( entity, relations, responder );
+      }
+
+      public void FindById( T entity, IList<string> relations, int relationsDepth, AsyncCallback<T> responder )
+      {
+        Backendless.Persistence.FindById<T>( entity, relations, relationsDepth, responder );
+      }
+      #endregion
+      #region LoadRelations
       public void LoadRelations( T entity, IList<string> relations )
       {
         Backendless.Persistence.LoadRelations( entity, relations );
@@ -202,6 +253,7 @@ namespace BackendlessAPI.Data
       {
         Backendless.Persistence.LoadRelations( entity, relations, relationsDepth, responder );
       }
+      #endregion
     }
   }
 }

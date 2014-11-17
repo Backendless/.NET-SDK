@@ -37,7 +37,7 @@ namespace BackendlessAPI.Service
       Types.AddClientClassMapping( "com.backendless.services.persistence.ObjectProperty", typeof( ObjectProperty ) );
       Types.AddClientClassMapping( "com.backendless.services.persistence.QueryOptions", typeof( QueryOptions ) );
     }
-
+    #region Save
     public T Save<T>( T entity )
     {
       if( entity == null )
@@ -60,7 +60,8 @@ namespace BackendlessAPI.Service
       else
         Update( entity, callback );
     }
-
+    #endregion
+    #region Create
     internal T Create<T>( T entity )
     {
       if( entity == null )
@@ -77,7 +78,8 @@ namespace BackendlessAPI.Service
       Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "create",
                            new object[] {Backendless.AppId, Backendless.VersionNum, GetTypeName( typeof( T ) ), entity}, true, callback );
     }
-
+    #endregion
+    #region Update
     internal T Update<T>( T entity )
     {
       if( entity == null )
@@ -95,7 +97,8 @@ namespace BackendlessAPI.Service
       Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "update",
                            new object[] {Backendless.AppId, Backendless.VersionNum, GetTypeName( typeof( T ) ), entity}, true, callback );
     }
-
+    #endregion
+    #region Remove
     internal long Remove<T>( T entity )
     {
       if( entity == null )
@@ -125,7 +128,8 @@ namespace BackendlessAPI.Service
       Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "remove",
                            new Object[] {Backendless.AppId, Backendless.VersionNum, GetTypeName( typeof( T ) ), id}, callback );
     }
-
+    #endregion 
+    #region FindById with Id
     internal T FindById<T>( string id, IList<string> relations )
     {
       return FindById<T>( id, relations, 0 );
@@ -161,7 +165,65 @@ namespace BackendlessAPI.Service
       Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById",
                            new Object[] { Backendless.AppId, Backendless.VersionNum, GetTypeName( typeof( T ) ), id, relations, relationsDepth }, true, callback );
     }
+    #endregion
+    #region FindById with Object
+    internal T FindById<T>( T entity )
+    {
+      return FindById<T>( entity, null, 0 );
+    }
 
+    internal T FindById<T>( T entity, int relationsDepth )
+    {
+      return FindById<T>( entity, null, relationsDepth );
+    }
+
+    internal T FindById<T>( T entity, IList<string> relations )
+    {
+      return FindById<T>( entity, relations, 0 );
+    }
+
+    internal T FindById<T>( T entity, IList<string> relations, int relationsDepth )
+    {
+      if( entity == null )
+        throw new ArgumentNullException( ExceptionMessage.NULL_ENTITY );
+
+      if( relations == null )
+        relations = new List<String>();
+
+      AddWeborbPropertyMapping<T>();
+      return Invoker.InvokeSync<T>( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById",
+                           new Object[] { Backendless.AppId, Backendless.VersionNum, GetTypeName( typeof( T ) ), entity, relations, relationsDepth }, true );
+    }
+
+    internal void FindById<T>( T entity, AsyncCallback<T> responder )
+    {
+      FindById<T>( entity, null, 0, responder );
+    }
+
+    internal void FindById<T>( T entity, int relationsDepth, AsyncCallback<T> responder )
+    {
+      FindById<T>( entity, null, relationsDepth, responder );
+    }
+
+    internal void FindById<T>( T entity, IList<string> relations, AsyncCallback<T> responder )
+    {
+      FindById<T>( entity, relations, 0, responder );
+    }
+
+    internal void FindById<T>( T entity, IList<string> relations, int relationsDepth, AsyncCallback<T> responder )
+    {
+      if( entity == null )
+        throw new ArgumentNullException( ExceptionMessage.NULL_ENTITY );
+
+      if( relations == null )
+        relations = new List<String>();
+
+      AddWeborbPropertyMapping<T>();
+      Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById",
+                           new Object[] { Backendless.AppId, Backendless.VersionNum, GetTypeName( typeof( T ) ), entity, relations, relationsDepth }, true, responder );
+    }
+    #endregion
+    #region LoadRelations
     internal void LoadRelations<T>( T entity, IList<string> relations )
     {
       LoadRelations<T>( entity, relations, 0 );
@@ -177,10 +239,10 @@ namespace BackendlessAPI.Service
       if( entity == null )
         throw new ArgumentNullException( ExceptionMessage.NULL_ENTITY );
 
-      String id = GetEntityId( entity );
+      //String id = GetEntityId( entity );
 
-      if( id == null )
-        throw new ArgumentNullException( ExceptionMessage.NULL_ID );
+      //if( id == null )
+      //  throw new ArgumentNullException( ExceptionMessage.NULL_ID );
 
       if( relations == null )
         relations = new List<String>();
@@ -188,9 +250,9 @@ namespace BackendlessAPI.Service
       Object[] methodArgs = null;
 
       if( relationsDepth == 0 )
-        methodArgs = new Object[] { Backendless.AppId, Backendless.VersionNum, GetTypeName( typeof( T ) ), id, relations };
+        methodArgs = new Object[] { Backendless.AppId, Backendless.VersionNum, GetTypeName( typeof( T ) ), entity, relations };
       else
-        methodArgs = new Object[] { Backendless.AppId, Backendless.VersionNum, GetTypeName( typeof( T ) ), id, relations, relationsDepth };
+        methodArgs = new Object[] { Backendless.AppId, Backendless.VersionNum, GetTypeName( typeof( T ) ), entity, relations, relationsDepth };
         
       var loadedRelations = Invoker.InvokeSync<T>( PERSISTENCE_MANAGER_SERVER_ALIAS, "loadRelations", methodArgs, true );
       LoadRelationsToEntity( entity, loadedRelations, relations );
@@ -211,10 +273,10 @@ namespace BackendlessAPI.Service
       if( entity == null )
         throw new ArgumentNullException( ExceptionMessage.NULL_ENTITY );
 
-      String id = GetEntityId( entity );
+      //String id = GetEntityId( entity );
 
-      if( id == null )
-        throw new ArgumentNullException( ExceptionMessage.NULL_ID );
+      //if( id == null )
+      //  throw new ArgumentNullException( ExceptionMessage.NULL_ID );
 
       var responder = new AsyncCallback<T>( response =>
         {
@@ -227,7 +289,7 @@ namespace BackendlessAPI.Service
               callback.ErrorHandler.Invoke( fault );
           } );
       Invoker.InvokeAsync<T>( PERSISTENCE_MANAGER_SERVER_ALIAS, "loadRelations",
-                              new Object[] {Backendless.AppId, Backendless.VersionNum, GetTypeName( typeof( T ) ), id, relations, relationsDepth },
+                              new Object[] {Backendless.AppId, Backendless.VersionNum, GetTypeName( typeof( T ) ), entity, relations, relationsDepth },
                               true,
                               responder );
     }
@@ -254,7 +316,8 @@ namespace BackendlessAPI.Service
         }
       }
     }
-
+    #endregion
+    #region Describe
     public List<ObjectProperty> Describe( string className )
     {
       if( string.IsNullOrEmpty( className ) )
@@ -273,7 +336,8 @@ namespace BackendlessAPI.Service
       Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "describe",
                            new Object[] {Backendless.AppId, Backendless.VersionNum, className}, callback );
     }
-
+    #endregion
+    #region Find
     public BackendlessCollection<T> Find<T>( BackendlessDataQuery dataQuery )
     {
       CheckPageSizeAndOffset( dataQuery );
@@ -311,7 +375,8 @@ namespace BackendlessAPI.Service
                            true,
                            responder );
     }
-
+    #endregion
+    #region First
     public T First<T>()
     {
       return First<T>( null, 0 );
@@ -364,7 +429,8 @@ namespace BackendlessAPI.Service
                            true,
                            callback );
     }
-
+    #endregion 
+    #region Last
     public T Last<T>()
     {
       return Last<T>( null, 0 );
@@ -417,6 +483,7 @@ namespace BackendlessAPI.Service
                            true,
                            callback );
     }
+    #endregion
 
     public IDataStore<T> Of<T>()
     {
