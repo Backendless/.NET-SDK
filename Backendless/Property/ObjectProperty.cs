@@ -22,5 +22,11 @@ namespace BackendlessAPI.Property
 
     [SetClientClassMemberName( "relatedTable" )]
     public string RelatedTable { get; set; }
+
+    [SetClientClassMemberName( "customRegex" )]
+    public string CustomRegex { get; set; }
+
+    [SetClientClassMemberName( "primaryKey" )]
+    public bool PrimaryKey { get; set; }
   }
 }

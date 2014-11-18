@@ -21,6 +21,7 @@ namespace BackendlessAPI
     public static string URL = "https://api.backendless.com";
     
     public static PersistenceService Persistence;
+    public static PersistenceService Data;
     public static GeoService Geo;
     public static MessagingService Messaging;
     public static FileService Files;
@@ -66,6 +67,7 @@ namespace BackendlessAPI
       VersionNum = version;
 
       Persistence = new PersistenceService();
+      Data = Persistence;
       Geo = new GeoService();
       Messaging = new MessagingService();
       Files = new FileService();
