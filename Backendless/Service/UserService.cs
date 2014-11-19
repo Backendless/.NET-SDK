@@ -369,7 +369,7 @@ namespace BackendlessAPI.Service
 
     public IList<string> GetUserRoles()
     {
-      return Invoker.InvokeSync<IList<string>>( USER_MANAGER_SERVER_ALIAS, "getUserRoles",
+      return Invoker.InvokeSync<List<string>>( USER_MANAGER_SERVER_ALIAS, "getUserRoles",
           new object[] { Backendless.AppId, Backendless.VersionNum } );
     }
 

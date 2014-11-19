@@ -77,48 +77,48 @@ namespace BackendlessAPI.Service
                                    new Object[] {Backendless.AppId, Backendless.VersionNum, directoryPath}, callback );
     }
 
-    public void SaveFile( String filePathName, byte[] fileContent )
+    public String SaveFile( String filePathName, byte[] fileContent )
     {
-      SaveFile( filePathName, fileContent, false );
+      return SaveFile( filePathName, fileContent, false );
     }
 
-    public void SaveFile( String filePathName, byte[] fileContent, Boolean overwrite )
+    public String SaveFile( String filePathName, byte[] fileContent, Boolean overwrite )
     {
       String fileName = filePathName.Substring( filePathName.LastIndexOf( "/" ) );
       String path = filePathName.Substring( 0, filePathName.LastIndexOf( "/" ) );
-      SaveFile( path, fileName, fileContent, overwrite );
+      return SaveFile( path, fileName, fileContent, overwrite );
     }
 
-    public void SaveFile( String path, String fileName, byte[] fileContent )
+    public String SaveFile( String path, String fileName, byte[] fileContent )
     {
-      SaveFile( path, fileName, fileContent, false );
+      return SaveFile( path, fileName, fileContent, false );
     }
 
-    public void SaveFile( String path, String fileName, byte[] fileContent, Boolean overwrite )
+    public String SaveFile( String path, String fileName, byte[] fileContent, Boolean overwrite )
     {
-      Invoker.InvokeSync<object>( FILE_MANAGER_SERVER_ALIAS, "saveFile", new Object[] { Backendless.AppId, Backendless.VersionNum, path, fileName, fileContent, overwrite } );
+      return Invoker.InvokeSync<String>( FILE_MANAGER_SERVER_ALIAS, "saveFile", new Object[] { Backendless.AppId, Backendless.VersionNum, path, fileName, fileContent, overwrite } );
     }
 
-    public void SaveFile( String filePathName, byte[] fileContent, AsyncCallback<object> responder )
+    public void SaveFile( String filePathName, byte[] fileContent, AsyncCallback<String> responder )
     {
       SaveFile( filePathName, fileContent, false, responder );
     }
 
-    public void SaveFile( String filePathName, byte[] fileContent, Boolean overwrite, AsyncCallback<object> responder )
+    public void SaveFile( String filePathName, byte[] fileContent, Boolean overwrite, AsyncCallback<String> responder )
     {
       String fileName = filePathName.Substring( filePathName.LastIndexOf( "/" ) );
       String path = filePathName.Substring( 0, filePathName.LastIndexOf( "/" ) );
       SaveFile( path, fileName, fileContent, overwrite, responder );
     }
 
-    public void SaveFile( String path, String fileName, byte[] fileContent, AsyncCallback<object> responder )
+    public void SaveFile( String path, String fileName, byte[] fileContent, AsyncCallback<String> responder )
     {
-      Invoker.InvokeAsync<object>( FILE_MANAGER_SERVER_ALIAS, "saveFile", new Object[] { Backendless.AppId, Backendless.VersionNum, path, fileName, fileContent }, responder );
+      Invoker.InvokeAsync<String>( FILE_MANAGER_SERVER_ALIAS, "saveFile", new Object[] { Backendless.AppId, Backendless.VersionNum, path, fileName, fileContent }, responder );
     }
 
-    public void SaveFile( String path, String fileName, byte[] fileContent, Boolean overwrite, AsyncCallback<object> responder )
+    public void SaveFile( String path, String fileName, byte[] fileContent, Boolean overwrite, AsyncCallback<String> responder )
     {
-      Invoker.InvokeAsync<object>( FILE_MANAGER_SERVER_ALIAS, "saveFile", new Object[] { Backendless.AppId, Backendless.VersionNum, path, fileName, fileContent, overwrite }, responder );
+      Invoker.InvokeAsync<String>( FILE_MANAGER_SERVER_ALIAS, "saveFile", new Object[] { Backendless.AppId, Backendless.VersionNum, path, fileName, fileContent, overwrite }, responder );
     }
 
     private void MakeFileUpload( FileStream fileStream, string path, UploadCallback uploadCallback,

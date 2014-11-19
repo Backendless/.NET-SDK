@@ -76,7 +76,8 @@ namespace BackendlessAPI.Engine
         {
             lock (headersLock)
             {
-                headers.Add(headersEnum.Header, value);
+              headers.Remove( headersEnum.Header );
+              headers.Add(headersEnum.Header, value);
             }
         }
 
