@@ -1,0 +1,9 @@
+Z:\mark\dev\backendless-git\backendless-sdk-net\Backendless.Test\obj\Release\Backendless.Test.csprojResolveAssemblyReference.cache
+Z:\mark\dev\backendless-git\backendless-sdk-net\Backendless.Test\bin\Release\weborb.config
+Z:\mark\dev\backendless-git\backendless-sdk-net\Backendless.Test\bin\Release\Backendless.Test.dll
+Z:\mark\dev\backendless-git\backendless-sdk-net\Backendless.Test\bin\Release\Backendless.Test.pdb
+Z:\mark\dev\backendless-git\backendless-sdk-net\Backendless.Test\bin\Release\Backendless.dll
+Z:\mark\dev\backendless-git\backendless-sdk-net\Backendless.Test\bin\Release\weborb.dll
+Z:\mark\dev\backendless-git\backendless-sdk-net\Backendless.Test\bin\Release\Backendless.pdb
+Z:\mark\dev\backendless-git\backendless-sdk-net\Backendless.Test\obj\Release\Backendless.Test.dll
+Z:\mark\dev\backendless-git\backendless-sdk-net\Backendless.Test\obj\Release\Backendless.Test.pdb

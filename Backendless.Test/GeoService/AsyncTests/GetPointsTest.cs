@@ -110,7 +110,7 @@ namespace BackendlessAPI.Test.GeoService.AsyncTests
 
           for( int i = 0; i < maxPoints; i++ )
           {
-            Backendless.Geo.SavePoint( startingLat, startingLong + i, GetDefinedCategories(), null,
+            Backendless.Geo.SavePoint( startingLat, startingLong + i, GetDefinedCategories(), new Dictionary<string, object>(),
                                        new AsyncCallback<GeoPoint>( response => latch.Signal(), fault =>
                                          {
                                            for( int j = 0; j < latch.CurrentCount; j++ )
