@@ -35,29 +35,39 @@ namespace BackendlessAPI.Utils
     {
       try
       {
-
-        // Retrieve an IsolatedStorageFile for the current Domain and Assembly.
+          // Retrieve an IsolatedStorageFile for the current Domain and Assembly.
+          IsolatedStorageFileStream isoStream = null;
 #if !WINDOWS_PHONE
-        IsolatedStorageFile isoFile =
+          IsolatedStorageFile isoFile =
             IsolatedStorageFile.GetStore( IsolatedStorageScope.User |
             IsolatedStorageScope.Assembly |
             IsolatedStorageScope.Domain,
             null,
             null );
 
-        IsolatedStorageFileStream isoStream =
+        isoStream =
             new IsolatedStorageFileStream( "BackendlessUserInfo",
             FileMode.Open,
             FileAccess.Read,
             FileShare.Read );
 #else
-        IsolatedStorageFile isoFile =
-            IsolatedStorageFile.GetUserStoreForApplication();
+          IsolatedStorageFile isoFile =
+              IsolatedStorageFile.GetUserStoreForApplication();
 
-        IsolatedStorageFileStream isoStream = new IsolatedStorageFileStream( "BackendlessUserInfo",
+         if( !isoFile.FileExists( "BackendlessUserInfo" ) )
+             return true;
+
+        try
+          {
+           isoStream = new IsolatedStorageFileStream( "BackendlessUserInfo",
             FileMode.Open,
             FileAccess.Read,
             isoFile );
+          }
+          catch( System.Exception e )
+          {
+              Console.WriteLine(e);
+          }
 #endif
         StreamReader reader = new StreamReader( isoStream );
         // Read the data.

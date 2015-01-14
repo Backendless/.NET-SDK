@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+#if WINDOWS_PHONE
+using Windows.Phone.System.Analytics;
+#endif
 using BackendlessAPI.Async;
 using BackendlessAPI.Engine;
 using BackendlessAPI.Exception;
@@ -35,8 +38,13 @@ namespace BackendlessAPI.Service
 
 #if WINDOWS_PHONE
       object deviceId;
-      if( !Microsoft.Phone.Info.DeviceExtendedProperties.TryGetValue( "DeviceUniqueId", out deviceId ) )
-        throw new BackendlessException( new BackendlessFault( ExceptionMessage.NO_DEVICEID_CAPABILITY ) );
+      if (!Microsoft.Phone.Info.DeviceExtendedProperties.TryGetValue("DeviceUniqueId", out deviceId))
+      {
+          deviceId = HostInformation.PublisherHostId;
+
+          if( deviceId == null )
+            throw new BackendlessException(new BackendlessFault(ExceptionMessage.NO_DEVICEID_CAPABILITY));
+      }
 
       _deviceRegistrationDto = new DeviceRegistration
         {
@@ -158,6 +166,8 @@ namespace BackendlessAPI.Service
                            new Object[] {Backendless.AppId, Backendless.VersionNum, _deviceRegistrationDto.DeviceId},
                            responder );
     }
+
+
 #endif
 
     #region PUBLISH SYNC (DEFAULT CHANNEL)
