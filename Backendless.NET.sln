@@ -1,5 +1,4 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Express 2012 for Windows Phone
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{71588E7D-8C52-41E7-9281-E3BCC5C0EF45}"
 	ProjectSection(SolutionItems) = preProject
@@ -13,12 +12,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackendlessWP", "Backendless\BackendlessWP.csproj", "{963FF539-3147-4A8C-B0C0-794C7C5E00BE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Backendless.Test", "Backendless.Test\Backendless.Test.csproj", "{AC2B0944-2CB1-4224-AE27-0221E01ED5BE}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackendlessConsoleDemo", "C:\dev\projects\BackendlessConsoleDemo\BackendlessConsoleDemo.csproj", "{2C19033F-1E41-4023-9BB4-FB65123EDD8D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SamppleCodegen", "C:\dev\projects\SampleCodegen\SamppleCodegen\SamppleCodegen.csproj", "{D5B3BC12-25BF-4238-B3B9-2AD053B41F0A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp", "C:\Users\Mark\Documents\Visual Studio 2012\Projects\TestApp\TestApp.csproj", "{6EF7695B-AEEE-4D30-9567-B32F2E6D789F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
