@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-#if WINDOWS_PHONE
+#if WINDOWS_PHONE8
 using Windows.Phone.System.Analytics;
 #endif
 using BackendlessAPI.Async;
@@ -36,7 +36,7 @@ namespace BackendlessAPI.Service
                                    typeof( Messaging.PublishStatusEnum ) );
       Types.AddClientClassMapping( "com.backendless.services.messaging.Message", typeof( Messaging.Message ) );
 
-#if WINDOWS_PHONE
+#if WINDOWS_PHONE8
       object deviceId;
       if (!Microsoft.Phone.Info.DeviceExtendedProperties.TryGetValue("DeviceUniqueId", out deviceId))
       {

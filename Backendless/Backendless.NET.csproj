@@ -111,6 +111,15 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WP_Release|AnyCPU'">
     <OutputPath>bin\WP_Release\</OutputPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WP8|AnyCPU'">
+    <OutputPath>bin\WP8\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
@@ -141,6 +150,7 @@
     <Compile Include="BackendlessUser.cs" />
     <Compile Include="Data\DataStoreFactory.cs" />
     <Compile Include="Events\Events.cs" />
+    <Compile Include="Geo\GeoCluster.cs" />
     <Compile Include="Geo\SearchMatchesResult.cs" />
     <Compile Include="IO\BackendlessUserFactory.cs" />
     <Compile Include="IO\BackendlessUserWriter.cs" />
@@ -152,7 +162,11 @@
     <Compile Include="Exception\BackendlessFault.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Persistence\AbstractDataPermission.cs" />
     <Compile Include="Persistence\BackendlessEntity.cs" />
+    <Compile Include="Persistence\DataPermission.cs" />
+    <Compile Include="Persistence\PermissionTypes.cs" />
+    <Compile Include="Persistence\PersistenceOperation.cs" />
     <Compile Include="Service\BaseService.cs" />
     <Compile Include="Service\FileService.cs" />
     <Compile Include="File\BackendlessFile.cs" />

@@ -28,12 +28,12 @@ namespace BackendlessAPI.Service
     private const string DEFAULT_UPDATED_FIELD_NAME_DOTNET_STYLE = "Updated";
     public const string LOAD_ALL_RELATIONS = "*";
 
+    public readonly DataPermission Permissions = new DataPermission();
+
     public PersistenceService()
     {
-      Types.AddClientClassMapping( "com.backendless.services.persistence.BackendlessDataQuery",
-                                   typeof( BackendlessDataQuery ) );
-      Types.AddClientClassMapping( "com.backendless.services.persistence.BackendlessCollection",
-                                   typeof( BackendlessCollection<> ) );
+      Types.AddClientClassMapping( "com.backendless.services.persistence.BackendlessDataQuery", typeof( BackendlessDataQuery ) );
+      Types.AddClientClassMapping( "com.backendless.services.persistence.BackendlessCollection", typeof( BackendlessCollection<> ) );
       Types.AddClientClassMapping( "com.backendless.services.persistence.ObjectProperty", typeof( ObjectProperty ) );
       Types.AddClientClassMapping( "com.backendless.services.persistence.QueryOptions", typeof( QueryOptions ) );
     }
@@ -512,7 +512,7 @@ namespace BackendlessAPI.Service
       Weborb.Types.Types.AddClientClassMapping( tableName, type );
     }
 
-    private static string GetEntityId<T>( T entity )
+    public static string GetEntityId<T>( T entity )
     {
       try
       {
@@ -685,12 +685,19 @@ namespace BackendlessAPI.Service
         throw new ArgumentException( ExceptionMessage.WRONG_PAGE_SIZE );
     }
 
-    private static string GetTypeName( Type type )
+    public static string GetTypeName( Type type )
     {
       if( type.Equals( typeof( BackendlessUser ) ) )
         return "Users";
       else
-        return type.Name;
+      {
+        String mappedName = Weborb.Types.Types.getClientClassForServerType( type.Name );
+
+        if( mappedName != null )
+          return mappedName;
+        else
+          return type.Name;
+      }
     }
   }
 }
