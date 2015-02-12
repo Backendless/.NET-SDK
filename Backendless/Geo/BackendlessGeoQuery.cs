@@ -24,7 +24,7 @@ namespace BackendlessAPI.Geo
 
     public BackendlessGeoQuery()
     {
-      ClusterSize = CLUSTER_SIZE_DEFAULT_VALUE;
+      ClusterGridSize = CLUSTER_SIZE_DEFAULT_VALUE;
     }
 
     public BackendlessGeoQuery( double latitude, double longitude, int pageSize, int offset )
@@ -33,13 +33,13 @@ namespace BackendlessAPI.Geo
       Longitude = longitude;
       PageSize = pageSize;
       Offset = offset;
-      ClusterSize = CLUSTER_SIZE_DEFAULT_VALUE;
+      ClusterGridSize = CLUSTER_SIZE_DEFAULT_VALUE;
     }
 
     public BackendlessGeoQuery( List<string> categories )
     {
       Categories = categories;
-      ClusterSize = CLUSTER_SIZE_DEFAULT_VALUE;
+      ClusterGridSize = CLUSTER_SIZE_DEFAULT_VALUE;
     }
 
     public BackendlessGeoQuery( double latitude, double longitude, double radius, Units units ) : this( latitude, longitude, radius, units, null )
@@ -54,7 +54,7 @@ namespace BackendlessAPI.Geo
 
     public BackendlessGeoQuery( double latitude, double longitude, double radius, Units units, List<string> categories, Dictionary<string, string> metadata )
     {
-      ClusterSize = CLUSTER_SIZE_DEFAULT_VALUE;
+      ClusterGridSize = CLUSTER_SIZE_DEFAULT_VALUE;
       Latitude = latitude;
       Longitude = longitude;
       Radius = radius;
@@ -66,15 +66,19 @@ namespace BackendlessAPI.Geo
         IncludeMeta = true;
     }
 
+    public BackendlessGeoQuery( GeoPoint NW, GeoPoint SE ) : this( NW.Latitude, NW.Longitude, SE.Latitude, SE.Longitude )
+    {
+    }
+
     public BackendlessGeoQuery( double NWLat, double NWLon, double SELat, double SWLon ) 
     {
-      ClusterSize = CLUSTER_SIZE_DEFAULT_VALUE;
+      ClusterGridSize = CLUSTER_SIZE_DEFAULT_VALUE;
       SearchRectangle = new[] { NWLat, NWLon, SELat, SWLon };
     }
 
     public BackendlessGeoQuery( double NWLat, double NWLon, double SELat, double SWLon, Units units, List<string> categories )
     {
-      ClusterSize = CLUSTER_SIZE_DEFAULT_VALUE;
+      ClusterGridSize = CLUSTER_SIZE_DEFAULT_VALUE;
       SearchRectangle = new[] { NWLat, NWLon, SELat, SWLon };
       Units = units;
       Categories = categories;
@@ -82,7 +86,7 @@ namespace BackendlessAPI.Geo
 
     public BackendlessGeoQuery( Dictionary<string, string> metadata )
     {
-      ClusterSize = CLUSTER_SIZE_DEFAULT_VALUE;
+      ClusterGridSize = CLUSTER_SIZE_DEFAULT_VALUE;
       Metadata = metadata;
 
       if( metadata != null )
@@ -183,20 +187,21 @@ namespace BackendlessAPI.Geo
     [SetClientClassMemberName( "dpp" )]
     public double DPP { get; set; }
 
-    [SetClientClassMemberName( "clusterSize" )]
-    public int ClusterSize { get; set; }
+    [SetClientClassMemberName( "clusterGridSize" )]
+    public int ClusterGridSize { get; set; }
 
     public void SetSearchRectangle( GeoPoint topLeft, GeoPoint bottomRight )
     {
       _searchRectangle = new[] { topLeft.Latitude, topLeft.Longitude, bottomRight.Latitude, bottomRight.Longitude };
     }
 
+    // same as above, but uses the default clusterGridSize of 100
     public void SetClusteringParams( double westLongitude, double eastLongitude, int mapWidth )
     {
       SetClusteringParams( westLongitude, eastLongitude, mapWidth, CLUSTER_SIZE_DEFAULT_VALUE );
     }
 
-    public void SetClusteringParams( double westLongitude, double eastLongitude, int mapWidth, int size )
+    public void SetClusteringParams( double westLongitude, double eastLongitude, int mapWidth, int cluisterGridSize )
     {
       double longDiff = eastLongitude - westLongitude;
 
@@ -204,7 +209,7 @@ namespace BackendlessAPI.Geo
         longDiff += 360;
 
       DPP = longDiff / mapWidth;
-      ClusterSize = size;
+      ClusterGridSize = cluisterGridSize;
     }
 
     public IBackendlessQuery NewInstance()

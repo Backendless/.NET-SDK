@@ -61,5 +61,11 @@ namespace BackendlessAPI.Geo
       get { return _metadata ?? (_metadata = new Dictionary<string, object>()); }
       set { _metadata = value; }
     }
+
+    public override string ToString()
+    {
+      return string.Format( "GeoPoint{{ objectId='{0}', latitude={1}, longitude={2}, categories={3}, metadata={4}, distance={5} }}", ObjectId, Latitude, Longitude,
+        string.Join( ",", Categories.ToArray() ), string.Join( ",", Metadata ), Distance );
+    }
   }
 }
