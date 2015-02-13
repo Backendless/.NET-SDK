@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text;
 using Weborb.Service;
 
 namespace BackendlessAPI.Geo
@@ -64,8 +65,23 @@ namespace BackendlessAPI.Geo
 
     public override string ToString()
     {
+      var myStringBuilder = new StringBuilder();
+      bool first = true;
+
+      foreach( KeyValuePair<string, object> pair in Metadata )
+      {
+        if( first )
+          first = false;
+        else
+          myStringBuilder.Append( ";" );
+
+        myStringBuilder.AppendFormat( "{0}={1}", pair.Key, pair.Value );
+      }
+
+      string metaStr = myStringBuilder.ToString();
+
       return string.Format( "GeoPoint{{ objectId='{0}', latitude={1}, longitude={2}, categories={3}, metadata={4}, distance={5} }}", ObjectId, Latitude, Longitude,
-        string.Join( ",", Categories.ToArray() ), string.Join( ",", Metadata ), Distance );
+        string.Join( ",", Categories.ToArray() ), metaStr, Distance );
     }
   }
 }
