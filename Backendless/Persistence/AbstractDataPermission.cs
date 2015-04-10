@@ -9,18 +9,18 @@ namespace BackendlessAPI.Persistence
   {
     private const String PERMISSION_SERVICE = "com.backendless.services.persistence.permissions.ClientPermissionService";
 
-    protected abstract PersistenceOperation getOperation();
+    protected abstract PersistenceOperation GetOperation();
 
     public void GrantForUser<T>( String userId, T dataObject )
     {
       GrantForUser( userId, dataObject, null );
     }
 
-    public void GrantForUser<T>( String userId, T dataObject, AsyncCallback<T> responder )
+    public void GrantForUser<T>( String userId, T dataObject, AsyncCallback<Object> responder )
     {
       String method = "updateUserPermission";
-      Object[] args = buildArgs<T>( dataObject, userId, PermissionTypes.GRANT );
-      serverCall( responder, method, args );
+      Object[] args = BuildArgs<T>( dataObject, userId, PermissionTypes.GRANT );
+      ServerCall( responder, method, args );
     }
 
     public void DenyForUser<T>( String userId, T dataObject )
@@ -28,11 +28,11 @@ namespace BackendlessAPI.Persistence
       DenyForUser( userId, dataObject, null );
     }
 
-    public void DenyForUser<T>( String userId, T dataObject, AsyncCallback<T> responder )
+    public void DenyForUser<T>( String userId, T dataObject, AsyncCallback<Object> responder )
     {
       String method = "updateUserPermission";
-      Object[] args = buildArgs<T>( dataObject, userId, PermissionTypes.DENY );
-      serverCall( responder, method, args );
+      Object[] args = BuildArgs<T>( dataObject, userId, PermissionTypes.DENY );
+      ServerCall( responder, method, args );
     }
 
     public void GrantForRole<T>( String roleName, T dataObject )
@@ -40,11 +40,11 @@ namespace BackendlessAPI.Persistence
       GrantForRole( roleName, dataObject, null );
     }
 
-    public void GrantForRole<T>( String roleName, T dataObject, AsyncCallback<T> responder )
+    public void GrantForRole<T>( String roleName, T dataObject, AsyncCallback<Object> responder )
     {
       String method = "updateRolePermission";
-      Object[] args = buildArgs<T>( dataObject, roleName, PermissionTypes.GRANT );
-      serverCall( responder, method, args );
+      Object[] args = BuildArgs<T>( dataObject, roleName, PermissionTypes.GRANT );
+      ServerCall( responder, method, args );
     }
 
     public void DenyForRole<T>( String roleName, T dataObject )
@@ -52,11 +52,11 @@ namespace BackendlessAPI.Persistence
       DenyForRole( roleName, dataObject, null );
     }
 
-    public void DenyForRole<T>( String roleName, T dataObject, AsyncCallback<T> responder )
+    public void DenyForRole<T>( String roleName, T dataObject, AsyncCallback<Object> responder )
     {
       String method = "updateRolePermission";
-      Object[] args = buildArgs<T>( dataObject, roleName, PermissionTypes.DENY );
-      serverCall( responder, method, args );
+      Object[] args = BuildArgs<T>( dataObject, roleName, PermissionTypes.DENY );
+      ServerCall( responder, method, args );
     }
 
     public void GrantForAllUsers<T>( T dataObject )
@@ -64,11 +64,11 @@ namespace BackendlessAPI.Persistence
       GrantForAllUsers( dataObject, null );
     }
 
-    public void GrantForAllUsers<T>( T dataObject, AsyncCallback<T> responder )
+    public void GrantForAllUsers<T>( T dataObject, AsyncCallback<Object> responder )
     {
       String method = "updateAllUserPermission";
-      Object[] args = buildArgs<T>( dataObject, null, PermissionTypes.GRANT );
-      serverCall( responder, method, args );
+      Object[] args = BuildArgs<T>( dataObject, null, PermissionTypes.GRANT );
+      ServerCall( responder, method, args );
     }
 
     public void DenyForAllUsers<T>( Object dataObject )
@@ -76,11 +76,11 @@ namespace BackendlessAPI.Persistence
       DenyForAllUsers( dataObject, null );
     }
 
-    public void DenyForAllUsers<T>( T dataObject, AsyncCallback<T> responder )
+    public void DenyForAllUsers<T>( T dataObject, AsyncCallback<Object> responder )
     {
       String method = "updateAllUserPermission";
-      Object[] args = buildArgs<T>( dataObject, null, PermissionTypes.DENY );
-      serverCall( responder, method, args );
+      Object[] args = BuildArgs<T>( dataObject, null, PermissionTypes.DENY );
+      ServerCall( responder, method, args );
     }
 
     public void GrantForAllRoles<T>( T dataObject )
@@ -88,11 +88,11 @@ namespace BackendlessAPI.Persistence
       GrantForAllRoles( dataObject, null );
     }
 
-    public void GrantForAllRoles<T>( T dataObject, AsyncCallback<T> responder )
+    public void GrantForAllRoles<T>( T dataObject, AsyncCallback<Object> responder )
     {
       String method = "updateAllRolePermission";
-      Object[] args = buildArgs<T>( dataObject, null, PermissionTypes.GRANT );
-      serverCall( responder, method, args );
+      Object[] args = BuildArgs<T>( dataObject, null, PermissionTypes.GRANT );
+      ServerCall( responder, method, args );
     }
 
     public void DenyForAllRoles<T>( T dataObject )
@@ -100,30 +100,30 @@ namespace BackendlessAPI.Persistence
       DenyForAllRoles( dataObject, null );
     }
 
-    public void DenyForAllRoles<T>( T dataObject, AsyncCallback<T> responder )
+    public void DenyForAllRoles<T>( T dataObject, AsyncCallback<Object> responder )
     {
       String method = "updateAllRolePermission";
-      Object[] args = buildArgs<T>( dataObject, null, PermissionTypes.DENY );
-      serverCall( responder, method, args );
+      Object[] args = BuildArgs<T>( dataObject, null, PermissionTypes.DENY );
+      ServerCall( responder, method, args );
     }
 
-    private Object[] buildArgs<T>( T dataObject, String principal, PermissionTypes permissionType )
+    private Object[] BuildArgs<T>( T dataObject, String principal, PermissionTypes permissionType )
     {
       String tableName = PersistenceService.GetTypeName( dataObject.GetType() );
       String objectId = PersistenceService.GetEntityId<T>( dataObject );
 
       if( principal != null )
-        return new Object[] { Backendless.AppId, Backendless.VersionNum, tableName, principal, objectId, getOperation(), permissionType };
+        return new Object[] { Backendless.AppId, Backendless.VersionNum, tableName, principal, objectId, GetOperation(), permissionType };
       else
-        return new Object[] { Backendless.AppId, Backendless.VersionNum, tableName, objectId, getOperation(), permissionType };
+        return new Object[] { Backendless.AppId, Backendless.VersionNum, tableName, objectId, GetOperation(), permissionType };
     }
 
-    private void serverCall<T>( AsyncCallback<T> responder, String method, Object[] args )
+    private void ServerCall( AsyncCallback<Object> responder, String method, Object[] args )
     {
       if( responder != null )
-        Invoker.InvokeAsync<T>( PERMISSION_SERVICE, method, args, responder );
+        Invoker.InvokeAsync<Object>( PERMISSION_SERVICE, method, args, responder );
       else
-        Invoker.InvokeSync<T>( PERMISSION_SERVICE, method, args );
+        Invoker.InvokeSync<Object>( PERMISSION_SERVICE, method, args );
     }
   }
 }
