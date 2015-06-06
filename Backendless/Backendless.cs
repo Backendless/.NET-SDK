@@ -27,10 +27,11 @@ namespace BackendlessAPI
     public static MessagingService Messaging;
     public static FileService Files;
     public static UserService UserService;
-    public static BackendlessAPI.Events Events;
+    public static Events Events;
     public static Cache Cache;
     public static CounterService Counters;
     public static LoggingService Logging;
+    public static CustomService CustomService;
 
     public static string AppId { get; private set; }
 
@@ -78,7 +79,8 @@ namespace BackendlessAPI
       Cache = Cache.GetInstance();
       Counters = CounterService.GetInstance();
       Logging = new LoggingService();
-
+      CustomService = new CustomService();
+      
       MessageWriter.DefaultWriter = new UnderflowWriter();
       MessageWriter.AddAdditionalTypeWriter( typeof( BackendlessUser ), new BackendlessUserWriter() );
       ORBConfig.GetInstance().getObjectFactories().AddArgumentObjectFactory( typeof( BackendlessUser ).FullName, new BackendlessUserFactory() );

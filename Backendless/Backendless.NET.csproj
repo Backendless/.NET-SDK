@@ -182,6 +182,7 @@
     <Compile Include="Persistence\Security\Remove.cs" />
     <Compile Include="Persistence\Security\Update.cs" />
     <Compile Include="Service\BaseService.cs" />
+    <Compile Include="Service\CustomService.cs" />
     <Compile Include="Service\FileService.cs" />
     <Compile Include="File\BackendlessFile.cs" />
     <Compile Include="Async\UploadCallback.cs" />
