@@ -21,3 +21,9 @@ Backendless-vs2013.NET.sln
 Backendless-vs2013.NET.v12.suo
 Samples\DataService\ToDoDemo\Bin*/
 Samples\DataService\ToDoDemo\obj*/
+Backendless\obj\NET_40_Debug*/
+Backendless\obj\NET_40_Debug*/
+Backendless\obj\UNITY_WEB_PLAYER*/
+Backendless\obj\NET_40_Debug*/
+Backendless\obj\UNITY_WEB_PLAYER*/
+*.DS_Store

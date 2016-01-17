@@ -76,9 +76,6 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="WeborbClient">
-      <HintPath>C:\Users\Mark Piller\dev\weborb\dotnet\weborb\ClientBin\WeborbClient.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">
@@ -185,11 +182,6 @@
     <Compile Include="UserService\SyncTests\InitTest.cs" />
     <Compile Include="UserService\SyncTests\UpdateTest.cs" />
     <Compile Include="UserService\SyncTests\UserPropertiesTest.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="weborb.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
