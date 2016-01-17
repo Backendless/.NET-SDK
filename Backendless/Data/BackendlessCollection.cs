@@ -18,10 +18,11 @@ namespace BackendlessAPI.Data
     public List<T> Data { get; set; }
 
     public IBackendlessQuery Query { get; set; }
+    public String TableName { get; set; }
 
     public int PageSize
     {
-      get { return Query.PageSize == null ? 0 : (int) Query.PageSize; }
+      get { return Query.PageSize; }
       set { Query.PageSize = value; }
     }
 

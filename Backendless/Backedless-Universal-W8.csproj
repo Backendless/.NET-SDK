@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D4525DD9-A3D3-4377-A7D2-C93A715D4BF4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Backedless_Universal_W8</RootNamespace>
+    <AssemblyName>Backedless_Universal_W8</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{76F1466A-8B6D-4E39-A767-685A06062A39};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetPlatformIdentifier>WindowsPhoneApp</TargetPlatformIdentifier>
+    <TargetPlatformVersion>8.1</TargetPlatformVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;UNIVERSALW8;NETFX_CORE;WINDOWS_PHONE_APP</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_PHONE_APP</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Async\AsyncCallback.cs" />
+    <Compile Include="Async\UploadCallback.cs" />
+    <Compile Include="Backendless.cs" />
+    <Compile Include="BackendlessUser.cs" />
+    <Compile Include="Caching\Cache.cs" />
+    <Compile Include="Caching\CacheService.cs" />
+    <Compile Include="Caching\ICache.cs" />
+    <Compile Include="Counters\AtomicImpl.cs" />
+    <Compile Include="Counters\CounterService.cs" />
+    <Compile Include="Counters\IAtomic.cs" />
+    <Compile Include="Data\BackendlessCollection.cs" />
+    <Compile Include="Data\DataStoreFactory.cs" />
+    <Compile Include="Data\IBackendlessQuery.cs" />
+    <Compile Include="Data\IDataStore.cs" />
+    <Compile Include="Engine\HeadersManager.cs" />
+    <Compile Include="Engine\Invoker.cs" />
+    <Compile Include="Events\Events.cs" />
+    <Compile Include="Exception\BackendlessException.cs" />
+    <Compile Include="Exception\BackendlessFault.cs" />
+    <Compile Include="Exception\ExceptionMessage.cs" />
+    <Compile Include="File\BackendlessFile.cs" />
+    <Compile Include="File\FilePermission.cs" />
+    <Compile Include="File\Security\AbstractFilePermission.cs" />
+    <Compile Include="File\Security\BasePermission.cs" />
+    <Compile Include="File\Security\FileOperation.cs" />
+    <Compile Include="File\Security\FileRolePermission.cs" />
+    <Compile Include="File\Security\FileUserPermission.cs" />
+    <Compile Include="Geo\BackendlessGeoQuery.cs" />
+    <Compile Include="Geo\Fence\ClientCallback.cs" />
+    <Compile Include="Geo\Fence\FenceType.cs" />
+    <Compile Include="Geo\Fence\GeoFence.cs" />
+    <Compile Include="Geo\Fence\GeoFenceMonitoring.cs" />
+    <Compile Include="Geo\Fence\ICallback.cs" />
+    <Compile Include="Geo\Fence\IGeofenceCallback.cs" />
+    <Compile Include="Geo\Fence\ServerCallback.cs" />
+    <Compile Include="Geo\GeoCategory.cs" />
+    <Compile Include="Geo\GeoCluster.cs" />
+    <Compile Include="Geo\GeoMath.cs" />
+    <Compile Include="Geo\GeoPoint.cs" />
+    <Compile Include="Geo\Location\IBackendlessLocationListener.cs" />
+    <Compile Include="Geo\Location\ILocationTrackerEngine.cs" />
+    <Compile Include="Geo\Location\LocationBackgroundTask.cs" />
+    <Compile Include="Geo\Location\LocationTracker.cs" />
+    <Compile Include="Geo\Location\NoOpLocationTrackingEngine.cs" />
+    <Compile Include="Geo\Location\Win8LocationTrackerEngine.cs" />
+    <Compile Include="Geo\SearchMatchesResult.cs" />
+    <Compile Include="Geo\Units.cs" />
+    <Compile Include="IO\BackendlessUserFactory.cs" />
+    <Compile Include="IO\BackendlessUserWriter.cs" />
+    <Compile Include="IO\UnderflowWriter.cs" />
+    <Compile Include="Logging\LogBatch.cs" />
+    <Compile Include="Logging\LogBuffer.cs" />
+    <Compile Include="Logging\Logger.cs" />
+    <Compile Include="Logging\LoggingService.cs" />
+    <Compile Include="Logging\LogLevel.cs" />
+    <Compile Include="Logging\LogMessage.cs" />
+    <Compile Include="Messaging\BodyParts.cs" />
+    <Compile Include="Messaging\DeliveryOptions.cs" />
+    <Compile Include="Messaging\DeviceRegistrationDto.cs" />
+    <Compile Include="Messaging\Message.cs" />
+    <Compile Include="Messaging\MessageStatus.cs" />
+    <Compile Include="Messaging\PublishOptions.cs" />
+    <Compile Include="Messaging\PublishStatusEnum.cs" />
+    <Compile Include="Messaging\PushPolicyEnum.cs" />
+    <Compile Include="Messaging\Subscription.cs" />
+    <Compile Include="Messaging\SubscriptionOptions.cs" />
+    <Compile Include="Persistence\AbstractDataPermission.cs" />
+    <Compile Include="Persistence\BackendlessDataQuery.cs" />
+    <Compile Include="Persistence\BackendlessEntity.cs" />
+    <Compile Include="Persistence\DataPermission.cs" />
+    <Compile Include="Persistence\PermissionTypes.cs" />
+    <Compile Include="Persistence\PersistenceOperation.cs" />
+    <Compile Include="Persistence\QueryOptions.cs" />
+    <Compile Include="Persistence\Security\Find.cs" />
+    <Compile Include="Persistence\Security\Remove.cs" />
+    <Compile Include="Persistence\Security\Update.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Property\AbstractProperty.cs" />
+    <Compile Include="Property\DateTypeEnum.cs" />
+    <Compile Include="Property\ObjectProperty.cs" />
+    <Compile Include="Property\UserProperty.cs" />
+    <Compile Include="Service\BaseService.cs" />
+    <Compile Include="Service\GeoService.cs" />
+    <Compile Include="Service\MessagingService.cs" />
+    <Compile Include="Service\PersistenceService.cs" />
+    <Compile Include="Service\UserService.cs" />
+    <Compile Include="Utils\Json.cs" />
+    <Compile Include="Utils\LoginStorage.cs" />
+    <Compile Include="Utils\UnderflowStore.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="WeborbPhoneClient">
+      <HintPath>Dependency\WeborbPhoneClient.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

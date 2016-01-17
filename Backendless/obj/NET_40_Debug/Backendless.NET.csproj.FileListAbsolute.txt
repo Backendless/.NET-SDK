@@ -1,0 +1,4 @@
+Z:\mark\dev\backendless-git\backendless-sdk-net\Backendless\bin\NET_40\Debug\Backendless.dll
+Z:\mark\dev\backendless-git\backendless-sdk-net\Backendless\bin\NET_40\Debug\Backendless.pdb
+Z:\mark\dev\backendless-git\backendless-sdk-net\Backendless\obj\NET_40_Debug\Backendless.dll
+Z:\mark\dev\backendless-git\backendless-sdk-net\Backendless\obj\NET_40_Debug\Backendless.pdb

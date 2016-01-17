@@ -345,7 +345,7 @@ namespace BackendlessAPI.Service
                                                          {Backendless.AppId, Backendless.VersionNum, className} );
     }
 
-    public void Describe( string className, AsyncCallback<List<ObjectProperty>> callback )
+    public void Describe( string className, AsyncCallback< List < ObjectProperty > > callback )
     {
       if( string.IsNullOrEmpty( className ) )
         throw new ArgumentNullException( ExceptionMessage.NULL_ENTITY_NAME );
@@ -501,10 +501,48 @@ namespace BackendlessAPI.Service
                            callback );
     }
     #endregion
+    #region VIEWS
+    public BackendlessCollection<Dictionary<String, Object>> GetView( String viewName, BackendlessDataQuery dataQuery )
+    {
+      CheckPageSizeAndOffset( dataQuery );
 
+      Object[] args = new Object[] { Backendless.AppId, Backendless.VersionNum, viewName, dataQuery };
+      return Invoker.InvokeSync<BackendlessCollection<Dictionary<String, Object>>>( PERSISTENCE_MANAGER_SERVER_ALIAS, "callStoredView", args );
+    }
+
+    public void GetView( String viewName, BackendlessDataQuery query, AsyncCallback<Dictionary<String, Object>> responder )
+    {
+      CheckPageSizeAndOffset( query );
+
+      Object[] args = new Object[] { Backendless.AppId, Backendless.VersionNum, viewName, query };
+      Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "callStoredView", args, responder );
+    }
+    #endregion
+    #region STORED PROCEDURES
+    public BackendlessCollection<Dictionary<Object, Object>> CallStoredProcedure( String spName, Dictionary<String, Object> arguments )
+    {
+      Object[] args = new Object[] { Backendless.AppId, Backendless.VersionNum, spName, arguments };
+
+      return Invoker.InvokeSync<BackendlessCollection<Dictionary<Object, Object>>>( PERSISTENCE_MANAGER_SERVER_ALIAS, "callStoredProcedure", args );
+    }
+
+    public void CallStoredProcedure( String procedureName, Dictionary<String, Object> arguments, AsyncCallback<BackendlessCollection<Dictionary<Object, Object>>> responder )
+    {
+      Object[] args = new Object[] { Backendless.AppId, Backendless.VersionNum, procedureName, arguments };
+      Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "callStoredProcedure", args, responder );
+    }
+    #endregion
     public IDataStore<T> Of<T>()
     {
       return DataStoreFactory.CreateDataStore<T>();
+    }
+
+    public IDataStore<Dictionary<String, Object>> Of( String tableName )
+    {
+      if( tableName.ToLower().Equals( "users" ) )
+        throw new System.Exception( "Table 'Users' is not accessible through this signature. Use Backendless.Data.Of( typeof( BackendlessUser ) ) instead" );
+      
+      return new DictionaryDrivenDataStore( tableName );
     }
 
     public void MapTableToType( string tableName, Type type )
@@ -537,7 +575,7 @@ namespace BackendlessAPI.Service
         if( underflow != null && underflow.ContainsKey( DEFAULT_OBJECT_ID_PROPERTY_NAME_JAVA_STYLE ) )
           return (string) underflow[ DEFAULT_OBJECT_ID_PROPERTY_NAME_JAVA_STYLE ];
       }
-      catch( System.Exception e )
+      catch( System.Exception )
       {
       }
 
@@ -673,7 +711,7 @@ namespace BackendlessAPI.Service
         }
     }
 
-    private static void CheckPageSizeAndOffset( IBackendlessQuery dataQuery )
+    public static void CheckPageSizeAndOffset( IBackendlessQuery dataQuery )
     {
       if( dataQuery == null )
         return;

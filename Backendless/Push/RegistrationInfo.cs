@@ -1,5 +1,9 @@
 ﻿using System;
+#if UNIVERSALW8
+using Windows.Networking;
+#else
 using Microsoft.Phone.Notification;
+#endif
 
 namespace BackendlessAPI.Push
 {

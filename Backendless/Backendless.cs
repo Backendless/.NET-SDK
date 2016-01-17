@@ -86,7 +86,7 @@ namespace BackendlessAPI
       HeadersManager.CleanHeaders();
       LoginStorage loginStorage = new LoginStorage();
 
-      if( !loginStorage.NewPrefs )
+      if( loginStorage.HasData )
         HeadersManager.GetInstance().AddHeader( HeadersEnum.USER_TOKEN_KEY, loginStorage.UserToken );
     }
   }

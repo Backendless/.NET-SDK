@@ -7,10 +7,9 @@
     <OutputType>Library</OutputType>
     <NoStandardLibraries>false</NoStandardLibraries>
     <AssemblyName>Backendless</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -53,7 +52,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\NET_35\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;PURE_CLIENT_LIB</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <WarningLevel>4</WarningLevel>
@@ -72,7 +71,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\NET_40\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NET_30;NET_35;PURE_CLIENT_LIB</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <WarningLevel>4</WarningLevel>
@@ -120,6 +119,15 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UNITY_WEB_PLAYER|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\UNITY_WEB_PLAYER\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;UNITY;NET_30;NET_35;PURE_CLIENT_LIB</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
@@ -133,9 +141,6 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="weborb">
-      <HintPath>Dependency\.NET2.0\bin\weborb.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Async\AsyncCallback.cs" />
@@ -146,9 +151,11 @@
     <Compile Include="Counters\AtomicImpl.cs" />
     <Compile Include="Counters\CounterService.cs" />
     <Compile Include="Counters\IAtomic.cs" />
+    <Compile Include="Data\BackendlessSimpleQuery.cs" />
     <Compile Include="Data\BackendlessCollection.cs" />
     <Compile Include="BackendlessUser.cs" />
     <Compile Include="Data\DataStoreFactory.cs" />
+    <Compile Include="Data\DictionaryDrivenDataStore.cs" />
     <Compile Include="Events\Events.cs" />
     <Compile Include="File\FilePermission.cs" />
     <Compile Include="File\Security\AbstractFilePermission.cs" />
@@ -156,7 +163,21 @@
     <Compile Include="File\Security\FileOperation.cs" />
     <Compile Include="File\Security\FileRolePermission.cs" />
     <Compile Include="File\Security\FileUserPermission.cs" />
+    <Compile Include="Geo\Fence\ClientCallback.cs" />
+    <Compile Include="Geo\Fence\FenceType.cs" />
+    <Compile Include="Geo\Fence\GeoFence.cs" />
+    <Compile Include="Geo\Fence\GeofenceCallback.cs" />
+    <Compile Include="Geo\Fence\GeoFenceMonitoring.cs" />
+    <Compile Include="Geo\GeoMath.cs" />
+    <Compile Include="Geo\Fence\ICallback.cs" />
+    <Compile Include="Geo\Fence\ServerCallback.cs" />
     <Compile Include="Geo\GeoCluster.cs" />
+    <Compile Include="Geo\Location\IBackendlessLocationListener.cs" />
+    <Compile Include="Geo\Location\ILocationTrackerEngine.cs" />
+    <Compile Include="Geo\Location\LocationTracker.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Geo\Location\NoOpLocationTrackingEngine.cs" />
     <Compile Include="Geo\SearchMatchesResult.cs" />
     <Compile Include="IO\BackendlessUserFactory.cs" />
     <Compile Include="IO\BackendlessUserWriter.cs" />
@@ -165,6 +186,7 @@
     <Compile Include="Logging\LogBuffer.cs" />
     <Compile Include="Logging\Logger.cs" />
     <Compile Include="Logging\LoggingService.cs" />
+    <Compile Include="Logging\LogLevel.cs" />
     <Compile Include="Logging\LogMessage.cs" />
     <Compile Include="Messaging\BodyParts.cs" />
     <Compile Include="Messaging\DeviceRegistrationDto.cs" />
@@ -212,8 +234,178 @@
     <Compile Include="Property\ObjectProperty.cs" />
     <Compile Include="Property\UserProperty.cs" />
     <Compile Include="Service\UserService.cs" />
+    <Compile Include="Utils\ILoginStorage.cs" />
     <Compile Include="Utils\LoginStorage.cs" />
     <Compile Include="Utils\UnderflowStore.cs" />
+    <Compile Include="WebORB\Client\AsyncToken.cs" />
+    <Compile Include="WebORB\Client\DefaultResponder.cs" />
+    <Compile Include="WebORB\Client\Engine.cs" />
+    <Compile Include="WebORB\Client\Fault.cs" />
+    <Compile Include="WebORB\Client\HttpEngine.cs" />
+    <Compile Include="WebORB\Client\ISubscribeResponder.cs" />
+    <Compile Include="WebORB\Client\PublishingResponder.cs" />
+    <Compile Include="WebORB\Client\Responder.cs" />
+    <Compile Include="WebORB\Client\Result.cs" />
+    <Compile Include="WebORB\Client\SubscribeAdaptedResponder.cs" />
+    <Compile Include="WebORB\Client\SubscribeResponder.cs" />
+    <Compile Include="WebORB\Client\Subscription.cs" />
+    <Compile Include="WebORB\Client\WeborbClient.cs" />
+    <Compile Include="WebORB\Config\ORBConfig.cs" />
+    <Compile Include="WebORB\Datatypes.cs" />
+    <Compile Include="WebORB\Exceptions\InspectionException.cs" />
+    <Compile Include="WebORB\Exceptions\LicenseException.cs" />
+    <Compile Include="WebORB\Exceptions\ServiceException.cs" />
+    <Compile Include="WebORB\Exceptions\UnadaptableTypeException.cs" />
+    <Compile Include="WebORB\Message\Body.cs" />
+    <Compile Include="WebORB\Message\Header.cs" />
+    <Compile Include="WebORB\Message\Request.cs" />
+    <Compile Include="WebORB\ORBConstants.cs" />
+    <Compile Include="WebORB\Protocols\Amf\RequestParser.cs" />
+    <Compile Include="WebORB\Protocols\IMessageFactory.cs" />
+    <Compile Include="WebORB\Protocols\UnknownRequestFormatException.cs" />
+    <Compile Include="WebORB\Reader\AnonymousObject.cs" />
+    <Compile Include="WebORB\Reader\AnonymousObjectReader.cs" />
+    <Compile Include="WebORB\Reader\ArrayCollectionType.cs" />
+    <Compile Include="WebORB\Reader\ArrayReader.cs" />
+    <Compile Include="WebORB\Reader\ArrayType.cs" />
+    <Compile Include="WebORB\Reader\BooleanReader.cs" />
+    <Compile Include="WebORB\Reader\BooleanType.cs" />
+    <Compile Include="WebORB\Reader\BoundPropertyBagReader.cs" />
+    <Compile Include="WebORB\Reader\CacheableAdaptingTypeWrapper.cs" />
+    <Compile Include="WebORB\Reader\ConcreteObject.cs" />
+    <Compile Include="WebORB\Reader\DateReader.cs" />
+    <Compile Include="WebORB\Reader\DateType.cs" />
+    <Compile Include="WebORB\Reader\INamedType.cs" />
+    <Compile Include="WebORB\Reader\IntegerReader.cs" />
+    <Compile Include="WebORB\Reader\ITypeReader.cs" />
+    <Compile Include="WebORB\Reader\LongUTFStringReader.cs" />
+    <Compile Include="WebORB\Reader\NamedObject.cs" />
+    <Compile Include="WebORB\Reader\NamedObjectReader.cs" />
+    <Compile Include="WebORB\Reader\NotAReader.cs" />
+    <Compile Include="WebORB\Reader\NullReader.cs" />
+    <Compile Include="WebORB\Reader\NullType.cs" />
+    <Compile Include="WebORB\Reader\NumberObject.cs" />
+    <Compile Include="WebORB\Reader\NumberReader.cs" />
+    <Compile Include="WebORB\Reader\ParseContext.cs" />
+    <Compile Include="WebORB\Reader\PointerReader.cs" />
+    <Compile Include="WebORB\Reader\ReaderUtils.cs" />
+    <Compile Include="WebORB\Reader\ReferenceCache.cs" />
+    <Compile Include="WebORB\Reader\RefObject.cs" />
+    <Compile Include="WebORB\Reader\SkipTypeReader.cs" />
+    <Compile Include="WebORB\Reader\StringType.cs" />
+    <Compile Include="WebORB\Reader\UndefinedType.cs" />
+    <Compile Include="WebORB\Reader\UndefinedTypeReader.cs" />
+    <Compile Include="WebORB\Reader\UTFStringReader.cs" />
+    <Compile Include="WebORB\Reader\V3ArrayReader.cs" />
+    <Compile Include="WebORB\Reader\V3ByteArrayReader.cs" />
+    <Compile Include="WebORB\Reader\V3DateReader.cs" />
+    <Compile Include="WebORB\Reader\V3ObjectReader.cs" />
+    <Compile Include="WebORB\Reader\V3Reader.cs" />
+    <Compile Include="WebORB\Reader\V3StringReader.cs" />
+    <Compile Include="WebORB\Reader\V3VectorReader.cs" />
+    <Compile Include="WebORB\Reader\XmlDocument.cs" />
+    <Compile Include="WebORB\Registry\ServiceRegistry.cs" />
+    <Compile Include="WebORB\Service\ExcludePropertyAttribute.cs" />
+    <Compile Include="WebORB\Service\IMemberRenameAttribute.cs" />
+    <Compile Include="WebORB\Service\IPropertyExclusionAttribute.cs" />
+    <Compile Include="WebORB\Service\PropertyRenaming.cs" />
+    <Compile Include="WebORB\Service\SetClientClassMemberNameAttribute.cs" />
+    <Compile Include="WebORB\Types\Generic\WebORBArray.cs" />
+    <Compile Include="WebORB\Types\Generic\WebORBArrayCollection.cs" />
+    <Compile Include="WebORB\Types\IAdaptingType.cs" />
+    <Compile Include="WebORB\Types\ICacheableAdaptingType.cs" />
+    <Compile Include="WebORB\Types\IWebORBArray.cs" />
+    <Compile Include="WebORB\Types\IWebORBArrayCollection.cs" />
+    <Compile Include="WebORB\Types\IWebORBVector.cs" />
+    <Compile Include="WebORB\Types\TypedObject.cs" />
+    <Compile Include="WebORB\Types\Types.cs" />
+    <Compile Include="WebORB\Types\WebORBArray.cs" />
+    <Compile Include="WebORB\Types\WebORBArrayCollection.cs" />
+    <Compile Include="WebORB\Util\AMFSerializer.cs" />
+    <Compile Include="WebORB\Util\FileInfoComparer.cs" />
+    <Compile Include="WebORB\Util\IArgumentObjectFactory.cs" />
+    <Compile Include="WebORB\Util\IdentityComparer.cs" />
+    <Compile Include="WebORB\Util\IExternalizable.cs" />
+    <Compile Include="WebORB\Util\IO\FlashorbBinaryReader.cs" />
+    <Compile Include="WebORB\Util\IO\FlashorbBinaryWriter.cs" />
+    <Compile Include="WebORB\Util\IO\Serializer.cs" />
+    <Compile Include="WebORB\Util\IServiceObjectFactory.cs" />
+    <Compile Include="WebORB\Util\KeyValuePair.cs" />
+    <Compile Include="WebORB\Util\LinkedList.cs" />
+    <Compile Include="WebORB\Util\ListEnumerator.cs" />
+    <Compile Include="WebORB\Util\ListNode.cs" />
+    <Compile Include="WebORB\Util\Log\AbstractLogger.cs" />
+    <Compile Include="WebORB\Util\Log\ConsoleLogger.cs" />
+    <Compile Include="WebORB\Util\Log\ExceptionHolder.cs" />
+    <Compile Include="WebORB\Util\Log\ILogger.cs" />
+    <Compile Include="WebORB\Util\Log\Log.cs" />
+    <Compile Include="WebORB\Util\Log\LoggingConstants.cs" />
+    <Compile Include="WebORB\Util\ObjectFactories.cs" />
+    <Compile Include="WebORB\Util\ObjectProxy.cs" />
+    <Compile Include="WebORB\Util\ORBUtil.cs" />
+    <Compile Include="WebORB\Util\RequestContext.cs" />
+    <Compile Include="WebORB\Util\StringUtil.cs" />
+    <Compile Include="WebORB\Util\ThreadContext.cs" />
+    <Compile Include="WebORB\Util\TypeLoader.cs" />
+    <Compile Include="WebORB\Util\UTF8Util.cs" />
+    <Compile Include="WebORB\Util\Value.cs" />
+    <Compile Include="WebORB\V3Types\AckMessage.cs" />
+    <Compile Include="WebORB\V3Types\AsyncMessage.cs" />
+    <Compile Include="WebORB\V3Types\BodyHolder.cs" />
+    <Compile Include="WebORB\V3Types\BodyHolderFactory.cs" />
+    <Compile Include="WebORB\V3Types\BodyHolderWriter.cs" />
+    <Compile Include="WebORB\V3Types\CommandMessage.cs" />
+    <Compile Include="WebORB\V3Types\ErrMessage.cs" />
+    <Compile Include="WebORB\V3Types\ReqMessage.cs" />
+    <Compile Include="WebORB\V3Types\V3Message.cs" />
+    <Compile Include="WebORB\Writer\AbstractReferenceableTypeWriter.cs" />
+    <Compile Include="WebORB\Writer\AbstractUnreferenceableTypeWriter.cs" />
+    <Compile Include="WebORB\Writer\AMFBodyWriter.cs" />
+    <Compile Include="WebORB\Writer\AMFHeaderWriter.cs" />
+    <Compile Include="WebORB\Writer\AMFMessageWriter.cs" />
+    <Compile Include="WebORB\Writer\Amf\AmfFormatter.cs" />
+    <Compile Include="WebORB\Writer\Amf\AmfV3Formatter.cs" />
+    <Compile Include="WebORB\Writer\ArrayCollectionWriter.cs" />
+    <Compile Include="WebORB\Writer\ArrayReferenceWriter.cs" />
+    <Compile Include="WebORB\Writer\ArrayWriter.cs" />
+    <Compile Include="WebORB\Writer\BooleanWriter.cs" />
+    <Compile Include="WebORB\Writer\BoundPropertyBagWriter.cs" />
+    <Compile Include="WebORB\Writer\ByteArrayWriter.cs" />
+    <Compile Include="WebORB\Writer\ClassDefinition.cs" />
+    <Compile Include="WebORB\Writer\CollectionWriter.cs" />
+    <Compile Include="WebORB\Writer\DateReferenceWriter.cs" />
+    <Compile Include="WebORB\Writer\DateTimeOffsetReferenceWriter.cs" />
+    <Compile Include="WebORB\Writer\DateTimeOffsetWriter.cs" />
+    <Compile Include="WebORB\Writer\DateWriter.cs" />
+    <Compile Include="WebORB\Writer\DynamicReferenceWriter.cs" />
+    <Compile Include="WebORB\Writer\EnumerationWriter.cs" />
+    <Compile Include="WebORB\Writer\EnumeratorWriter.cs" />
+    <Compile Include="WebORB\Writer\GuidWriter.cs" />
+    <Compile Include="WebORB\Writer\IntegerWriter.cs" />
+    <Compile Include="WebORB\Writer\IObjectSerializer.cs" />
+    <Compile Include="WebORB\Writer\IProtocolFormatter.cs" />
+    <Compile Include="WebORB\Writer\IReferenceWriter.cs" />
+    <Compile Include="WebORB\Writer\ITypeWriter.cs" />
+    <Compile Include="WebORB\Writer\MessageWriter.cs" />
+    <Compile Include="WebORB\Writer\MultiDimArrayWriter.cs" />
+    <Compile Include="WebORB\Writer\NullWriter.cs" />
+    <Compile Include="WebORB\Writer\NumberObjectWriter.cs" />
+    <Compile Include="WebORB\Writer\NumberWriter.cs" />
+    <Compile Include="WebORB\Writer\ObjectReferenceWriter.cs" />
+    <Compile Include="WebORB\Writer\ObjectSerializer.cs" />
+    <Compile Include="WebORB\Writer\ObjectWriter.cs" />
+    <Compile Include="WebORB\Writer\PropertyBagWriter.cs" />
+    <Compile Include="WebORB\Writer\ReferenceCache.cs" />
+    <Compile Include="WebORB\Writer\ReferenceTypeEnum.cs" />
+    <Compile Include="WebORB\Writer\RuntimeTypeWriter.cs" />
+    <Compile Include="WebORB\Writer\ServiceExceptionWriter.cs" />
+    <Compile Include="WebORB\Writer\Specialized\EnumValue.cs" />
+    <Compile Include="WebORB\Writer\StringReferenceWriter.cs" />
+    <Compile Include="WebORB\Writer\StringWriter.cs" />
+    <Compile Include="WebORB\Writer\TimeSpanWriter.cs" />
+    <Compile Include="WebORB\Writer\TypedObjectWriter.cs" />
+    <Compile Include="WebORB\Writer\V3ObjectSerializer.cs" />
+    <Compile Include="WebORB\Writer\V3ReferenceCache.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSHARP.Targets" />

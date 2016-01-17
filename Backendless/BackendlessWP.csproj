@@ -11,20 +11,29 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BackendlessAPI</RootNamespace>
     <AssemblyName>BackendlessPhone</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
-    <TargetFrameworkProfile>WindowsPhone71</TargetFrameworkProfile>
-    <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v8.1</TargetFrameworkVersion>
+    <SilverlightVersion>
+    </SilverlightVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <TargetFrameworkIdentifier>WindowsPhone</TargetFrameworkIdentifier>
     <SilverlightApplication>false</SilverlightApplication>
     <ValidateXaml>true</ValidateXaml>
     <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
+    <DefaultLanguage>en-US</DefaultLanguage>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>Bin\WP\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;SILVERLIGHT;WINDOWS_PHONE, WINDOWS_PHONE8</DefineConstants>
     <NoStdLib>true</NoStdLib>
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
@@ -65,16 +74,33 @@
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
     <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <PlatformTarget />
+    <OutputPath>Bin\x86\Debug</OutputPath>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <PlatformTarget />
+    <OutputPath>Bin\x86\Release</OutputPath>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
+    <PlatformTarget />
+    <OutputPath>Bin\ARM\Debug</OutputPath>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
+    <PlatformTarget />
+    <OutputPath>Bin\ARM\Release</OutputPath>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Phone" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Servicemodel.Web" />
-    <Reference Include="System.Windows" />
-    <Reference Include="system" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Net" />
-    <Reference Include="mscorlib.extensions" />
     <Reference Include="WeborbPhoneClient, Version=5.1.0.27, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Dependency\WeborbPhoneClient.dll</HintPath>
@@ -100,7 +126,21 @@
     <Compile Include="File\Security\FileOperation.cs" />
     <Compile Include="File\Security\FileRolePermission.cs" />
     <Compile Include="File\Security\FileUserPermission.cs" />
+    <Compile Include="Geo\Fence\ClientCallback.cs" />
+    <Compile Include="Geo\Fence\FenceType.cs" />
+    <Compile Include="Geo\Fence\GeoFence.cs" />
+    <Compile Include="Geo\Fence\GeoFenceMonitoring.cs" />
+    <Compile Include="Geo\Fence\ICallback.cs" />
+    <Compile Include="Geo\Fence\GeofenceCallback.cs" />
+    <Compile Include="Geo\Fence\ServerCallback.cs" />
     <Compile Include="Geo\GeoCluster.cs" />
+    <Compile Include="Geo\GeoMath.cs" />
+    <Compile Include="Geo\Location\IBackendlessLocationListener.cs" />
+    <Compile Include="Geo\Location\ILocationTrackerEngine.cs" />
+    <Compile Include="Geo\Location\LocationBackgroundTask.cs" />
+    <Compile Include="Geo\Location\LocationTracker.cs" />
+    <Compile Include="Geo\Location\NoOpLocationTrackingEngine.cs" />
+    <Compile Include="Geo\Location\Win8LocationTrackerEngine.cs" />
     <Compile Include="Geo\SearchMatchesResult.cs" />
     <Compile Include="Data\IBackendlessQuery.cs" />
     <Compile Include="Data\IDataStore.cs" />
@@ -121,6 +161,7 @@
     <Compile Include="Logging\LogBuffer.cs" />
     <Compile Include="Logging\Logger.cs" />
     <Compile Include="Logging\LoggingService.cs" />
+    <Compile Include="Logging\LogLevel.cs" />
     <Compile Include="Logging\LogMessage.cs" />
     <Compile Include="Messaging\BodyParts.cs" />
     <Compile Include="Messaging\DeliveryOptions.cs" />
@@ -160,8 +201,8 @@
     <Compile Include="Utils\LoginStorage.cs" />
     <Compile Include="Utils\UnderflowStore.cs" />
   </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
-  <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />
   <ProjectExtensions />
   <PropertyGroup>
     <PostBuildEvent>rem copy /Y BackendlessPhone.dll ..\..\..\..\Samples\Dependency

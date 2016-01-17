@@ -1,0 +1,23 @@
+# git ignore file
+_UpgradeReport_Files*/
+Backendless.Test/.DS_Store
+Backendless.Test\bin\Release*/
+Backendless.Test\bin\UNITY_WEB_PLAYER*/
+Backendless.zip
+Backendless/.DS_Store
+Backendless\obj*/
+Backendless.Test\bin\Release*/
+Backendless.Test\bin\UNITY_WEB_PLAYER*/
+Backendless/BackendlessWP.csproj
+Backendless/BackendlessWP.csproj.user
+Backendless/BackendlessWP-2013.sln
+Backendless/BackendlessWP-2013.v12.suo
+Backendless/BackendlessWP-vs2010.csproj.user
+Backendless/Bin/.DS_Store
+Backendless/Dependency/.DS_Store
+Backendless\Dependency*/
+Backendless\obj*/
+Backendless-vs2013.NET.sln
+Backendless-vs2013.NET.v12.suo
+Samples\DataService\ToDoDemo\Bin*/
+Samples\DataService\ToDoDemo\obj*/

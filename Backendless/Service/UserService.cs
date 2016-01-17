@@ -17,11 +17,25 @@ namespace BackendlessAPI.Service
   {
     private static string USER_MANAGER_SERVER_ALIAS = "com.backendless.services.users.UserService";
     private BackendlessUser _currentUser;
+    private ILoginStorage _loginStorage = null;
 
     public BackendlessUser CurrentUser
     {
       get { return _currentUser; }
       set { _currentUser = value; }
+    }
+
+    public ILoginStorage LoginStorage
+    {
+      get 
+      {
+        if( _loginStorage == null )
+          _loginStorage = new LoginStorage();
+
+        return _loginStorage; 
+      }
+
+      set { _loginStorage = value; }
     }
 
     static UserService()
@@ -134,12 +148,10 @@ namespace BackendlessAPI.Service
 
     public String LoggedInUserId()
     {
-      LoginStorage loginStorage = new LoginStorage();
-
-      if( loginStorage.NewPrefs )
+      if( !LoginStorage.HasData )
         return null;
 
-      return loginStorage.UserId;
+      return LoginStorage.UserId;
     }
 
     public BackendlessUser Login( string login, string password )
@@ -199,22 +211,18 @@ namespace BackendlessAPI.Service
 
     public bool IsValidLogin()
     {
-      LoginStorage loginStorage = new LoginStorage();
-
-      if( !loginStorage.NewPrefs && loginStorage.UserToken != null && loginStorage.UserToken.Length > 0 )
+      if( LoginStorage.HasData && LoginStorage.UserToken != null && LoginStorage.UserToken.Length > 0 )
           return Invoker.InvokeSync<Boolean>( USER_MANAGER_SERVER_ALIAS, "isValidUserToken",
-                                     new object[] { Backendless.AppId, Backendless.VersionNum, loginStorage.UserToken } );
+                                     new object[] { Backendless.AppId, Backendless.VersionNum, LoginStorage.UserToken } );
       else
         return CurrentUser != null;
     }
 
     public void IsValidLogin( AsyncCallback<Boolean> callback )
     {
-      LoginStorage loginStorage = new LoginStorage();
-
-      if( !loginStorage.NewPrefs && loginStorage.UserToken != null && loginStorage.UserToken.Length > 0 )
+      if( LoginStorage.HasData && LoginStorage.UserToken != null && LoginStorage.UserToken.Length > 0 )
         Invoker.InvokeAsync<Boolean>( USER_MANAGER_SERVER_ALIAS, "isValidUserToken",
-                                   new object[] { Backendless.AppId, Backendless.VersionNum, loginStorage.UserToken }, callback );
+                                   new object[] { Backendless.AppId, Backendless.VersionNum, LoginStorage.UserToken }, callback );
       else
         callback.ResponseHandler( CurrentUser != null );
     }
@@ -223,7 +231,6 @@ namespace BackendlessAPI.Service
     {
       try
       {
-
         Invoker.InvokeSync<object>( USER_MANAGER_SERVER_ALIAS, "logout",
                                    new object[] { Backendless.AppId, Backendless.VersionNum } );
       }
@@ -242,8 +249,7 @@ namespace BackendlessAPI.Service
 
       CurrentUser = null;
       HeadersManager.GetInstance().RemoveHeader( HeadersEnum.USER_TOKEN_KEY );
-      LoginStorage loginStorage = new LoginStorage();
-      loginStorage.DeleteFiles();
+      LoginStorage.DeleteFiles();
     }
 
     public void Logout( AsyncCallback<object> callback )
@@ -252,8 +258,7 @@ namespace BackendlessAPI.Service
           {
             CurrentUser = null;
             HeadersManager.GetInstance().RemoveHeader( HeadersEnum.USER_TOKEN_KEY );
-            LoginStorage loginStorage = new LoginStorage();
-            loginStorage.DeleteFiles();
+            LoginStorage.DeleteFiles();
 
             if( callback != null )
               callback.ResponseHandler.Invoke( null );
@@ -431,10 +436,9 @@ namespace BackendlessAPI.Service
 
       if( stayLoggedIn )
       {
-        LoginStorage loginStorage = new LoginStorage();
-        loginStorage.UserToken = invokeResult[ HeadersEnum.USER_TOKEN_KEY.Header ].ToString();
-        loginStorage.UserId = Backendless.UserService.CurrentUser.UserId;
-        loginStorage.SaveData();
+        LoginStorage.UserToken = invokeResult[ HeadersEnum.USER_TOKEN_KEY.Header ].ToString();
+        LoginStorage.UserId = Backendless.UserService.CurrentUser.UserId;
+        LoginStorage.SaveData();
       }
     }
 

@@ -27,12 +27,18 @@ namespace BackendlessAPI.Logging
       return GetLogger( loggerType.Name );
     }
 
+    public void Flush()
+    {
+      buffer.FlushMessages( null );
+      buffer.ResetTimer();
+    }
+
     public Logger GetLogger( String loggerName )
     {
       if( loggers.ContainsKey( loggerName ) )
         return loggers[ loggerName ];
 
-      Logger logger = new Logger( loggerName );
+      Logger logger = new Logger( loggerName, buffer );
       loggers[ loggerName ] = logger;
       return logger;
     }
@@ -45,9 +51,9 @@ namespace BackendlessAPI.Logging
       }
     }
 
-    internal void ReportSingleLogMessage( String logger, String loglevel, String message, System.Exception error )
+    internal void ReportSingleLogMessage( String logger, LogLevel loglevel, String message, System.Exception error )
     {
-      Object[] args = new Object[] { Backendless.AppId, Backendless.VersionNum, loglevel, logger, message, error != null ? error.StackTrace : null };
+      Object[] args = new Object[] { Backendless.AppId, Backendless.VersionNum, loglevel.ToString(), logger, message, error != null ? error.StackTrace : null };
       AsyncCallback<Object> callback = new AsyncCallback<Object>(
        result =>
        {
@@ -60,7 +66,7 @@ namespace BackendlessAPI.Logging
       Invoker.InvokeAsync<Object>( LOGGING_SERVICE_ALIAS, "log", args, callback );
     }
 
-    internal void ReportBatch( LogBatch[] batch )
+    internal void ReportBatch( LogMessage[] batch )
     {
       Object[] args = new Object[] { Backendless.AppId, Backendless.VersionNum, batch };
       AsyncCallback<Object> callback = new AsyncCallback<Object>(

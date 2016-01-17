@@ -8,19 +8,21 @@ namespace BackendlessAPI.Logging
   {
     private int numOfMessages;
     private int timeFrequency;
-    private Dictionary<String, Dictionary<String, LinkedList<LogMessage>>> logBatches;
-    private int messageCount;
+    private LinkedList<LogMessage> logBatch;
+#if !UNITY    
     private Mutex mutex;
+#endif
     private Timer timer;
     private TimerCallback timerCallback;
 
     internal LogBuffer()
     {
+#if !UNITY
       mutex = new Mutex( false, "LogBufferMutex" );
+#endif
       numOfMessages = 100;
       timeFrequency = 1000 * 60 * 5; // 5 minutes
-      logBatches = new Dictionary<string,Dictionary<string,LinkedList<LogMessage>>>();
-      messageCount = 0;
+      logBatch = new LinkedList<LogMessage>();
       setupTimer();
     }
 
@@ -41,9 +43,20 @@ namespace BackendlessAPI.Logging
 
     public void FlushMessages( Object stateInfo )
     {
+      if( logBatch.Count == 0 )
+        return;
+#if !UNITY
       mutex.WaitOne();
       Flush();
       mutex.ReleaseMutex();
+#else
+      Flush();
+#endif
+      }
+
+    internal void ResetTimer()
+    {
+      timer.Change( timeFrequency, timeFrequency );
     }
 
     public void SetLogReportingPolicy( int numOfMessages, int timeFrequency )
@@ -56,7 +69,7 @@ namespace BackendlessAPI.Logging
       setupTimer();
     }
 
-    internal void Enqueue( String logger, String logLevel, String message, System.Exception error )
+    internal void Enqueue( String logger, LogLevel logLevel, String message, System.Exception error )
     {
       if( numOfMessages == 1 )
       {
@@ -64,67 +77,30 @@ namespace BackendlessAPI.Logging
       }
       else
       {
-        Dictionary<String, LinkedList<LogMessage>> logLevels;
-        LinkedList<LogMessage> messages;
+        String logLevelStr = logLevel.ToString();
 
+#if !UNITY
         mutex.WaitOne();
+#endif
+        logBatch.AddLast( new LogMessage( logger, logLevel, DateTime.Now, message, error == null ? null : error.StackTrace ) );
 
-        if( logBatches.ContainsKey( logger ) )
+        if( logBatch.Count == numOfMessages )
         {
-          logLevels = logBatches[ logger ];
-        }
-        else
-        {
-          logLevels = new Dictionary<string,LinkedList<LogMessage>>();
-          logBatches[ logger ] = logLevels;
-        }
-
-        if( logLevels.ContainsKey( logLevel ) )
-        {
-          messages = logLevels[ logLevel ];
-        }
-        else
-        {
-          messages = new LinkedList<LogMessage>();
-          logLevels[ logLevel ] = messages;
-        }
-
-        messages.AddLast( new LogMessage( DateTime.Now, message, error.StackTrace ) );
-        messageCount++;
-
-        if( messageCount == numOfMessages )
           Flush();
-
+          ResetTimer();
+        }
+#if !UNITY
         mutex.ReleaseMutex();
-      }
+#endif
+        }
     }
 
     private void Flush()
     {
-      LinkedList<LogBatch> allMessages = new LinkedList<LogBatch>();
-
-      foreach( String logger in logBatches.Keys )
-      {
-        Dictionary<String, LinkedList<LogMessage>> logLevels = logBatches[ logger ];
-
-        foreach( String logLevel in logLevels.Keys )
-        {
-          LogBatch logBatch = new LogBatch();
-          logBatch.logger = logger;
-          logBatch.logLevel = logLevel;
-          logBatch.messages = logLevels[ logLevel ];
-          allMessages.AddLast( logBatch );
-          logLevels.Remove( logLevel );
-        }
-
-        logBatches.Remove( logger );
-      }
-
-      logBatches.Clear();
-
-      LogBatch[] allMessagesArray = new LogBatch[ allMessages.Count ];
-      allMessages.CopyTo( allMessagesArray, 0 );
-      Backendless.Logging.ReportBatch( allMessagesArray );
+      LogMessage[] messages = new LogMessage[ logBatch.Count ];
+      logBatch.CopyTo( messages, 0 );
+      logBatch.Clear();
+      Backendless.Logging.ReportBatch( messages );
     }
   }
 }

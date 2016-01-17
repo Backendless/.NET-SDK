@@ -10,6 +10,7 @@ namespace BackendlessAPI.Push
     private static RegistrationDecorator _currentRegistration;
 
     private static EventHandler<NotificationChannelConnectionEventArgs> _onConnectionStatusChangedHandler;
+    private static EventHandler<NotificationChannelUriEventArgs> _channelUriUpdateddHandler;
 
     internal static void RegisterDevice( string channel, PushNotificationsBinding pushNotificationsBinding,
                                          AsyncCallback<string> callback )
@@ -25,9 +26,24 @@ namespace BackendlessAPI.Push
 
     private static void MakeInternalRegistration( string channel, PushNotificationsBinding pushNotificationsBinding, AsyncCallback<string> callback )
     {
-      var httpNotificationChannel = HttpNotificationChannel.Find( channel ) ??
-                                    new HttpNotificationChannel(channel, Backendless.URL);
+      var httpNotificationChannel = HttpNotificationChannel.Find( channel );
 
+      if( httpNotificationChannel == null )
+      {
+          httpNotificationChannel = new HttpNotificationChannel( channel, Backendless.URL );
+          httpNotificationChannel.ChannelUriUpdated += ( sender, args ) => ProceedRegistration( httpNotificationChannel, callback );
+          httpNotificationChannel.Open();
+      }
+      else
+      {
+          httpNotificationChannel.ChannelUriUpdated += ( sender, args ) => ProceedRegistration( httpNotificationChannel, callback );
+      }
+
+         if(pushNotificationsBinding != null)
+            pushNotificationsBinding.ApplyTo( httpNotificationChannel );
+                                 
+
+/*
       if(httpNotificationChannel.ConnectionStatus.Equals( ChannelConnectionStatus.Connected ))
         ProceedRegistration( httpNotificationChannel, callback );
       else
@@ -46,9 +62,15 @@ namespace BackendlessAPI.Push
 
       if(pushNotificationsBinding != null)
         pushNotificationsBinding.ApplyTo( httpNotificationChannel );
+ * */
       
       httpNotificationChannel.ErrorOccurred +=
         ( sender, args ) => callback.ErrorHandler.Invoke( new BackendlessFault( args.Message ) );
+    }
+
+    static void channel_ChannelUriUpdated(object sender, NotificationChannelUriEventArgs e)
+    {
+
     }
 
     private static void ProceedRegistration( HttpNotificationChannel httpNotificationChannel,

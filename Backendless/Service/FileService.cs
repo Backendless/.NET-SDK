@@ -2,6 +2,7 @@
 using BackendlessAPI.Engine;
 using BackendlessAPI.Exception;
 using BackendlessAPI.File;
+using BackendlessAPI.Data;
 using System;
 using System.IO;
 using System.Net;
@@ -13,10 +14,9 @@ namespace BackendlessAPI.Service
   public class FileService
   {
     private static readonly Regex SERVER_ERROR_REGEXP =
-      new Regex( "\"message\":\"(?<message>[^\"]*)\",\"code\":(?<code>[\\d]*)", RegexOptions.Compiled );
+      new Regex( "\"message\":\"(?<message>[^\"]*)\",\"code\":(?<code>[\\d]*)" );//, RegexOptions.Compiled );
 
-    private static readonly Regex SERVER_RESULT_REGEXP = new Regex( "\"fileURL\":\"(?<fileUrl>[^\"]*)",
-                                                                    RegexOptions.Compiled );
+    private static readonly Regex SERVER_RESULT_REGEXP = new Regex( "\"fileURL\":\"(?<fileUrl>[^\"]*)" );//, RegexOptions.Compiled );
 
     private const string FILE_MANAGER_SERVER_ALIAS = "com.backendless.services.file.FileService";
     private const int UPLOAD_BUFFER_DEFAULT_LENGTH = 8192;
@@ -25,6 +25,7 @@ namespace BackendlessAPI.Service
     {
     }
 
+    #region UPLOAD
     public void Upload( FileStream fileStream, string remotePath, AsyncCallback<BackendlessFile> callback )
     {
       Upload( fileStream, remotePath, new EmptyUploadCallback(), callback );
@@ -40,14 +41,16 @@ namespace BackendlessAPI.Service
 
       MakeFileUpload( fileStream, remotePath, uploadCallback, callback );
     }
+    #endregion
 
+    #region REMOVE_FILE
     public void Remove( string fileUrl )
     {
       if( string.IsNullOrEmpty( fileUrl ) )
         throw new ArgumentNullException( ExceptionMessage.NULL_PATH );
 
       Invoker.InvokeSync<object>( FILE_MANAGER_SERVER_ALIAS, "deleteFileOrDirectory",
-                                  new Object[] {Backendless.AppId, Backendless.VersionNum, fileUrl} );
+                                  new Object[] { Backendless.AppId, Backendless.VersionNum, fileUrl } );
     }
 
     public void Remove( string fileUrl, AsyncCallback<object> callback )
@@ -56,16 +59,18 @@ namespace BackendlessAPI.Service
         throw new ArgumentNullException( ExceptionMessage.NULL_PATH );
 
       Invoker.InvokeAsync<object>( FILE_MANAGER_SERVER_ALIAS, "deleteFileOrDirectory",
-                                   new Object[] {Backendless.AppId, Backendless.VersionNum, fileUrl}, callback );
+                                   new Object[] { Backendless.AppId, Backendless.VersionNum, fileUrl }, callback );
     }
+    #endregion
 
+    #region REMOVE_DIR
     public void RemoveDirectory( string directoryPath )
     {
       if( string.IsNullOrEmpty( directoryPath ) )
         throw new ArgumentNullException( ExceptionMessage.NULL_PATH );
 
       Invoker.InvokeSync<object>( FILE_MANAGER_SERVER_ALIAS, "deleteFileOrDirectory",
-                                  new Object[] {Backendless.AppId, Backendless.VersionNum, directoryPath} );
+                                  new Object[] { Backendless.AppId, Backendless.VersionNum, directoryPath } );
     }
 
     public void RemoveDirectory( string directoryPath, AsyncCallback<object> callback )
@@ -74,8 +79,11 @@ namespace BackendlessAPI.Service
         throw new ArgumentNullException( ExceptionMessage.NULL_PATH );
 
       Invoker.InvokeAsync<object>( FILE_MANAGER_SERVER_ALIAS, "deleteFileOrDirectory",
-                                   new Object[] {Backendless.AppId, Backendless.VersionNum, directoryPath}, callback );
+                                   new Object[] { Backendless.AppId, Backendless.VersionNum, directoryPath }, callback );
     }
+    #endregion
+
+    #region SAVEFILE
 
     public String SaveFile( String filePathName, byte[] fileContent )
     {
@@ -121,24 +129,126 @@ namespace BackendlessAPI.Service
       Invoker.InvokeAsync<String>( FILE_MANAGER_SERVER_ALIAS, "saveFile", new Object[] { Backendless.AppId, Backendless.VersionNum, path, fileName, fileContent, overwrite }, responder );
     }
 
+    #endregion
+
+    #region RENAME
+    public string RenameFile( String oldPathName, String newName )
+    {
+      checkPaths( oldPathName, newName );
+      return Invoker.InvokeSync<string>( FILE_MANAGER_SERVER_ALIAS, "renameFile", new Object[] { Backendless.AppId, Backendless.VersionNum, oldPathName, newName } );
+    }
+
+    public void RenameFile( String oldPathName, String newName, AsyncCallback<string> responder )
+    {
+      checkPaths( oldPathName, newName );
+      Invoker.InvokeAsync( FILE_MANAGER_SERVER_ALIAS, "renameFile", new Object[] { Backendless.AppId, Backendless.VersionNum, oldPathName, newName }, responder );
+    }
+    #endregion 
+
+    #region COPY
+    public string CopyFile( String sourcePathName, String targetPath )
+    {
+      checkPaths( sourcePathName, targetPath );
+      return Invoker.InvokeSync<string>( FILE_MANAGER_SERVER_ALIAS, "copyFile", new Object[] { Backendless.AppId, Backendless.VersionNum, sourcePathName, targetPath } );
+    }
+
+    public void CopyFile( String sourcePathName, String targetPath, AsyncCallback<string> responder )
+    {
+      checkPaths( sourcePathName, targetPath );
+      Invoker.InvokeAsync( FILE_MANAGER_SERVER_ALIAS, "copyFile", new Object[] { Backendless.AppId, Backendless.VersionNum, sourcePathName, targetPath }, responder );
+    }
+    #endregion
+
+    #region MOVE
+    public string MoveFile( String sourcePathName, String targetPath )
+    {
+      checkPaths( sourcePathName, targetPath );
+      return Invoker.InvokeSync<string>( FILE_MANAGER_SERVER_ALIAS, "moveFile", new Object[] { Backendless.AppId, Backendless.VersionNum, sourcePathName, targetPath } );
+    }
+
+    public void MoveFile( String sourcePathName, String targetPath, AsyncCallback<String> responder )
+    {
+      checkPaths( sourcePathName, targetPath );
+      Invoker.InvokeAsync( FILE_MANAGER_SERVER_ALIAS, "moveFile", new Object[] { Backendless.AppId, Backendless.VersionNum, sourcePathName, targetPath }, responder );
+    }
+    #endregion
+
+    #region LISTING
+    public BackendlessCollection<FileInfo> Listing( String path )
+    {
+      return Listing( path, "*", false );
+    }
+
+    public BackendlessCollection<FileInfo> Listing( String path, String pattern, bool recursive )
+    {
+      return Listing( path, pattern, recursive, BackendlessSimpleQuery.DEFAULT_PAGE_SIZE, BackendlessSimpleQuery.DEFAULT_OFFSET );
+    }
+
+    public BackendlessCollection<FileInfo> Listing( String path, String pattern, bool recursive, int pagesize, int offset )
+    {
+      BackendlessCollection<FileInfo> collection = Invoker.InvokeSync<BackendlessCollection<FileInfo>>( FILE_MANAGER_SERVER_ALIAS, "listing", new Object[] { Backendless.AppId, Backendless.VersionNum, path, pattern, recursive, pagesize, offset } );
+      collection.Query = new BackendlessSimpleQuery( pagesize, offset );
+      return collection;
+    }
+
+    public void Listing( String path, AsyncCallback<BackendlessCollection<FileInfo>> responder )
+    {
+      Listing( path, "*", false, responder );
+    }
+
+    public void Listing( String path, String pattern, bool recursive, AsyncCallback<BackendlessCollection<FileInfo>> responder )
+    {
+      Listing( path, pattern, recursive, BackendlessSimpleQuery.DEFAULT_PAGE_SIZE, BackendlessSimpleQuery.DEFAULT_OFFSET, responder );
+    }
+
+    public void Listing( String path, String pattern, bool recursive, int pagesize, int offset, AsyncCallback<BackendlessCollection<FileInfo>> responder )
+    {
+      AsyncCallback<BackendlessCollection<FileInfo>> listingCallback = new AsyncCallback<BackendlessCollection<FileInfo>>(
+        files =>
+        {
+          files.Query = new BackendlessSimpleQuery( pagesize, offset );
+
+          if( responder != null )
+            responder.ResponseHandler( files );
+        },
+        error =>
+        {
+          if( responder != null )
+            responder.ErrorHandler( error );
+        }
+      );
+      Object[] args = new Object[] { Backendless.AppId, Backendless.VersionNum, path, pattern, recursive, pagesize, offset };
+      Invoker.InvokeAsync( FILE_MANAGER_SERVER_ALIAS, "listing", args, listingCallback );
+    }
+    #endregion
+
+    private void checkPaths( string path1, string path2 )
+    {
+      if( path1 == null || path1.Length == 0 )
+        throw new System.Exception( ExceptionMessage.NULL_PATH );
+
+      if( path2 == null || path2.Length == 0 )
+        throw new System.Exception( ExceptionMessage.NULL_NAME );
+    }
+
     private void MakeFileUpload( FileStream fileStream, string path, UploadCallback uploadCallback,
                                  AsyncCallback<BackendlessFile> callback )
     {
       string boundary = DateTime.Now.Ticks.ToString( "x" );
       byte[] boundaryBytes = Encoding.UTF8.GetBytes( "\r\n--" + boundary + "--\r\n" );
 
-      var fileName = Path.GetFileName(fileStream.Name);
+      var fileName = Path.GetFileName( fileStream.Name );
 
       //You cannot get name of IsolatedStorageFileStream the normal way, it always returns [Unknown] (making it pass the checks against null)
-      if (fileStream.GetType() == typeof(System.IO.IsolatedStorage.IsolatedStorageFileStream))
-          fileName = Path.GetFileName(((System.IO.IsolatedStorage.IsolatedStorageFileStream)fileStream).Name);
+      if( fileStream.GetType() == typeof( System.IO.IsolatedStorage.IsolatedStorageFileStream ) )
+        fileName = Path.GetFileName( ( (System.IO.IsolatedStorage.IsolatedStorageFileStream) fileStream ).Name );
 
       var sb = new StringBuilder();
       sb.Append( "--" );
       sb.Append( boundary );
       sb.Append( "\r\n" );
       sb.Append( "Content-Disposition: form-data; name=\"file\"; filename=\"" );
-      sb.Append(fileName);
+      sb.Append( fileName );
       sb.Append( "\"" );
       sb.Append( "\r\n" );
       sb.Append( "Content-Type: " );
@@ -160,10 +270,10 @@ namespace BackendlessAPI.Service
 
       httpRequest.ContentType = "multipart/form-data; boundary=" + boundary;
       httpRequest.Method = "POST";
-      httpRequest.Headers["KeepAlive"] = "true";
+      httpRequest.Headers[ "KeepAlive" ] = "true";
 
       foreach( var h in HeadersManager.GetInstance().Headers )
-        httpRequest.Headers[h.Key] = h.Value;
+        httpRequest.Headers[ h.Key ] = h.Value;
 
       try
       {
@@ -201,8 +311,8 @@ namespace BackendlessAPI.Service
           byte[] boundaryBytes = asyncState.BoundaryBytes;
           long fileLength = fileStream.Length;
           long offset = 0;
-          int bufferLen = (int) (fileLength < UPLOAD_BUFFER_DEFAULT_LENGTH ? fileLength : UPLOAD_BUFFER_DEFAULT_LENGTH);
-          byte[] buffer = new byte[bufferLen];
+          int bufferLen = (int) ( fileLength < UPLOAD_BUFFER_DEFAULT_LENGTH ? fileLength : UPLOAD_BUFFER_DEFAULT_LENGTH );
+          byte[] buffer = new byte[ bufferLen ];
 
           // send the headers
           postStream.Write( headerBytes, 0, headerBytes.Length );
@@ -214,9 +324,9 @@ namespace BackendlessAPI.Service
             postStream.Write( buffer, 0, size );
             offset += size;
 
-            if( !(uploadCallback is EmptyUploadCallback) )
+            if( !( uploadCallback is EmptyUploadCallback ) )
             {
-              int currentProgress = (int) ((offset/fileLength)*100);
+              int currentProgress = (int) ( ( offset / fileLength ) * 100 );
               if( progress != currentProgress )
               {
                 progress = currentProgress;
@@ -226,7 +336,7 @@ namespace BackendlessAPI.Service
             size = fileStream.Read( buffer, 0, bufferLen );
           }
 
-          if( !(uploadCallback is EmptyUploadCallback) && progress != 100 )
+          if( !( uploadCallback is EmptyUploadCallback ) && progress != 100 )
             uploadCallback.ProgressHandler.Invoke( 100 );
 
           postStream.Write( boundaryBytes, 0, boundaryBytes.Length );
@@ -255,7 +365,7 @@ namespace BackendlessAPI.Service
             var encode = System.Text.Encoding.GetEncoding( "utf-8" );
             var result = new StreamReader( response, encode ).ReadToEnd();
             var matchGroups = SERVER_RESULT_REGEXP.Match( result ).Groups;
-            var fileUrl = matchGroups["fileUrl"].Value;
+            var fileUrl = matchGroups[ "fileUrl" ].Value;
 
             asyncState.Callback.ResponseHandler.Invoke( new BackendlessFile( fileUrl ) );
           }
@@ -264,10 +374,10 @@ namespace BackendlessAPI.Service
         {
           var response = new StreamReader( ex.Response.GetResponseStream() ).ReadToEnd();
           var matchGroups = SERVER_ERROR_REGEXP.Match( response ).Groups;
-          var message = matchGroups["message"].Value;
-          var code = matchGroups["code"].Value;
+          var message = matchGroups[ "message" ].Value;
+          var code = matchGroups[ "code" ].Value;
           var fault =
-            new BackendlessFault( (string.IsNullOrEmpty( code ) ? "" : "Code: " + code + "\n") + "Message: " + message );
+            new BackendlessFault( ( string.IsNullOrEmpty( code ) ? "" : "Code: " + code + "\n" ) + "Message: " + message );
 
           if( asyncState.Callback != null )
             asyncState.Callback.ErrorHandler.Invoke( fault );
@@ -277,7 +387,7 @@ namespace BackendlessAPI.Service
       }
     }
 
-#if SILVERLIGHT || WINDOWS_PHONE
+#if SILVERLIGHT || WINDOWS_PHONE 
       private String EncodeURL( string urlStr ) 
   {
     var splitedStr = urlStr.Split( '/' );
@@ -304,7 +414,8 @@ namespace BackendlessAPI.Service
         if( i != 0 )
           result += "/";
 
-        result += System.Web.HttpUtility.UrlEncode( splitedStr[i] );
+        //result += System.Web.HttpUtility.UrlEncode( splitedStr[i] );
+        result += Uri.EscapeDataString( urlStr );
       }
 
       return result;
@@ -314,10 +425,11 @@ namespace BackendlessAPI.Service
 
   internal class EmptyUploadCallback : UploadCallback
   {
-    public EmptyUploadCallback() : base( response =>
-      {
-        /*A stub. Needed for handy methods.*/
-      } )
+    public EmptyUploadCallback()
+      : base( response =>
+        {
+          /*A stub. Needed for handy methods.*/
+        } )
     {
     }
   }

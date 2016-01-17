@@ -75,7 +75,8 @@ namespace BackendlessAPI.Geo
         else
           myStringBuilder.Append( ";" );
 
-        myStringBuilder.AppendFormat( "{0}={1}", pair.Key, pair.Value );
+        string value = pair.Value.GetType().IsArray ? string.Join( ",", (string[])pair.Value ) : pair.Value.ToString();
+        myStringBuilder.AppendFormat( "{0}={1}", pair.Key, value );
       }
 
       string metaStr = myStringBuilder.ToString();

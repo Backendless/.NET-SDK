@@ -1,0 +1,5 @@
+Z:\mark\dev\backendless-git\backendless-sdk-net\Backendless\bin\UNITY_WEB_PLAYER\Backendless.dll
+Z:\mark\dev\backendless-git\backendless-sdk-net\Backendless\bin\UNITY_WEB_PLAYER\Backendless.pdb
+Z:\mark\dev\backendless-git\backendless-sdk-net\Backendless\obj\UNITY_WEB_PLAYER\Backendless.dll
+Z:\mark\dev\backendless-git\backendless-sdk-net\Backendless\obj\UNITY_WEB_PLAYER\Backendless.pdb
+Z:\mark\dev\backendless-git\backendless-sdk-net\Backendless\obj\UNITY_WEB_PLAYER\Backendless.NET.csprojResolveAssemblyReference.cache

@@ -2,6 +2,7 @@
 {
     public enum DateTypeEnum
     {
+        UNKNOWN,
         INT,
         STRING,
         BOOLEAN,

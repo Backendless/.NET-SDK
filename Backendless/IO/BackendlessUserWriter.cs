@@ -11,7 +11,10 @@ namespace BackendlessAPI.IO
       BackendlessUser user = (BackendlessUser) obj;
 
       Dictionary<string, object> props = user.Properties;
-      props.Add( "___class", "Users" );
+
+      if( !props.ContainsKey( "___class" ) )
+          props.Add( "___class", "Users" );
+      
       MessageWriter.writeObject( props, writer );
     }
   }

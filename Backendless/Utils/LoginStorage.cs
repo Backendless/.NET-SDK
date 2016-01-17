@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+#if UNIVERSALW8
+using Windows.Storage;
+#else
 using System.IO.IsolatedStorage;
+#endif
 using System.Text;
 
 namespace BackendlessAPI.Utils
 {
-  public class LoginStorage
+  public class LoginStorage : ILoginStorage
   {
     public LoginStorage()
     {
@@ -26,13 +30,29 @@ namespace BackendlessAPI.Utils
     }
 
     bool myNewPrefs;
-    public bool NewPrefs
+    public bool HasData
     {
       get { return myNewPrefs; }
     }
 
     private bool LoadData()
     {
+      #if UNIVERSALW8
+      ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+
+      if( localSettings.Values.ContainsKey( "BackendlessUserInfo" ) )
+      {
+        ApplicationDataCompositeValue userInfo = (ApplicationDataCompositeValue) localSettings.Values[ "BackendlessUserInfo" ];
+        this.UserToken = (String) userInfo[ "userToken" ];
+        this.UserId = (String) userInfo[ "userId" ];
+        return false;
+      }
+      else
+      {
+        return true;
+      }
+
+#else
       try
       {
           // Retrieve an IsolatedStorageFile for the current Domain and Assembly.
@@ -51,11 +71,19 @@ namespace BackendlessAPI.Utils
             FileAccess.Read,
             FileShare.Read );
 #else
-          IsolatedStorageFile isoFile =
-              IsolatedStorageFile.GetUserStoreForApplication();
+          IsolatedStorageFile isoFile = null;
+
+          try
+          {
+              isoFile = IsolatedStorageFile.GetUserStoreForApplication();
+          }
+          catch( System.Exception )
+          {
+              return false;
+          }
 
          if( !isoFile.FileExists( "BackendlessUserInfo" ) )
-             return true;
+             return false;
 
         try
           {
@@ -75,17 +103,26 @@ namespace BackendlessAPI.Utils
         this.UserId = reader.ReadLine();
         reader.Close();
         isoStream.Close();
-        return false;
-      }
-      catch( System.IO.FileNotFoundException )
-      {
-        // Expected exception if a file cannot be found. This indicates that we have a new user.
         return true;
       }
+      catch( System.Exception )
+      {
+        // Expected exception if a file cannot be found. This indicates that we have a new user.
+        return false;
+      }
+#endif
     }
 
     public void SaveData()
     {
+#if UNIVERSALW8
+      ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+      ApplicationDataCompositeValue userInfo = new ApplicationDataCompositeValue();
+
+      userInfo[ "userToken" ] = this.UserToken;
+      userInfo[ "userId" ] = this.UserId;
+      localSettings.Values[ "BackendlessUserInfo" ] = userInfo;
+#else
       try
       {
 #if !WINDOWS_PHONE
@@ -120,10 +157,15 @@ namespace BackendlessAPI.Utils
         // Add code here to handle the exception.
         Console.WriteLine( ex );
       }
+#endif
     }
 
     public void DeleteFiles()
     {
+#if UNIVERSALW8
+      ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+      localSettings.Values.Remove( "BackendlessUserInfo" );
+#else
       try
       {
 #if !WINDOWS_PHONE
@@ -158,11 +200,12 @@ namespace BackendlessAPI.Utils
       {
         Console.WriteLine( e.ToString() );
       }
-
+#endif
     }
     // This method deletes directories in the specified Isolated Storage, after first 
     // deleting the files they contain. In this example, the Archive directory is deleted. 
     // There should be no other directories in this Isolated Storage.
+  /*
     public void DeleteDirectories()
     {
       try
@@ -185,5 +228,6 @@ IsolatedStorageFile.GetUserStoreForApplication();
         Console.WriteLine( e.ToString() );
       }
     }
+   */
   }
 }

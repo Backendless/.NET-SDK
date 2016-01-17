@@ -20,6 +20,9 @@ namespace BackendlessAPI.Property
       IsRequired = required;
     }
 
+    [SetClientClassMemberName( "autoLoad" )]
+    public bool AutoLoad { get; set; }
+
     [SetClientClassMemberName( "relatedTable" )]
     public string RelatedTable { get; set; }
 
