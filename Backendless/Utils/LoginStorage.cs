@@ -57,7 +57,7 @@ namespace BackendlessAPI.Utils
       {
           // Retrieve an IsolatedStorageFile for the current Domain and Assembly.
           IsolatedStorageFileStream isoStream = null;
-#if !WINDOWS_PHONE
+#if !WINDOWS_PHONE && !WINDOWS_PHONE8
           IsolatedStorageFile isoFile =
             IsolatedStorageFile.GetStore( IsolatedStorageScope.User |
             IsolatedStorageScope.Assembly |
@@ -125,7 +125,7 @@ namespace BackendlessAPI.Utils
 #else
       try
       {
-#if !WINDOWS_PHONE
+#if !WINDOWS_PHONE && !WINDOWS_PHONE8
         IsolatedStorageFile isoFile;
         isoFile = IsolatedStorageFile.GetUserStoreForDomain();
 
@@ -136,7 +136,7 @@ namespace BackendlessAPI.Utils
             FileAccess.Write,
             isoFile ); 
 #else
-        IsolatedStorageFile isoFile =
+          IsolatedStorageFile isoFile =
     IsolatedStorageFile.GetUserStoreForApplication();
 
         IsolatedStorageFileStream isoStream = new IsolatedStorageFileStream( "BackendlessUserInfo",
@@ -168,14 +168,14 @@ namespace BackendlessAPI.Utils
 #else
       try
       {
-#if !WINDOWS_PHONE
+#if !WINDOWS_PHONE && !WINDOWS_PHONE8
         IsolatedStorageFile isoFile = IsolatedStorageFile.GetStore( IsolatedStorageScope.User |
             IsolatedStorageScope.Assembly |
             IsolatedStorageScope.Domain,
             typeof( System.Security.Policy.Url ),
             typeof( System.Security.Policy.Url ) );
 #else
-        IsolatedStorageFile isoFile =
+          IsolatedStorageFile isoFile =
     IsolatedStorageFile.GetUserStoreForApplication();
 #endif
 

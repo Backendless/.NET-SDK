@@ -4,11 +4,11 @@ using System.Windows.Threading;
 using System.Windows.Controls;
 #endif
 
-#if (!FULL_BUILD && !WINDOWS_PHONE && !PURE_CLIENT_LIB)
+#if (!FULL_BUILD && !WINDOWS_PHONE && !PURE_CLIENT_LIB  && !WINDOWS_PHONE8)
 using System.Windows.Browser;
 #endif
 
-#if !(WINDOWS_PHONE || PURE_CLIENT_LIB)
+#if !(WINDOWS_PHONE || PURE_CLIENT_LIB || WINDOWS_PHONE8 )
 using Weborb.ProxyGen.Core.Interceptor;
 #endif
 
@@ -23,7 +23,7 @@ namespace Weborb.Client
         internal bool isFault;
         internal T resultObject;
         internal Fault fault;
-#if( !WINDOWS_PHONE && !PURE_CLIENT_LIB )
+#if( !WINDOWS_PHONE && !PURE_CLIENT_LIB  && !WINDOWS_PHONE8)
         internal IInvocation invocation;
 #endif
 #if !(FULL_BUILD || PURE_CLIENT_LIB)
@@ -36,14 +36,14 @@ namespace Weborb.Client
             if( errorHandler != null )
                 ErrorListener += errorHandler;
         }
-#if (!FULL_BUILD && !WINDOWS_PHONE && !PURE_CLIENT_LIB)
+#if (!FULL_BUILD && !WINDOWS_PHONE && !PURE_CLIENT_LIB && !WINDOWS_PHONE8)
         public AsyncToken( IInvocation invocation, UserControl uiControl )
         {
             this.invocation = invocation;
             this.uiControl = uiControl;
         }
 #endif
-#if (!WINDOWS_PHONE && !PURE_CLIENT_LIB)
+#if (!WINDOWS_PHONE && !PURE_CLIENT_LIB && !WINDOWS_PHONE8)
         public IInvocation Invocation
         {
             get { return invocation; }
@@ -97,13 +97,13 @@ namespace Weborb.Client
 
                 if( ErrorListener != null )
                     ErrorListener.Invoke( fault );
-#if (!WINDOWS_PHONE && !FULL_BUILD && !PURE_CLIENT_LIB)
+#if (!WINDOWS_PHONE && !FULL_BUILD && !PURE_CLIENT_LIB && !WINDOWS_PHONE8)
                 else if( uiControl != null )
                     uiControl.Dispatcher.BeginInvoke( delegate()
                     {
                       HtmlPage.Window.Alert( "Received an error from a remote invocation. " + fault.Message );
                     } );
-#endif                    
+#endif
             }
         }
     }

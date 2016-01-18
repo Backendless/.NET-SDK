@@ -15,7 +15,7 @@ namespace Weborb.Client
 
     private String _subTopic;
     private String _selector;
-    private object _responder;
+    //private object _responder;
     private static Object _staticLock = new Object();
     private Boolean _isSubscribed;
     private Engine _engine;

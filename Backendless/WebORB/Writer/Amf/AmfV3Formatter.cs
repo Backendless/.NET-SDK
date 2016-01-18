@@ -163,7 +163,9 @@ namespace Weborb.Writer.Amf
       {
       writer.Write( (byte)Datatypes.DATE_DATATYPE_V3 );
       writer.WriteVarInt( 0x1 );
-#if (FULL_BUILD || PURE_CLIENT_LIB)
+#if( WINDOWS_PHONE8 )
+       TimeSpan timeZoneOffset = TimeZoneInfo.Local.BaseUtcOffset;
+#elif (FULL_BUILD || PURE_CLIENT_LIB)
       TimeSpan timeZoneOffset = TimeZone.CurrentTimeZone.GetUtcOffset( datetime );
 #else
       TimeSpan timeZoneOffset = TimeZoneInfo.Local.GetUtcOffset( datetime );

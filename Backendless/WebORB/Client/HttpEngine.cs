@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
-#if !FULL_BUILD && !WINDOWS_PHONE && !PURE_CLIENT_LIB
+#if !FULL_BUILD && !WINDOWS_PHONE && !PURE_CLIENT_LIB && !WINDOWS_PHONE8
 using System.Security;
 using System.Windows.Browser;
 #endif
@@ -96,7 +96,7 @@ namespace Weborb.Client
     {
       String error = e.Message;
 
-#if (!FULL_BUILD && !WINDOWS_PHONE && !PURE_CLIENT_LIB)
+#if (!FULL_BUILD && !WINDOWS_PHONE && !PURE_CLIENT_LIB && !WINDOWS_PHONE8)
                 if (e is SecurityException)
                 {
                     if (WeborbClient.Uri.Scheme.ToLower().StartsWith("file"))
@@ -124,8 +124,8 @@ namespace Weborb.Client
     private HttpWebRequest GetWebRequest()
     {
 //      if ( _request != null )
-//        return _request;
-#if (FULL_BUILD || WINDOWS_PHONE || PURE_CLIENT_LIB)
+        //        return _request;
+#if (FULL_BUILD || WINDOWS_PHONE || PURE_CLIENT_LIB || WINDOWS_PHONE8)
       try
       {
         Uri uri = new Uri( GatewayUrl );
@@ -136,9 +136,9 @@ namespace Weborb.Client
         System.Console.WriteLine( e );
       }
 #else
-            
 
-            if (Uri.IsWellFormedUriString(GatewayUrl, UriKind.Absolute))
+
+        if (Uri.IsWellFormedUriString(GatewayUrl, UriKind.Absolute))
             {
               _request = (HttpWebRequest)WebRequest.Create(new Uri(GatewayUrl));
             }
@@ -209,7 +209,7 @@ namespace Weborb.Client
         if ( exception is WebException && ( (WebException)exception ).Status == WebExceptionStatus.RequestCanceled )
           error = TIMEOUT_FAULT_MESSAGE;
 
-#if (!FULL_BUILD && !WINDOWS_PHONE && !PURE_CLIENT_LIB)
+#if (!FULL_BUILD && !WINDOWS_PHONE && !PURE_CLIENT_LIB && !WINDOWS_PHONE8)
                 if( exception is SecurityException )
                 {
                   if ( WeborbClient.Uri.Scheme.ToLower().StartsWith( "file" ) )
@@ -319,7 +319,7 @@ namespace Weborb.Client
                                              },
                                            fault => /*(ISubscribeResponder)GetResponder(clientId).ErrorHandler(fault)*/ { }), null);
       }
-      catch (Exception e)
+      catch (Exception)
       {
         try
         {

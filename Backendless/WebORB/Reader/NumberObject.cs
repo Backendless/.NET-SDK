@@ -67,7 +67,7 @@ namespace Weborb.Reader
         else
           return Convert.ToDouble(data);
       }
-      catch (Exception ex)
+      catch (Exception)
       {
         if (Log.isLogging(LoggingConstants.EXCEPTION))
           Log.log(LoggingConstants.EXCEPTION, "unable to convert data to Int32, attempting Int64. Data is " + data);

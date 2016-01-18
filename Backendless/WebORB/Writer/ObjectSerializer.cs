@@ -76,10 +76,8 @@ namespace Weborb.Writer
         {
         object fieldName = en.Current;
 
-        if ( fieldName == "length" )
-          {
+        if ( fieldName.Equals( "length" ) )
           continue;
-          }
 
         if ( Log.isLogging( LoggingConstants.SERIALIZATION ) )
           Log.log( LoggingConstants.SERIALIZATION, "serializing property/field : " + fieldName );

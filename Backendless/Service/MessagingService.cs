@@ -55,7 +55,7 @@ namespace BackendlessAPI.Service
 #endif
     }
 
-#if WINDOWS_PHONE
+#if WINDOWS_PHONE || WINDOWS_PHONE8
     public DeviceRegistration DeviceRegistration
     {
       get { return _deviceRegistrationDto; }

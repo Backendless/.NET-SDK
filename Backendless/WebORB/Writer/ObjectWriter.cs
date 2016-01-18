@@ -22,7 +22,7 @@ namespace Weborb.Writer
 #if (FULL_BUILD)
     private static ITypeWriter remoteReferenceWriter = new RemoteReferenceWriter();
 #endif
-    private bool configured = false;
+    //private bool configured = false;
     private bool serializePrivate = false;
 #if (NET_40)
     private ConcurrentDictionary<Type, ClassDefinition> cachedClassDefs = new ConcurrentDictionary<Type, ClassDefinition>();

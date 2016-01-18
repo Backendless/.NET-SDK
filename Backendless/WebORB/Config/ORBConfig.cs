@@ -40,9 +40,9 @@ namespace Weborb.Config
 
   public class ORBConfig
   {
-    public delegate void InitializedHandler();
+  //  public delegate void InitializedHandler();
 
-    public static event InitializedHandler Initialized;
+  //  public static event InitializedHandler Initialized;
 
     public event ConfigRetrieved GetConfigInstanceListener;
 
@@ -52,7 +52,7 @@ namespace Weborb.Config
 #if (FULL_BUILD)
     private IDictionary configObjects = new Hashtable();
 #else
-    private IDictionary configObjects;
+    private IDictionary configObjects = new Dictionary<string, object>();
 #endif
 
 #if (FULL_BUILD)
@@ -66,11 +66,11 @@ namespace Weborb.Config
     private ProtocolRegistry protocolRegistry = new ProtocolRegistry();
 #endif
     private ServiceRegistry serviceRegistry = new ServiceRegistry();
-    private bool _serializePrivateFields;
-    private bool serializeGenericCollectionsAsVector;
+    //private bool _serializePrivateFields;
+    //private bool serializeGenericCollectionsAsVector;
     private static ORBConfig instance;
-    private static bool _initialized;
-    private static bool _initializing;
+    //private static bool _initialized;
+    //private static bool _initializing;
     
 
 #if (FULL_BUILD)
@@ -133,7 +133,6 @@ namespace Weborb.Config
         getTypeMapper()._AddClientClassMapping( "flex.messaging.messages.AcknowledgeMessage", typeof( Weborb.V3Types.AckMessage ));
         getTypeMapper()._AddClientClassMapping( "flex.messaging.messages.ErrorMessage", typeof( Weborb.V3Types.ErrMessage ));
         getTypeMapper()._AddClientClassMapping( "flex.messaging.io.ObjectProxy", typeof( Weborb.Util.ObjectProxy ));
-        getTypeMapper()._AddClientClassMapping( "flex.messaging.io.ArrayCollection", typeof( Weborb.Types.WebORBArrayCollection ));
         getTypeMapper()._AddClientClassMapping( "weborb.v3types.V3Message", typeof( Weborb.V3Types.V3Message ) );
 
         IArgumentObjectFactory factory = (IArgumentObjectFactory) getObjectFactories()._CreateServiceObject( "Weborb.V3Types.BodyHolderFactory" );

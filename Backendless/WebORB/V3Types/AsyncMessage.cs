@@ -6,7 +6,7 @@ using Weborb.Config;
 using Weborb.Message;
 using Weborb.Reader;
 using Weborb.Util;
-#if (!SILVERLIGHT && !PURE_CLIENT_LIB)
+#if (!SILVERLIGHT && !PURE_CLIENT_LIB && !WINDOWS_PHONE8)
 using Weborb.V3Types.Core;
 #endif
 using Weborb.Util.Logging;

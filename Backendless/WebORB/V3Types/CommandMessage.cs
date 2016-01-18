@@ -15,7 +15,7 @@ using Weborb.Types;
 using Weborb.Util;
 using Weborb.Util.Logging;
 using Weborb.Exceptions;
-#if (!SILVERLIGHT && !PURE_CLIENT_LIB)
+#if (!SILVERLIGHT && !PURE_CLIENT_LIB && !WINDOWS_PHONE8)
 using Weborb.Messaging.PubSub;
 using Weborb.Messaging.Net.RTMP;
 using Weborb.Messaging.Server;
@@ -33,8 +33,8 @@ namespace Weborb.V3Types
     public static String DSID = "DSId";
 
     private string _operation;
-    private string _source;
-    private string _messageRefType;
+    //private string _source;
+    //private string _messageRefType;
 
     public string operation
     {

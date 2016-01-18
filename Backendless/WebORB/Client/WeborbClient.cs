@@ -11,7 +11,7 @@ using System.Security;
 using System.Windows.Controls;
 #endif
 
-#if( !FULL_BUILD && !WINDOWS_PHONE && !PURE_CLIENT_LIB)
+#if( !FULL_BUILD && !WINDOWS_PHONE && !PURE_CLIENT_LIB && !WINDOWS_PHONE8)
 using System.Windows.Browser;
 #endif
 
@@ -19,12 +19,8 @@ using System.Windows.Browser;
 using System.Reflection;
 
 using Weborb.Message;
-#if (WINDOWS_PHONE || FULL_BUILD)
-using Weborb.Messaging.Net.RTMP;
-using Weborb.Messaging.Net.RTMPT;
-#endif
 
-#if !PURE_CLIENT_LIB
+#if !PURE_CLIENT_LIB && !WINDOWS_PHONE8
 using Weborb.Messaging.Net.RTMP;
 #endif
 
@@ -37,7 +33,7 @@ using Weborb.Types;
 using Weborb.Util;
 using Weborb.Config;
 
-#if !( WINDOWS_PHONE || PURE_CLIENT_LIB)
+#if !( WINDOWS_PHONE || PURE_CLIENT_LIB || WINDOWS_PHONE8)
 using Weborb.ProxyGen.DynamicProxy;
 using Weborb.ProxyGen.Core.Interceptor;
 #endif
@@ -128,7 +124,7 @@ namespace Weborb.Client
 
     public IdInfo IdInfo;
     private Engine _engine;
-#if !PURE_CLIENT_LIB
+#if !PURE_CLIENT_LIB && !WINDOWS_PHONE8
     public BaseRTMPClient RTMP
     {
       get
@@ -270,7 +266,7 @@ namespace Weborb.Client
           }
         }
 
-#if !PURE_CLIENT_LIB 
+#if !PURE_CLIENT_LIB  && !WINDOWS_PHONE8
     /// <summary>
     /// Creates a proxy to a remote interface with the target interface defined as T. The interface must define the return types for the methods with the generic AsyncToken class.
     /// </summary>
@@ -535,14 +531,14 @@ namespace Weborb.Client
       Type constructed = asyncType.MakeGenericType( argType );
       object asyncTokenObject = Activator.CreateInstance( constructed, new object[] { responder.ResponseHandler, responder.ErrorHandler } );
 
-#if !(FULL_BUILD || PURE_CLIENT_LIB)
+#if !(FULL_BUILD || PURE_CLIENT_LIB || WINDOWS_PHONE8 )
             FieldInfo uiControlField = asyncTokenObject.GetType().GetField( "uiControl", BindingFlags.NonPublic | BindingFlags.Instance );
             uiControlField.SetValue( asyncTokenObject, this.uiControl );
 #endif
-#if( WINDOWS_PHONE || PURE_CLIENT_LIB )
+#if( WINDOWS_PHONE || PURE_CLIENT_LIB || WINDOWS_PHONE8)
       HandleInvocation( className, methodName, args, messageHeaders, asyncTokenObject );
 #else
-      HandleInvocation( null, className, methodName, args, messageHeaders, asyncTokenObject );
+            HandleInvocation( null, className, methodName, args, messageHeaders, asyncTokenObject );
 #endif
     }
 
@@ -689,7 +685,7 @@ namespace Weborb.Client
       _engine.SendRequest( v3Msg, null, null, responder, null );
     }
 
-#if !(PURE_CLIENT_LIB || WINDOWS_PHONE )
+#if !(PURE_CLIENT_LIB || WINDOWS_PHONE || WINDOWS_PHONE8)
     internal void HandleInvocation( IInvocation invocation, string className, string methodName, object[] arguments, IDictionary messageHeaders, object asyncTokenObject )
 #else
         internal void HandleInvocation( string className, string methodName, object[] arguments, IDictionary messageHeaders, object asyncTokenObject )
@@ -726,7 +722,7 @@ namespace Weborb.Client
       object[] invokeArgs = new object[] { className, methodName, arguments, messageHeaders, responderObj };
       invokeMethod.Invoke( this, invokeArgs );
 
-#if !( WINDOWS_PHONE || PURE_CLIENT_LIB )
+#if !( WINDOWS_PHONE || PURE_CLIENT_LIB || WINDOWS_PHONE8 )
       if ( invocation != null )
         invocation.ReturnValue = asyncTokenObject;
 #endif
