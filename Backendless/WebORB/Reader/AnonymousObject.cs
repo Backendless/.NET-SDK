@@ -417,7 +417,7 @@ namespace Weborb.Reader
               continue;
               }
 #endif
-#if( SILVERLIGHT || PURE_CLIENT_LIB )
+#if( SILVERLIGHT || PURE_CLIENT_LIB || WINDOWS_PHONE8 )
                       continue;
 #endif
             }
@@ -503,7 +503,7 @@ namespace Weborb.Reader
               continue;
               }
 #endif
-#if(SILVERLIGHT || PURE_CLIENT_LIB )
+#if(SILVERLIGHT || PURE_CLIENT_LIB || WINDOWS_PHONE8 )
               continue;
 #endif
             }

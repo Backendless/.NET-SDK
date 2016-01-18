@@ -126,7 +126,7 @@ namespace Weborb.Config
 #if( FULL_BUILD)
         Initialize( null );
 #endif
-#if ( PURE_CLIENT_LIB )
+#if ( PURE_CLIENT_LIB || WINDOWS_PHONE8 )
         getTypeMapper()._AddClientClassMapping( "flex.messaging.messages.AsyncMessage", typeof( Weborb.V3Types.AsyncMessage ));
         getTypeMapper()._AddClientClassMapping( "flex.messaging.messages.CommandMessage", typeof( Weborb.V3Types.CommandMessage ));
         getTypeMapper()._AddClientClassMapping( "flex.messaging.messages.RemotingMessage", typeof( Weborb.V3Types.ReqMessage ));
@@ -138,14 +138,24 @@ namespace Weborb.Config
         IArgumentObjectFactory factory = (IArgumentObjectFactory) getObjectFactories()._CreateServiceObject( "Weborb.V3Types.BodyHolderFactory" );
         getObjectFactories().AddArgumentObjectFactory( "Weborb.V3Types.BodyHolder", factory );
 
-        getTypeMapper()._AddAbstractTypeMapping( typeof( System.Collections.ICollection ), typeof( System.Collections.ArrayList ) );
-        getTypeMapper()._AddAbstractTypeMapping( typeof( System.Collections.IList ), typeof( System.Collections.ArrayList ) );
-        getTypeMapper()._AddAbstractTypeMapping( typeof( System.Collections.IDictionary ), typeof( System.Collections.Hashtable ) );
         getTypeMapper()._AddAbstractTypeMapping( typeof( System.Collections.Generic.IList<> ), typeof( System.Collections.Generic.List<> ) );
 
         ITypeWriter writerObject = (ITypeWriter) getObjectFactories()._CreateServiceObject( "Weborb.V3Types.BodyHolderWriter" );
         Type mappedType = typeof( Weborb.V3Types.BodyHolder );
         MessageWriter.AddAdditionalTypeWriter( mappedType, writerObject );
+#endif
+
+#if( PURE_CLIENT_LIB )
+        getTypeMapper()._AddAbstractTypeMapping( typeof( System.Collections.ICollection ), typeof( System.Collections.ArrayList ) );
+        getTypeMapper()._AddAbstractTypeMapping( typeof( System.Collections.IList ), typeof( System.Collections.ArrayList ) );
+        getTypeMapper()._AddAbstractTypeMapping( typeof( System.Collections.IDictionary ), typeof( System.Collections.Hashtable ) );
+#endif
+
+#if( WINDOWS_PHONE8 )
+        getTypeMapper()._AddAbstractTypeMapping(typeof(System.Collections.ICollection), typeof(System.Collections.Generic.List<>));
+        getTypeMapper()._AddAbstractTypeMapping(typeof(System.Collections.IList), typeof(System.Collections.Generic.List<>));
+        getTypeMapper()._AddAbstractTypeMapping(typeof(System.Collections.IDictionary), typeof(System.Collections.Generic.Dictionary<,>));
+
 #endif
     }
 
