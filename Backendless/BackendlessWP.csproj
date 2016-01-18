@@ -10,7 +10,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BackendlessAPI</RootNamespace>
-    <AssemblyName>BackendlessPhone</AssemblyName>
+    <AssemblyName>Backendless</AssemblyName>
     <TargetFrameworkVersion>v8.1</TargetFrameworkVersion>
     <SilverlightVersion>
     </SilverlightVersion>
@@ -99,6 +99,10 @@
     <OutputPath>Bin\ARM\Release</OutputPath>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <DefineConstants>WINDOWS_PHONE8</DefineConstants>
+    <OutputPath>Bin\WP\Release\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Async\AsyncCallback.cs" />

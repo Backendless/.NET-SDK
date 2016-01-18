@@ -247,8 +247,6 @@
     <Compile Include="WebORB\Client\PublishingResponder.cs" />
     <Compile Include="WebORB\Client\Responder.cs" />
     <Compile Include="WebORB\Client\Result.cs" />
-    <Compile Include="WebORB\Client\SubscribeAdaptedResponder.cs" />
-    <Compile Include="WebORB\Client\SubscribeResponder.cs" />
     <Compile Include="WebORB\Client\Subscription.cs" />
     <Compile Include="WebORB\Client\WeborbClient.cs" />
     <Compile Include="WebORB\Config\ORBConfig.cs" />
@@ -266,7 +264,6 @@
     <Compile Include="WebORB\Protocols\UnknownRequestFormatException.cs" />
     <Compile Include="WebORB\Reader\AnonymousObject.cs" />
     <Compile Include="WebORB\Reader\AnonymousObjectReader.cs" />
-    <Compile Include="WebORB\Reader\ArrayCollectionType.cs" />
     <Compile Include="WebORB\Reader\ArrayReader.cs" />
     <Compile Include="WebORB\Reader\ArrayType.cs" />
     <Compile Include="WebORB\Reader\BooleanReader.cs" />
@@ -320,8 +317,6 @@
     <Compile Include="WebORB\Types\IWebORBVector.cs" />
     <Compile Include="WebORB\Types\TypedObject.cs" />
     <Compile Include="WebORB\Types\Types.cs" />
-    <Compile Include="WebORB\Types\WebORBArray.cs" />
-    <Compile Include="WebORB\Types\WebORBArrayCollection.cs" />
     <Compile Include="WebORB\Util\AMFSerializer.cs" />
     <Compile Include="WebORB\Util\FileInfoComparer.cs" />
     <Compile Include="WebORB\Util\IArgumentObjectFactory.cs" />
