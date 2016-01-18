@@ -11,7 +11,7 @@ namespace Examples.MessagingService.GeoServiceDemo
       Clear();
 
       foreach( var geoPoint in geoPoints )
-        Add( new CityPoint( geoPoint, geoPoint.Metadata[Defaults.CITY_TAG] ) );
+        Add( new CityPoint( geoPoint, (string) geoPoint.Metadata[Defaults.CITY_TAG] ) );
     }
   }
 
