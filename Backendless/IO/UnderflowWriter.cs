@@ -24,6 +24,22 @@ namespace BackendlessAPI.IO
             objectFields[ key ] = underflowData[ key ];
       }
 
+      if( !className.StartsWith( "flex.messaging.messages" ) )
+      {
+        if( objectFields.Contains( "___class" ) )
+          className = (String) objectFields[ "___class" ];
+        else
+        {
+          int dotIndex = className.LastIndexOf( '.' );
+
+          if( dotIndex > -1 )
+            className = className.Substring( dotIndex + 1 );
+          objectFields.Add( "___class", className );
+        }
+
+        className = null;
+      }
+
       writer.GetObjectSerializer().WriteObject( className, objectFields, writer );
     }
   }

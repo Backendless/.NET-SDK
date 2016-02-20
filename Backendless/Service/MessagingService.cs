@@ -20,20 +20,24 @@ namespace BackendlessAPI.Service
     private static string DEVICE_REGISTRATION_MANAGER_SERVER_ALIAS = "com.backendless.services.messaging.DeviceRegistrationService";
 
     private static string DEFAULT_CHANNEL_NAME = "default";
-
     private static Messaging.DeviceRegistration _deviceRegistrationDto;
+
+#if UNITY
+    private static AsyncCallback<string> _deviceRegisterCallback = null;
+    private static AsyncCallback<bool> _deviceUnregisterCallback = null;
+    public delegate void UnityRegisterDevice( string GCMSenderID, List<String> channels, DateTime? expiration );
+    public delegate void UnityUnregisterDevice();
+    private UnityRegisterDevice _unityRegisterDevice;
+    private UnityUnregisterDevice _unityUnregisterDevice;
+#endif
 
     public MessagingService()
     {
-      Types.AddClientClassMapping( "com.backendless.management.DeviceRegistrationDto",
-                                   typeof( Messaging.DeviceRegistration ) );
+      Types.AddClientClassMapping( "com.backendless.management.DeviceRegistrationDto", typeof( Messaging.DeviceRegistration ) );
       Types.AddClientClassMapping( "com.backendless.services.messaging.MessageStatus", typeof( Messaging.MessageStatus ) );
-      Types.AddClientClassMapping( "com.backendless.services.messaging.PublishOptions",
-                                   typeof( Messaging.PublishOptions ) );
-      Types.AddClientClassMapping( "com.backendless.services.messaging.DeliveryOptions",
-                                   typeof( Messaging.DeliveryOptions ) );
-      Types.AddClientClassMapping( "com.backendless.services.messaging.PublishStatusEnum",
-                                   typeof( Messaging.PublishStatusEnum ) );
+      Types.AddClientClassMapping( "com.backendless.services.messaging.PublishOptions", typeof( Messaging.PublishOptions ) );
+      Types.AddClientClassMapping( "com.backendless.services.messaging.DeliveryOptions", typeof( Messaging.DeliveryOptions ) );
+      Types.AddClientClassMapping( "com.backendless.services.messaging.PublishStatusEnum", typeof( Messaging.PublishStatusEnum ) );
       Types.AddClientClassMapping( "com.backendless.services.messaging.Message", typeof( Messaging.Message ) );
 
 #if WINDOWS_PHONE8
@@ -52,8 +56,132 @@ namespace BackendlessAPI.Service
           DeviceId = BitConverter.ToString( (byte[]) deviceId ).Replace( "-", "" ),
           OsVersion = System.Environment.OSVersion.Version.Major.ToString( CultureInfo.InvariantCulture )
         };
+#elif UNITY
+      _deviceRegistrationDto = new DeviceRegistration();
 #endif
     }
+
+#if UNITY
+    public void SetUnityRegisterDevice( UnityRegisterDevice unityRegisterDevice, UnityUnregisterDevice unityUnregisterDevice )
+    {
+      _unityRegisterDevice = unityRegisterDevice;
+      _unityUnregisterDevice = unityUnregisterDevice;
+    }
+    public void RegisterDevice( string GCMSenderID )
+    {
+      RegisterDevice( GCMSenderID, (AsyncCallback<string>) null );
+    }
+
+    public void RegisterDevice( string GCMSenderID, AsyncCallback<string> callback )
+    {
+      RegisterDevice( GCMSenderID, DEFAULT_CHANNEL_NAME, callback );
+    }
+
+    public void RegisterDevice( string GCMSenderID, string channel )
+    {
+      RegisterDevice( GCMSenderID, channel, (AsyncCallback<string>) null );
+    }
+
+    public void RegisterDevice( string GCMSenderID, string channel, AsyncCallback<string> callback )
+    {
+      if( string.IsNullOrEmpty( channel ) )
+        throw new ArgumentNullException( ExceptionMessage.NULL_CHANNEL_NAME );
+
+      RegisterDevice( GCMSenderID, new List<string> { channel }, callback );
+    }
+
+    public void RegisterDevice( string GCMSenderID, List<string> channels )
+    {
+      RegisterDevice( GCMSenderID, channels, (AsyncCallback<string>) null );
+    }
+
+    public void RegisterDevice( string GCMSenderID, List<string> channels, AsyncCallback<string> callback )
+    {
+      RegisterDevice( GCMSenderID, channels, null, callback );
+    }
+
+    public void RegisterDevice( string GCMSenderID, DateTime expiration )
+    {
+      RegisterDevice( GCMSenderID, expiration, (AsyncCallback<string>) null );
+    }
+
+    public void RegisterDevice( string GCMSenderID, DateTime expiration, AsyncCallback<string> callback )
+    {
+      RegisterDevice( GCMSenderID, null, expiration, callback );
+    }
+
+    public void RegisterDevice( string GCMSenderID, List<string> channels, DateTime? expiration )
+    {
+      RegisterDevice( GCMSenderID, channels, expiration, (AsyncCallback<string>) null );
+    }
+
+    public void RegisterDevice( string GCMSenderID, List<string> channels, DateTime? expiration, AsyncCallback<string> callback )
+    {
+      if( channels == null )
+        channels = new List<string>();
+
+      if( channels.Count == 0 )
+       channels.Add( DEFAULT_CHANNEL_NAME );
+
+      _deviceRegisterCallback = callback;
+      _unityRegisterDevice( GCMSenderID, channels, expiration );
+    }
+
+    public void RegisterDeviceOnServer()
+    {
+      AsyncCallback<string> callback = _deviceRegisterCallback;
+
+      var responder = new AsyncCallback<string>( r =>
+      {
+        _deviceRegistrationDto.RegistrationId = r;
+        callback.ResponseHandler.Invoke( r );
+      }, f =>
+      {
+        if( callback != null )
+          callback.ErrorHandler.Invoke( f );
+        else
+          throw new BackendlessException( f );
+      } );
+
+      Invoker.InvokeAsync( DEVICE_REGISTRATION_MANAGER_SERVER_ALIAS, "registerDevice",
+                           new object[] { Backendless.AppId, Backendless.VersionNum, _deviceRegistrationDto }, responder );
+    }
+
+    public void UnregisterDevice( AsyncCallback<bool> callback )
+    {
+      _deviceUnregisterCallback = callback;
+      _unityUnregisterDevice();
+    }
+
+    public void UnregisterDeviceOnServer()
+    {
+      AsyncCallback<bool> callback = _deviceUnregisterCallback;
+
+      var responder = new AsyncCallback<bool>( r =>
+      {
+        if( callback != null )
+        {
+          _deviceRegistrationDto.ClearRegistration();
+          callback.ResponseHandler.Invoke( r );
+        }
+      }, f =>
+      {
+        if( callback != null )
+          callback.ErrorHandler.Invoke( f );
+        else
+          throw new BackendlessException( f );
+      } );
+
+      Invoker.InvokeAsync( DEVICE_REGISTRATION_MANAGER_SERVER_ALIAS, "unregisterDevice",
+                           new Object[] { Backendless.AppId, Backendless.VersionNum, _deviceRegistrationDto.DeviceId },
+                           responder );
+    }
+
+    public DeviceRegistration DeviceRegistration
+    {
+      get { return _deviceRegistrationDto; }
+    }
+#endif
 
 #if WINDOWS_PHONE || WINDOWS_PHONE8
     public DeviceRegistration DeviceRegistration

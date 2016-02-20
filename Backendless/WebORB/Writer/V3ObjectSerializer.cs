@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Weborb.Util.Logging;
@@ -15,6 +16,31 @@ namespace Weborb.Writer
       IEnumerator en = objectFields.Keys.GetEnumerator();
       V3ReferenceCache cache = (V3ReferenceCache) writer.GetReferenceCache();
       String traitsClassId = className;
+
+      List<String> toRemove = new List<String>();
+
+      while( en.MoveNext() )
+      {
+        String fieldName = en.Current.ToString();
+        object obj = objectFields[ fieldName ];
+
+        if( obj != null && obj is ICollection && ( (ICollection) obj ).Count == 0 )
+        {
+          toRemove.Add( fieldName );
+          continue;
+        }
+
+        if( obj != null && obj.GetType().IsArray && ( (Object[]) obj ).Length == 0 )
+        {
+          toRemove.Add( fieldName );
+          continue;
+        }
+      }
+
+      foreach( Object key in toRemove )
+        objectFields.Remove( key );
+
+      en = objectFields.Keys.GetEnumerator(); 
 
       if( traitsClassId == null )
       {
@@ -71,6 +97,13 @@ namespace Weborb.Writer
         //MessageWriter.writeObject( objectFields[ fieldName ], writer );
         //Log.log( "REFCACHE", "WRITING FIELD " + fieldName );
         object obj = objectFields[ fieldName ];
+
+        if( obj != null && obj is ICollection && ( (ICollection) obj ).Count == 0 )
+          continue;
+
+        if( obj != null && obj.GetType().IsArray && ( (Object[]) obj ).Length == 0 )
+          continue;
+
         ITypeWriter typeWriter = MessageWriter.getWriter( obj, writer );
         typeWriter.write( obj, writer );
         //Log.log( "REFCACHE", "DONE WRITING FIELD " + fieldName );

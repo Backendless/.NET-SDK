@@ -45,7 +45,7 @@ namespace BackendlessAPI.Engine
     {
         private Dictionary<string, string> headers = new Dictionary<string, string>();
         private static object headersLock = new object();
-        private volatile static HeadersManager _instance = null;
+        private  static HeadersManager _instance = null;
 
         private HeadersManager()
         {
