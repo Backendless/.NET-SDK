@@ -46,8 +46,14 @@ namespace BackendlessAPI.Service
       CheckEntityStructure<T>();
 
       //return GetEntityId( entity ) == null ? Create( entity ) : Update( entity );
+      string operation = "save";
+      string objectId = GetEntityId( entity );
+
+      if( objectId == null )
+        operation = "create";
+
       AddWeborbPropertyMapping<T>();
-      return Invoker.InvokeSync<T>( PERSISTENCE_MANAGER_SERVER_ALIAS, "save",
+      return Invoker.InvokeSync<T>( PERSISTENCE_MANAGER_SERVER_ALIAS, operation,
                                     new object[] { Backendless.AppId, Backendless.VersionNum, GetTypeName( typeof( T ) ), entity }, true );
     }
 
@@ -62,8 +68,15 @@ namespace BackendlessAPI.Service
         Create( entity, callback );
       else
         Update( entity, callback );*/
+
+      string operation = "save";
+      string objectId = GetEntityId( entity );
+
+      if( objectId == null )
+        operation = "create";
+
       AddWeborbPropertyMapping<T>();
-      Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "save",
+      Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, operation,
                            new object[] { Backendless.AppId, Backendless.VersionNum, GetTypeName( typeof( T ) ), entity }, true, callback );
     }
     #endregion
