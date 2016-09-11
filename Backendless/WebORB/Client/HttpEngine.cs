@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
-#if !FULL_BUILD && !WINDOWS_PHONE && !PURE_CLIENT_LIB && !WINDOWS_PHONE8
+#if !UNIVERSALW8 && !FULL_BUILD && !WINDOWS_PHONE && !PURE_CLIENT_LIB && !WINDOWS_PHONE8
 using System.Security;
 using System.Windows.Browser;
 #endif
@@ -96,7 +96,7 @@ namespace Weborb.Client
     {
       String error = e.Message;
 
-#if (!FULL_BUILD && !WINDOWS_PHONE && !PURE_CLIENT_LIB && !WINDOWS_PHONE8)
+#if (!UNIVERSALW8 && !FULL_BUILD && !WINDOWS_PHONE && !PURE_CLIENT_LIB && !WINDOWS_PHONE8)
                 if (e is SecurityException)
                 {
                     if (WeborbClient.Uri.Scheme.ToLower().StartsWith("file"))
@@ -209,7 +209,7 @@ namespace Weborb.Client
         if ( exception is WebException && ( (WebException)exception ).Status == WebExceptionStatus.RequestCanceled )
           error = TIMEOUT_FAULT_MESSAGE;
 
-#if (!FULL_BUILD && !WINDOWS_PHONE && !PURE_CLIENT_LIB && !WINDOWS_PHONE8)
+#if (!UNIVERSALW8 && !FULL_BUILD && !WINDOWS_PHONE && !PURE_CLIENT_LIB && !WINDOWS_PHONE8)
                 if( exception is SecurityException )
                 {
                   if ( WeborbClient.Uri.Scheme.ToLower().StartsWith( "file" ) )

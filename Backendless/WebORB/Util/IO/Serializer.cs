@@ -5,7 +5,7 @@ using System.IO;
 
 using Weborb.Writer;
 using Weborb.Protocols.Amf;
-#if( !SILVERLIGHT && !PURE_CLIENT_LIB && !WINDOWS_PHONE8)
+#if( !UNIVERSALW8 && !SILVERLIGHT && !PURE_CLIENT_LIB && !WINDOWS_PHONE8)
 using Weborb.Protocols.Wolf;
 using Weborb.Writer.Wolf;
 #endif
@@ -35,7 +35,7 @@ namespace Weborb.Util.IO
                 case AMF3:
                     formatter = new AmfV3Formatter();
                     break;
-#if( !SILVERLIGHT && !PURE_CLIENT_LIB && !WINDOWS_PHONE8)
+#if( !UNIVERSALW8 && !SILVERLIGHT && !PURE_CLIENT_LIB && !WINDOWS_PHONE8)
                 case WOLF:
                     formatter = new WolfFormatter();
                     break;
@@ -62,7 +62,7 @@ namespace Weborb.Util.IO
 
         public static object FromBytes( byte[] bytes, int type, bool doNotAdapt )
         {
-#if( !SILVERLIGHT && !PURE_CLIENT_LIB && !WINDOWS_PHONE8)
+#if( !UNIVERSALW8 && !SILVERLIGHT && !PURE_CLIENT_LIB && !WINDOWS_PHONE8)
             if( type == AMF0 || type == AMF3 )
             {
 #endif
@@ -78,7 +78,7 @@ namespace Weborb.Util.IO
                             return adpatingType.defaultAdapt();
                     }
                 }
-#if( !SILVERLIGHT && !PURE_CLIENT_LIB && !WINDOWS_PHONE8)
+#if( !UNIVERSALW8 && !SILVERLIGHT && !PURE_CLIENT_LIB && !WINDOWS_PHONE8)
            }
             else
             {

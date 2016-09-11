@@ -495,6 +495,7 @@ namespace BackendlessAPI.Service
       Invoker.InvokeAsync( GEO_MANAGER_SERVER_ALIAS, "runOnExitAction", args, responder );
     }
     #endregion
+#if !NET20
     #region GEOFENCE MONITORING
     public void StartGeofenceMonitoring( GeoPoint geoPoint, AsyncCallback<object> responder )
     {
@@ -603,6 +604,7 @@ namespace BackendlessAPI.Service
     }
 
     #endregion
+#endif
     #region RELATIVE FIND
     public BackendlessCollection<SearchMatchesResult> RelativeFind( BackendlessGeoQuery geoQuery )
     {

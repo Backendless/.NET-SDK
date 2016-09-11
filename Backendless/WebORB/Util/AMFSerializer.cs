@@ -4,7 +4,7 @@ using System.Text;
 using Weborb.Util.IO;
 using Weborb.Writer;
 using Weborb.Writer.Amf;
-#if (!SILVERLIGHT && !PURE_CLIENT_LIB && !WINDOWS_PHONE8)
+#if (!UNIVERSALW8 && !SILVERLIGHT && !PURE_CLIENT_LIB && !WINDOWS_PHONE8)
 using Weborb.Writer.Wolf;
 #endif
 using System.IO;
@@ -28,7 +28,7 @@ namespace Weborb.Util
                     formatter = new AmfFormatter();
                     break;
 
-#if (!SILVERLIGHT && !PURE_CLIENT_LIB && !WINDOWS_PHONE8)
+#if (!UNIVERSALW8 && !SILVERLIGHT && !PURE_CLIENT_LIB && !WINDOWS_PHONE8)
                 case WOLF:
                     formatter = new WolfFormatter();
                     break;
@@ -65,7 +65,7 @@ namespace Weborb.Util
                 
                 switch(serializationType)
                 {
-#if (!SILVERLIGHT && !PURE_CLIENT_LIB && !WINDOWS_PHONE8)
+#if (!UNIVERSALW8 && !SILVERLIGHT && !PURE_CLIENT_LIB && !WINDOWS_PHONE8)
                     case WOLF:
                         type = (IAdaptingType)Weborb.Protocols.Wolf.RequestParser.GetInstance().Parse(ms).getRequestBodyData();
                         break;

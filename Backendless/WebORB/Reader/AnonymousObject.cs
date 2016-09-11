@@ -3,7 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Security;
+
+#if !UNIVERSALW8
 using System.Security.Permissions;
+#endif
 using System.Reflection;
 using System.Text;
 using System.Diagnostics;

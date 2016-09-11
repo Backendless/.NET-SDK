@@ -1,8 +1,8 @@
 using System;
-#if !(FULL_BUILD || PURE_CLIENT_LIB)
+#if !(UNIVERSALW8 || FULL_BUILD || PURE_CLIENT_LIB)
 using System.Windows.Controls;
 #endif
-#if !FULL_BUILD && !WINDOWS_PHONE && !PURE_CLIENT_LIB && !WINDOWS_PHONE8
+#if !FULL_BUILD && !UNIVERSALW8 && !WINDOWS_PHONE && !PURE_CLIENT_LIB && !WINDOWS_PHONE8
 using System.Security;
 using System.Windows.Browser;
 #endif
@@ -94,11 +94,11 @@ namespace Weborb.Client
     {
       if (gatewayUrl.StartsWith("http://") || gatewayUrl.StartsWith("https://"))
         return new HttpEngine(gatewayUrl, idInfo);
-#if !PURE_CLIENT_LIB  && !WINDOWS_PHONE8
+#if !UNIVERSALW8 && !PURE_CLIENT_LIB  && !WINDOWS_PHONE8
       if (gatewayUrl.StartsWith("rtmpt://"))
         return new RtmptEngine(gatewayUrl, idInfo);
 #endif
-#if (!WINDOWS_PHONE && !PURE_CLIENT_LIB && !WINDOWS_PHONE8)
+#if (!UNIVERSALW8 && !WINDOWS_PHONE && !PURE_CLIENT_LIB && !WINDOWS_PHONE8)
       if (gatewayUrl.StartsWith("rtmp://"))
         return new RtmpEngine(gatewayUrl, idInfo);
 #endif
@@ -116,7 +116,7 @@ namespace Weborb.Client
       IdInfo = idInfo.MemberwiseClone();
     }
 
-#if !(FULL_BUILD || PURE_CLIENT_LIB)
+#if !(UNIVERSALW8 || FULL_BUILD || PURE_CLIENT_LIB)
     public static Engine Create(string gatewayUrl, IdInfo idInfo, UserControl uiControl)
     {
       Engine engine = Create(gatewayUrl, idInfo);
@@ -137,10 +137,10 @@ namespace Weborb.Client
     
     internal bool IsRTMP()
     {
-#if PURE_CLIENT_LIB || WINDOWS_PHONE8
+#if UNIVERSALW8 || PURE_CLIENT_LIB || WINDOWS_PHONE8
      return false;
 #else
-      return this is BaseRtmpEngine;
+        return this is BaseRtmpEngine;
 #endif
     }
 
@@ -226,8 +226,8 @@ namespace Weborb.Client
 
           foreach ( T adaptedObject in messagesFirstPhase )
           {
-#if !(FULL_BUILD || PURE_CLIENT_LIB)
-                    if (UiControl != null && responder != null)
+#if !(UNIVERSALW8 || FULL_BUILD || PURE_CLIENT_LIB)
+              if (UiControl != null && responder != null)
                         UiControl.Dispatcher.BeginInvoke(delegate()
                         {
                             responder.ResponseHandler(adaptedObject);
@@ -250,7 +250,7 @@ namespace Weborb.Client
       if ( responder != null )
         {
           Fault fault = new Fault( e.Message, e.StackTrace, INTERNAL_CLIENT_EXCEPTION_FAULT_CODE );
-#if (!FULL_BUILD && !WINDOWS_PHONE && !PURE_CLIENT_LIB && !WINDOWS_PHONE8)
+#if (!UNIVERSALW8 && !FULL_BUILD && !WINDOWS_PHONE && !PURE_CLIENT_LIB && !WINDOWS_PHONE8)
           if ( e is SecurityException )
             fault = new Fault(SECURITY_FAULT_MESSAGE, e.Message);
 #endif

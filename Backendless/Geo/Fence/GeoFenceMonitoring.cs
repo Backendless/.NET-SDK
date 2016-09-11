@@ -4,8 +4,10 @@ using System.Threading;
 using BackendlessAPI.Exception;
 using BackendlessAPI.Geo.Location;
 
+#if !NET20
 namespace BackendlessAPI.Geo.Fence
 {
+
   class GeoFenceMonitoring : IBackendlessLocationListener
   {
     public static String NAME = "GeoFenceMonitoring";
@@ -245,3 +247,4 @@ namespace BackendlessAPI.Geo.Fence
     }
   }
 }
+#endif
