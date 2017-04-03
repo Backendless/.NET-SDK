@@ -14,8 +14,6 @@ namespace BackendlessAPI.Service
     public T InvokeSync<T>( String serviceName, String serviceVersion, String method, Object[] args )
     {
       List<Object> methodArgs = new List<Object>();
-      methodArgs.Add( Backendless.AppId );
-      methodArgs.Add( Backendless.VersionNum );
       methodArgs.Add( serviceName );
       methodArgs.Add( serviceVersion );
       methodArgs.Add( method );
@@ -27,8 +25,6 @@ namespace BackendlessAPI.Service
     public void InvokeAsync<T>( String serviceName, String serviceVersion, String method, Object[] args, AsyncCallback<T> callback )
     {
       List<Object> methodArgs = new List<Object>();
-      methodArgs.Add( Backendless.AppId );
-      methodArgs.Add( Backendless.VersionNum );
       methodArgs.Add( serviceName );
       methodArgs.Add( serviceVersion );
       methodArgs.Add( method );

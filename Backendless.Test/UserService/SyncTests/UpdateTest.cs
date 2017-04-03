@@ -17,7 +17,7 @@ namespace BackendlessAPI.Test.UserService.SyncTests
     {
       try
       {
-        Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, Defaults.TEST_VERSION );
+        Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY );
         BackendlessUser user = GetRandomLoggedInUser();
         user.SetProperty( LOGIN_KEY, "" );
         user.Password = "";
@@ -36,7 +36,7 @@ namespace BackendlessAPI.Test.UserService.SyncTests
     {
       try
       {
-        Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, Defaults.TEST_VERSION );
+        Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY );
         BackendlessUser user = GetRandomLoggedInUser();
         user.SetProperty( LOGIN_KEY, null );
         user.Password = null;
@@ -55,7 +55,7 @@ namespace BackendlessAPI.Test.UserService.SyncTests
     {
       try
       {
-        Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, Defaults.TEST_VERSION );
+        Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY );
         BackendlessUser user = GetRandomLoggedInUser();
         user.SetProperty( ID_KEY, null );
 
@@ -76,7 +76,7 @@ namespace BackendlessAPI.Test.UserService.SyncTests
     {
       try
       {
-        Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, Defaults.TEST_VERSION );
+        Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY );
         BackendlessUser user = GetRandomLoggedInUser();
         user.SetProperty( "id", "" );
 
@@ -94,7 +94,7 @@ namespace BackendlessAPI.Test.UserService.SyncTests
     {
       try
       {
-        Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, Defaults.TEST_VERSION );
+        Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY );
         BackendlessUser user = GetRandomLoggedInUser();
         user.SetProperty( "id", "foobar" );
 
@@ -112,7 +112,7 @@ namespace BackendlessAPI.Test.UserService.SyncTests
     {
       try
       {
-        Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, "v7" );
+        Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY );
         BackendlessUser user = GetRandomLoggedInUser();
         user.SetProperty( "somePropertyKey", "somePropertyValue" );
 
@@ -129,7 +129,7 @@ namespace BackendlessAPI.Test.UserService.SyncTests
     [TestMethod]
     public void TestUpdateUserForVersionWithEnabledDynamicPropertis()
     {
-      Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, Defaults.TEST_VERSION );
+      Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY );
       BackendlessUser user = GetRandomLoggedInUser();
       string propertyKey = "somePropertyKey" + Random.Next();
       string propertyValue = "somePropertyValue" + Random.Next();
@@ -165,7 +165,7 @@ namespace BackendlessAPI.Test.UserService.SyncTests
     {
       const string newpassword = "some_new_password";
       const string newemail = "some_new_email@gmail.com";
-      Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, Defaults.TEST_VERSION );
+      Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY );
       BackendlessUser user = GetRandomLoggedInUser();
       user.Password = newpassword;
       user.SetProperty( EMAIL_KEY, newemail );
@@ -179,7 +179,7 @@ namespace BackendlessAPI.Test.UserService.SyncTests
     [TestMethod]
     public void TestUpdateRegisteredUserIdentity()
     {
-      Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, Defaults.TEST_VERSION );
+      Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY );
       BackendlessUser user = GetRandomLoggedInUser();
       user.SetProperty( LOGIN_KEY, "some_new_login_" + user.GetProperty( LOGIN_KEY ) );
 

@@ -31,9 +31,8 @@ namespace BackendlessAPI.Test.PersistenceService.SyncTests
 
       var savedPerson = Backendless.Persistence.Save( person );
       var foundPerson = Backendless.Persistence.Of<Person>().FindById( person.ObjectId );
-      Backendless.Persistence.Of<Person>().LoadRelations( foundPerson, new List<string>(){"Address"} );
+      Backendless.Persistence.Of<Person>().LoadRelations( foundPerson.ObjectId, LoadRelationsQueryBuilder<Person>.Create().SetRelationName( "Address" ) );
       var foundPerson1 = Backendless.Persistence.Of<Person>().FindById(person.ObjectId, new List<string>(){"Address"});
-      var f = "sdsdsd";
     }
 
     [TestMethod]
@@ -52,15 +51,15 @@ namespace BackendlessAPI.Test.PersistenceService.SyncTests
         Thread.Sleep( 1000 );
       }
 
-      var dataQuery = new BackendlessDataQuery( new QueryOptions( 10, 0, "Age" ) );
-      var collection = Backendless.Persistence.Of<NextPageEntity>().Find( dataQuery ).NextPage();
+      var dataQueryBuilder = DataQueryBuilder.Create().AddProperty( "Age" ).SetPageSize( 10 ).SetOffset( 0 );
+
+      var collection = Backendless.Persistence.Of<NextPageEntity>().Find( dataQueryBuilder.PrepareNextPage() );
 
       Assert.IsNotNull( collection, "Next page returned a null object" );
-      Assert.IsNotNull( collection.GetCurrentPage(), "Next page contained a wrong data size" );
-      Assert.AreEqual( nextPageEntities.Count, collection.GetCurrentPage().Count, "Next page returned a wrong size" );
+      Assert.AreEqual( nextPageEntities.Count, collection.Count, "Next page returned a wrong size" );
 
       foreach( NextPageEntity entity in nextPageEntities )
-        Assert.IsTrue( collection.GetCurrentPage().Contains( entity ), "Server result didn't contain expected entity" );
+        Assert.IsTrue( collection.Contains( entity ), "Server result didn't contain expected entity" );
     }
 
     [TestMethod]
@@ -79,15 +78,14 @@ namespace BackendlessAPI.Test.PersistenceService.SyncTests
         Thread.Sleep( 1000 );
       }
 
-      var dataQuery = new BackendlessDataQuery( new QueryOptions( 10, 0, "Age" ) );
-      var collection = Backendless.Persistence.Of<GetPageEntity>().Find( dataQuery ).GetPage( 10, 10 );
+      var dataQueryBuilder = DataQueryBuilder.Create().AddProperty( "Age" ).SetPageSize( 10 );
+      var collection = Backendless.Persistence.Of<GetPageEntity>().Find( dataQueryBuilder.PrepareNextPage() );
 
       Assert.IsNotNull( collection, "Next page returned a null object" );
-      Assert.IsNotNull( collection.GetCurrentPage(), "Next page contained a wrong data size" );
-      Assert.AreEqual( getPageEntities.Count, collection.GetCurrentPage().Count, "Next page returned a wrong size" );
+      Assert.AreEqual( getPageEntities.Count, collection.Count, "Next page returned a wrong size" );
 
       foreach( GetPageEntity entity in getPageEntities )
-        Assert.IsTrue( collection.GetCurrentPage().Contains( entity ), "Server result didn't contain expected entity" );
+        Assert.IsTrue( collection.Contains( entity ), "Server result didn't contain expected entity" );
     }
   }
 }

@@ -81,39 +81,11 @@ namespace BackendlessAPI.Test.PersistenceService.SyncTests
           entities.Add( findWithWhereEntity );
       }
 
-      BackendlessDataQuery dataQuery = new BackendlessDataQuery( "Age < 25" );
-      BackendlessCollection<FindWithWhereEntity> backendlessCollection =
-        Backendless.Persistence.Of<FindWithWhereEntity>().Find( dataQuery );
+      DataQueryBuilder dataQueryBuilder = DataQueryBuilder.Create().SetWhereClause( "Age < 25" );
+      IList<FindWithWhereEntity> backendlessCollection =
+        Backendless.Persistence.Of<FindWithWhereEntity>().Find( dataQueryBuilder );
 
       AssertArgumentAndResultCollections( entities, backendlessCollection );
-    }
-
-    [TestMethod]
-    public void TestFindWithNegativeOffset()
-    {
-      try
-      {
-        Backendless.Persistence.Of<Object>().Find( new BackendlessDataQuery( new QueryOptions( 2, -1 ) ) );
-        Assert.Fail( "Client accepted a negative offset" );
-      }
-      catch( System.Exception e )
-      {
-        CheckErrorCode( ExceptionMessage.WRONG_OFFSET, e );
-      }
-    }
-
-    [TestMethod]
-    public void TestFindWithNegativePageSize()
-    {
-      try
-      {
-        Backendless.Persistence.Of<Object>().Find( new BackendlessDataQuery( new QueryOptions( -1, 2 ) ) );
-        Assert.Fail( "Client accepted a negative pagesize" );
-      }
-      catch( System.Exception e )
-      {
-        CheckErrorCode( ExceptionMessage.WRONG_PAGE_SIZE, e );
-      }
     }
 
     [TestMethod]
@@ -122,12 +94,11 @@ namespace BackendlessAPI.Test.PersistenceService.SyncTests
       var findWithPropertiesEntity = new FindWithPropertiesEntity {Name = "bot_#foobar", Age = 20};
       Backendless.Persistence.Save( findWithPropertiesEntity );
 
-      var properties = new List<string> {"foobar"};
-      var dataQuery = new BackendlessDataQuery( properties );
+      var dataQueryBuilder = DataQueryBuilder.Create().AddProperty( "foobar" );
 
       try
       {
-        Backendless.Persistence.Of<FindWithPropertiesEntity>().Find( dataQuery );
+        Backendless.Persistence.Of<FindWithPropertiesEntity>().Find( dataQueryBuilder );
         Assert.Fail( "Server didn't throw an exception" );
       }
       catch( System.Exception e )
@@ -142,16 +113,13 @@ namespace BackendlessAPI.Test.PersistenceService.SyncTests
       var findWithPropertiesEntity = new FindWithPropertiesEntity {Name = "bot_#foobar", Age = 20};
       Backendless.Persistence.Save( findWithPropertiesEntity );
 
-      List<String> properties = null;
-      var dataQuery = new BackendlessDataQuery( properties );
 
-      BackendlessCollection<FindWithPropertiesEntity> backendlessCollection =
-        Backendless.Persistence.Of<FindWithPropertiesEntity>().Find( dataQuery );
+      IList<FindWithPropertiesEntity> backendlessCollection =
+        Backendless.Persistence.Of<FindWithPropertiesEntity>().Find( DataQueryBuilder.Create() );
 
-      Assert.IsTrue( backendlessCollection.TotalObjects > 0, "Server found wrong number of objects" );
-      Assert.IsTrue( backendlessCollection.GetCurrentPage().Count > 0, "Server returned wrong number of objects" );
-
-      foreach( FindWithPropertiesEntity entity in backendlessCollection.GetCurrentPage() )
+      Assert.IsTrue( backendlessCollection.Count > 0, "Server found wrong number of objects" );
+  
+      foreach( FindWithPropertiesEntity entity in backendlessCollection )
       {
         Assert.IsTrue( entity.Age > 0, "Server result contained wrong age field value" );
         Assert.IsNotNull( entity.Name, "Server result contained non null field" );
@@ -166,14 +134,12 @@ namespace BackendlessAPI.Test.PersistenceService.SyncTests
       var findWithPropertiesEntity = new FindWithPropertiesEntity {Name = "bot_#foobar", Age = 20};
       Backendless.Persistence.Save( findWithPropertiesEntity );
 
-      var properties = new List<string> {"Age"};
-      var dataQuery = new BackendlessDataQuery( properties );
-      var backendlessCollection = Backendless.Persistence.Of<FindWithPropertiesEntity>().Find( dataQuery );
+      var dataQueryBuilder = DataQueryBuilder.Create().AddProperty( "Age" );
+      var backendlessCollection = Backendless.Persistence.Of<FindWithPropertiesEntity>().Find( dataQueryBuilder );
 
-      Assert.IsTrue( backendlessCollection.TotalObjects > 0, "Server found wrong number of objects" );
-      Assert.IsTrue( backendlessCollection.GetCurrentPage().Count > 0, "Server returned wrong number of objects" );
-
-      foreach( FindWithPropertiesEntity entity in backendlessCollection.GetCurrentPage() )
+      Assert.IsTrue( backendlessCollection.Count > 0, "Server found wrong number of objects" );
+    
+      foreach( FindWithPropertiesEntity entity in backendlessCollection )
       {
         Assert.IsTrue( entity.Age > 0, "Server result contained wrong age field value" );
         Assert.IsNull( entity.Name, "Server result contained non null field" );

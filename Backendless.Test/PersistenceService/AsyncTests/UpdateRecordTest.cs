@@ -1,6 +1,7 @@
 ﻿using BackendlessAPI.Data;
 using BackendlessAPI.Test.PersistenceService.AsyncEntities.UpdateEntities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 
 namespace BackendlessAPI.Test.PersistenceService.AsyncTests
 {
@@ -35,7 +36,7 @@ namespace BackendlessAPI.Test.PersistenceService.AsyncTests
                                                                                                  .Find(
                                                                                                    new ResponseCallback
                                                                                                      <
-                                                                                                     BackendlessCollection
+                                                                                                     IList
                                                                                                      <BaseUpdateEntityAsync>
                                                                                                      >( this )
                                                                                                      {
@@ -44,9 +45,7 @@ namespace BackendlessAPI.Test.PersistenceService.AsyncTests
                                                                                                            {
                                                                                                              BaseUpdateEntityAsync
                                                                                                                foundEntity =
-                                                                                                                 collection
-                                                                                                                   .GetCurrentPage
-                                                                                                                   ()[0];
+                                                                                                                 collection[0];
                                                                                                              Assert.AreEqual
                                                                                                                ( savedEntity,
                                                                                                                  foundEntity,

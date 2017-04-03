@@ -16,7 +16,7 @@
     public const string NULL_LOGIN = "User login cannot be null or empty.";
 
     public const string NULL_CONTEXT =
-        "Context cannot be null. Use Backendless.initApp( Context context, String applicationId, String secretKey, String version ) for proper initialization.";
+        "Context cannot be null. Use Backendless.initApp( String applicationId, String secretKey ) for proper initialization.";
 
     public const string NULL_CATEGORY_NAME = "Category name cannot be null or empty.";
     public const string NULL_GEOPOINT = "Geopoint cannot be null.";
@@ -24,7 +24,7 @@
 
     public const string NULL_ENTITY = "Entity cannot be null.";
     public const string NULL_ENTITY_NAME = "Entity name cannot be null or empty.";
-    public const string NULL_ID = "Id cannot be null or empty.";
+    public const string NULL_ID = "Object id cannot be null or empty.";
 
     public const string NULL_UNIT = "Unit type cannot be null or empty.";
 
@@ -42,8 +42,7 @@
     public const string NULL_IDENTITY = "Identity cannot be null";
 
     public const string NULL_APPLICATION_ID = "Application id cannot be null";
-    public const string NULL_SECRET_KEY = "Secret key cannot be null";
-    public const string NULL_VERSION = "Version cannot be null";
+    public const string NULL_SECRET_KEY = "API key cannot be null";
     public const string NULL_DEVICE_TOKEN = "Null device token received";
 
     public const string WRONG_RADIUS = "Wrong radius value.";
@@ -80,9 +79,6 @@
     public const string ENTITY_WRONG_CREATED_FIELD_TYPE = "Wrong type of the created field";
     public const string ENTITY_WRONG_UPDATED_FIELD_TYPE = "Wrong type of the updated field";
     public const string WRONG_ENTITY_TYPE = "Wrong entity type";
-
-    public const string SERVICE_NOT_DECLARED =
-        "com.backendless.AndroidService is not declared at the application manifest";
 
     public const string LOCAL_FILE_EXISTS = "Local file exists";
     public const string WRONG_REMOTE_PATH = "Remote path cannot be empty";

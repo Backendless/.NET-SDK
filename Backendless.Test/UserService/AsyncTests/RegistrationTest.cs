@@ -1,6 +1,5 @@
 ﻿using System;
 using Backendless.Test;
-using BackendlessAPI.Exception;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace BackendlessAPI.Test.UserService.AsyncTests
@@ -13,7 +12,7 @@ namespace BackendlessAPI.Test.UserService.AsyncTests
     {
       RunAndAwait( () =>
         {
-          Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, Defaults.TEST_VERSION );
+          Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY );
           Backendless.UserService.Register( null,
                                             new ResponseCallback<BackendlessUser>( this )
                                               {
@@ -33,7 +32,7 @@ namespace BackendlessAPI.Test.UserService.AsyncTests
     {
       RunAndAwait( () =>
         {
-          Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, Defaults.TEST_VERSION );
+          Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY );
           Backendless.UserService.Register( new BackendlessUser(),
                                             new ResponseCallback<BackendlessUser>( this )
                                               {
@@ -53,7 +52,7 @@ namespace BackendlessAPI.Test.UserService.AsyncTests
     {
       RunAndAwait( () =>
         {
-          Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, "v5" );
+          Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY );
           BackendlessUser partialUser = new BackendlessUser();
           String login = "bot" + Random.Next();
           partialUser.SetProperty( LOGIN_KEY, login );
@@ -76,7 +75,7 @@ namespace BackendlessAPI.Test.UserService.AsyncTests
     {
       RunAndAwait( () =>
         {
-          Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, Defaults.TEST_VERSION );
+          Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY );
           BackendlessUser user = new BackendlessUser();
           user.SetProperty( LOGIN_KEY, null );
           user.SetProperty( EMAIL_KEY, null );
@@ -97,7 +96,7 @@ namespace BackendlessAPI.Test.UserService.AsyncTests
     {
       RunAndAwait( () =>
         {
-          Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, "v5" );
+          Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY);
           BackendlessUser user = GetRandomNotRegisteredUser();
           user.SetProperty( "gender", null );
           Backendless.UserService.Register( user,
@@ -116,7 +115,7 @@ namespace BackendlessAPI.Test.UserService.AsyncTests
     {
       RunAndAwait( () =>
         {
-          Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, "v5" );
+          Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY );
           BackendlessUser user = GetRandomNotRegisteredUser();
           user.SetProperty( "gender", "" );
           Backendless.UserService.Register( user,
@@ -135,7 +134,7 @@ namespace BackendlessAPI.Test.UserService.AsyncTests
     {
       RunAndAwait( () =>
         {
-          Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, Defaults.TEST_VERSION );
+          Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY );
           BackendlessUser user = new BackendlessUser();
           user.SetProperty( LOGIN_KEY, "" );
           user.SetProperty( EMAIL_KEY, "" );
@@ -161,7 +160,7 @@ namespace BackendlessAPI.Test.UserService.AsyncTests
     {
       RunAndAwait( () =>
         {
-          Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, Defaults.TEST_VERSION );
+          Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY );
           BackendlessUser user = GetRandomNotRegisteredUser();
           string propertyKey = "property_key#" + Random.Next();
           string propertyValue = "property_value#" + Random.Next();
@@ -195,7 +194,7 @@ namespace BackendlessAPI.Test.UserService.AsyncTests
     {
       RunAndAwait( () =>
         {
-          Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, Defaults.TEST_VERSION );
+          Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY );
           Backendless.UserService.Register( GetRandomNotRegisteredUser(),
                                             new ResponseCallback<BackendlessUser>( this )
                                               {
@@ -226,7 +225,7 @@ namespace BackendlessAPI.Test.UserService.AsyncTests
     {
       RunAndAwait( () =>
         {
-          Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, Defaults.TEST_VERSION );
+          Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY );
           Backendless.UserService.Register( GetRandomNotRegisteredUser(),
                                             new ResponseCallback<BackendlessUser>( this )
                                               {
@@ -257,7 +256,7 @@ namespace BackendlessAPI.Test.UserService.AsyncTests
     {
       RunAndAwait( () =>
         {
-          Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, "v6" );
+          Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY );
           Backendless.UserService.Register( GetRandomNotRegisteredUser(),
                                             new ResponseCallback<BackendlessUser>( this )
                                               {
@@ -275,7 +274,7 @@ namespace BackendlessAPI.Test.UserService.AsyncTests
     {
       RunAndAwait( () =>
         {
-          Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, "v7" );
+          Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY );
           BackendlessUser user = GetRandomNotRegisteredUser();
           user.SetProperty( "somedynamicpropertykey", "somedynamicpropertyvalue" );
 
@@ -296,7 +295,7 @@ namespace BackendlessAPI.Test.UserService.AsyncTests
     {
       RunAndAwait( () =>
         {
-          Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, Defaults.TEST_VERSION );
+          Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY );
           String timestamp = DateTime.Now.Ticks.ToString();
           BackendlessUser user = new BackendlessUser();
           user.SetProperty( EMAIL_KEY, "bot" + timestamp + "@gmail.com" );

@@ -122,9 +122,9 @@ namespace BackendlessAPI.File.Security
       permission.operaiton = operation;
 
       if( principal != null )
-        return new Object[] { Backendless.AppId, Backendless.VersionNum, principal, permission };
+        return new Object[] { principal, permission };
       else
-        return new Object[] { Backendless.AppId, Backendless.VersionNum, permission };
+        return new Object[] { permission };
     }
 
     private void ServerCall( AsyncCallback<Object> responder, String method, Object[] args )

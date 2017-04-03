@@ -21,13 +21,13 @@ namespace BackendlessAPI
     // synchronous method
     public IDictionary Dispatch( String eventName, IDictionary eventArgs )
     {
-      return Invoker.InvokeSync<IDictionary>( EVENTS_MANAGER_SERVER_ALIAS, "dispatchEvent", new object[] { Backendless.AppId, Backendless.VersionNum, eventName, eventArgs } );
+      return Invoker.InvokeSync<IDictionary>( EVENTS_MANAGER_SERVER_ALIAS, "dispatchEvent", new object[] { eventName, eventArgs } );
     }
 
     // asynchronous method
     public void Dispatch( String eventName, IDictionary eventArgs, AsyncCallback<IDictionary> callback )
     {
-      Invoker.InvokeAsync( EVENTS_MANAGER_SERVER_ALIAS, "dispatchEvent", new object[] { Backendless.AppId, Backendless.VersionNum, eventName, eventArgs }, callback );
+      Invoker.InvokeAsync( EVENTS_MANAGER_SERVER_ALIAS, "dispatchEvent", new object[] { eventName, eventArgs }, callback );
     }
   }
 }

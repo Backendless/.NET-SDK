@@ -53,7 +53,7 @@ namespace BackendlessAPI.Logging
 
     internal void ReportSingleLogMessage( String logger, LogLevel loglevel, String message, System.Exception error )
     {
-      Object[] args = new Object[] { Backendless.AppId, Backendless.VersionNum, loglevel.ToString(), logger, message, error != null ? error.StackTrace : null };
+      Object[] args = new Object[] { loglevel.ToString(), logger, message, error != null ? error.StackTrace : null };
       AsyncCallback<Object> callback = new AsyncCallback<Object>(
        result =>
        {
@@ -68,7 +68,7 @@ namespace BackendlessAPI.Logging
 
     internal void ReportBatch( LogMessage[] batch )
     {
-      Object[] args = new Object[] { Backendless.AppId, Backendless.VersionNum, batch };
+      Object[] args = new Object[] { batch };
       AsyncCallback<Object> callback = new AsyncCallback<Object>(
        result =>
        {

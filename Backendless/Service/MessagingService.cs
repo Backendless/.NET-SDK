@@ -381,10 +381,7 @@ namespace BackendlessAPI.Service
 
       return Invoker.InvokeSync<Messaging.MessageStatus>( MESSAGING_MANAGER_SERVER_ALIAS, "publish",
                                                    new[]
-                                                     {
-                                                       Backendless.AppId, Backendless.VersionNum, channelName, message,
-                                                       publishOptions, deliveryOptions
-                                                     } );
+                                                     { channelName, message, publishOptions, deliveryOptions } );
     }
 
     #endregion
@@ -418,10 +415,7 @@ namespace BackendlessAPI.Service
 
       Invoker.InvokeAsync( MESSAGING_MANAGER_SERVER_ALIAS, "publish",
                            new[]
-                             {
-                               Backendless.AppId, Backendless.VersionNum, channelName, message, publishOptions,
-                               deliveryOptions
-                             }, callback );
+                             { channelName, message, publishOptions, deliveryOptions }, callback );
     }
 
     #endregion
@@ -432,7 +426,7 @@ namespace BackendlessAPI.Service
         throw new ArgumentNullException( ExceptionMessage.NULL_MESSAGE_ID );
 
       return Invoker.InvokeSync<bool>( MESSAGING_MANAGER_SERVER_ALIAS, "cancel",
-                                       new Object[] { Backendless.AppId, Backendless.VersionNum, messageId } );
+                                       new Object[] { messageId } );
     }
 
     public void Cancel( string messageId, AsyncCallback<bool> callback )
@@ -441,7 +435,7 @@ namespace BackendlessAPI.Service
         throw new ArgumentNullException( ExceptionMessage.NULL_MESSAGE_ID );
 
       Invoker.InvokeAsync( MESSAGING_MANAGER_SERVER_ALIAS, "cancel",
-                           new Object[] { Backendless.AppId, Backendless.VersionNum, messageId }, callback );
+                           new Object[] { messageId }, callback );
     }
 
     #region SUBSCRIBE SYNC (DEFAULT CHANNEL)
@@ -602,11 +596,7 @@ namespace BackendlessAPI.Service
         throw new ArgumentNullException( ExceptionMessage.NULL_SUBSCRIPTION_ID );
 
       return Invoker.InvokeSync<List<Message>>( MESSAGING_MANAGER_SERVER_ALIAS, "pollMessages",
-                                                   new object[]
-                                                     {
-                                                       Backendless.AppId, Backendless.VersionNum, channelName,
-                                                       subscriptionId
-                                                     } );
+                                                   new object[] { channelName, subscriptionId } );
     }
 
     public void PollMessages( string channelName, string subscriptionId, AsyncCallback<List<Message>> callback )
@@ -617,7 +607,7 @@ namespace BackendlessAPI.Service
         throw new ArgumentNullException( ExceptionMessage.NULL_SUBSCRIPTION_ID );
 
       Invoker.InvokeAsync( MESSAGING_MANAGER_SERVER_ALIAS, "pollMessages",
-                           new object[] { Backendless.AppId, Backendless.VersionNum, channelName, subscriptionId },
+                           new object[] { channelName, subscriptionId },
                            callback );
     }
 
@@ -666,7 +656,7 @@ namespace BackendlessAPI.Service
       if( attachments == null )
         throw new ArgumentNullException( ExceptionMessage.NULL_ATTACHMENTS );
 
-      Invoker.InvokeSync<object>( EMAIL_MANAGER_SERVER_ALIAS, "send", new Object[] { Backendless.AppId, Backendless.VersionNum, subject, bodyParts, recipients, attachments } );
+      Invoker.InvokeSync<object>( EMAIL_MANAGER_SERVER_ALIAS, "send", new Object[] { subject, bodyParts, recipients, attachments } );
     }
 
     public void SendTextEmail( String subject, String messageBody, List<String> recipients, AsyncCallback<object> responder )
@@ -714,7 +704,7 @@ namespace BackendlessAPI.Service
       if( attachments == null )
         throw new ArgumentNullException( ExceptionMessage.NULL_ATTACHMENTS );
 
-      Invoker.InvokeAsync( EMAIL_MANAGER_SERVER_ALIAS, "send", new Object[] { Backendless.AppId, Backendless.VersionNum, subject, bodyParts, recipients, attachments }, responder );
+      Invoker.InvokeAsync( EMAIL_MANAGER_SERVER_ALIAS, "send", new Object[] { subject, bodyParts, recipients, attachments }, responder );
     }
     #endregion
 
@@ -726,7 +716,7 @@ namespace BackendlessAPI.Service
         subscriptionOptions = new Messaging.SubscriptionOptions();
 
       return Invoker.InvokeSync<string>( MESSAGING_MANAGER_SERVER_ALIAS, "subscribeForPollingAccess",
-                                         new Object[] { Backendless.AppId, Backendless.VersionNum, channelName, subscriptionOptions } );
+                                         new Object[] { channelName, subscriptionOptions } );
     }
 
     private void subscribeForPollingAccess( string channelName, Messaging.SubscriptionOptions subscriptionOptions,
@@ -738,7 +728,7 @@ namespace BackendlessAPI.Service
         subscriptionOptions = new Messaging.SubscriptionOptions();
 
       Invoker.InvokeAsync( MESSAGING_MANAGER_SERVER_ALIAS, "subscribeForPollingAccess",
-                           new Object[] { Backendless.AppId, Backendless.VersionNum, channelName, subscriptionOptions },
+                           new Object[] { channelName, subscriptionOptions },
                            callback );
     }
 

@@ -35,9 +35,7 @@ namespace BackendlessAPI
 
     public static string AppId { get; private set; }
 
-    public static string SecretKey { get; private set; }
-
-    public static string VersionNum { get; private set; }
+    public static string APIKey { get; private set; }
 
     static Backendless() 
     {
@@ -54,20 +52,16 @@ namespace BackendlessAPI
       Types.AddAbstractTypeMapping( typeof( IDictionary ), typeof( Dictionary<object, object> ) );
     }
 
-    public static void InitApp( string applicationId, string secretKey, string version )
+    public static void InitApp( string applicationId, string apiKey )
     {
       if( string.IsNullOrEmpty( applicationId ) )
         throw new ArgumentNullException( ExceptionMessage.NULL_APPLICATION_ID );
 
-      if( string.IsNullOrEmpty( secretKey ) )
+      if( string.IsNullOrEmpty( apiKey ) )
         throw new ArgumentNullException(ExceptionMessage.NULL_SECRET_KEY);
 
-      if( string.IsNullOrEmpty( version ) )
-        throw new ArgumentNullException(ExceptionMessage.NULL_VERSION);
-
       AppId = applicationId;
-      SecretKey = secretKey;
-      VersionNum = version;
+      APIKey = apiKey;
 
       Persistence = new PersistenceService();
       Data = Persistence;

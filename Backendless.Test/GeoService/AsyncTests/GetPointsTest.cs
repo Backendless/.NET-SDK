@@ -77,7 +77,7 @@ namespace BackendlessAPI.Test.GeoService.AsyncTests
       RunAndAwait(
         () =>
         Backendless.Geo.GetPoints( new BackendlessGeoQuery( 50, 50, 10, -10 ),
-                                   new AsyncCallback<BackendlessCollection<GeoPoint>>(
+                                   new AsyncCallback<IList<GeoPoint>>(
                                      response => FailCountDownWith( "Client send a query with negative offset" ),
                                      fault => CheckErrorCode( ExceptionMessage.WRONG_OFFSET, fault ) ) ) );
     }
@@ -89,7 +89,7 @@ namespace BackendlessAPI.Test.GeoService.AsyncTests
         {
           var geoQuery = new BackendlessGeoQuery( 10, 10, 20, 20 ) {Radius = 10, Latitude = 10, Longitude = 10, Units = Units.KILOMETERS};
           Backendless.Geo.GetPoints( geoQuery,
-                                     new AsyncCallback<BackendlessCollection<GeoPoint>>(
+                                     new AsyncCallback<IList<GeoPoint>>(
                                        response =>
                                        FailCountDownWith(
                                          "Client send a query with both rectangle and radius search query" ),
@@ -206,7 +206,7 @@ namespace BackendlessAPI.Test.GeoService.AsyncTests
 
           var geoQuery = new BackendlessGeoQuery( GetDefinedCategories() ) {Offset = maxPoints*2};
           Backendless.Geo.GetPoints( geoQuery,
-                                     new AsyncCallback<BackendlessCollection<GeoPoint>>(
+                                     new AsyncCallback<IList<GeoPoint>>(
                                        response => FailCountDownWith( "Server accepted request" ),
                                        fault => CheckErrorCode( 4003, fault ) ) );
         } );

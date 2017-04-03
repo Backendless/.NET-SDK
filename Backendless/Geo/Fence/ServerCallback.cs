@@ -50,7 +50,7 @@ namespace BackendlessAPI.Geo.Fence
             {
             } );
 
-          Object[] args = new Object[] { Backendless.AppId, Backendless.VersionNum, geofenceId, geoPoint };
+          Object[] args = new Object[] { geofenceId, geoPoint };
           Invoker.InvokeAsync( Service.GeoService.GEO_MANAGER_SERVER_ALIAS, method, args, responder );
         }
     }

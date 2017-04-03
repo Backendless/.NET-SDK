@@ -32,7 +32,7 @@ namespace BackendlessAPI.Test.FileService.AsyncTests
     [TestInitialize]
     public void SetUp()
     {
-      Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, Defaults.TEST_VERSION );
+      Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY );
     }
   }
 }

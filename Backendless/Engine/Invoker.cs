@@ -12,7 +12,7 @@ namespace BackendlessAPI.Engine
     private static string URL_ENDING = "/binary";
     private static string DESTINATION = "GenericDestination";
 
-    private static WeborbClient client = new WeborbClient( Backendless.URL + "/" + Backendless.VersionNum + URL_ENDING,
+    private static WeborbClient client = new WeborbClient( Backendless.URL + "/" + Backendless.AppId + "/" + Backendless.APIKey + URL_ENDING,
                                                            DESTINATION );
 
     public static T InvokeSync<T>( string className, string methodName, object[] args )

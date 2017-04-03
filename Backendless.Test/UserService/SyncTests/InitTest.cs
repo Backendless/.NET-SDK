@@ -9,13 +9,13 @@ namespace BackendlessAPI.Test.UserService.SyncTests
     [TestMethod]
     public void TestUserServiceInitialized()
     {
-      Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, Defaults.TEST_VERSION );
+      Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY );
     }
 
     [TestMethod]
     public void TestCurrentUserIsEmpty()
     {
-      Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, Defaults.TEST_VERSION );
+      Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY );
       Assert.IsTrue( Backendless.UserService.CurrentUser == null, "Current user was not empty" );
     }
   }

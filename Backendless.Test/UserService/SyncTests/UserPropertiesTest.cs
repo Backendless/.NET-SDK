@@ -14,7 +14,7 @@ namespace BackendlessAPI.Test.UserService.SyncTests
     [TestMethod]
     public void TestDescribeUserProperties()
     {
-      Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, "v10" );
+      Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY );
       BackendlessUser user = GetRandomNotRegisteredUser();
       string propertyKeySync = "property_key#Sync";
       string propertyKeyAsync = "property_key#Async";

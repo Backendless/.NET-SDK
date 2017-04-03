@@ -5,6 +5,7 @@ using BackendlessAPI.File;
 using BackendlessAPI.Data;
 using System;
 using System.IO;
+using System.Collections.Generic;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -42,7 +43,6 @@ namespace BackendlessAPI.Service
       MakeFileUpload( fileStream, remotePath, uploadCallback, callback );
     }
     #endregion
-
     #region REMOVE_FILE
     public void Remove( string fileUrl )
     {
@@ -50,7 +50,7 @@ namespace BackendlessAPI.Service
         throw new ArgumentNullException( ExceptionMessage.NULL_PATH );
 
       Invoker.InvokeSync<object>( FILE_MANAGER_SERVER_ALIAS, "deleteFileOrDirectory",
-                                  new Object[] { Backendless.AppId, Backendless.VersionNum, fileUrl } );
+                                  new Object[] { fileUrl } );
     }
 
     public void Remove( string fileUrl, AsyncCallback<object> callback )
@@ -59,10 +59,9 @@ namespace BackendlessAPI.Service
         throw new ArgumentNullException( ExceptionMessage.NULL_PATH );
 
       Invoker.InvokeAsync<object>( FILE_MANAGER_SERVER_ALIAS, "deleteFileOrDirectory",
-                                   new Object[] { Backendless.AppId, Backendless.VersionNum, fileUrl }, callback );
+                                   new Object[] { fileUrl }, callback );
     }
     #endregion
-
     #region REMOVE_DIR
     public void RemoveDirectory( string directoryPath )
     {
@@ -70,7 +69,7 @@ namespace BackendlessAPI.Service
         throw new ArgumentNullException( ExceptionMessage.NULL_PATH );
 
       Invoker.InvokeSync<object>( FILE_MANAGER_SERVER_ALIAS, "deleteFileOrDirectory",
-                                  new Object[] { Backendless.AppId, Backendless.VersionNum, directoryPath } );
+                                  new Object[] { directoryPath } );
     }
 
     public void RemoveDirectory( string directoryPath, AsyncCallback<object> callback )
@@ -79,10 +78,9 @@ namespace BackendlessAPI.Service
         throw new ArgumentNullException( ExceptionMessage.NULL_PATH );
 
       Invoker.InvokeAsync<object>( FILE_MANAGER_SERVER_ALIAS, "deleteFileOrDirectory",
-                                   new Object[] { Backendless.AppId, Backendless.VersionNum, directoryPath }, callback );
+                                   new Object[] { directoryPath }, callback );
     }
     #endregion
-
     #region SAVEFILE
 
     public String SaveFile( String filePathName, byte[] fileContent )
@@ -104,7 +102,7 @@ namespace BackendlessAPI.Service
 
     public String SaveFile( String path, String fileName, byte[] fileContent, Boolean overwrite )
     {
-      return Invoker.InvokeSync<String>( FILE_MANAGER_SERVER_ALIAS, "saveFile", new Object[] { Backendless.AppId, Backendless.VersionNum, path, fileName, fileContent, overwrite } );
+      return Invoker.InvokeSync<String>( FILE_MANAGER_SERVER_ALIAS, "saveFile", new Object[] { path, fileName, fileContent, overwrite } );
     }
 
     public void SaveFile( String filePathName, byte[] fileContent, AsyncCallback<String> responder )
@@ -121,93 +119,85 @@ namespace BackendlessAPI.Service
 
     public void SaveFile( String path, String fileName, byte[] fileContent, AsyncCallback<String> responder )
     {
-      Invoker.InvokeAsync<String>( FILE_MANAGER_SERVER_ALIAS, "saveFile", new Object[] { Backendless.AppId, Backendless.VersionNum, path, fileName, fileContent }, responder );
+      Invoker.InvokeAsync<String>( FILE_MANAGER_SERVER_ALIAS, "saveFile", new Object[] { path, fileName, fileContent }, responder );
     }
 
     public void SaveFile( String path, String fileName, byte[] fileContent, Boolean overwrite, AsyncCallback<String> responder )
     {
-      Invoker.InvokeAsync<String>( FILE_MANAGER_SERVER_ALIAS, "saveFile", new Object[] { Backendless.AppId, Backendless.VersionNum, path, fileName, fileContent, overwrite }, responder );
+      Invoker.InvokeAsync<String>( FILE_MANAGER_SERVER_ALIAS, "saveFile", new Object[] { path, fileName, fileContent, overwrite }, responder );
     }
 
     #endregion
-
     #region RENAME
     public string RenameFile( String oldPathName, String newName )
     {
       checkPaths( oldPathName, newName );
-      return Invoker.InvokeSync<string>( FILE_MANAGER_SERVER_ALIAS, "renameFile", new Object[] { Backendless.AppId, Backendless.VersionNum, oldPathName, newName } );
+      return Invoker.InvokeSync<string>( FILE_MANAGER_SERVER_ALIAS, "renameFile", new Object[] { oldPathName, newName } );
     }
 
     public void RenameFile( String oldPathName, String newName, AsyncCallback<string> responder )
     {
       checkPaths( oldPathName, newName );
-      Invoker.InvokeAsync( FILE_MANAGER_SERVER_ALIAS, "renameFile", new Object[] { Backendless.AppId, Backendless.VersionNum, oldPathName, newName }, responder );
+      Invoker.InvokeAsync( FILE_MANAGER_SERVER_ALIAS, "renameFile", new Object[] { oldPathName, newName }, responder );
     }
     #endregion 
-
     #region COPY
     public string CopyFile( String sourcePathName, String targetPath )
     {
       checkPaths( sourcePathName, targetPath );
-      return Invoker.InvokeSync<string>( FILE_MANAGER_SERVER_ALIAS, "copyFile", new Object[] { Backendless.AppId, Backendless.VersionNum, sourcePathName, targetPath } );
+      return Invoker.InvokeSync<string>( FILE_MANAGER_SERVER_ALIAS, "copyFile", new Object[] { sourcePathName, targetPath } );
     }
 
     public void CopyFile( String sourcePathName, String targetPath, AsyncCallback<string> responder )
     {
       checkPaths( sourcePathName, targetPath );
-      Invoker.InvokeAsync( FILE_MANAGER_SERVER_ALIAS, "copyFile", new Object[] { Backendless.AppId, Backendless.VersionNum, sourcePathName, targetPath }, responder );
+      Invoker.InvokeAsync( FILE_MANAGER_SERVER_ALIAS, "copyFile", new Object[] { sourcePathName, targetPath }, responder );
     }
     #endregion
-
     #region MOVE
     public string MoveFile( String sourcePathName, String targetPath )
     {
       checkPaths( sourcePathName, targetPath );
-      return Invoker.InvokeSync<string>( FILE_MANAGER_SERVER_ALIAS, "moveFile", new Object[] { Backendless.AppId, Backendless.VersionNum, sourcePathName, targetPath } );
+      return Invoker.InvokeSync<string>( FILE_MANAGER_SERVER_ALIAS, "moveFile", new Object[] { sourcePathName, targetPath } );
     }
 
     public void MoveFile( String sourcePathName, String targetPath, AsyncCallback<String> responder )
     {
       checkPaths( sourcePathName, targetPath );
-      Invoker.InvokeAsync( FILE_MANAGER_SERVER_ALIAS, "moveFile", new Object[] { Backendless.AppId, Backendless.VersionNum, sourcePathName, targetPath }, responder );
+      Invoker.InvokeAsync( FILE_MANAGER_SERVER_ALIAS, "moveFile", new Object[] { sourcePathName, targetPath }, responder );
     }
     #endregion
-
     #region LISTING
-    public BackendlessCollection<FileInfo> Listing( String path )
+    public IList<FileInfo> Listing( String path )
     {
       return Listing( path, "*", false );
     }
 
-    public BackendlessCollection<FileInfo> Listing( String path, String pattern, bool recursive )
+    public IList<FileInfo> Listing( String path, String pattern, bool recursive )
     {
       return Listing( path, pattern, recursive, BackendlessSimpleQuery.DEFAULT_PAGE_SIZE, BackendlessSimpleQuery.DEFAULT_OFFSET );
     }
 
-    public BackendlessCollection<FileInfo> Listing( String path, String pattern, bool recursive, int pagesize, int offset )
+    public IList<FileInfo> Listing( String path, String pattern, bool recursive, int pagesize, int offset )
     {
-      BackendlessCollection<FileInfo> collection = Invoker.InvokeSync<BackendlessCollection<FileInfo>>( FILE_MANAGER_SERVER_ALIAS, "listing", new Object[] { Backendless.AppId, Backendless.VersionNum, path, pattern, recursive, pagesize, offset } );
-      collection.Query = new BackendlessSimpleQuery( pagesize, offset );
-      return collection;
+      return Invoker.InvokeSync<IList<FileInfo>>( FILE_MANAGER_SERVER_ALIAS, "listing", new Object[] { path, pattern, recursive, pagesize, offset } );
     }
 
-    public void Listing( String path, AsyncCallback<BackendlessCollection<FileInfo>> responder )
+    public void Listing( String path, AsyncCallback<IList<FileInfo>> responder )
     {
       Listing( path, "*", false, responder );
     }
 
-    public void Listing( String path, String pattern, bool recursive, AsyncCallback<BackendlessCollection<FileInfo>> responder )
+    public void Listing( String path, String pattern, bool recursive, AsyncCallback<IList<FileInfo>> responder )
     {
       Listing( path, pattern, recursive, BackendlessSimpleQuery.DEFAULT_PAGE_SIZE, BackendlessSimpleQuery.DEFAULT_OFFSET, responder );
     }
 
-    public void Listing( String path, String pattern, bool recursive, int pagesize, int offset, AsyncCallback<BackendlessCollection<FileInfo>> responder )
+    public void Listing( String path, String pattern, bool recursive, int pagesize, int offset, AsyncCallback<IList<FileInfo>> responder )
     {
-      AsyncCallback<BackendlessCollection<FileInfo>> listingCallback = new AsyncCallback<BackendlessCollection<FileInfo>>(
+      AsyncCallback<IList<FileInfo>> listingCallback = new AsyncCallback<IList<FileInfo>>(
         files =>
         {
-          files.Query = new BackendlessSimpleQuery( pagesize, offset );
-
           if( responder != null )
             responder.ResponseHandler( files );
         },
@@ -217,11 +207,68 @@ namespace BackendlessAPI.Service
             responder.ErrorHandler( error );
         }
       );
-      Object[] args = new Object[] { Backendless.AppId, Backendless.VersionNum, path, pattern, recursive, pagesize, offset };
+      Object[] args = new Object[] { path, pattern, recursive, pagesize, offset };
       Invoker.InvokeAsync( FILE_MANAGER_SERVER_ALIAS, "listing", args, listingCallback );
     }
     #endregion
+    #region GET FILE COUNT
+    public int GetFileCount( String path, String pattern, Boolean recursive, Boolean countDirectories )
+    {
+      return Invoker.InvokeSync<int>( FILE_MANAGER_SERVER_ALIAS, "count", new Object[] { path, pattern, recursive, countDirectories } );
+    }
 
+    public int GetFileCount( String path, String pattern, Boolean recursive )
+    {
+      return GetFileCount( path, pattern, recursive, false );
+    }
+
+    public int GetFileCount( String path, String pattern )
+    {
+      return GetFileCount( path, pattern, false );
+    }
+
+    public int GetFileCount( String path )
+    {
+      return GetFileCount( path, "*" );
+    }
+
+    public void GetFileCount( String path, String pattern, Boolean recursive, Boolean countDirectories, AsyncCallback<int> responder )
+    {
+        Invoker.InvokeAsync<int>( FILE_MANAGER_SERVER_ALIAS, "count", new Object[] { path, pattern, recursive, countDirectories }, responder );
+    }
+
+    public void GetFileCount( String path, String pattern, Boolean recursive, AsyncCallback<int> responder )
+    {
+      GetFileCount( path, pattern, recursive, false, responder );
+    }
+
+    public void GetFileCount( String path, String pattern, AsyncCallback<int> responder )
+    {
+      GetFileCount( path, pattern, false, responder );
+    }
+
+    public void GetFileCount( String path, AsyncCallback<int> responder )
+    {
+      GetFileCount( path, "*", responder );
+    }
+    #endregion
+    #region EXISTS
+    public Boolean Exists( String path )
+    {
+      if( string.IsNullOrEmpty( path ) )
+        throw new System.Exception( ExceptionMessage.NULL_PATH );
+
+      return Invoker.InvokeSync<Boolean>( FILE_MANAGER_SERVER_ALIAS, "exists", new Object[] { path } );
+    }
+
+    public void Exists( String path, AsyncCallback<Boolean> responder )
+    {
+      if( string.IsNullOrEmpty( path ) )
+        throw new System.Exception( ExceptionMessage.NULL_PATH );
+
+      Invoker.InvokeAsync<Boolean>( FILE_MANAGER_SERVER_ALIAS, "exists", new Object[] { path }, responder );
+    }
+    #endregion
     private void checkPaths( string path1, string path2 )
     {
       if( path1 == null || path1.Length == 0 )
@@ -265,7 +312,7 @@ namespace BackendlessAPI.Service
         (HttpWebRequest)
         WebRequest.Create(
           new Uri(
-            Backendless.URL + "/" + Backendless.VersionNum + "/files/" + EncodeURL( path ) + "/" + EncodeURL( fileName ),
+            Backendless.URL + "/" + Backendless.AppId + "/" + Backendless.APIKey + "/files/" + EncodeURL( path ) + "/" + EncodeURL( fileName ),
             UriKind.Absolute ) );
 
       httpRequest.ContentType = "multipart/form-data; boundary=" + boundary;

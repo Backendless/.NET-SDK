@@ -14,7 +14,7 @@ namespace BackendlessAPI.Test.UserService.AsyncTests
     {
       RunAndAwait( () =>
         {
-          Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, "v10" );
+          Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY);
           BackendlessUser user = GetRandomNotRegisteredUser();
           const string propertyKeySync = "property_key#Sync";
           const string propertyKeyAsync = "property_key#Async";

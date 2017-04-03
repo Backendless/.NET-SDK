@@ -9,7 +9,7 @@ namespace BackendlessAPI.Test.UserService.SyncTests
     [TestMethod]
     public void TestUserLogout()
     {
-      Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, Defaults.TEST_VERSION );
+      Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY );
       BackendlessUser user = GetRandomLoggedInUser();
       Backendless.UserService.Logout();
 

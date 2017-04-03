@@ -15,7 +15,6 @@ namespace BackendlessAPI.Test.UserService.AsyncTests
     {
       RunAndAwait( () =>
         {
-          Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, Defaults.TEST_VERSION );
           GetRandomRegisteredUser( new ResponseCallback<BackendlessUser>( this )
             {
               ResponseHandler =
@@ -33,7 +32,6 @@ namespace BackendlessAPI.Test.UserService.AsyncTests
     {
       RunAndAwait( () =>
         {
-          Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, Defaults.TEST_VERSION );
           GetRandomRegisteredUser( new ResponseCallback<BackendlessUser>( this )
             {
               ResponseHandler =
@@ -51,7 +49,6 @@ namespace BackendlessAPI.Test.UserService.AsyncTests
     {
       RunAndAwait( () =>
         {
-          Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, Defaults.TEST_VERSION );
           GetRandomRegisteredUser( new ResponseCallback<BackendlessUser>( this )
             {
               ResponseHandler =
@@ -64,12 +61,12 @@ namespace BackendlessAPI.Test.UserService.AsyncTests
         } );
     }
 
+    [Ignore]
     [TestMethod]
     public void TestLoginWithDisabledAppLogin()
     {
       RunAndAwait( () =>
         {
-          Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, "v2_nata" );
           GetRandomRegisteredUser( new ResponseCallback<BackendlessUser>( this )
             {
               ResponseHandler =
@@ -87,98 +84,26 @@ namespace BackendlessAPI.Test.UserService.AsyncTests
     {
       RunAndAwait( () =>
         {
-          Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, Defaults.TEST_VERSION );
-          GetRandomRegisteredUser( new ResponseCallback<BackendlessUser>( this )
-            {
-              ResponseHandler =
-                response =>
-                Backendless.UserService.Login( (string) response.GetProperty( LOGIN_KEY ), response.Password,
+          BackendlessUser reguser = GetRandomRegisteredUser( null ); 
+          Backendless.UserService.Login( (string) reguser.GetProperty( LOGIN_KEY ), reguser.Password,
                                                new ResponseCallback<BackendlessUser>( this )
                                                  {
                                                    ResponseHandler =
                                                      user =>
                                                      Backendless.UserService.DescribeUserClass(
                                                        new ResponseCallback<List<UserProperty>>( this ) )
-                                                 } )
-            } );
-        } );
+                                                 } );
+        });
     }
 
-    [TestMethod]
-    public void TestLoginWithExternalAuth()
-    {
-      RunAndAwait( () =>
-        {
-          Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, "v_nata6" );
-          GetRandomRegisteredUser( new ResponseCallback<BackendlessUser>( this )
-            {
-              ResponseHandler =
-                response =>
-                Backendless.UserService.Login( (string) response.GetProperty( LOGIN_KEY ), "password123",
-                                               new AsyncCallback<BackendlessUser>(
-                                                 user =>
-                                                 FailCountDownWith(
-                                                   "Server accepted registration for an invalid external Auth" ),
-                                                 fault => CheckErrorCode( 3052, fault ) ) )
-            } );
-        } );
-    }
-
-    [TestMethod]
-    public void TestLoginWithoutFailedLoginsLock()
-    {
-      RunAndAwait( () =>
-        {
-          Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, "v3_nata" );
-          GetRandomRegisteredUser( new ResponseCallback<BackendlessUser>( this )
-            {
-              ResponseHandler =
-                response =>
-                Backendless.UserService.Login( (string) response.GetProperty( LOGIN_KEY ), response.Password + "foo",
-                                               new AsyncCallback<BackendlessUser>(
-                                                 user => FailCountDownWith( "Server didn't locked login" ), fault =>
-                                                   {
-                                                     Backendless.UserService.Login(
-                                                       (string) response.GetProperty( LOGIN_KEY ), response.Password,
-                                                       new ResponseCallback<BackendlessUser>( this )
-                                                         {
-                                                           ResponseHandler = user => CountDown()
-                                                         } );
-                                                   } ) )
-            } );
-        } );
-    }
-
-    [TestMethod]
-    public void TestLoginWithUserFromAnotherVersion()
-    {
-      RunAndAwait( () =>
-        {
-          Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, Defaults.TEST_VERSION );
-          GetRandomRegisteredUser( new ResponseCallback<BackendlessUser>( this )
-            {
-              ResponseHandler = response =>
-                {
-                  Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, "v3_nata" );
-                  Backendless.UserService.Login( (string) response.GetProperty( LOGIN_KEY ), response.Password,
-                                                 new AsyncCallback<BackendlessUser>(
-                                                   user =>
-                                                   FailCountDownWith(
-                                                     "Server accepted login for the user from another version" ),
-                                                   fault => CheckErrorCode( 3003, fault ) ) );
-                }
-            } );
-        } );
-    }
 
     [TestMethod]
     public void TestCurrentUserAfterLogin()
     {
       RunAndAwait( () =>
         {
-          Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, Defaults.TEST_VERSION );
           BackendlessUser notRegisteredUseruser = GetRandomNotRegisteredUser();
-          string propertyKey = "property_key#" + Random.Next();
+          string propertyKey = "propertykey" + Random.Next();
           string propertyValue = "property_value#" + Random.Next();
           notRegisteredUseruser.SetProperty( propertyKey, propertyValue );
 

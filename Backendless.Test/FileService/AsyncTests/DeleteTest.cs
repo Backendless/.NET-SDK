@@ -26,7 +26,7 @@ namespace BackendlessAPI.Test.FileService.AsyncTests
                                             Assert.IsNotNull( backendlessFile.FileURL, "Server returned a null url" );
                                             Assert.AreEqual(
                                               "https://api.backendless.com/" + Defaults.TEST_APP_ID.ToLower() + "/" +
-                                              Defaults.TEST_VERSION.ToLower() + "/files/" + path + "/" + Path.GetFileName(fileToUpload.Name),
+                                              Defaults.TEST_SECRET_KEY.ToLower() + "/files/" + path + "/" + Path.GetFileName(fileToUpload.Name),
                                               backendlessFile.FileURL,
                                               "Server returned wrong url " + backendlessFile.FileURL );
 
@@ -69,7 +69,7 @@ namespace BackendlessAPI.Test.FileService.AsyncTests
                                             Assert.IsNotNull( backendlessFile.FileURL, "Server returned a null url" );
                                             Assert.AreEqual(
                                               "https://api.backendless.com/" + Defaults.TEST_APP_ID.ToLower() + "/" +
-                                              Defaults.TEST_VERSION.ToLower() + "/files/" + dirName + "/" + path + "/" +
+                                              Defaults.TEST_SECRET_KEY.ToLower() + "/files/" + dirName + "/" + path + "/" +
                                               Path.GetFileName(fileToUpload.Name), backendlessFile.FileURL,
                                               "Server returned wrong url " + backendlessFile.FileURL );
 
@@ -112,7 +112,7 @@ namespace BackendlessAPI.Test.FileService.AsyncTests
                                             Assert.IsNotNull( backendlessFile.FileURL, "Server returned a null url" );
                                             Assert.AreEqual(
                                               "https://api.backendless.com/" + Defaults.TEST_APP_ID.ToLower() + "/" +
-                                              Defaults.TEST_VERSION.ToLower() + "/files/" + dirName + "/" + path + "/" +
+                                              Defaults.TEST_SECRET_KEY.ToLower() + "/files/" + dirName + "/" + path + "/" +
                                               Path.GetFileName(fileToUpload.Name), backendlessFile.FileURL,
                                               "Server returned wrong url " + backendlessFile.FileURL );
 

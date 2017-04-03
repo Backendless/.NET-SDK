@@ -30,12 +30,12 @@ namespace BackendlessAPI.Counters
     #region RESET
     public void Reset( String counterName )
     {
-      Invoker.InvokeSync<Object>( COUNTERS_SERVER_ALIAS, "reset", new object[] { Backendless.AppId, Backendless.VersionNum, counterName } );
+      Invoker.InvokeSync<Object>( COUNTERS_SERVER_ALIAS, "reset", new object[] { counterName } );
     }
 
     public void Reset( String counterName, AsyncCallback<Object> callback )
     {
-      Invoker.InvokeAsync( COUNTERS_SERVER_ALIAS, "reset", new object[] { Backendless.AppId, Backendless.VersionNum, counterName }, callback );
+      Invoker.InvokeAsync( COUNTERS_SERVER_ALIAS, "reset", new object[] { counterName }, callback );
     }
     #endregion
 
@@ -52,7 +52,7 @@ namespace BackendlessAPI.Counters
 
     public void Get<T>( String counterName, AsyncCallback<T> callback )
     {
-      Invoker.InvokeAsync( COUNTERS_SERVER_ALIAS, "get", new object[] { Backendless.AppId, Backendless.VersionNum, counterName }, callback );
+      Invoker.InvokeAsync( COUNTERS_SERVER_ALIAS, "get", new object[] { counterName }, callback );
     }
     #endregion
 
@@ -69,7 +69,7 @@ namespace BackendlessAPI.Counters
 
     public void GetAndIncrement<T>( String counterName, AsyncCallback<T> callback )
     {
-      Invoker.InvokeAsync( COUNTERS_SERVER_ALIAS, "getAndIncrement", new object[] { Backendless.AppId, Backendless.VersionNum, counterName }, callback );
+      Invoker.InvokeAsync( COUNTERS_SERVER_ALIAS, "getAndIncrement", new object[] { counterName }, callback );
     }
     #endregion
 
@@ -86,7 +86,7 @@ namespace BackendlessAPI.Counters
 
     public void IncrementAndGet<T>( String counterName, AsyncCallback<T> callback )
     {
-      Invoker.InvokeAsync( COUNTERS_SERVER_ALIAS, "incrementAndGet", new object[] { Backendless.AppId, Backendless.VersionNum, counterName }, callback );
+      Invoker.InvokeAsync( COUNTERS_SERVER_ALIAS, "incrementAndGet", new object[] { counterName }, callback );
     }
     #endregion
 
@@ -103,7 +103,7 @@ namespace BackendlessAPI.Counters
 
     public void GetAndDecrement<T>( String counterName, AsyncCallback<T> callback )
     {
-      Invoker.InvokeAsync( COUNTERS_SERVER_ALIAS, "getAndDecrement", new object[] { Backendless.AppId, Backendless.VersionNum, counterName }, callback );
+      Invoker.InvokeAsync( COUNTERS_SERVER_ALIAS, "getAndDecrement", new object[] {counterName }, callback );
     }
     #endregion
 
@@ -120,7 +120,7 @@ namespace BackendlessAPI.Counters
 
     public void DecrementAndGet<T>( String counterName, AsyncCallback<T> callback )
     {
-      Invoker.InvokeAsync( COUNTERS_SERVER_ALIAS, "decrementAndGet", new object[] { Backendless.AppId, Backendless.VersionNum, counterName }, callback );
+      Invoker.InvokeAsync( COUNTERS_SERVER_ALIAS, "decrementAndGet", new object[] { counterName }, callback );
     }
     #endregion
 
@@ -137,7 +137,7 @@ namespace BackendlessAPI.Counters
 
     public void AddAndGet<T>( String counterName, Int64 value, AsyncCallback<T> callback )
     {
-      Invoker.InvokeAsync( COUNTERS_SERVER_ALIAS, "addAndGet", new object[] { Backendless.AppId, Backendless.VersionNum, counterName, value }, callback );
+      Invoker.InvokeAsync( COUNTERS_SERVER_ALIAS, "addAndGet", new object[] { counterName, value }, callback );
     }
     #endregion
 
@@ -154,30 +154,30 @@ namespace BackendlessAPI.Counters
 
     public void GetAndAdd<T>( String counterName, Int64 value, AsyncCallback<T> callback )
     {
-      Invoker.InvokeAsync( COUNTERS_SERVER_ALIAS, "getAndAdd", new object[] { Backendless.AppId, Backendless.VersionNum, counterName, value }, callback );
+      Invoker.InvokeAsync( COUNTERS_SERVER_ALIAS, "getAndAdd", new object[] { counterName, value }, callback );
     }
     #endregion
 
     #region COMPARE
     public bool CompareAndSet( String counterName, Int64 expected, Int64 updated )
     {
-      return Invoker.InvokeSync<bool>( COUNTERS_SERVER_ALIAS, "compareAndSet", new object[] { Backendless.AppId, Backendless.VersionNum, counterName, expected, updated } );
+      return Invoker.InvokeSync<bool>( COUNTERS_SERVER_ALIAS, "compareAndSet", new object[] { counterName, expected, updated } );
     }
 
     public void CompareAndSet( String counterName, Int64 expected, Int64 updated, AsyncCallback<bool> callback )
     {
-      Invoker.InvokeAsync<bool>( COUNTERS_SERVER_ALIAS, "compareAndSet", new object[] { Backendless.AppId, Backendless.VersionNum, counterName, expected, updated }, callback );
+      Invoker.InvokeAsync<bool>( COUNTERS_SERVER_ALIAS, "compareAndSet", new object[] { counterName, expected, updated }, callback );
     }
     #endregion
 
     private T RunGetOperation<T>( String operationName, String counterName )
     {
-      return Invoker.InvokeSync<T>( COUNTERS_SERVER_ALIAS, operationName, new object[] { Backendless.AppId, Backendless.VersionNum, counterName } );
+      return Invoker.InvokeSync<T>( COUNTERS_SERVER_ALIAS, operationName, new object[] { counterName } );
     }
 
     private T RunGetOperation<T>( String operationName, String counterName, Int64 value )
     {
-      return Invoker.InvokeSync<T>( COUNTERS_SERVER_ALIAS, operationName, new object[] { Backendless.AppId, Backendless.VersionNum, counterName, value } );
+      return Invoker.InvokeSync<T>( COUNTERS_SERVER_ALIAS, operationName, new object[] { counterName, value } );
     }
   }
 }

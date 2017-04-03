@@ -113,9 +113,9 @@ namespace BackendlessAPI.Persistence
       String objectId = PersistenceService.GetEntityId<T>( dataObject );
 
       if( principal != null )
-        return new Object[] { Backendless.AppId, Backendless.VersionNum, tableName, principal, objectId, GetOperation(), permissionType };
+        return new Object[] { tableName, principal, objectId, GetOperation(), permissionType };
       else
-        return new Object[] { Backendless.AppId, Backendless.VersionNum, tableName, objectId, GetOperation(), permissionType };
+        return new Object[] { tableName, objectId, GetOperation(), permissionType };
     }
 
     private void ServerCall( AsyncCallback<Object> responder, String method, Object[] args )

@@ -7,10 +7,8 @@ namespace BackendlessAPI.Engine
         public static readonly HeadersEnum USER_TOKEN_KEY = new HeadersEnum("user-token");
         public static readonly HeadersEnum LOGGED_IN_KEY = new HeadersEnum("logged-in");
         public static readonly HeadersEnum SESSION_TIME_OUT_KEY = new HeadersEnum("session-time-out");
-        public static readonly HeadersEnum APP_ID_NAME = new HeadersEnum("application-id");
-        public static readonly HeadersEnum SECRET_KEY_NAME = new HeadersEnum("secret-key");
-        public static readonly HeadersEnum APP_TYPE_NAME = new HeadersEnum("application-type");
-        public static readonly HeadersEnum API_VERSION = new HeadersEnum("api-version");
+        public static readonly HeadersEnum APP_TYPE_NAME = new HeadersEnum( "application-type" );
+        public static readonly HeadersEnum API_VERSION = new HeadersEnum( "api-version" );
 
         public static IEnumerable<HeadersEnum> Values
         {
@@ -19,10 +17,6 @@ namespace BackendlessAPI.Engine
                 yield return USER_TOKEN_KEY;
                 yield return LOGGED_IN_KEY;
                 yield return SESSION_TIME_OUT_KEY;
-                yield return APP_ID_NAME;
-                yield return SECRET_KEY_NAME;
-                yield return APP_TYPE_NAME;
-                yield return API_VERSION;                
             }
         }
 
@@ -57,15 +51,12 @@ namespace BackendlessAPI.Engine
             {
                 lock (headersLock)
                 {
-                    if (_instance == null)
-                    {
-                        _instance = new HeadersManager();
-                        _instance.AddHeader( HeadersEnum.APP_ID_NAME, Backendless.AppId );
-                        _instance.AddHeader( HeadersEnum.SECRET_KEY_NAME, Backendless.SecretKey );
-                        _instance.AddHeader(HeadersEnum.APP_TYPE_NAME, "WP");
-                        _instance.AddHeader(HeadersEnum.API_VERSION, "1.0");
-                       
-                    }
+                  if( _instance == null )
+                  {
+                    _instance = new HeadersManager();
+                    _instance.AddHeader( HeadersEnum.APP_TYPE_NAME, "WP" );
+                    _instance.AddHeader( HeadersEnum.API_VERSION, "1.0" );
+                  }
                 }
             }
 

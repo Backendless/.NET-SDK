@@ -13,7 +13,7 @@ namespace BackendlessAPI.Test.UserService.AsyncTests
     {
       RunAndAwait( () =>
         {
-          Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, Defaults.TEST_VERSION );
+          Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY );
           GetRandomLoggedInUser( new ResponseCallback<BackendlessUser>( this )
             {
               ResponseHandler =
@@ -29,7 +29,7 @@ namespace BackendlessAPI.Test.UserService.AsyncTests
     {
       RunAndAwait( () =>
         {
-          Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, Defaults.TEST_VERSION );
+          Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY );
           GetRandomLoggedInUser( new ResponseCallback<BackendlessUser>( this )
             {
               ResponseHandler =

@@ -13,7 +13,7 @@ namespace BackendlessAPI.Test.UserService.SyncTests
     [TestMethod]
     public void TestRestoreUserPassword()
     {
-      Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, Defaults.TEST_VERSION );
+      Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY );
       BackendlessUser user = GetRandomLoggedInUser();
       Backendless.UserService.RestorePassword( (string) user.GetProperty( LOGIN_KEY ) );
     }
@@ -23,7 +23,7 @@ namespace BackendlessAPI.Test.UserService.SyncTests
     {
       try
       {
-        Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, Defaults.TEST_VERSION );
+        Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY );
         BackendlessUser user = GetRandomLoggedInUser();
         Backendless.UserService.RestorePassword( "fake_login_" + user.GetProperty( LOGIN_KEY ) );
         Assert.Fail( "Server accepted wrong login." );

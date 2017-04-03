@@ -87,14 +87,14 @@ namespace BackendlessAPI.Test.GeoService.AsyncTests
         geoQuery.Categories = GetDefinedCategories();
 
       Backendless.Geo.GetPoints( geoQuery,
-                                 new ResponseCallback<BackendlessCollection<GeoPoint>>( this )
+                                 new ResponseCallback<IList<GeoPoint>>( this )
                                    {
                                      ResponseHandler = geoPointBackendlessCollection =>
                                        {
                                          Assert.IsNotNull( geoPointBackendlessCollection,
                                                            "Server returned a null collection" );
 
-                                         foreach( GeoPoint geoPoint in geoPointBackendlessCollection.GetCurrentPage() )
+                                         foreach( GeoPoint geoPoint in geoPointBackendlessCollection )
                                          {
                                            if( meta == null || meta.Count == 0 )
                                            {
@@ -132,7 +132,7 @@ namespace BackendlessAPI.Test.GeoService.AsyncTests
     [TestInitialize]
     public void SetUp()
     {
-      Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, Defaults.TEST_VERSION );
+      Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY );
       definedCategories.Clear();
       definedCategory = null;
     }

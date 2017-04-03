@@ -96,7 +96,7 @@ namespace BackendlessAPI.Test.PersistenceService.AsyncTests
           latch.Wait();
 
           Backendless.Persistence.Of<FindAllEntityAsync>()
-                     .Find( new ResponseCallback<BackendlessCollection<FindAllEntityAsync>>( this )
+                     .Find( new ResponseCallback<IList<FindAllEntityAsync>>( this )
                        {
                          ResponseHandler =
                            backendlessCollection => AssertArgumentAndResultCollections( entities, backendlessCollection )
@@ -131,40 +131,16 @@ namespace BackendlessAPI.Test.PersistenceService.AsyncTests
           }
           latch.Wait();
 
-          BackendlessDataQuery dataQuery = new BackendlessDataQuery( "Age < 25" );
+          DataQueryBuilder dataQueryBuilder = DataQueryBuilder.Create().SetWhereClause( "Age < 25" );
           Backendless.Persistence.Of<FindWithWhereEntityAsync>()
-                     .Find( dataQuery,
-                            new ResponseCallback<BackendlessCollection<FindWithWhereEntityAsync>>( this )
+                     .Find( dataQueryBuilder,
+                            new ResponseCallback<IList<FindWithWhereEntityAsync>>( this )
                               {
                                 ResponseHandler =
                                   backendlessCollection =>
                                   AssertArgumentAndResultCollections( entities, backendlessCollection )
                               } );
         } );
-    }
-
-    [TestMethod]
-    public void TestFindWithNegativeOffset()
-    {
-      RunAndAwait(
-        () =>
-        Backendless.Persistence.Of<Object>()
-                   .Find( new BackendlessDataQuery( new QueryOptions( 2, -1 ) ),
-                          new AsyncCallback<BackendlessCollection<object>>(
-                            response => Assert.Fail( "Client accepted a negative offset" ),
-                            fault => CheckErrorCode( ExceptionMessage.WRONG_OFFSET, fault ) ) ) );
-    }
-
-    [TestMethod]
-    public void TestFindWithNegativePageSize()
-    {
-      RunAndAwait(
-        () =>
-        Backendless.Persistence.Of<Object>()
-                   .Find( new BackendlessDataQuery( new QueryOptions( -1, 2 ) ),
-                          new AsyncCallback<BackendlessCollection<object>>(
-                            response => Assert.Fail( "Client accepted a negative pagesize" ),
-                            fault => CheckErrorCode( ExceptionMessage.WRONG_PAGE_SIZE, fault ) ) ) );
     }
 
     [TestMethod]
@@ -178,13 +154,12 @@ namespace BackendlessAPI.Test.PersistenceService.AsyncTests
                                           {
                                             ResponseHandler = response =>
                                               {
-                                                var properties = new List<string> {"foobar"};
-                                                var dataQuery = new BackendlessDataQuery( properties );
+                                                var dataQueryBuilder = DataQueryBuilder.Create().AddProperty( "foobar" );
 
                                                 Backendless.Persistence.Of<FindWithPropertiesEntityAsync>()
-                                                           .Find( dataQuery,
+                                                           .Find( dataQueryBuilder,
                                                                   new AsyncCallback
-                                                                    <BackendlessCollection<FindWithPropertiesEntityAsync>>
+                                                                    <IList<FindWithPropertiesEntityAsync>>
                                                                     ( collection =>
                                                                       Assert.Fail( "Server didn't throw an exception" ),
                                                                       fault => CheckErrorCode( 1006, fault ) ) );
@@ -204,26 +179,21 @@ namespace BackendlessAPI.Test.PersistenceService.AsyncTests
                                           {
                                             ResponseHandler = response =>
                                               {
-                                                List<String> properties = null;
-                                                var dataQuery = new BackendlessDataQuery( properties );
 
                                                 Backendless.Persistence.Of<FindWithPropertiesEntityAsync>()
-                                                           .Find( dataQuery,
+                                                           .Find( DataQueryBuilder.Create(),
                                                                   new ResponseCallback
-                                                                    <BackendlessCollection<FindWithPropertiesEntityAsync>>
+                                                                    <IList<FindWithPropertiesEntityAsync>>
                                                                     ( this )
                                                                     {
                                                                       ResponseHandler = backendlessCollection =>
                                                                         {
                                                                           Assert.IsTrue(
-                                                                            backendlessCollection.TotalObjects > 0,
-                                                                            "Server found wrong number of objects" );
-                                                                          Assert.IsTrue(
-                                                                            backendlessCollection.GetCurrentPage().Count > 0,
+                                                                            backendlessCollection.Count > 0,
                                                                             "Server returned wrong number of objects" );
 
                                                                           foreach( FindWithPropertiesEntityAsync entity in
-                                                                            backendlessCollection.GetCurrentPage() )
+                                                                            backendlessCollection )
                                                                           {
                                                                             Assert.IsTrue( entity.Age > 0,
                                                                                            "Server result contained wrong age field value" );
@@ -254,25 +224,21 @@ namespace BackendlessAPI.Test.PersistenceService.AsyncTests
                                           {
                                             ResponseHandler = response =>
                                               {
-                                                var properties = new List<string> {"Age"};
-                                                var dataQuery = new BackendlessDataQuery( properties );
+                                                var dataQueryBuilder = DataQueryBuilder.Create().AddProperty( "Age" );
                                                 Backendless.Persistence.Of<FindWithPropertiesEntityAsync>()
-                                                           .Find( dataQuery,
+                                                           .Find( dataQueryBuilder,
                                                                   new ResponseCallback
-                                                                    <BackendlessCollection<FindWithPropertiesEntityAsync>>
+                                                                    <IList<FindWithPropertiesEntityAsync>>
                                                                     ( this )
                                                                     {
                                                                       ResponseHandler = backendlessCollection =>
                                                                         {
                                                                           Assert.IsTrue(
-                                                                            backendlessCollection.TotalObjects > 0,
-                                                                            "Server found wrong number of objects" );
-                                                                          Assert.IsTrue(
-                                                                            backendlessCollection.GetCurrentPage().Count > 0,
+                                                                            backendlessCollection.Count > 0,
                                                                             "Server returned wrong number of objects" );
 
                                                                           foreach( FindWithPropertiesEntityAsync entity in
-                                                                            backendlessCollection.GetCurrentPage() )
+                                                                            backendlessCollection )
                                                                           {
                                                                             Assert.IsTrue( entity.Age > 0,
                                                                                            "Server result contained wrong age field value" );

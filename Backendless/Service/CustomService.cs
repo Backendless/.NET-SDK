@@ -11,12 +11,12 @@ namespace BackendlessAPI.Service
 
         public T Invoke<T>(string serviceName, string serviceVersion, string method, object[] arguments)
         {
-            return Invoker.InvokeSync<T>(CUSTOM_SERVICE_ALIAS, METHOD_NAME_ALIAS, new object[] { Backendless.AppId, Backendless.VersionNum, serviceName, serviceVersion, method, arguments });
+            return Invoker.InvokeSync<T>(CUSTOM_SERVICE_ALIAS, METHOD_NAME_ALIAS, new object[] { serviceName, serviceVersion, method, arguments });
         }
 
         public void Invoke<T>(string serviceName, string serviceVersion, string method, object[] arguments, AsyncCallback<T> callback)
         {
-            Invoker.InvokeAsync<T>(CUSTOM_SERVICE_ALIAS, METHOD_NAME_ALIAS, new object[] { Backendless.AppId, Backendless.VersionNum, serviceName, serviceVersion, method, arguments }, callback);
+            Invoker.InvokeAsync<T>(CUSTOM_SERVICE_ALIAS, METHOD_NAME_ALIAS, new object[] { serviceName, serviceVersion, method, arguments }, callback);
         }
     }
 }

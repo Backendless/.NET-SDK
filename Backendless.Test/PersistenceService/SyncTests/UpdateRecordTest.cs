@@ -20,7 +20,7 @@ namespace BackendlessAPI.Test.PersistenceService.SyncTests
 
       Backendless.Persistence.Save( savedEntity );
 
-      BaseUpdateEntity foundEntity = Backendless.Persistence.Of<BaseUpdateEntity>().Find().GetCurrentPage()[0];
+      BaseUpdateEntity foundEntity = Backendless.Persistence.Of<BaseUpdateEntity>().Find()[0];
 
       Assert.AreEqual( savedEntity, foundEntity, "Server didn't update an entity" );
       Assert.IsNotNull( foundEntity.Updated, "Server didn't set an updated field value" );

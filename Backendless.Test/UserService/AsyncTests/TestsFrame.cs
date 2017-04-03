@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using BackendlessAPI.Async;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Backendless.Test;
 
 namespace BackendlessAPI.Test.UserService.AsyncTests
 {
@@ -12,7 +13,7 @@ namespace BackendlessAPI.Test.UserService.AsyncTests
     public Random Random = new Random();
     public List<String> UsedProperties = new List<String>();
 
-    public const string LOGIN_KEY = "login";
+    public const string LOGIN_KEY = "email";
     public const string EMAIL_KEY = "email";
     public const string PASSWORD_KEY = "password";
     public const string ID_KEY = "id";
@@ -22,15 +23,22 @@ namespace BackendlessAPI.Test.UserService.AsyncTests
       var timestamp = (DateTime.UtcNow.Ticks + Random.Next()).ToString();
       BackendlessUser result = new BackendlessUser();
       result.SetProperty( LOGIN_KEY, "bot" + timestamp );
-      result.SetProperty( EMAIL_KEY, result.GetProperty( LOGIN_KEY ) + "@gmail.com" );
+      result.SetProperty( EMAIL_KEY, result.GetProperty( LOGIN_KEY ) + "@backendless.com" );
       result.Password = "somepass_" + timestamp;
 
       return result;
     }
 
-    public void GetRandomRegisteredUser( AsyncCallback<BackendlessUser> callback )
+    public BackendlessUser GetRandomRegisteredUser( AsyncCallback<BackendlessUser> callback )
     {
-      Backendless.UserService.Register( GetRandomNotRegisteredUser(), callback );
+      BackendlessUser user = GetRandomNotRegisteredUser();
+
+      if( callback == null )
+        Backendless.UserService.Register( user );
+      else
+        Backendless.UserService.Register( user, callback );
+      
+      return user;
     }
 
     public void GetRandomLoggedInUser( AsyncCallback<BackendlessUser> callback )
@@ -58,6 +66,13 @@ namespace BackendlessAPI.Test.UserService.AsyncTests
                                                    callback.ErrorHandler.Invoke( fault );
                                                  }
                                                } ) );
+    }
+
+    [TestInitialize]
+    public void SetUp()
+    {
+      Backendless.URL = "http://" + Defaults.BACKENDLESS_HOST + ":9000";
+      Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY );
     }
 
     [TestCleanup]

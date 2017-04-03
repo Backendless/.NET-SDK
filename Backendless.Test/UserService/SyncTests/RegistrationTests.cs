@@ -16,7 +16,7 @@ namespace BackendlessAPI.Test.UserService.SyncTests
     {
       try
       {
-        Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, Defaults.TEST_VERSION );
+        Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY );
         Backendless.UserService.Register( null );
         Assert.Fail( "UserService accepted a null user" );
       }
@@ -31,7 +31,7 @@ namespace BackendlessAPI.Test.UserService.SyncTests
     {
       try
       {
-        Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, Defaults.TEST_VERSION );
+        Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY );
         Backendless.UserService.Register( new BackendlessUser() );
         Assert.Fail( "UserService accepted a null user" );
       }
@@ -46,7 +46,7 @@ namespace BackendlessAPI.Test.UserService.SyncTests
     {
       try
       {
-        Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, "v5" );
+        Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY );
 
         BackendlessUser partialUser = new BackendlessUser();
         String login = "bot" + Random.Next();
@@ -67,7 +67,7 @@ namespace BackendlessAPI.Test.UserService.SyncTests
     {
       try
       {
-        Backendless.InitApp(Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, Defaults.TEST_VERSION);
+        Backendless.InitApp(Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY);
         BackendlessUser user = new BackendlessUser();
         user.SetProperty(LOGIN_KEY, null);
         user.SetProperty(EMAIL_KEY, null);
@@ -88,7 +88,7 @@ namespace BackendlessAPI.Test.UserService.SyncTests
     {
       try
       {
-        Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, "v5" );
+        Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY );
         BackendlessUser user = GetRandomNotRegisteredUser();
         user.SetProperty( "gender", null );
 
@@ -107,7 +107,7 @@ namespace BackendlessAPI.Test.UserService.SyncTests
     {
       try
       {
-        Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, "v5" );
+        Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY );
         BackendlessUser user = GetRandomNotRegisteredUser();
         user.SetProperty( "gender", "" );
 
@@ -126,7 +126,7 @@ namespace BackendlessAPI.Test.UserService.SyncTests
     {
       try
       {
-        Backendless.InitApp(Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, Defaults.TEST_VERSION);
+        Backendless.InitApp(Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY);
         BackendlessUser user = new BackendlessUser();
         user.SetProperty(LOGIN_KEY, "");
         user.SetProperty(EMAIL_KEY, "");
@@ -145,7 +145,7 @@ namespace BackendlessAPI.Test.UserService.SyncTests
     [TestMethod]
     public void TestRegisterNewUser()
     {
-      Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, Defaults.TEST_VERSION );
+      Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY );
       BackendlessUser user = GetRandomNotRegisteredUser();
       String propertyKey = "property_key#" + Random.Next();
       String propertyValue = "property_value#" + Random.Next();
@@ -170,7 +170,7 @@ namespace BackendlessAPI.Test.UserService.SyncTests
     {
       try
       {
-        Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, Defaults.TEST_VERSION );
+        Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY );
         BackendlessUser user = Backendless.UserService.Register( GetRandomNotRegisteredUser() );
 
         BackendlessUser fakeUser = GetRandomNotRegisteredUser();
@@ -191,7 +191,7 @@ namespace BackendlessAPI.Test.UserService.SyncTests
     {
       try
       {
-        Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, Defaults.TEST_VERSION );
+        Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY );
         BackendlessUser user = Backendless.UserService.Register( GetRandomNotRegisteredUser() );
 
         BackendlessUser fakeUser = GetRandomNotRegisteredUser();
@@ -211,7 +211,7 @@ namespace BackendlessAPI.Test.UserService.SyncTests
     {
       try
       {
-        Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, "v6" );
+        Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY );
 
         Backendless.UserService.Register( GetRandomNotRegisteredUser() );
 
@@ -228,7 +228,7 @@ namespace BackendlessAPI.Test.UserService.SyncTests
     {
       try
       {
-        Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, "v7" );
+        Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY );
         BackendlessUser user = GetRandomNotRegisteredUser();
         user.SetProperty( "somedynamicpropertykey", "somedynamicpropertyvalue" );
 
@@ -247,7 +247,7 @@ namespace BackendlessAPI.Test.UserService.SyncTests
     {
       try
       {
-        Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, Defaults.TEST_VERSION );
+        Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY );
         String timestamp = DateTime.Now.Ticks.ToString();
         BackendlessUser user = new BackendlessUser();
         user.SetProperty( EMAIL_KEY, "bot" + timestamp + "@gmail.com" );

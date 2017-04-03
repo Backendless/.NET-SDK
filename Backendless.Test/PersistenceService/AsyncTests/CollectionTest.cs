@@ -33,26 +33,24 @@ namespace BackendlessAPI.Test.PersistenceService.AsyncTests
           }
           latch.Wait();
 
-          var dataQuery = new BackendlessDataQuery( new QueryOptions( 10, 0, "Age" ) );
+          var dataQueryBuilder = DataQueryBuilder.Create().AddProperty( "Age" ).SetPageSize( 10 ).SetOffset( 0 );
           Backendless.Persistence.Of<NextPageEntityAsync>()
-                     .Find( dataQuery,
-                            new ResponseCallback<BackendlessCollection<NextPageEntityAsync>>( this )
+                     .Find( dataQueryBuilder,
+                            new ResponseCallback<IList<NextPageEntityAsync>>( this )
                               {
                                 ResponseHandler =
                                   response =>
-                                  response.NextPage(
-                                    new ResponseCallback<BackendlessCollection<NextPageEntityAsync>>( this )
+                                     Backendless.Persistence.Of<NextPageEntityAsync>().Find( dataQueryBuilder.PrepareNextPage(),
+                                    new ResponseCallback<IList<NextPageEntityAsync>>( this )
                                       {
                                         ResponseHandler = collection =>
                                           {
                                             Assert.IsNotNull( collection, "Next page returned a null object" );
-                                            Assert.IsNotNull( collection.GetCurrentPage(),
-                                                              "Next page contained a wrong data size" );
-                                            Assert.AreEqual( nextPageEntities.Count, collection.GetCurrentPage().Count,
+                                            Assert.AreEqual( nextPageEntities.Count, collection.Count,
                                                              "Next page returned a wrong size" );
 
                                             foreach( NextPageEntityAsync entity in nextPageEntities )
-                                              Assert.IsTrue( collection.GetCurrentPage().Contains( entity ),
+                                              Assert.IsTrue( collection.Contains( entity ),
                                                              "Server result didn't contain expected entity" );
 
                                             CountDown();
@@ -84,28 +82,26 @@ namespace BackendlessAPI.Test.PersistenceService.AsyncTests
           }
           latch.Wait();
 
-          var dataQuery = new BackendlessDataQuery( new QueryOptions( 10, 0, "Age" ) );
+          var dataQueryBuilder = DataQueryBuilder.Create().AddProperty( "Age" ).SetPageSize( 10 ).SetOffset( 0 );
           Backendless.Persistence.Of<GetPageEntityAsync>()
-                     .Find( dataQuery,
-                            new ResponseCallback<BackendlessCollection<GetPageEntityAsync>>( this )
+                     .Find( dataQueryBuilder,
+                            new ResponseCallback<IList<GetPageEntityAsync>>( this )
                               {
                                 ResponseHandler =
                                   response =>
-                                  response.GetPage( 10, 10,
-                                                    new ResponseCallback<BackendlessCollection<GetPageEntityAsync>>( this )
+                                     Backendless.Persistence.Of<GetPageEntityAsync>().Find( dataQueryBuilder.PrepareNextPage(),
+                                                    new ResponseCallback<IList<GetPageEntityAsync>>( this )
                                                       {
                                                         ResponseHandler = collection =>
                                                           {
                                                             Assert.IsNotNull( collection, "Next page returned a null object" );
-                                                            Assert.IsNotNull( collection.GetCurrentPage(),
-                                                                              "Next page contained a wrong data size" );
                                                             Assert.AreEqual( getPageEntities.Count,
-                                                                             collection.GetCurrentPage().Count,
+                                                                             collection.Count,
                                                                              "Next page returned a wrong size" );
 
                                                             foreach( GetPageEntityAsync entity in getPageEntities )
                                                               Assert.IsTrue(
-                                                                collection.GetCurrentPage().Contains( entity ),
+                                                                collection.Contains( entity ),
                                                                 "Server result didn't contain expected entity" );
 
                                                             CountDown();

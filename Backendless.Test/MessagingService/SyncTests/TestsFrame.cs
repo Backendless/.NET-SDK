@@ -116,7 +116,7 @@ namespace BackendlessAPI.Test.MessagingService.SyncTests
     [TestInitialize]
     public void SetUp()
     {
-      Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY, Defaults.TEST_VERSION );
+      Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY );
 
       messageStatus = null;
       latch = null;
