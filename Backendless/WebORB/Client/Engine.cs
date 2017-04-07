@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Reflection;
 using System.Net;
 using Weborb.Message;
 using Weborb.Protocols.Amf;
@@ -209,34 +210,23 @@ namespace Weborb.Client
 //        if ( IdInfo != null && IdInfo.ClientId == null )
 //          IdInfo.ClientId = (String)v3.clientId;
 
-        if ( v3.isError )
+        List<T> messagesFirstPhase = new List<T>();
+
+        foreach ( Object returnValueElement in (Object[])v3.body.body )
+          ProcessElement( returnValueElement, messagesFirstPhase );
+
+        foreach ( T adaptedObject in messagesFirstPhase )
         {
-          ErrMessage errorMessage = (ErrMessage)v3;
-          Fault fault = new Fault( errorMessage.faultString, errorMessage.faultDetail, errorMessage.faultCode );
-
-          if ( responder != null )
-            responder.ErrorHandler( fault );
-        }
-        else
-        {
-          List<T> messagesFirstPhase = new List<T>();
-
-          foreach ( Object returnValueElement in (Object[])v3.body.body )
-            ProcessElement( returnValueElement, messagesFirstPhase );
-
-          foreach ( T adaptedObject in messagesFirstPhase )
-          {
 #if !(UNIVERSALW8 || FULL_BUILD || PURE_CLIENT_LIB)
-              if (UiControl != null && responder != null)
-                        UiControl.Dispatcher.BeginInvoke(delegate()
-                        {
-                            responder.ResponseHandler(adaptedObject);
-                        });
-                    else
+            if (UiControl != null && responder != null)
+                      UiControl.Dispatcher.BeginInvoke(delegate()
+                      {
+                          responder.ResponseHandler(adaptedObject);
+                      });
+                  else
 #endif
-            if ( responder != null )
-              responder.ResponseHandler( adaptedObject );
-          }
+          if ( responder != null )
+            responder.ResponseHandler( adaptedObject );
         }
       }
       catch ( Exception e )
@@ -304,12 +294,13 @@ namespace Weborb.Client
             }
             else if( IsIListGeneric( typeof( T ) ) )
             {
-
-              object list = Activator.CreateInstance( typeof( T ) );
+              object list = Weborb.Util.ObjectFactories.CreateServiceObject( typeof( T ) );
+              //object list = Activator.CreateInstance( typeof( T ) );
 
               for( int i = 0; i < adaptedValues.Length; i++ )
               {
-                typeof( T ).GetMethod( "Add" ).Invoke( list, new object[] {adaptedValues[i]} );
+               MethodInfo addMethod = list.GetType().GetMethod( "Add" );
+               addMethod.Invoke( list, new object[] {adaptedValues[i]} );
               }
 
               collector.Add( (T) list );

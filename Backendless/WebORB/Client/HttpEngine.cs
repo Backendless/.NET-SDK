@@ -261,7 +261,25 @@ namespace Weborb.Client
         Request responseObject = parser.readMessage(streamResponse);
         object[] responseData = (object[])responseObject.getRequestBodyData();
         V3Message v3 = (V3Message)((IAdaptingType)responseData[0]).defaultAdapt();
-        ProcessV3Message( v3, asyncStreamSetInfo.responder );
+
+        if( v3.isError )
+        {
+          ErrMessage errorMessage = (ErrMessage) v3;
+          Fault fault = new Fault( errorMessage.faultString, errorMessage.faultDetail, errorMessage.faultCode );
+
+          if( asyncStreamSetInfo.responder != null )
+            asyncStreamSetInfo.responder.ErrorHandler( fault );
+
+          return;
+        }
+
+        IAdaptingType body = (IAdaptingType)( (AnonymousObject) ( (NamedObject) responseData[ 0 ] ).TypedObject ).Properties[ "body" ];
+        T result = (T)body.adapt( typeof( T ) );
+
+        if( asyncStreamSetInfo.responder != null )
+          asyncStreamSetInfo.responder.ResponseHandler( result );
+
+      //  ProcessV3Message( v3, asyncStreamSetInfo.responder );
       }
       catch (Exception e)
       {
