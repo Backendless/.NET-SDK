@@ -144,7 +144,7 @@ namespace BackendlessAPI.Service
       } );
 
       Invoker.InvokeAsync( DEVICE_REGISTRATION_MANAGER_SERVER_ALIAS, "registerDevice",
-                           new object[] { Backendless.AppId, Backendless.VersionNum, _deviceRegistrationDto }, responder );
+                           new object[] { _deviceRegistrationDto }, responder );
     }
 
     public void UnregisterDevice( AsyncCallback<bool> callback )
@@ -173,7 +173,7 @@ namespace BackendlessAPI.Service
       } );
 
       Invoker.InvokeAsync( DEVICE_REGISTRATION_MANAGER_SERVER_ALIAS, "unregisterDevice",
-                           new Object[] { Backendless.AppId, Backendless.VersionNum, _deviceRegistrationDto.DeviceId },
+                           new Object[] { _deviceRegistrationDto.DeviceId },
                            responder );
     }
 

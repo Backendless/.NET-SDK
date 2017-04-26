@@ -689,7 +689,7 @@ namespace BackendlessAPI.Service
         if( entityType.Equals( typeof( BackendlessUser ) ) )
         {
           object entityObject = entity;
-          return ( (BackendlessUser) entityObject ).UserId;
+          return ( (BackendlessUser) entityObject ).ObjectId;
         }
 
         PropertyInfo objectIdProp = entityType.GetProperty( DEFAULT_OBJECT_ID_PROPERTY_NAME_DOTNET_STYLE );

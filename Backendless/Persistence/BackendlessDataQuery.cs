@@ -45,30 +45,10 @@ namespace BackendlessAPI.Persistence
     public List<string> Properties { get; set; }
 
     [SetClientClassMemberName( "pageSize" )]
-    public int PageSize
-    {
-      get { return QueryOptions == null ? 0 : QueryOptions.PageSize; }
-      set
-      {
-        if( QueryOptions == null )
-          QueryOptions = new QueryOptions();
-
-        QueryOptions.PageSize = value;
-      }
-    }
+    public int PageSize { get;set; }
 
     [SetClientClassMemberName( "offset" )]
-    public int Offset
-    {
-      get { return QueryOptions == null ? 0 : QueryOptions.Offset; }
-      set
-      {
-        if( QueryOptions == null )
-          QueryOptions = new QueryOptions();
-
-        QueryOptions.Offset = value;
-      }
-    }
+    public int Offset {get; set;}
 
     public IBackendlessQuery NewInstance()
     {

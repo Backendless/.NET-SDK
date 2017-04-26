@@ -71,7 +71,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>Bin\Debug\</OutputPath>
+    <OutputPath>bin\NET_40\Debug\</OutputPath>
     <DefineConstants>TRACE;DEBUG;PURE_CLIENT_LIB</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>

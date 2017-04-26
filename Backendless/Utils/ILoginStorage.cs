@@ -6,7 +6,7 @@ namespace BackendlessAPI.Utils
 {
   public interface ILoginStorage
   {
-    string UserId
+    string ObjectId
     {
       get;
       set;

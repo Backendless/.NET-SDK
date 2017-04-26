@@ -17,7 +17,7 @@ namespace BackendlessAPI.Utils
       myNewPrefs = LoadData();
     }
 
-    public string UserId
+    public string ObjectId
     {
       get;
       set;
@@ -100,7 +100,7 @@ namespace BackendlessAPI.Utils
         StreamReader reader = new StreamReader( isoStream );
         // Read the data.
         this.UserToken = reader.ReadLine();
-        this.UserId = reader.ReadLine();
+        this.ObjectId = reader.ReadLine();
         reader.Close();
         isoStream.Close();
         return true;
@@ -147,7 +147,7 @@ namespace BackendlessAPI.Utils
 
         StreamWriter writer = new StreamWriter( isoStream );
         writer.WriteLine( this.UserToken );
-        writer.WriteLine( this.UserId );
+        writer.WriteLine( this.ObjectId );
         // StreamWriter.Close implicitly closes isoStream.
         writer.Close();
         isoFile.Dispose();

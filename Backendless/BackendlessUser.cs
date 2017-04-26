@@ -53,7 +53,7 @@ namespace BackendlessAPI
       }
     }
 
-    public string UserId
+    public string ObjectId
     {
       get { return Properties.ContainsKey( ID_KEY ) ? (string) Properties[ID_KEY] : null; }
       set
@@ -65,9 +65,9 @@ namespace BackendlessAPI
       }
     }
 
-    public void PutProperties( Dictionary<string, object> dictionary )
+    public void PutProperties( Dictionary<string, object> newProps )
     {
-      foreach( var keyValuePair in dictionary )
+      foreach( var keyValuePair in newProps )
       {
         if( keyValuePair.Key.Equals( HeadersEnum.USER_TOKEN_KEY.ToString() ) )
           continue;

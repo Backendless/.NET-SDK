@@ -25,11 +25,10 @@ namespace BackendlessAPI.Persistence
     public BackendlessDataQuery Build()
     {
       BackendlessDataQuery dataQuery = pagedQueryBuilder.Build();
-
       dataQuery.QueryOptions = queryOptionsBuilder.Build();
       dataQuery.Properties = properties;
       dataQuery.WhereClause = whereClause;
-
+ 
       return dataQuery;
     }
 

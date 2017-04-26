@@ -55,3 +55,11 @@ Samples/DataService/ToDoDemo/obj/Release/ToDoDemo.csproj.FileListAbsolute.txt
 Samples/DataService/ToDoDemo/obj/Release/ToDoDemo.csprojResolveAssemblyReference.cache
 Samples/DataService/ToDoDemo/obj/Release/ToDoDemo.dll
 Samples/DataService/ToDoDemo/obj/Release/ToDoDemo.pdb
+
+Backendless\obj\NET_20_Debug*/
+Backendless\obj\NET_40_Release*/
+Backendless\obj\NET_45_Debug*/
+Backendless\obj\Release*/
+Backendless.NET.userprefs
+
+Backendless\Bin\Debug*/

@@ -88,7 +88,7 @@ namespace BackendlessAPI.Service
     {
       CheckUserToBeProper( user, false );
 
-      if( string.IsNullOrEmpty( user.UserId ) )
+      if( string.IsNullOrEmpty( user.ObjectId ) )
         throw new ArgumentNullException( ExceptionMessage.WRONG_USER_ID );
 
       user.PutProperties( Invoker.InvokeSync<Dictionary<string, object>>( USER_MANAGER_SERVER_ALIAS, "update",
@@ -103,7 +103,7 @@ namespace BackendlessAPI.Service
       {
         CheckUserToBeProper( user, false );
 
-        if( string.IsNullOrEmpty( user.UserId ) )
+        if( string.IsNullOrEmpty( user.ObjectId ) )
           throw new ArgumentNullException( ExceptionMessage.WRONG_USER_ID );
 
         var responder = new AsyncCallback<Dictionary<string, object>>( r =>
@@ -131,12 +131,12 @@ namespace BackendlessAPI.Service
       }
     }
 
-    public String LoggedInUserId()
+    public String LoggedInUserObjectId()
     {
       if( !LoginStorage.HasData )
         return null;
 
-      return LoginStorage.UserId;
+      return LoginStorage.ObjectId;
     }
 
     public BackendlessUser Login( string login, string password )
@@ -413,7 +413,7 @@ namespace BackendlessAPI.Service
       if( stayLoggedIn )
       {
         LoginStorage.UserToken = invokeResult[ HeadersEnum.USER_TOKEN_KEY.Header ].ToString();
-        LoginStorage.UserId = Backendless.UserService.CurrentUser.UserId;
+        LoginStorage.ObjectId = Backendless.UserService.CurrentUser.ObjectId;
         LoginStorage.SaveData();
       }
     }
