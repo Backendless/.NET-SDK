@@ -9,7 +9,7 @@ namespace BackendlessAPI.Logging
     private int numOfMessages;
     private int timeFrequency;
     private LinkedList<LogMessage> logBatch;
-#if !UNITY    
+#if !UNITY && !PURE_CLIENT_LIB   
     private Mutex mutex;
 #endif
     private Timer timer;
@@ -17,7 +17,7 @@ namespace BackendlessAPI.Logging
 
     internal LogBuffer()
     {
-#if !UNITY
+#if !UNITY && !PURE_CLIENT_LIB
       mutex = new Mutex( false, "LogBufferMutex" );
 #endif
       numOfMessages = 100;
@@ -45,7 +45,7 @@ namespace BackendlessAPI.Logging
     {
       if( logBatch.Count == 0 )
         return;
-#if !UNITY
+#if !UNITY && !PURE_CLIENT_LIB
       mutex.WaitOne();
       Flush();
       mutex.ReleaseMutex();
@@ -79,7 +79,7 @@ namespace BackendlessAPI.Logging
       {
         String logLevelStr = logLevel.ToString();
 
-#if !UNITY
+#if !UNITY && !PURE_CLIENT_LIB
         mutex.WaitOne();
 #endif
         logBatch.AddLast( new LogMessage( logger, logLevel, DateTime.Now, message, error == null ? null : error.StackTrace ) );
@@ -89,10 +89,10 @@ namespace BackendlessAPI.Logging
           Flush();
           ResetTimer();
         }
-#if !UNITY
+#if !UNITY && !PURE_CLIENT_LIB
         mutex.ReleaseMutex();
 #endif
-        }
+      }
     }
 
     private void Flush()
