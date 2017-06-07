@@ -48,7 +48,14 @@ namespace Weborb.Reader
       else if ( type.BaseType == typeof( Enum ) )
         return type.GetField( stringValue ).GetValue( null );
       else if ( typeof( IConvertible ).IsAssignableFrom( type ) )
-        return Convert.ChangeType(stringValue == "" ? "0" : stringValue, type, CultureInfo.InvariantCulture);
+        try
+        {
+          return Convert.ChangeType( stringValue == "" ? "0" : stringValue, type, CultureInfo.InvariantCulture );
+        }
+        catch( Exception )
+        {
+          throw new Exception( String.Format( "unable to adapt string value of '{0}' to type '{1}'. Make sure the property type in your class matches the one in the database", stringValue, type.Name ) );
+        }
       else if ( typeof( Guid ).IsAssignableFrom( type ) )
         return new Guid( stringValue );
       else if ( type.IsGenericType && type.GetGenericTypeDefinition().Equals( typeof( Nullable<> ) ) )
