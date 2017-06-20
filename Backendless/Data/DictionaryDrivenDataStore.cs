@@ -307,12 +307,12 @@ namespace BackendlessAPI.Data
     #region Load Relations
     public IList<M> LoadRelations<M>( string objectId, LoadRelationsQueryBuilder<M> queryBuilder )
     {
-      return Backendless.Persistence.LoadRelations<M>( objectId, queryBuilder );
+      return Backendless.Persistence.LoadRelations<M>( tableName, objectId, queryBuilder );
     }
 
     public void LoadRelations<M>( string objectId, LoadRelationsQueryBuilder<M> queryBuilder, AsyncCallback<IList<M>> responder ) 
     {
-      Backendless.Persistence.LoadRelations<M>( objectId, queryBuilder, responder );
+      Backendless.Persistence.LoadRelations<M>( tableName, objectId, queryBuilder, responder );
     }
     #endregion
     #region Get Object Count

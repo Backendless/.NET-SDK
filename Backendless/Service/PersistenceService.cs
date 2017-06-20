@@ -254,17 +254,17 @@ namespace BackendlessAPI.Service
     #endregion
     #region LoadRelations
 
-    internal IList<T> LoadRelations<T>( string objectId, LoadRelationsQueryBuilder<T> queryBuilder )
+    internal IList<T> LoadRelations<T>( string parentType, string objectId, LoadRelationsQueryBuilder<T> queryBuilder )
     {
-      return LoadRelationsImpl( objectId, queryBuilder, null );
+      return LoadRelationsImpl( parentType, objectId, queryBuilder, null );
     }
 
-    internal void LoadRelations<T>( string objectId, LoadRelationsQueryBuilder<T> queryBuilder, AsyncCallback<IList<T>> responder )
+    internal void LoadRelations<T>( string parentType, string objectId, LoadRelationsQueryBuilder<T> queryBuilder, AsyncCallback<IList<T>> responder )
     {
-      LoadRelationsImpl( objectId, queryBuilder, responder );
+      LoadRelationsImpl( parentType, objectId, queryBuilder, responder );
     }
 
-    private IList<T> LoadRelationsImpl<T>( string objectId, LoadRelationsQueryBuilder<T> queryBuilder, AsyncCallback<IList<T>> responder )
+    private IList<T> LoadRelationsImpl<T>( string parentType, string objectId, LoadRelationsQueryBuilder<T> queryBuilder, AsyncCallback<IList<T>> responder )
     {
       if( string.IsNullOrEmpty( objectId ) )
       {
@@ -290,11 +290,11 @@ namespace BackendlessAPI.Service
       int offset = dataQuery.Offset;
 
       AddWeborbPropertyMapping<T>();
-      Object[] args = new Object[] { GetTypeName( typeof( T ) ), objectId, relationName, pageSize, offset };
+      Object[] args = new Object[] { parentType, objectId, relationName, pageSize, offset };
 
       if( responder == null )
       {
-        return (IList<T>) Invoker.InvokeSync<T>( PERSISTENCE_MANAGER_SERVER_ALIAS, "loadRelations", args, true );
+        return (IList<T>) Invoker.InvokeSync<IList<T>>( PERSISTENCE_MANAGER_SERVER_ALIAS, "loadRelations", args, true );
       }
       else
       {

@@ -198,12 +198,12 @@ namespace BackendlessAPI.Data
       #region LoadRelations
       public IList<M> LoadRelations<M>( string objectId, LoadRelationsQueryBuilder<M> queryBuilder )
       {
-        return Backendless.Persistence.LoadRelations( objectId, queryBuilder );
+        return Backendless.Persistence.LoadRelations( PersistenceService.GetTypeName( typeof( T ) ), objectId, queryBuilder );
       }
 
       public void LoadRelations<M>( string objectId, LoadRelationsQueryBuilder<M> queryBuilder, AsyncCallback<IList<M>> responder )
       {
-        Backendless.Persistence.LoadRelations( objectId, queryBuilder, responder );
+        Backendless.Persistence.LoadRelations( PersistenceService.GetTypeName( typeof( T ) ), objectId, queryBuilder, responder );
       }
       #endregion
       #region Get Object Count
