@@ -2,23 +2,9 @@
 
 namespace BackendlessAPI.Engine
 {
-    internal class HeadersEnum
+    public class HeadersEnum
     {
         public static readonly HeadersEnum USER_TOKEN_KEY = new HeadersEnum("user-token");
-        public static readonly HeadersEnum LOGGED_IN_KEY = new HeadersEnum("logged-in");
-        public static readonly HeadersEnum SESSION_TIME_OUT_KEY = new HeadersEnum("session-time-out");
-        public static readonly HeadersEnum APP_TYPE_NAME = new HeadersEnum( "application-type" );
-        public static readonly HeadersEnum API_VERSION = new HeadersEnum( "api-version" );
-
-        public static IEnumerable<HeadersEnum> Values
-        {
-            get
-            {
-                yield return USER_TOKEN_KEY;
-                yield return LOGGED_IN_KEY;
-                yield return SESSION_TIME_OUT_KEY;
-            }
-        }
 
         private readonly string name;
 
@@ -35,7 +21,7 @@ namespace BackendlessAPI.Engine
         }
     }
 
-    internal class HeadersManager
+    public class HeadersManager
     {
         private Dictionary<string, string> headers = new Dictionary<string, string>();
         private static object headersLock = new object();
@@ -54,8 +40,6 @@ namespace BackendlessAPI.Engine
                   if( _instance == null )
                   {
                     _instance = new HeadersManager();
-                    _instance.AddHeader( HeadersEnum.APP_TYPE_NAME, "WP" );
-                    _instance.AddHeader( HeadersEnum.API_VERSION, "1.0" );
                   }
                 }
             }
