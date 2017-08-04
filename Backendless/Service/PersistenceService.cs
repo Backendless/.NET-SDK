@@ -323,6 +323,32 @@ namespace BackendlessAPI.Service
     }
     #endregion
     #region Find
+    
+    // Backwards compatibiliity for Backendless v3.0's BackendlessDataQuery
+	public static DataQueryBuilder BackendlessDataQueryToDataQueryBuilder(BackendlessDataQuery dataQuery)
+	{
+		DataQueryBuilder dataQueryBuilder = DataQueryBuilder.Create();
+		if (!string.IsNullOrEmpty(dataQuery.WhereClause)) dataQueryBuilder.SetWhereClause(dataQuery.WhereClause);
+		if (dataQuery.Offset > 0) dataQueryBuilder.SetOffset(dataQuery.Offset);
+		if (dataQuery.PageSize > 0) dataQueryBuilder.SetPageSize(dataQuery.PageSize);
+		if (dataQuery.Properties != null) dataQueryBuilder.SetProperties(dataQuery.Properties);
+		if (dataQuery.QueryOptions != null)
+		{
+			if (dataQuery.QueryOptions.Offset > 0) dataQueryBuilder.SetOffset(dataQuery.QueryOptions.Offset);
+			if (dataQuery.QueryOptions.PageSize > 0) dataQueryBuilder.SetPageSize(dataQuery.QueryOptions.PageSize);
+			if (dataQuery.QueryOptions.Related != null) dataQueryBuilder.SetRelated(dataQuery.QueryOptions.Related);
+			if (dataQuery.QueryOptions.RelationsDepth > 0) dataQueryBuilder.SetRelationsDepth(dataQuery.QueryOptions.RelationsDepth);
+			if (dataQuery.QueryOptions.SortBy != null) dataQueryBuilder.SetSortBy(dataQuery.QueryOptions.SortBy);
+		}
+		return dataQueryBuilder;
+	}
+	
+	// Backwards compatibiliity for Backendless v3.0's BackendlessDataQuery
+	public IList<T> Find<T>( BackendlessDataQuery dataQuery )
+	{
+		return Find<T>(BackendlessDataQueryToDataQueryBuilder(dataQuery));
+	}
+	
     public IList<T> Find<T>( DataQueryBuilder dataQueryBuilder )
     {
       BackendlessDataQuery dataQuery = dataQueryBuilder != null ? dataQueryBuilder.Build() : null;
@@ -331,6 +357,12 @@ namespace BackendlessAPI.Service
                                                                  new object[] { GetTypeName( typeof( T ) ), dataQuery}, true );
       return (IList<T>) result;
     }
+
+	// Backwards compatibiliity for Backendless v3.0's BackendlessDataQuery
+	public void Find<T>(BackendlessDataQuery dataQuery, AsyncCallback<IList<T>> callback)
+	{
+		Find<T>(BackendlessDataQueryToDataQueryBuilder(dataQuery), callback);
+	}
 
     public void Find<T>( DataQueryBuilder dataQueryBuilder, AsyncCallback<IList<T>> callback )
     {

@@ -27,12 +27,12 @@ namespace BackendlessAPI.Service
     }
 
     #region UPLOAD
-    public void Upload( FileStream fileStream, string remotePath, AsyncCallback<BackendlessFile> callback )
+    public void Upload( FileStream fileStream, string remotePath, bool overwrite, AsyncCallback<BackendlessFile> callback )
     {
-      Upload( fileStream, remotePath, new EmptyUploadCallback(), callback );
+      Upload( fileStream, remotePath, overwrite, new EmptyUploadCallback(), callback );
     }
 
-    public void Upload( FileStream fileStream, string remotePath, UploadCallback uploadCallback, AsyncCallback<BackendlessFile> callback )
+    public void Upload( FileStream fileStream, string remotePath, bool overwrite, UploadCallback uploadCallback, AsyncCallback<BackendlessFile> callback )
     {
       if( string.IsNullOrEmpty( remotePath ) )
         throw new ArgumentNullException( ExceptionMessage.NULL_PATH );
@@ -40,7 +40,7 @@ namespace BackendlessAPI.Service
       if( fileStream == null || string.IsNullOrEmpty( Path.GetFileName( fileStream.Name ) ) )
         throw new ArgumentNullException( ExceptionMessage.NULL_FILE );
 
-      MakeFileUpload( fileStream, remotePath, uploadCallback, callback );
+      MakeFileUpload( fileStream, remotePath, overwrite, uploadCallback, callback );
     }
     #endregion
     #region REMOVE_FILE
@@ -278,7 +278,8 @@ namespace BackendlessAPI.Service
         throw new System.Exception( ExceptionMessage.NULL_NAME );
     }
 
-    private void MakeFileUpload( FileStream fileStream, string path, UploadCallback uploadCallback,
+    private void MakeFileUpload( FileStream fileStream, string path, bool overwrite,
+								 UploadCallback uploadCallback, 
                                  AsyncCallback<BackendlessFile> callback )
     {
       string boundary = DateTime.Now.Ticks.ToString( "x" );
@@ -308,11 +309,15 @@ namespace BackendlessAPI.Service
       string header = sb.ToString();
       byte[] headerBytes = Encoding.UTF8.GetBytes( header );
 
+      string urlStr = Backendless.URL + "/" + Backendless.AppId + "/" + Backendless.APIKey + "/files/" + EncodeURL( path ) + "/" + EncodeURL( fileName );
+      if( overwrite )
+        urlStr = urlStr + "?" + "overwrite" + "=" + overwrite;  
+
       var httpRequest =
         (HttpWebRequest)
         WebRequest.Create(
           new Uri(
-            Backendless.URL + "/" + Backendless.AppId + "/" + Backendless.APIKey + "/files/" + EncodeURL( path ) + "/" + EncodeURL( fileName ),
+            urlStr,
             UriKind.Absolute ) );
 
       httpRequest.ContentType = "multipart/form-data; boundary=" + boundary;
@@ -462,7 +467,7 @@ namespace BackendlessAPI.Service
           result += "/";
 
         //result += System.Web.HttpUtility.UrlEncode( splitedStr[i] );
-        result += Uri.EscapeDataString( urlStr );
+        result += Uri.EscapeDataString( splitedStr[i] );
       }
 
       return result;

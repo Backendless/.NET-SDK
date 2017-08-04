@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 #if WINDOWS_PHONE8
@@ -123,8 +123,17 @@ namespace BackendlessAPI.Service
       if( channels.Count == 0 )
        channels.Add( DEFAULT_CHANNEL_NAME );
 
+      foreach (String channel in channels) {
+		string shortenedChannel = channel.Length <= 46 ? channel : channel.Substring(0, 46); // Max channel name length of 46
+		Console.WriteLine("Registering for " + channel + " => " + shortenedChannel);
+        _deviceRegistrationDto.AddChannel(shortenedChannel);
+      }
+
       _deviceRegisterCallback = callback;
-      _unityRegisterDevice( GCMSenderID, channels, expiration );
+		if (_unityRegisterDevice != null)
+			_unityRegisterDevice(GCMSenderID, channels, expiration);
+		else
+			RegisterDeviceOnServer(); // Skip Unity
     }
 
     public void RegisterDeviceOnServer()
@@ -150,7 +159,10 @@ namespace BackendlessAPI.Service
     public void UnregisterDevice( AsyncCallback<bool> callback )
     {
       _deviceUnregisterCallback = callback;
-      _unityUnregisterDevice();
+		if (_unityUnregisterDevice != null)
+			_unityUnregisterDevice();
+		else
+			UnregisterDeviceOnServer(); // Skip Unity
     }
 
     public void UnregisterDeviceOnServer()
