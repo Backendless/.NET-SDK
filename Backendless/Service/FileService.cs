@@ -26,11 +26,21 @@ namespace BackendlessAPI.Service
     {
     }
 
-    #region UPLOAD
+	#region UPLOAD
+	public void Upload(FileStream fileStream, string remotePath, AsyncCallback<BackendlessFile> callback)
+	{
+	  Upload(fileStream, remotePath, false, callback);
+	}
+	
     public void Upload( FileStream fileStream, string remotePath, bool overwrite, AsyncCallback<BackendlessFile> callback )
     {
       Upload( fileStream, remotePath, overwrite, new EmptyUploadCallback(), callback );
     }
+
+	public void Upload(FileStream fileStream, string remotePath, UploadCallback uploadCallback, AsyncCallback<BackendlessFile> callback)
+	{
+	  Upload( fileStream, remotePath, false, uploadCallback, callback );
+	}
 
     public void Upload( FileStream fileStream, string remotePath, bool overwrite, UploadCallback uploadCallback, AsyncCallback<BackendlessFile> callback )
     {
@@ -466,7 +476,6 @@ namespace BackendlessAPI.Service
         if( i != 0 )
           result += "/";
 
-        //result += System.Web.HttpUtility.UrlEncode( splitedStr[i] );
         result += Uri.EscapeDataString( splitedStr[i] );
       }
 

@@ -94,5 +94,7 @@
 
     public const string GEOFENCE_ALREADY_MONITORING = "The {0} geofence is already being monitored. Monitoring of the geofence must be stopped before you start it again";
     public const string GEOFENCES_MONITORING = "Cannot start geofence monitoring for all available geofences. There is another monitoring session in progress on the client-side. Make sure to stop all monitoring sessions before starting it for all available geo fences.";
+
+	public const string CHANNEL_NAME_TOO_LONG = "Channel names cannot be longer than 46 characters";
   }
 }

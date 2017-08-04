@@ -41,16 +41,10 @@ namespace BackendlessAPI.Data
     #region FIND
     IList<T> Find();
 
-	// Backwards compatibiliity for Backendless v3.0's BackendlessDataQuery
-	IList<T> Find(BackendlessDataQuery dataQuery);
-
     IList<T> Find( DataQueryBuilder dataQueryBuilder );
 
     void Find( AsyncCallback<IList<T>> responder );
 
-	// Backwards compatibiliity for Backendless v3.0's BackendlessDataQuery
-	void Find( BackendlessDataQuery dataQuery, AsyncCallback<IList<T>> responder );
-		
     void Find( DataQueryBuilder dataQueryBuilder, AsyncCallback<IList<T>> responder );
     #endregion
     #region FIND BY ID

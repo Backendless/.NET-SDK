@@ -95,12 +95,6 @@ namespace BackendlessAPI.Data
         return Backendless.Persistence.Find<T>( (DataQueryBuilder) null );
       }
       
-      // Backwards compatibiliity for Backendless v3.0's BackendlessDataQuery
-      public IList<T> Find( BackendlessDataQuery dataQuery )
-      {
-        return Backendless.Persistence.Find<T>( dataQuery );
-      }
-
       public IList<T> Find( DataQueryBuilder dataQueryBuilder )
       {
         return Backendless.Persistence.Find<T>( dataQueryBuilder );
@@ -109,12 +103,6 @@ namespace BackendlessAPI.Data
       public void Find( AsyncCallback<IList<T>> responder )
       {
         Backendless.Persistence.Find( (DataQueryBuilder) null, responder );
-      }
-
-	  // Backwards compatibiliity for Backendless v3.0's BackendlessDataQuery
-      public void Find( BackendlessDataQuery dataQuery, AsyncCallback<IList<T>> responder )
-      {
-        Backendless.Persistence.Find( dataQuery, responder );
       }
 
       public void Find( DataQueryBuilder dataQueryBuilder, AsyncCallback<IList<T>> responder )

@@ -62,7 +62,6 @@ Backendless/obj/NET_45_Debug*/
 Backendless/obj/Release*/
 Backendless.NET.userprefs
 
-Backendless/Bin/Debug*/
-Backendless/Bin/*
-Backendless/obj/*
-*.cache
+Backendless/Bin/UNITY_WEB_PLAYER*/
+Backendless/Bin/WP*/
+ConsoleTest*/

@@ -407,6 +407,7 @@
     <Compile Include="WebORB\Writer\TypedObjectWriter.cs" />
     <Compile Include="WebORB\Writer\V3ObjectSerializer.cs" />
     <Compile Include="WebORB\Writer\V3ReferenceCache.cs" />
+    <Compile Include="Data\BackendlessV3DataExtensionMethods.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Push\" />

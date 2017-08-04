@@ -20,6 +20,9 @@ namespace BackendlessAPI.Service
     private static string DEVICE_REGISTRATION_MANAGER_SERVER_ALIAS = "com.backendless.services.messaging.DeviceRegistrationService";
 
     private static string DEFAULT_CHANNEL_NAME = "default";
+    
+    private static int CHANNEL_NAME_MAX_LENGTH = 46;
+    
     private static Messaging.DeviceRegistration _deviceRegistrationDto;
 
 #if UNITY
@@ -123,10 +126,11 @@ namespace BackendlessAPI.Service
       if( channels.Count == 0 )
        channels.Add( DEFAULT_CHANNEL_NAME );
 
-      foreach (String channel in channels) {
-		string shortenedChannel = channel.Length <= 46 ? channel : channel.Substring(0, 46); // Max channel name length of 46
-		Console.WriteLine("Registering for " + channel + " => " + shortenedChannel);
-        _deviceRegistrationDto.AddChannel(shortenedChannel);
+      foreach ( String channel in channels ) {
+		if ( channel.Length > CHANNEL_NAME_MAX_LENGTH )
+			throw new ArgumentException( ExceptionMessage.CHANNEL_NAME_TOO_LONG );
+			
+        _deviceRegistrationDto.AddChannel(channel);
       }
 
       _deviceRegisterCallback = callback;

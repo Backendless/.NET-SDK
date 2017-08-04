@@ -34,10 +34,10 @@ namespace Weborb.Client
       set { _cookies = value; }
     }
     
-    private int _timeout = 30000; // Default 30 second timeout for Unity games
+    private int _timeout = 0;
     public int Timeout {
        get { return _timeout; }
-       set { Console.WriteLine("Setting Timeout to " + value); _timeout = value; }
+       set { _timeout = value; }
     }
 
     protected Dictionary<string, Subscription> Subscriptions = new Dictionary<string, Subscription>();
