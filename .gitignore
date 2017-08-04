@@ -65,3 +65,7 @@ Backendless.NET.userprefs
 Backendless/Bin/UNITY_WEB_PLAYER*/
 Backendless/Bin/WP*/
 ConsoleTest*/
+BackendlessUnitySDK/Temp*/
+BackendlessUnitySDK/obj*/
+BackendlessUnitySDK/Library*/
+
