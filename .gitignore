@@ -6,6 +6,8 @@ Backendless/obj/*
 TestResults/
 Samples/
 sdk/
+BackendlessTests.NET.vsmdi
+Backendless/obj/NET_40_Debug/*
 Backendless.NET.suo
 Backendless/UpgradeLog*.htm
 Backendless/*.suo
