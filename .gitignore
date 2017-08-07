@@ -1,13 +1,28 @@
 # git ignore file
 _UpgradeReport_Files*/
+Backendless.Test/
+Backendless/obj
+Backendless/obj/*
+TestResults/
+Samples/
+sdk/
+BackendlessTests.NET.vsmdi
+Backendless/obj/NET_40_Debug/*
+Backendless/Bin/NET_20/*
+Backendless/Backedless-Universal-W8.sln
+Backendless/Bin/Debug/*
+package-sdk/*
+Backendless.NET.suo
+Backendless/UpgradeLog*.htm
+Backendless/*.suo
+Backendless.NET.suo
+Backendless.NET.v11.suo
 Backendless.Test/.DS_Store
 Backendless.Test/bin/Release*/
-Backendless.Test/bin/UNITY_WEB_PLAYER*/
 Backendless.zip
 Backendless/.DS_Store
 Backendless/obj*/
 Backendless.Test/bin/Release*/
-Backendless.Test/bin/UNITY_WEB_PLAYER*/
 Backendless/BackendlessWP.csproj
 Backendless/BackendlessWP.csproj.user
 Backendless/BackendlessWP-2013.sln
@@ -62,7 +77,6 @@ Backendless/obj/NET_45_Debug*/
 Backendless/obj/Release*/
 Backendless.NET.userprefs
 
-Backendless/Bin/UNITY_WEB_PLAYER*/
 Backendless/Bin/WP*/
 ConsoleTest*/
 BackendlessUnitySDK/Temp*/

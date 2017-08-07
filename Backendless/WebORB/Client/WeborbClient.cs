@@ -266,6 +266,19 @@ namespace Weborb.Client
           }
         }
 
+    public int Timeout
+    {
+      get
+      {
+        return _engine.Timeout;
+      }
+
+      set
+      {
+        _engine.Timeout = value;
+      }
+    }
+
 #if !PURE_CLIENT_LIB  && !WINDOWS_PHONE8 && !UNIVERSALW8
     /// <summary>
     /// Creates a proxy to a remote interface with the target interface defined as T. The interface must define the return types for the methods with the generic AsyncToken class.

@@ -15,6 +15,19 @@ namespace BackendlessAPI.Engine
     private static WeborbClient client = new WeborbClient( Backendless.URL + "/" + Backendless.AppId + "/" + Backendless.APIKey + URL_ENDING,
                                                            DESTINATION );
 
+    public static int Timeout
+    {
+      get
+      {
+        return client.Timeout;
+      }
+
+      set
+      {
+        client.Timeout = value;
+      }
+    }
+
     public static T InvokeSync<T>( string className, string methodName, object[] args )
     {
       return InvokeSync<T>( className, methodName, args, false );
@@ -43,7 +56,7 @@ namespace BackendlessAPI.Engine
           responseConfig = new ResponseThreadConfigurator( SetupUnderFlowListener );
 
         client.Invoke<T>( className, methodName, args, null, HeadersManager.GetInstance().Headers, responder, responseConfig );
-        waiter.WaitOne( Timeout.Infinite );
+        waiter.WaitOne( System.Threading.Timeout.Infinite );
       }
       catch( System.Exception ex )
       {
