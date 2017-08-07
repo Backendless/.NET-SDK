@@ -85,5 +85,18 @@ namespace BackendlessAPI
       if( loginStorage.HasData )
         HeadersManager.GetInstance().AddHeader( HeadersEnum.USER_TOKEN_KEY, loginStorage.UserToken );
     }
+
+    public static int Timeout
+    {
+      get
+      {
+        return BackendlessAPI.Engine.Invoker.Timeout;
+      }
+
+      set
+      {
+        BackendlessAPI.Engine.Invoker.Timeout = value;
+      }
+    }
   }
 }

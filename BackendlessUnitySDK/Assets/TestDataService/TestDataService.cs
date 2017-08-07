@@ -30,7 +30,7 @@ public class TestDataService : MonoBehaviour {
                     },
                     error =>
                     {
-                        Debug.Log("Failed to save test data: Code = " + error.FaultCode 
+                        Debug.LogError("Failed to save test data: Code = " + error.FaultCode 
                             + ", Message = " + error.Message 
                             + ", Details = " + error.Detail);
                     }
@@ -48,7 +48,7 @@ public class TestDataService : MonoBehaviour {
                 new AsyncCallback<IList<Dictionary<string, object>>>(
                     response =>
                     {
-                        Debug.Log ("Found " + response.Count + " test data results");
+                        Debug.Log ("Found " + response.Count + " test data results. First object ID is " + response[0]["objectId"]);
                     },
                     error =>
                     {

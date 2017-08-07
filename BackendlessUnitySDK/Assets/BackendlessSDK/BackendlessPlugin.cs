@@ -107,6 +107,12 @@ public class BackendlessPlugin : MonoBehaviour
 #endif
         Backendless.URL = "https://api.backendless.com";
 
+        // Initialize Backendless
+        Backendless.InitApp (applicationId, WindowsPhoneKey);
+
+        // Default network timeout (this must be set after Backendless.InitApp)
+        Backendless.Timeout = 30000; // 30 secs
+
 //        Backendless.Data.MapTableToType("Devices", typeof(/* type of a class that models one of your tables on Backendless and inherits Backendless Entity */));
 
 #if ENABLE_PUSH_PLUGIN
