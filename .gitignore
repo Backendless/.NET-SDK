@@ -8,6 +8,10 @@ Samples/
 sdk/
 BackendlessTests.NET.vsmdi
 Backendless/obj/NET_40_Debug/*
+Backendless/Bin/NET_20/*
+Backendless/Backedless-Universal-W8.sln
+Backendless/Bin/Debug/*
+package-sdk/*
 Backendless.NET.suo
 Backendless/UpgradeLog*.htm
 Backendless/*.suo
