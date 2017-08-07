@@ -1,5 +1,7 @@
 # git ignore file
 _UpgradeReport_Files*/
+Backendless.Test/
+Backendless/obj
 Backendless.Test/.DS_Store
 Backendless.Test\bin\Release*/
 Backendless.Test\bin\UNITY_WEB_PLAYER*/
