@@ -35,10 +35,9 @@ namespace Weborb.Client
     }
     
     private int _timeout = 0;
-    public int Timeout
-    {
-      get { return _timeout; }
-      set { _timeout = value; }
+    public int Timeout {
+       get { return _timeout; }
+       set { _timeout = value; }
     }
 
     protected Dictionary<string, Subscription> Subscriptions = new Dictionary<string, Subscription>();

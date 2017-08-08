@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 #if WINDOWS_PHONE8
@@ -20,6 +20,9 @@ namespace BackendlessAPI.Service
     private static string DEVICE_REGISTRATION_MANAGER_SERVER_ALIAS = "com.backendless.services.messaging.DeviceRegistrationService";
 
     private static string DEFAULT_CHANNEL_NAME = "default";
+    
+    private static int CHANNEL_NAME_MAX_LENGTH = 46;
+    
     private static Messaging.DeviceRegistration _deviceRegistrationDto;
 
 #if UNITY
@@ -123,8 +126,18 @@ namespace BackendlessAPI.Service
       if( channels.Count == 0 )
        channels.Add( DEFAULT_CHANNEL_NAME );
 
+      foreach ( String channel in channels ) {
+		if ( channel.Length > CHANNEL_NAME_MAX_LENGTH )
+			throw new ArgumentException( ExceptionMessage.CHANNEL_NAME_TOO_LONG );
+			
+        _deviceRegistrationDto.AddChannel(channel);
+      }
+
       _deviceRegisterCallback = callback;
-      _unityRegisterDevice( GCMSenderID, channels, expiration );
+		if (_unityRegisterDevice != null)
+			_unityRegisterDevice(GCMSenderID, channels, expiration);
+		else
+			RegisterDeviceOnServer(); // Skip Unity
     }
 
     public void RegisterDeviceOnServer()
@@ -150,7 +163,10 @@ namespace BackendlessAPI.Service
     public void UnregisterDevice( AsyncCallback<bool> callback )
     {
       _deviceUnregisterCallback = callback;
-      _unityUnregisterDevice();
+		if (_unityUnregisterDevice != null)
+			_unityUnregisterDevice();
+		else
+			UnregisterDeviceOnServer(); // Skip Unity
     }
 
     public void UnregisterDeviceOnServer()

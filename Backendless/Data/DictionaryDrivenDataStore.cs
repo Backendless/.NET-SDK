@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using BackendlessAPI.Exception;
 using BackendlessAPI.Engine;
@@ -149,7 +149,7 @@ namespace BackendlessAPI.Data
     {
       return Find( (DataQueryBuilder) null );
     }
-
+    
     public IList<Dictionary<string, object>> Find( DataQueryBuilder dataQueryBuilder )
     {
       BackendlessDataQuery dataQuery = null;
@@ -167,9 +167,9 @@ namespace BackendlessAPI.Data
 
     public void Find( AsyncCallback<IList<Dictionary<string, object>>> responder )
     {
-      Find( null, responder );
+      Find( (DataQueryBuilder) null, responder );
     }
-
+    
     public void Find( DataQueryBuilder dataQueryBuilder, AsyncCallback<IList<Dictionary<string, object>>> callback )
     {
       var responder = new AsyncCallback<IList<Dictionary<string, object>>>(

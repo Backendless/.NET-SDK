@@ -92,9 +92,9 @@ namespace BackendlessAPI.Data
       #region Find
       public IList<T> Find()
       {
-        return Backendless.Persistence.Find<T>( null );
+        return Backendless.Persistence.Find<T>( (DataQueryBuilder) null );
       }
-
+      
       public IList<T> Find( DataQueryBuilder dataQueryBuilder )
       {
         return Backendless.Persistence.Find<T>( dataQueryBuilder );
@@ -102,7 +102,7 @@ namespace BackendlessAPI.Data
 
       public void Find( AsyncCallback<IList<T>> responder )
       {
-        Backendless.Persistence.Find( null, responder );
+        Backendless.Persistence.Find( (DataQueryBuilder) null, responder );
       }
 
       public void Find( DataQueryBuilder dataQueryBuilder, AsyncCallback<IList<T>> responder )
