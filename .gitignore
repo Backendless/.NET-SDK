@@ -84,3 +84,7 @@ BackendlessUnitySDK/Library*/
 
 
 *.suo
+
+Backendless/Backedless-Universal-W8.csproj
+
+Backendless/Backedless-Universal-W8.csproj.user
