@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<project name="Backendless.NET-client" default="all">  
+    <property name="nantcontribPath" value="c:/nantcontrib-0.92/bin/NAnt.Contrib.Tasks.dll" />
+    <target name="build">
+        <loadtasks assembly="${nantcontribPath}" />
+        <msbuild project="Backendless.NET.sln">
+            <property name="Configuration" value="NET_20_Release"/>
+        </msbuild>
+        <msbuild project="Backendless.NET.sln">
+            <property name="Configuration" value="NET_35_Release"/>
+        </msbuild>
+        <msbuild project="Backendless.NET.sln">
+            <property name="Configuration" value="NET_40_Release"/>
+        </msbuild>
+        <msbuild project="Backendless.NET.sln">
+            <property name="Configuration" value="NET_45_Release"/>
+        </msbuild>
+        <msbuild project="Backendless.NET.sln">
+            <property name="Configuration" value="WP_Release"/>
+        </msbuild>
+    </target>
+    
+    <target name="clean">
+       <delete dir="Backendless/bin" /> 
+       <delete dir="out" />
+       <delete file="backendless.zip" />
+    </target>
+    
+    <target name="copy-examples">
+        <property name="path" value="out/Backendless/examples" overwrite="false" />
+        <mkdir dir="${path}" />
+        <copy todir="${path}">
+            <fileset basedir="Samples"/>
+        </copy>
+		<copy file="Backendless/bin/WP/Release/BackendlessPhone.dll" overwrite="true" tofile="${path}/Dependency/BackendlessPhone.dll" />
+        <copy file="Backendless/Dependency/WeborbPhoneClient.dll" overwrite="true" tofile="${path}/Dependency/WeborbPhoneClient.dll" />
+    </target>
+    
+    <target name="copy-docs">
+        <copy file="docs/getting-started.pdf" tofile="out/Backendless/getting-started.pdf" />
+        <!--copy file="docs/license.html" tofile="out/Backendless/license.html" /-->
+    </target>
+    
+    <target name="copy-libs" depends="build">
+        <copy file="Backendless/bin/NET_20/Release/Backendless.dll" tofile="out/Backendless/libs/desktop/.net20/Backendless.dll" />
+        <copy file="Backendless/Dependency/.NET2.0/bin/weborb.dll" tofile="out/Backendless/libs/desktop/.net20/weborb.dll" />
+        
+        <copy file="Backendless/bin/NET_35/Release/Backendless.dll" tofile="out/Backendless/libs/desktop/.net35/Backendless.dll" />
+        <copy file="Backendless/Dependency/.NET3.5/bin/weborb.dll" tofile="out/Backendless/libs/desktop/.net35/weborb.dll" />
+        
+        <copy file="Backendless/bin/NET_40/Release/Backendless.dll" tofile="out/Backendless/libs/desktop/.net40/Backendless.dll" />
+        <copy file="Backendless/Dependency/.NET4.0/bin/weborb.dll" tofile="out/Backendless/libs/desktop/.net40/weborb.dll" />
+        
+        <copy file="Backendless/bin/NET_45/Release/Backendless.dll" tofile="out/Backendless/libs/desktop/.net45/Backendless.dll" />
+        <copy file="Backendless/Dependency/.NET4.0/bin/weborb.dll" tofile="out/Backendless/libs/desktop/.net45/weborb.dll" />
+        
+        <copy file="Backendless/Dependency/weborb.config" tofile="out/Backendless/libs/desktop/weborb.config" />
+        
+        <copy file="Backendless/bin/WP/Release/BackendlessPhone.dll" overwrite="true" tofile="out/Backendless/libs/phone/BackendlessPhone.dll" />
+        <copy file="Backendless/Dependency/WeborbPhoneClient.dll" overwrite="true" tofile="out/Backendless/libs/phone/WeborbPhoneClient.dll" />
+    </target>
+    
+    <target name="zip-all">
+        <zip zipfile="backendless.zip">
+            <fileset basedir="out">
+                <include name="**/*" />
+            </fileset>
+        </zip>
+    </target>
+    
+    <target name="all">
+        <call target="clean" />
+        <call target="copy-docs" />
+        <call target="copy-libs" />
+		<call target="copy-examples" />
+        <call target="zip-all" />
+    </target>
+</project>
