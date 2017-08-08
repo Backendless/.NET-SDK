@@ -77,9 +77,10 @@ Backendless/obj/NET_45_Debug*/
 Backendless/obj/Release*/
 Backendless.NET.userprefs
 
-Backendless/Bin/WP*/
 ConsoleTest*/
 BackendlessUnitySDK/Temp*/
 BackendlessUnitySDK/obj*/
 BackendlessUnitySDK/Library*/
 
+
+*.suo

@@ -409,9 +409,7 @@
     <Compile Include="WebORB\Writer\V3ReferenceCache.cs" />
     <Compile Include="Data\BackendlessV3DataExtensionMethods.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Push\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSHARP.Targets" />
   <ProjectExtensions>
     <VisualStudio AllowExistingFolder="true" />
