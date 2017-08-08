@@ -81,10 +81,9 @@ ConsoleTest*/
 BackendlessUnitySDK/Temp*/
 BackendlessUnitySDK/obj*/
 BackendlessUnitySDK/Library*/
-
-
-*.suo
-
+Local.testsettings
+TraceAndTestImpact.testsettings
 Backendless/Backedless-Universal-W8.csproj
-
 Backendless/Backedless-Universal-W8.csproj.user
+BackendlessUnitySDK/BackendlessUnitySDK.suo
+
