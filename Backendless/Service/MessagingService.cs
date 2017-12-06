@@ -436,6 +436,24 @@ namespace BackendlessAPI.Service
 
     #endregion
 
+
+    public MessageStatus GetMessageStatus(string messageId)
+      {
+          if (messageId == null)
+              throw new ArgumentNullException(ExceptionMessage.NULL_MESSAGE_ID);
+          MessageStatus messageStatus = Invoker.InvokeSync<MessageStatus>(MESSAGING_MANAGER_SERVER_ALIAS, "getMessageStatus", new object[]{ messageId });
+
+          return messageStatus;
+      }
+
+    public void GetMessageStatus(string messageId, AsyncCallback<MessageStatus> callback)
+      {
+          if (messageId == null)
+              throw new ArgumentNullException(ExceptionMessage.NULL_MESSAGE_ID);
+
+          Invoker.InvokeAsync(MESSAGING_MANAGER_SERVER_ALIAS, "getMessageStatus", new object[] { messageId }, callback);
+      }
+
     public bool Cancel( string messageId )
     {
       if( string.IsNullOrEmpty( messageId ) )
