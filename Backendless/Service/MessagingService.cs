@@ -318,23 +318,23 @@ namespace BackendlessAPI.Service
 
     public Messaging.MessageStatus Publish( object message )
     {
-      return Publish( message, DEFAULT_CHANNEL_NAME );
+      return Publish(DEFAULT_CHANNEL_NAME, message);
     }
 
     public Messaging.MessageStatus Publish( object message, Messaging.PublishOptions publishOptions )
     {
-      return Publish( message, DEFAULT_CHANNEL_NAME, publishOptions );
+      return Publish(DEFAULT_CHANNEL_NAME, message, publishOptions );
     }
 
     public Messaging.MessageStatus Publish( object message, Messaging.DeliveryOptions deliveryOptions )
     {
-      return Publish( message, DEFAULT_CHANNEL_NAME, null, deliveryOptions );
+      return Publish(DEFAULT_CHANNEL_NAME, message, null, deliveryOptions );
     }
 
     public Messaging.MessageStatus Publish( object message, Messaging.PublishOptions publishOptions,
                                      Messaging.DeliveryOptions deliveryOptions )
     {
-      return Publish( message, DEFAULT_CHANNEL_NAME, publishOptions, deliveryOptions );
+      return Publish(DEFAULT_CHANNEL_NAME, message,  publishOptions, deliveryOptions );
     }
 
     #endregion
@@ -366,28 +366,28 @@ namespace BackendlessAPI.Service
 
     #region PUBLISH SYNC
 
-    public Messaging.MessageStatus Publish( object message, string channelName )
+    public Messaging.MessageStatus Publish(string channelName, object message )
     {
-      return PublishSync( message, channelName, null, null );
+      return PublishSync(channelName, message, null, null );
     }
 
-    public Messaging.MessageStatus Publish( object message, string channelName, Messaging.PublishOptions publishOptions )
+    public Messaging.MessageStatus Publish(string channelName, object message, Messaging.PublishOptions publishOptions )
     {
-      return PublishSync( message, channelName, publishOptions, null );
+      return PublishSync(channelName, message, publishOptions, null );
     }
 
-    public Messaging.MessageStatus Publish( object message, string channelName, Messaging.DeliveryOptions deliveryOptions )
+    public Messaging.MessageStatus Publish(string channelName, object message, Messaging.DeliveryOptions deliveryOptions )
     {
-      return PublishSync( message, channelName, null, deliveryOptions );
+      return PublishSync(channelName, message, null, deliveryOptions );
     }
 
-    public Messaging.MessageStatus Publish( object message, string channelName, Messaging.PublishOptions publishOptions,
+    public Messaging.MessageStatus Publish(string channelName, object message, Messaging.PublishOptions publishOptions,
                                      Messaging.DeliveryOptions deliveryOptions )
     {
-      return PublishSync( message, channelName, publishOptions, deliveryOptions );
+      return PublishSync(channelName, message, publishOptions, deliveryOptions );
     }
 
-    private Messaging.MessageStatus PublishSync( object message, string channelName, Messaging.PublishOptions publishOptions,
+    private Messaging.MessageStatus PublishSync(string channelName, object message, Messaging.PublishOptions publishOptions,
                                           Messaging.DeliveryOptions deliveryOptions )
     {
       checkChannelName( channelName );
@@ -435,6 +435,24 @@ namespace BackendlessAPI.Service
     }
 
     #endregion
+
+
+    public MessageStatus GetMessageStatus(string messageId)
+      {
+          if (messageId == null)
+              throw new ArgumentNullException(ExceptionMessage.NULL_MESSAGE_ID);
+          MessageStatus messageStatus = Invoker.InvokeSync<MessageStatus>(MESSAGING_MANAGER_SERVER_ALIAS, "getMessageStatus", new object[]{ messageId });
+
+          return messageStatus;
+      }
+
+    public void GetMessageStatus(string messageId, AsyncCallback<MessageStatus> callback)
+      {
+          if (messageId == null)
+              throw new ArgumentNullException(ExceptionMessage.NULL_MESSAGE_ID);
+
+          Invoker.InvokeAsync(MESSAGING_MANAGER_SERVER_ALIAS, "getMessageStatus", new object[] { messageId }, callback);
+      }
 
     public bool Cancel( string messageId )
     {
