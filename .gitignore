@@ -86,4 +86,7 @@ TraceAndTestImpact.testsettings
 Backendless/Backedless-Universal-W8.csproj
 Backendless/Backedless-Universal-W8.csproj.user
 BackendlessUnitySDK/BackendlessUnitySDK.suo
+.vs/
+Backendless/Bin/NET_45/Debug/*
+packages/
 
