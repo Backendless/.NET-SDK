@@ -5,82 +5,104 @@ using Weborb.Types;
 
 namespace Weborb.Reader
 {
-	public class ParseContext
-	{
-		private List<IAdaptingType> references;
-        private List<String> stringReferences;
-        private List<Object> classInfos;
-		private int version;
-        private Dictionary<int, ParseContext> cachedContext;
-
+  public class ParseContext
+  {
+    private List<IAdaptingType> references;
+    private List<String> stringReferences;
+    private List<Object> classInfos;
+    private int version;
+    private Dictionary<int, ParseContext> cachedContext;
+    private Boolean ignore;
     public List<IAdaptingType> parsedObjects = new List<IAdaptingType>();
     public List<RefObject> RefObjects = new List<RefObject>();
-     
 
-		public ParseContext()
-		{
-            references = new List<IAdaptingType>();
-            stringReferences = new List<String>();
-			classInfos = new List<Object>();
-		}
 
-		public ParseContext( int version ) : this()
-		{
-			this.version = version;
-		}
+    public ParseContext()
+    {
+      references = new List<IAdaptingType>();
+      stringReferences = new List<String>();
+      classInfos = new List<Object>();
+    }
 
-        public ParseContext getCachedContext( int version )
-        {
-            if( cachedContext == null )
-                cachedContext = new Dictionary<int, ParseContext>();
+    public ParseContext( int version ) : this()
+    {
+      this.version = version;
+    }
 
-            if( !cachedContext.ContainsKey( version ) )
-                cachedContext[ version ] = new ParseContext( version );
+    public void TurnOnIgnoreMode()
+    {
+      ignore = true;
+    }
 
-            return cachedContext[ version ];
-        }
+    public void TurnOffIgnoreMode()
+    {
+      ignore = false;
+    }
+
+    public ParseContext getCachedContext( int version )
+    {
+      if( cachedContext == null )
+        cachedContext = new Dictionary<int, ParseContext>();
+
+      if( !cachedContext.ContainsKey( version ) )
+        cachedContext[ version ] = new ParseContext( version );
+
+      return cachedContext[ version ];
+    }
 
     public void addReference( IAdaptingType type )
-		{
-			references.Add( type );
-		}
+    {
+      if( ignore )
+        return;
 
-		public IAdaptingType getReference( int pointer )
-		{
-			return (IAdaptingType) references[ pointer ];
-		}
+      references.Add( type );
+    }
 
-        public void addReference( IAdaptingType adaptingType, int index )
-        {
-            references.Capacity = index + 1;
-            references[ index ] = adaptingType;
-        }
+    public IAdaptingType getReference( int pointer )
+    {
+      return (IAdaptingType) references[ pointer ];
+    }
 
-		public void addStringReference( string refStr )
-		{
-			stringReferences.Add( refStr );
-		}
+    public void addReference( IAdaptingType adaptingType, int index )
+    {
+      if( ignore )
+        return;
 
-		public string getStringReference( int index )
-		{
-			return (string) stringReferences[ index ];
-		}
+      references.Capacity = index + 1;
+      references[ index ] = adaptingType;
+    }
 
-		public void addClassInfoReference( object val )
-		{
-			classInfos.Add( val );
-		}
+    public void addStringReference( string refStr )
+    {
+      if( ignore )
+        return;
 
-		public object getClassInfoReference( int index )
-		{
-			return classInfos[ index ];
-		}
+      stringReferences.Add( refStr );
+    }
 
-		public int getVersion()
-		{
-			return version;
-		}
+    public string getStringReference( int index )
+    {
+      return (string) stringReferences[ index ];
+    }
 
+    public void addClassInfoReference( object val )
+    {
+      if( ignore )
+        return;
+
+      classInfos.Add( val );
+    }
+
+    public object getClassInfoReference( int index )
+    {
+      return classInfos[ index ];
+    }
+
+    public int getVersion()
+    {
+      return version;
+    }
+    /*
     public int addParsedObject( IAdaptingType obj )
     {
       parsedObjects.Add( obj );
@@ -94,11 +116,11 @@ namespace Weborb.Reader
 
     public IAdaptingType getParsedObject( int index )
     {
-      try 
-      { 
-        return parsedObjects[ index ]; 
+      try
+      {
+        return parsedObjects[ index ];
       }
-      catch( Exception e ) 
+      catch( Exception e )
       {
         throw new Exception( "Wrong parsedObjects index: " + index, e );
       }
@@ -118,5 +140,6 @@ namespace Weborb.Reader
         }
       }
     }
-	}
+    */
+  }
 }

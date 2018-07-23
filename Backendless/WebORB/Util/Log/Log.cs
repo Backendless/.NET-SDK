@@ -12,196 +12,196 @@ using Weborb.Messaging.Util;
 
 namespace Weborb.Util.Logging
 {
-	public class Log
-	{
-		public static readonly string DEFAULTLOGGER = "default";
-        private static Dictionary<String, long> stringToCode = new Dictionary<String, long>();
-        private static Dictionary<long, String> codeToString = new Dictionary<long, String>();
-        private static Dictionary<String, ILogger> nameToLogger = new Dictionary<String, ILogger>();
-		private static long masks;
+  public class Log
+  {
+    public static readonly string DEFAULTLOGGER = "default";
+    private static Dictionary<String, long> stringToCode = new Dictionary<String, long>();
+    private static Dictionary<long, String> codeToString = new Dictionary<long, String>();
+    private static Dictionary<String, ILogger> nameToLogger = new Dictionary<String, ILogger>();
+    private static long masks;
 
-		public static long getCode( String category )
-		{
-			long code;
+    public static long getCode( String category )
+    {
+      long code;
 
-			if( stringToCode.ContainsKey( category ) )
-			{
-				code = (long) stringToCode[ category ];
-			}
-			else
-			{
-				code = 1L << stringToCode.Count;
-				stringToCode.Add( category, code );
-				codeToString.Add( code, category );
-			}
+      if( stringToCode.ContainsKey( category ) )
+      {
+        code = (long) stringToCode[ category ];
+      }
+      else
+      {
+        code = 1L << stringToCode.Count;
+        stringToCode.Add( category, code );
+        codeToString.Add( code, category );
+      }
 
-			return code;
-		}
+      return code;
+    }
 
-		public static string getCategory( long code )
-		{
-			string category;
-            codeToString.TryGetValue( code, out category );
-            return category;
-		}
+    public static string getCategory( long code )
+    {
+      string category;
+      codeToString.TryGetValue( code, out category );
+      return category;
+    }
 
-		public static IEnumerator<String> getCategories()
-		{
-            return stringToCode.Keys.GetEnumerator();
-		}
+    public static IEnumerator<String> getCategories()
+    {
+      return stringToCode.Keys.GetEnumerator();
+    }
 
-		public static bool isLogging( string category )
-		{
-			return isLogging( getCode( category ) );
-		}
+    public static bool isLogging( string category )
+    {
+      return isLogging( getCode( category ) );
+    }
 
-		public static bool isLogging( long mask )
-		{
-			return ((masks & mask) != 0 );
-		}
+    public static bool isLogging( long mask )
+    {
+      return ((masks & mask) != 0);
+    }
 
-		public static void recalcMasks()
-		{
-			masks = 0;
+    public static void recalcMasks()
+    {
+      masks = 0;
 
-            lock( nameToLogger )
-            {
-                Dictionary<string, ILogger>.ValueCollection.Enumerator enumerator = nameToLogger.Values.GetEnumerator();
+      lock( nameToLogger )
+      {
+        Dictionary<string, ILogger>.ValueCollection.Enumerator enumerator = nameToLogger.Values.GetEnumerator();
 
-                while( enumerator.MoveNext() )
-                {
-                    ILogger logger = enumerator.Current;
-                    masks |= logger.getMask();
-                }
-            }
-		}
-		
-		public static void removeLogger( string name )
-		  {
-		  lock( nameToLogger )
-		    {
+        while( enumerator.MoveNext() )
+        {
+          ILogger logger = enumerator.Current;
+          masks |= logger.getMask();
+        }
+      }
+    }
+
+    public static void removeLogger( string name )
+    {
+      lock( nameToLogger )
+      {
 #if FULL_BUILD
         // dispose logger to free file(s)
 		    if( nameToLogger.ContainsKey( name ) && nameToLogger[ name ] is TraceLogger )
 		      ( (TraceLogger)nameToLogger[ name ] ).Dispose();
 #endif
 
-		    nameToLogger.Remove( name );
-		    }
+        nameToLogger.Remove( name );
+      }
 
-		  recalcMasks();
-		  }
+      recalcMasks();
+    }
 
-	  public static void addLogger( String name, ILogger logger )
-	    {
-	    lock( nameToLogger )
-	      {
+    public static void addLogger( String name, ILogger logger )
+    {
+      lock( nameToLogger )
+      {
 #if FULL_BUILD
         // dispose logger if it exists to free file(s)
         if( nameToLogger.ContainsKey( name ) && nameToLogger[ name ] is TraceLogger )
           ( (TraceLogger) nameToLogger[ name ] ).Dispose();
 #endif
 
-	      nameToLogger[ name ] = logger;
-	      }
+        nameToLogger[ name ] = logger;
+      }
 
-	    //nameToLogger.Add( name, logger );
-	    recalcMasks();
-	    }
+      //nameToLogger.Add( name, logger );
+      recalcMasks();
+    }
 
-	  public static ILogger getLogger( string name )
-		{
-			ILogger logger;
-            nameToLogger.TryGetValue( name, out logger );
-            return logger;
-		}
+    public static ILogger getLogger( string name )
+    {
+      ILogger logger;
+      nameToLogger.TryGetValue( name, out logger );
+      return logger;
+    }
 
-		public static ILogger[] getLoggers()
-		{
-            lock( nameToLogger )
-            {
-                ILogger[] loggers = new ILogger[ nameToLogger.Count ];
-                nameToLogger.Values.CopyTo( loggers, 0 );
-                return loggers;
-            }
-		}
+    public static ILogger[] getLoggers()
+    {
+      lock( nameToLogger )
+      {
+        ILogger[] loggers = new ILogger[ nameToLogger.Count ];
+        nameToLogger.Values.CopyTo( loggers, 0 );
+        return loggers;
+      }
+    }
 
-		public static void startLogging( long code )
-		{
-			startLogging( getCategory( code ) );
-		}
+    public static void startLogging( long code )
+    {
+      startLogging( getCategory( code ) );
+    }
 
-		public static void stopLogging( long code )
-		{
-			stopLogging( getCategory( code ) );
-		}
+    public static void stopLogging( long code )
+    {
+      stopLogging( getCategory( code ) );
+    }
 
-		public static void startLogging( string category )
-		{
-            lock( nameToLogger )
-            {
-                foreach( object logger in nameToLogger.Values )
-                    ((ILogger) logger).startLogging( category );
-            }
-		}
+    public static void startLogging( string category )
+    {
+      lock( nameToLogger )
+      {
+        foreach( object logger in nameToLogger.Values )
+          ((ILogger) logger).startLogging( category );
+      }
+    }
 
-		public static void stopLogging( string category )
-		{
-            lock( nameToLogger )
-            {
-                foreach( object logger in nameToLogger.Values )
-                    ((ILogger) logger).stopLogging( category );
-            }
-		}
+    public static void stopLogging( string category )
+    {
+      lock( nameToLogger )
+      {
+        foreach( object logger in nameToLogger.Values )
+          ((ILogger) logger).stopLogging( category );
+      }
+    }
 
-		public static void log( long code, Exception exception )
-		{
-			log( code, null, exception );
-		}
+    public static void log( long code, Exception exception )
+    {
+      log( code, null, exception );
+    }
 
-		public static void log( long code, string message, Exception exception )
-		{
-			if( (masks & code ) == 0 )
-				return;
+    public static void log( long code, string message, Exception exception )
+    {
+      if( (masks & code) == 0 )
+        return;
 
-            ExceptionHolder holder = new ExceptionHolder();
-            holder.Message = message;
-            holder.ExceptionObject = exception;
-			log( code, holder );
-		}
+      ExceptionHolder holder = new ExceptionHolder();
+      holder.Message = message;
+      holder.ExceptionObject = exception;
+      log( code, holder );
+    }
 
-        public static void log( String category, object eventObject )
+    public static void log( String category, object eventObject )
+    {
+      log( getCode( category ), eventObject );
+    }
+
+    public static void log( long codeLong, object eventObject )
+    {
+      if( (masks & codeLong) != 0 )
+        log( codeLong, getCategory( codeLong ), eventObject );
+    }
+
+    public static void log( long code, string category, Object eventObject )
+    {
+      try
+      {
+        foreach( object obj in nameToLogger.Values )
         {
-            log( getCode( category ), eventObject );
-        }
+          ILogger logger = (ILogger) obj;
 
-		public static void log( long codeLong, object eventObject )
-		{
-			if( (masks & codeLong ) != 0 )
-				log( codeLong, getCategory( codeLong ), eventObject );
-		}
-
-		public static void log( long code, string category, Object eventObject )
-		{
+          if( (logger.getMask() & code) != 0 )
             try
             {
-                foreach( object obj in nameToLogger.Values )
-                {
-                    ILogger logger = (ILogger) obj;
-
-                    if( (logger.getMask() & code) != 0 )
-                        try
-                        {
-                            logger.fireEvent( category, eventObject, DateTime.Now );
-                        }
-                        catch
-                        {
-                        }
-                }
+              logger.fireEvent( category, eventObject, DateTime.Now );
             }
             catch
             {
             }
+        }
+      }
+      catch
+      {
+      }
     }
 
 

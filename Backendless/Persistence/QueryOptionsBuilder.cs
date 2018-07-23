@@ -50,6 +50,12 @@ namespace BackendlessAPI.Persistence
       return related;
     }
 
+    public Builder AddRelated( string related )
+    {
+      this.related.Add( related );
+      return builder;
+    }
+
     public Builder SetRelated( List<String> related )
     {
       this.related = related;

@@ -5,19 +5,103 @@ using BackendlessAPI.Engine;
 using BackendlessAPI.Service;
 using BackendlessAPI.Persistence;
 using BackendlessAPI.Async;
+using BackendlessAPI.RT.Data;
 
 namespace BackendlessAPI.Data
 {
   class DictionaryDrivenDataStore : IDataStore<Dictionary<String, Object>>
   {
     private const string PERSISTENCE_MANAGER_SERVER_ALIAS = "com.backendless.services.persistence.PersistenceService";
+    //private EventHandlerFactory<Dictionary<string, object>> eventHandlerFactory = new EventHandlerFactory<Dictionary<string, object>>();
+    private IEventHandler<Dictionary<string, object>> eventHandler;
     private String tableName;
 
     public DictionaryDrivenDataStore( String tableName )
     {
       this.tableName = tableName;
+      this.eventHandler = EventHandlerFactory.Of( tableName );
     }
 
+    #region Bulk Update
+    public int Update( string whereClause, Dictionary<string, object> changes )
+    {
+      return Update( whereClause, changes, null, false );
+    }
+
+    public void Update( string whereClause, Dictionary<string, object> changes, AsyncCallback<int> callback )
+    {
+      Update( whereClause, changes, callback, true );
+    }
+    private int Update( string whereClause, Dictionary<string, object> changes, AsyncCallback<int> callback, bool async )
+    {
+      if( whereClause == null || whereClause.Trim().Length == 0 )
+        throw new ArgumentNullException( String.Format( ExceptionMessage.NULL_OR_EMPTY_TEMPLATE, "Where clause" ) );
+
+      if( changes == null || changes.Count == 0 )
+        throw new ArgumentNullException( String.Format( ExceptionMessage.NULL_OR_EMPTY_TEMPLATE, "Object with changes" ) );
+
+      object[] args = new object[] { tableName, whereClause, changes };
+
+      if( async )
+        Invoker.InvokeAsync<int>( PERSISTENCE_MANAGER_SERVER_ALIAS, "updateBulk", args, callback );
+      else
+        return Invoker.InvokeSync<int>( PERSISTENCE_MANAGER_SERVER_ALIAS, "updateBulk", args );
+
+      // not used
+      return -1;
+    }
+    #endregion
+    #region Bulk Create
+    public IList<string> Create( IList<Dictionary<string, object>> objects )
+    {
+      if( objects == null )
+        throw new ArgumentNullException( String.Format( ExceptionMessage.NULL_OR_EMPTY_TEMPLATE, "Object collection" ) );
+
+      if( objects.Count == 0 )
+        return new List<string>();
+
+      object[] args = new object[] { tableName, objects };
+      return Invoker.InvokeSync<IList<string>>( PERSISTENCE_MANAGER_SERVER_ALIAS, "createBulk", args );
+    }
+
+    public void Create( IList<Dictionary<string, object>> objects, AsyncCallback<IList<string>> callback )
+    {
+      if( objects == null )
+        throw new ArgumentNullException( String.Format( ExceptionMessage.NULL_OR_EMPTY_TEMPLATE, "Object collection" ) );
+
+      if( objects.Count == 0 )
+        callback.ResponseHandler( new List<string>() );
+
+      object[] args = new object[] { tableName, objects };
+      Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "createBulk", args, callback );
+    }
+    #endregion
+    #region Bulk Delete
+    public int Remove( string whereClause )
+    {
+      return Remove( whereClause, null, false );
+    }
+
+    public void Remove( string whereClause, AsyncCallback<int> callback )
+    {
+      Remove( whereClause, callback, true );
+    }
+    private int Remove( string whereClause, AsyncCallback<int> callback, bool async )
+    {
+      if( whereClause == null || whereClause.Trim().Length == 0 )
+        throw new ArgumentNullException( String.Format( ExceptionMessage.NULL_OR_EMPTY_TEMPLATE, "Where clause" ) );
+
+      object[] args = new object[] { tableName, whereClause };
+
+      if( async )
+        Invoker.InvokeAsync<int>( PERSISTENCE_MANAGER_SERVER_ALIAS, "removeBulk", args, callback );
+      else
+        return Invoker.InvokeSync<int>( PERSISTENCE_MANAGER_SERVER_ALIAS, "removeBulk", args );
+
+      // not used
+      return -1;
+    }
+    #endregion
     #region Save
     public Dictionary<string, object> Save( Dictionary<string, object> entity )
     {
@@ -28,13 +112,13 @@ namespace BackendlessAPI.Data
       return Invoker.InvokeSync<Dictionary<String, Object>>( PERSISTENCE_MANAGER_SERVER_ALIAS, "save", args );
     }
 
-    public void Save( Dictionary<string, object> entity, AsyncCallback<Dictionary<string, object>> responder )
+    public void Save( Dictionary<string, object> entity, AsyncCallback<Dictionary<string, object>> callback )
     {
       if( entity == null )
         throw new ArgumentNullException( ExceptionMessage.NULL_ENTITY );
 
       object[] args = new object[] { tableName, entity };
-      Invoker.InvokeAsync<Dictionary<String, Object>>( PERSISTENCE_MANAGER_SERVER_ALIAS, "save", args, responder );
+      Invoker.InvokeAsync<Dictionary<String, Object>>( PERSISTENCE_MANAGER_SERVER_ALIAS, "save", args, callback );
     }
     #endregion
     #region Remove
@@ -53,24 +137,6 @@ namespace BackendlessAPI.Data
         throw new ArgumentNullException( ExceptionMessage.NULL_ENTITY );
 
       Object[] args = new Object[] { tableName, entity };
-      Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "remove", args, responder );
-    }
-
-    public long Remove( string objectId )
-    {
-      if( string.IsNullOrEmpty( objectId ) )
-        throw new ArgumentNullException( ExceptionMessage.NULL_ID );
-
-      Object[] args = new Object[] { tableName, objectId };
-      return Invoker.InvokeSync<long>( PERSISTENCE_MANAGER_SERVER_ALIAS, "remove", args );
-    }
-
-    public void Remove( string objectId, AsyncCallback<long> responder )
-    {
-      if( string.IsNullOrEmpty( objectId ) )
-        throw new ArgumentNullException( ExceptionMessage.NULL_ID );
-
-      Object[] args = new Object[] { tableName, objectId };
       Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "remove", args, responder );
     }
     #endregion
@@ -149,7 +215,7 @@ namespace BackendlessAPI.Data
     {
       return Find( (DataQueryBuilder) null );
     }
-    
+
     public IList<Dictionary<string, object>> Find( DataQueryBuilder dataQueryBuilder )
     {
       BackendlessDataQuery dataQuery = null;
@@ -169,7 +235,7 @@ namespace BackendlessAPI.Data
     {
       Find( (DataQueryBuilder) null, responder );
     }
-    
+
     public void Find( DataQueryBuilder dataQueryBuilder, AsyncCallback<IList<Dictionary<string, object>>> callback )
     {
       var responder = new AsyncCallback<IList<Dictionary<string, object>>>(
@@ -310,7 +376,7 @@ namespace BackendlessAPI.Data
       return Backendless.Persistence.LoadRelations<M>( tableName, objectId, queryBuilder );
     }
 
-    public void LoadRelations<M>( string objectId, LoadRelationsQueryBuilder<M> queryBuilder, AsyncCallback<IList<M>> responder ) 
+    public void LoadRelations<M>( string objectId, LoadRelationsQueryBuilder<M> queryBuilder, AsyncCallback<IList<M>> responder )
     {
       Backendless.Persistence.LoadRelations<M>( tableName, objectId, queryBuilder, responder );
     }
@@ -344,7 +410,7 @@ namespace BackendlessAPI.Data
       Backendless.Data.AddRelation<Dictionary<string, object>>( tableName, parent, columnName, children );
     }
 
-    public void AddRelation( Dictionary<string, object> parent, string columnName, object[] children, AsyncCallback<object> callback )
+    public void AddRelation( Dictionary<string, object> parent, string columnName, object[] children, AsyncCallback<int> callback )
     {
       Backendless.Data.AddRelation<Dictionary<string, object>>( tableName, parent, columnName, children, callback );
     }
@@ -361,12 +427,12 @@ namespace BackendlessAPI.Data
 
     #endregion
     #region SET RELATION
-    public void SetRelation( Dictionary<string, object> parent, string columnName, object[] children )
+    public int SetRelation( Dictionary<string, object> parent, string columnName, object[] children )
     {
-      Backendless.Data.SetRelation<Dictionary<string, object>>( tableName, parent, columnName, children );
+      return Backendless.Data.SetRelation<Dictionary<string, object>>( tableName, parent, columnName, children );
     }
 
-    public void SetRelation( Dictionary<string, object> parent, string columnName, object[] children, AsyncCallback<object> callback )
+    public void SetRelation( Dictionary<string, object> parent, string columnName, object[] children, AsyncCallback<int> callback )
     {
       Backendless.Data.SetRelation<Dictionary<string, object>>( tableName, parent, columnName, children, callback );
     }
@@ -383,12 +449,12 @@ namespace BackendlessAPI.Data
 
     #endregion
     #region DELETE RELATION
-    public void DeleteRelation( Dictionary<string, object> parent, string columnName, object[] children )
+    public int DeleteRelation( Dictionary<string, object> parent, string columnName, object[] children )
     {
-      Backendless.Data.DeleteRelation<Dictionary<string, object>>( tableName, parent, columnName, children );
+      return Backendless.Data.DeleteRelation<Dictionary<string, object>>( tableName, parent, columnName, children );
     }
 
-    public void DeleteRelation( Dictionary<string, object> parent, string columnName, object[] children, AsyncCallback<object> callback )
+    public void DeleteRelation( Dictionary<string, object> parent, string columnName, object[] children, AsyncCallback<int> callback )
     {
       Backendless.Data.DeleteRelation<Dictionary<string, object>>( tableName, parent, columnName, children, callback );
     }
@@ -401,6 +467,12 @@ namespace BackendlessAPI.Data
     public void DeleteRelation( Dictionary<string, object> parent, string columnName, string whereClause, AsyncCallback<int> callback )
     {
       Backendless.Data.DeleteRelation<Dictionary<string, object>>( tableName, parent, columnName, whereClause, callback );
+    }
+    #endregion
+    #region
+    public IEventHandler<Dictionary<string, object>> RT()
+    {
+      return this.eventHandler;
     }
     #endregion
   }

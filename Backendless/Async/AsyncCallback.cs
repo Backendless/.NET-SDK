@@ -10,6 +10,11 @@ namespace BackendlessAPI.Async
     internal ErrorHandler ErrorHandler;
     internal ResponseHandler<T> ResponseHandler;
 
+    public AsyncCallback()
+    {
+      
+    }
+
     public AsyncCallback( ResponseHandler<T> responseHandler, ErrorHandler errorHandler )
     {
       this.ResponseHandler = responseHandler;

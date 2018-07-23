@@ -1,4 +1,5 @@
 ﻿using System;
+#if WINDOWS_PHONE || WINDOWS_PHONE8
 using Microsoft.Phone.Notification;
 
 namespace BackendlessAPI.Push
@@ -77,3 +78,4 @@ namespace BackendlessAPI.Push
     }
   }
 }
+#endif

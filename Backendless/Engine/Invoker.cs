@@ -32,10 +32,10 @@ namespace BackendlessAPI.Engine
     {
       return InvokeSync<T>( className, methodName, args, false );
     }
- 
+
     public static T InvokeSync<T>( string className, string methodName, object[] args, bool enableUnderFlowInspection )
     {
-      T result = default(T);
+      T result = default( T );
       BackendlessFault backendlessFault = null;
       AutoResetEvent waiter = new AutoResetEvent( false );
 
@@ -72,7 +72,7 @@ namespace BackendlessAPI.Engine
     public static void SetupUnderFlowListener()
     {
       IDictionary props = Weborb.Util.ThreadContext.getProperties();
-      
+
       if( !props.Contains( "UnderFlowReceiver" ) )
         props.Add( "UnderFlowReceiver", new Weborb.Reader.ObjectUnderflow( UnderflowStore.ReportObjectUnderFlow ) );
     }

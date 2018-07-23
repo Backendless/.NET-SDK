@@ -2,6 +2,7 @@
 using BackendlessAPI.Async;
 using BackendlessAPI.Persistence;
 using BackendlessAPI.Service;
+using BackendlessAPI.RT.Data;
 
 namespace BackendlessAPI.Data
 {
@@ -14,6 +15,39 @@ namespace BackendlessAPI.Data
 
     private class DataStoreImpl<T> : IDataStore<T>
     {
+      private IEventHandler<T> eventHandler = EventHandlerFactory.Of<T>();
+
+      #region Bulk Create
+      public IList<string> Create( IList<T> objects )
+      {
+        return Backendless.Persistence.Create( objects );
+      }
+
+      public void Create( IList<T> objects, AsyncCallback<IList<string>> responder )
+      {
+        Backendless.Persistence.Create( objects, responder );
+      }
+      #endregion
+      #region Bulk Update
+      public int Update( string whereClause, Dictionary<string, object> changes )
+      {
+        return Backendless.Persistence.Update( PersistenceService.GetTypeName( typeof( T ) ), whereClause, changes );
+      }
+      public void Update( string whereClause, Dictionary<string, object> changes, AsyncCallback<int> callback )
+      {
+        Backendless.Persistence.Update( PersistenceService.GetTypeName( typeof( T ) ), whereClause, changes, callback );
+      }
+      #endregion
+      #region Bulk Delete
+      public int Remove( string whereClause )
+      {
+        return Backendless.Persistence.Remove( PersistenceService.GetTypeName( typeof( T ) ), whereClause );
+      }
+      public void Remove( string whereClause, AsyncCallback<int> callback )
+      {
+        Backendless.Persistence.Remove( PersistenceService.GetTypeName( typeof( T ) ), whereClause, callback );
+      }
+      #endregion
       #region Save
       public T Save( T entity )
       {
@@ -34,17 +68,6 @@ namespace BackendlessAPI.Data
       public void Remove( T entity, AsyncCallback<long> responder )
       {
         Backendless.Persistence.Remove( entity, responder );
-      }
-      #endregion
-      #region Remove by objectId
-      public long Remove( string objectId )
-      {
-        return Backendless.Persistence.Remove( objectId );
-      }
-
-      public void Remove( string objectId, AsyncCallback<long> responder )
-      {
-        Backendless.Persistence.Remove( objectId, responder );
       }
       #endregion
       #region FindFirst
@@ -94,7 +117,7 @@ namespace BackendlessAPI.Data
       {
         return Backendless.Persistence.Find<T>( (DataQueryBuilder) null );
       }
-      
+
       public IList<T> Find( DataQueryBuilder dataQueryBuilder )
       {
         return Backendless.Persistence.Find<T>( dataQueryBuilder );
@@ -233,7 +256,7 @@ namespace BackendlessAPI.Data
         Backendless.Data.AddRelation<T>( PersistenceService.GetTypeName( parent.GetType() ), parent, columnName, children );
       }
 
-      public void AddRelation( T parent, string columnName, object[] children, AsyncCallback<object> callback )
+      public void AddRelation( T parent, string columnName, object[] children, AsyncCallback<int> callback )
       {
         Backendless.Data.AddRelation<T>( PersistenceService.GetTypeName( parent.GetType() ), parent, columnName, children, callback );
       }
@@ -248,14 +271,13 @@ namespace BackendlessAPI.Data
         Backendless.Data.AddRelation<T>( PersistenceService.GetTypeName( parent.GetType() ), parent, columnName, whereClause, callback );
       }
       #endregion
-
       #region SET RELATION
-      public void SetRelation( T parent, string columnName, object[] children )
+      public int SetRelation( T parent, string columnName, object[] children )
       {
-        Backendless.Data.SetRelation<T>( PersistenceService.GetTypeName( parent.GetType() ), parent, columnName, children );
+        return Backendless.Data.SetRelation<T>( PersistenceService.GetTypeName( parent.GetType() ), parent, columnName, children );
       }
 
-      public void SetRelation( T parent, string columnName, object[] children, AsyncCallback<object> callback )
+      public void SetRelation( T parent, string columnName, object[] children, AsyncCallback<int> callback )
       {
         Backendless.Data.SetRelation<T>( PersistenceService.GetTypeName( parent.GetType() ), parent, columnName, children, callback );
       }
@@ -271,14 +293,13 @@ namespace BackendlessAPI.Data
       }
 
       #endregion
-
       #region DELETE RELATION
-      public void DeleteRelation( T parent, string columnName, object[] children )
+      public int DeleteRelation( T parent, string columnName, object[] children )
       {
-        Backendless.Data.DeleteRelation<T>( PersistenceService.GetTypeName( parent.GetType() ), parent, columnName, children );
+        return Backendless.Data.DeleteRelation<T>( PersistenceService.GetTypeName( parent.GetType() ), parent, columnName, children );
       }
 
-      public void DeleteRelation( T parent, string columnName, object[] children, AsyncCallback<object> callback )
+      public void DeleteRelation( T parent, string columnName, object[] children, AsyncCallback<int> callback )
       {
         Backendless.Data.DeleteRelation<T>( PersistenceService.GetTypeName( parent.GetType() ), parent, columnName, children, callback );
       }
@@ -292,7 +313,12 @@ namespace BackendlessAPI.Data
       {
         Backendless.Data.DeleteRelation<T>( PersistenceService.GetTypeName( parent.GetType() ), parent, columnName, whereClause );
       }
-
+      #endregion
+      #region RT
+      public IEventHandler<T> RT()
+      {
+        return this.eventHandler;
+      }
       #endregion
     }
   }

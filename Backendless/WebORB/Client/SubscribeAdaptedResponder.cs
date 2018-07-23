@@ -19,13 +19,6 @@ namespace Weborb.Client
         base.ResponseHandler( message );
       }
       return;
-#if !(FULL_BUILD)
-      IAdaptingType body = (IAdaptingType)asyncMessage.body;
-#else
-      IAdaptingType body = (IAdaptingType)( (object[])( asyncMessage.body.body ) )[0];
-#endif
-      object adaptedMessage = body.defaultAdapt();
-      base.ResponseHandler(adaptedMessage);
     }
   }
 }

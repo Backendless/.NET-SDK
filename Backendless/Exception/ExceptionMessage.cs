@@ -2,6 +2,8 @@
 {
   public class ExceptionMessage
   {
+    public const string NULL_OR_EMPTY_TEMPLATE = "{0} cannot be null or empty";
+    public const string NULL_TEMPLATE = "{0} cannot be null";
     public const string NUL_WEBBROWSER = "WebBrowser cannot be null";
     public const string ILLEGAL_ARGUMENT_EXCEPTION = "IllegalArgumentException";
     public const string SERVER_ERROR = "Server returned an error.";
@@ -22,6 +24,8 @@
     public const string NULL_GEOPOINT = "Geopoint cannot be null.";
     public const string DEFAULT_CATEGORY_NAME = "cannot add or delete a default category name.";
 
+    public const string NULL_BULKCREATE = "Collection of objects in bulk create cannot be null";
+    public const string NULL_WHERE = "Where clause cannot be null or empty";
     public const string NULL_ENTITY = "Entity cannot be null.";
     public const string NULL_ENTITY_NAME = "Entity name cannot be null or empty.";
     public const string NULL_ID = "Object id cannot be null or empty.";

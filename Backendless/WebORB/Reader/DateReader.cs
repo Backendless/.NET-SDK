@@ -19,9 +19,10 @@ namespace Weborb.Reader
 
 #if (FULL_BUILD || PURE_CLIENT_LIB )
             // get the offset of the time zone the server is in
-            double localTimezoneOffset = TimeZone.CurrentTimeZone.GetUtcOffset( sent ).TotalMilliseconds;
+            double localTimezoneOffset = TimeZoneInfo.Local.GetUtcOffset( sent ).TotalMilliseconds;
             // convert 1/1/1970 12AM to UTC
-            sent = TimeZone.CurrentTimeZone.ToUniversalTime( sent );
+
+            sent = sent.ToUniversalTime();
 #else
             double localTimezoneOffset = TimeZoneInfo.Local.GetUtcOffset( sent ).TotalMilliseconds;
             sent = TimeZoneInfo.ConvertTime( sent, TimeZoneInfo.Utc );

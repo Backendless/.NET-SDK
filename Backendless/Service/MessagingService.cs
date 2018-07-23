@@ -9,7 +9,7 @@ using BackendlessAPI.Engine;
 using BackendlessAPI.Exception;
 using Weborb.Types;
 using BackendlessAPI.Messaging;
-using Subscription = BackendlessAPI.Messaging.Subscription;
+using BackendlessAPI.RT.Messaging;
 
 namespace BackendlessAPI.Service
 {
@@ -17,13 +17,8 @@ namespace BackendlessAPI.Service
   {
     private static string MESSAGING_MANAGER_SERVER_ALIAS = "com.backendless.services.messaging.MessagingService";
     private static string EMAIL_MANAGER_SERVER_ALIAS = "com.backendless.services.mail.CustomersEmailService";
-    private static string DEVICE_REGISTRATION_MANAGER_SERVER_ALIAS = "com.backendless.services.messaging.DeviceRegistrationService";
-
     private static string DEFAULT_CHANNEL_NAME = "default";
-    
-    private static int CHANNEL_NAME_MAX_LENGTH = 46;
-    
-    private static Messaging.DeviceRegistration _deviceRegistrationDto;
+    private static String deviceId;
 
 #if UNITY
     private static AsyncCallback<string> _deviceRegisterCallback = null;
@@ -42,6 +37,7 @@ namespace BackendlessAPI.Service
       Types.AddClientClassMapping( "com.backendless.services.messaging.DeliveryOptions", typeof( Messaging.DeliveryOptions ) );
       Types.AddClientClassMapping( "com.backendless.services.messaging.PublishStatusEnum", typeof( Messaging.PublishStatusEnum ) );
       Types.AddClientClassMapping( "com.backendless.services.messaging.Message", typeof( Messaging.Message ) );
+      deviceId = Guid.NewGuid().ToString();
 
 #if WINDOWS_PHONE8
       object deviceId;
@@ -314,6 +310,14 @@ namespace BackendlessAPI.Service
 
 #endif
 
+    public String DeviceID
+    {
+      get
+      {
+        return deviceId;
+      }
+    }
+
     #region PUBLISH SYNC (DEFAULT CHANNEL)
 
     public Messaging.MessageStatus Publish( object message )
@@ -436,24 +440,27 @@ namespace BackendlessAPI.Service
 
     #endregion
 
+    #region MESSAGE STATUS
+    public MessageStatus GetMessageStatus( string messageId )
+    {
+      if( messageId == null )
+        throw new ArgumentNullException( ExceptionMessage.NULL_MESSAGE_ID );
+      MessageStatus messageStatus = Invoker.InvokeSync<MessageStatus>( MESSAGING_MANAGER_SERVER_ALIAS, "getMessageStatus", new object[] { messageId } );
 
-    public MessageStatus GetMessageStatus(string messageId)
-      {
-          if (messageId == null)
-              throw new ArgumentNullException(ExceptionMessage.NULL_MESSAGE_ID);
-          MessageStatus messageStatus = Invoker.InvokeSync<MessageStatus>(MESSAGING_MANAGER_SERVER_ALIAS, "getMessageStatus", new object[]{ messageId });
+      return messageStatus;
+    }
 
-          return messageStatus;
-      }
+    public void GetMessageStatus( string messageId, AsyncCallback<MessageStatus> callback )
+    {
+      if( messageId == null )
+        throw new ArgumentNullException( ExceptionMessage.NULL_MESSAGE_ID );
 
-    public void GetMessageStatus(string messageId, AsyncCallback<MessageStatus> callback)
-      {
-          if (messageId == null)
-              throw new ArgumentNullException(ExceptionMessage.NULL_MESSAGE_ID);
+      Invoker.InvokeAsync( MESSAGING_MANAGER_SERVER_ALIAS, "getMessageStatus", new object[] { messageId }, callback );
+    }
 
-          Invoker.InvokeAsync(MESSAGING_MANAGER_SERVER_ALIAS, "getMessageStatus", new object[] { messageId }, callback);
-      }
+    #endregion
 
+    #region CANCEL MESSAGE
     public bool Cancel( string messageId )
     {
       if( string.IsNullOrEmpty( messageId ) )
@@ -472,178 +479,21 @@ namespace BackendlessAPI.Service
                            new Object[] { messageId }, callback );
     }
 
-    #region SUBSCRIBE SYNC (DEFAULT CHANNEL)
+    #endregion
 
-    public Messaging.Subscription Subscribe( AsyncCallback<List<Message>> callback )
+    #region SUBSCRIBE
+
+    public IChannel Subscribe()
     {
-      return Subscribe( DEFAULT_CHANNEL_NAME, callback );
+      return Subscribe( DEFAULT_CHANNEL_NAME );
     }
 
-    public Messaging.Subscription Subscribe( int pollingInterval, AsyncCallback<List<Message>> callback )
+    public IChannel Subscribe( string channelName )
     {
-      return Subscribe( DEFAULT_CHANNEL_NAME, pollingInterval, callback );
-    }
-
-    public Messaging.Subscription Subscribe( AsyncCallback<List<Message>> callback,
-                                      Messaging.SubscriptionOptions subscriptionOptions )
-    {
-      return Subscribe( DEFAULT_CHANNEL_NAME, callback, subscriptionOptions );
-    }
-
-    public Messaging.Subscription Subscribe( int pollingInterval, AsyncCallback<List<Message>> callback,
-                                      Messaging.SubscriptionOptions subscriptionOptions )
-    {
-      return Subscribe( DEFAULT_CHANNEL_NAME, pollingInterval, callback, subscriptionOptions );
+      return new ChannelImpl( channelName );
     }
 
     #endregion
-
-    #region SUBSCRIBE SYNC
-
-    public Messaging.Subscription Subscribe( string channelName, AsyncCallback<List<Message>> callback )
-    {
-      return Subscribe( channelName, 0, callback, new Messaging.SubscriptionOptions() );
-    }
-
-    public Messaging.Subscription Subscribe( string channelName, int pollingInterval, AsyncCallback<List<Message>> callback )
-    {
-      return Subscribe( channelName, pollingInterval, callback, new Messaging.SubscriptionOptions() );
-    }
-
-    public Messaging.Subscription Subscribe( string channelName, AsyncCallback<List<Message>> callback,
-                                      Messaging.SubscriptionOptions subscriptionOptions )
-    {
-      return Subscribe( channelName, 0, callback, subscriptionOptions );
-    }
-
-    public Messaging.Subscription Subscribe( string channelName, int pollingInterval, AsyncCallback<List<Message>> callback,
-                                      Messaging.SubscriptionOptions subscriptionOptions )
-    {
-      checkChannelName( channelName );
-
-      if( pollingInterval < 0 )
-        throw new ArgumentException( ExceptionMessage.WRONG_POLLING_INTERVAL );
-
-      string subscriptionId = subscribeForPollingAccess( channelName, subscriptionOptions );
-      Messaging.Subscription subscription = new Messaging.Subscription();
-
-      subscription.ChannelName = channelName;
-      subscription.SubscriptionId = subscriptionId;
-
-      if( pollingInterval != 0 )
-        subscription.PollingInterval = pollingInterval;
-
-      subscription.OnSubscribe( callback );
-
-      return subscription;
-    }
-
-    #endregion
-
-    #region SUBSCRIBE ASYNC (DEFAULT CHANNEL)
-
-    public void Subscribe( int pollingInterval, AsyncCallback<List<Message>> callback,
-                           AsyncCallback<Subscription> subscriptionCallback )
-    {
-      Subscribe( DEFAULT_CHANNEL_NAME, pollingInterval, callback, null, subscriptionCallback );
-    }
-
-    public void Subscribe( AsyncCallback<List<Message>> callback, AsyncCallback<Subscription> subscriptionCallback )
-    {
-      Subscribe( DEFAULT_CHANNEL_NAME, 0, callback, null, subscriptionCallback );
-    }
-
-    public void Subscribe( AsyncCallback<List<Message>> callback, Messaging.SubscriptionOptions subscriptionOptions,
-                           AsyncCallback<Subscription> subscriptionCallback )
-    {
-      Subscribe( DEFAULT_CHANNEL_NAME, 0, callback, subscriptionOptions, subscriptionCallback );
-    }
-
-    public void Subscribe( int pollingInterval, AsyncCallback<List<Message>> callback,
-                           Messaging.SubscriptionOptions subscriptionOptions,
-                           AsyncCallback<Subscription> subscriptionCallback )
-    {
-      Subscribe( DEFAULT_CHANNEL_NAME, pollingInterval, callback, subscriptionOptions, subscriptionCallback );
-    }
-
-    #endregion
-
-    #region SUBSCRIBE ASYNC
-
-    public void Subscribe( string channelName, AsyncCallback<List<Message>> callback,
-                           AsyncCallback<Subscription> subscriptionCallback )
-    {
-      Subscribe( channelName, 0, callback, null, subscriptionCallback );
-    }
-
-    public void Subscribe( string channelName, int pollingInterval, AsyncCallback<List<Message>> callback,
-                           AsyncCallback<Subscription> subscriptionCallback )
-    {
-      Subscribe( channelName, pollingInterval, callback, null, subscriptionCallback );
-    }
-
-    public void Subscribe( string channelName, AsyncCallback<List<Message>> callback,
-                           Messaging.SubscriptionOptions subscriptionOptions,
-                           AsyncCallback<Subscription> subscriptionCallback )
-    {
-      Subscribe( channelName, 0, callback, subscriptionOptions, subscriptionCallback );
-    }
-
-    public void Subscribe( string channelName, int pollingInterval, AsyncCallback<List<Message>> callback,
-                           Messaging.SubscriptionOptions subscriptionOptions,
-                           AsyncCallback<Subscription> subscriptionCallback )
-    {
-      checkChannelName( channelName );
-      if( pollingInterval < 0 )
-        throw new ArgumentException( ExceptionMessage.WRONG_POLLING_INTERVAL );
-
-      var responder = new AsyncCallback<string>( r =>
-        {
-          Messaging.Subscription subscription = new Messaging.Subscription();
-          subscription.ChannelName = channelName;
-          subscription.SubscriptionId = r;
-
-          if( pollingInterval != 0 )
-            subscription.PollingInterval = pollingInterval;
-
-          subscription.OnSubscribe( callback );
-
-          if( subscriptionCallback != null )
-            subscriptionCallback.ResponseHandler.Invoke( subscription );
-        }, f =>
-          {
-            if( subscriptionCallback != null )
-              subscriptionCallback.ErrorHandler.Invoke( f );
-            else
-              throw new BackendlessException( f );
-          } );
-      subscribeForPollingAccess( channelName, subscriptionOptions, responder );
-    }
-
-    #endregion
-
-    public List<Message> PollMessages( string channelName, string subscriptionId )
-    {
-      checkChannelName( channelName );
-
-      if( string.IsNullOrEmpty( subscriptionId ) )
-        throw new ArgumentNullException( ExceptionMessage.NULL_SUBSCRIPTION_ID );
-
-      return Invoker.InvokeSync<List<Message>>( MESSAGING_MANAGER_SERVER_ALIAS, "pollMessages",
-                                                   new object[] { channelName, subscriptionId } );
-    }
-
-    public void PollMessages( string channelName, string subscriptionId, AsyncCallback<List<Message>> callback )
-    {
-      checkChannelName( channelName );
-
-      if( string.IsNullOrEmpty( subscriptionId ) )
-        throw new ArgumentNullException( ExceptionMessage.NULL_SUBSCRIPTION_ID );
-
-      Invoker.InvokeAsync( MESSAGING_MANAGER_SERVER_ALIAS, "pollMessages",
-                           new object[] { channelName, subscriptionId },
-                           callback );
-    }
 
     #region SEND EMAIL
     public void SendTextEmail( String subject, String messageBody, List<String> recipients )
@@ -741,30 +591,6 @@ namespace BackendlessAPI.Service
       Invoker.InvokeAsync( EMAIL_MANAGER_SERVER_ALIAS, "send", new Object[] { subject, bodyParts, recipients, attachments }, responder );
     }
     #endregion
-
-    private string subscribeForPollingAccess( string channelName, Messaging.SubscriptionOptions subscriptionOptions )
-    {
-      checkChannelName( channelName );
-
-      if( subscriptionOptions == null )
-        subscriptionOptions = new Messaging.SubscriptionOptions();
-
-      return Invoker.InvokeSync<string>( MESSAGING_MANAGER_SERVER_ALIAS, "subscribeForPollingAccess",
-                                         new Object[] { channelName, subscriptionOptions } );
-    }
-
-    private void subscribeForPollingAccess( string channelName, Messaging.SubscriptionOptions subscriptionOptions,
-                                            AsyncCallback<string> callback )
-    {
-      checkChannelName( channelName );
-
-      if( subscriptionOptions == null )
-        subscriptionOptions = new Messaging.SubscriptionOptions();
-
-      Invoker.InvokeAsync( MESSAGING_MANAGER_SERVER_ALIAS, "subscribeForPollingAccess",
-                           new Object[] { channelName, subscriptionOptions },
-                           callback );
-    }
 
     private void checkChannelName( string channelName )
     {

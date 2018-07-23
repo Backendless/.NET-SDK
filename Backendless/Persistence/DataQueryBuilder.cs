@@ -9,6 +9,8 @@ namespace BackendlessAPI.Persistence
     private QueryOptionsBuilder<DataQueryBuilder> queryOptionsBuilder;
     private List<String> properties;
     private String whereClause;
+    private List<string> groupBy;
+    private String havingClause;
 
     private DataQueryBuilder()
     {
@@ -100,6 +102,11 @@ namespace BackendlessAPI.Persistence
       return queryOptionsBuilder.GetRelated();
     }
 
+    public DataQueryBuilder AddRelated( string related )
+    {
+      return queryOptionsBuilder.AddRelated( related );
+    }
+
     public DataQueryBuilder SetRelated( List<String> related )
     {
       return queryOptionsBuilder.SetRelated( related );
@@ -113,6 +120,26 @@ namespace BackendlessAPI.Persistence
     public DataQueryBuilder SetRelationsDepth( int relationsDepth )
     {
       return queryOptionsBuilder.SetRelationsDepth( relationsDepth );
+    }
+
+    public DataQueryBuilder SetGroupBy( List<String> groupBy )
+    {
+      this.groupBy = new List<String>();
+      this.groupBy.AddRange( groupBy );
+      return this;
+    }
+
+    public DataQueryBuilder AddGroupdBy( List<String> groupdBy )
+    {
+      this.groupBy = this.groupBy != null ? this.groupBy : new List<String>();
+      this.groupBy.AddRange( groupBy );
+      return this;
+    }
+
+    public DataQueryBuilder SetHavingClause( String havingClause )
+    {
+      this.havingClause = havingClause;
+      return this;
     }
   }
 }

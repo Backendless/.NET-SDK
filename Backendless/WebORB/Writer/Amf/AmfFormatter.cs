@@ -119,10 +119,10 @@ namespace Weborb.Writer.Amf
 
 #if( FULL_BUILD || PURE_CLIENT_LIB)
       // get the offset of the time zone the server is in
-      double localTimezoneOffset = TimeZone.CurrentTimeZone.GetUtcOffset( olddate ).TotalMilliseconds;
+      double localTimezoneOffset = TimeZoneInfo.Local.GetUtcOffset( olddate ).TotalMilliseconds;
 
       // convert 1/1/1970 12AM to UTC
-      olddate = TimeZone.CurrentTimeZone.ToUniversalTime( olddate );
+      olddate = olddate.ToUniversalTime();
 #else
             // get the offset of the time zone the server is in
             double localTimezoneOffset = TimeZoneInfo.Local.GetUtcOffset( olddate ).TotalMilliseconds;

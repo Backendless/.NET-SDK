@@ -168,7 +168,7 @@ namespace BackendlessAPI.Utils
 #else
       try
       {
-#if !WINDOWS_PHONE && !WINDOWS_PHONE8
+#if !WINDOWS_PHONE && !WINDOWS_PHONE8 && !PURE_CLIENT_LIB
         IsolatedStorageFile isoFile = IsolatedStorageFile.GetStore( IsolatedStorageScope.User |
             IsolatedStorageScope.Assembly |
             IsolatedStorageScope.Domain,

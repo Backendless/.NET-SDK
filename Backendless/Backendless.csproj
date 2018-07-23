@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>BackendlessAPI</RootNamespace>
+    <Company>Backendless Corp</Company>
+      <Authors>Mark Piller</Authors>
+      <PackageId>Backendless</PackageId>
+      <Version>5.0.0</Version>
+      <AssemblyVersion>5.0.0.0</AssemblyVersion>
+      <FileVersion>5.0.0.0</FileVersion>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DefineConstants>TRACE;PURE_CLIENT_LIB;DEBUG;NETSTANDARD2_0</DefineConstants>
+    <NoStdLib>false</NoStdLib>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <NoStdLib>false</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="RT\" />
+    <Folder Include="RT\Data\" />
+    <Folder Include="RT\Messaging\" />
+    <Folder Include="RT\Command\" />
+    <Folder Include="RT\Users\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\backendless\myprojects\socketio\SocketIoClientDotNet\Src\SocketIoClientDotNet.netstandard1.3\SocketIoClientDotNet.netstandard1.3.csproj" />
+    <ProjectReference Include="..\..\..\backendless\myprojects\socketio\EngineIoClientDotNet\Src\EngineIoClientDotNet.netstandard20\EngineIoClientDotNet.netstandard20.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Messaging\PublishMessageInfo.cs" />
+  </ItemGroup>
+</Project>

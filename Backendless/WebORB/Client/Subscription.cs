@@ -19,7 +19,6 @@ namespace Weborb.Client
     private static Object _staticLock = new Object();
     private Boolean _isSubscribed;
     private Engine _engine;
-    private bool _isSubscriptionInProgress;
     private AutoResetEvent SubscritionEndedEvent = new AutoResetEvent(false);
 
     internal void InvokeSubscribed()
@@ -108,8 +107,6 @@ namespace Weborb.Client
               }
 
               AutoResetEvent autoResetEvent = new AutoResetEvent(false);
-
-              _isSubscriptionInProgress = true;
 
               if (IsSubscribed)
                 return;

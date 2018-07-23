@@ -36,6 +36,76 @@ namespace BackendlessAPI.Service
       Types.AddClientClassMapping( "com.backendless.services.persistence.ObjectProperty", typeof( ObjectProperty ) );
       Types.AddClientClassMapping( "com.backendless.services.persistence.QueryOptions", typeof( QueryOptions ) );
     }
+    #region Bulk Create
+    internal IList<string> Create<T>( IList<T> objects )
+    {
+      AddWeborbPropertyMapping<T>();
+      return Invoker.InvokeSync<IList<string>>( PERSISTENCE_MANAGER_SERVER_ALIAS, "createBulk",
+                     new object[] { GetTypeName( typeof( T ) ), objects }, false );
+    }
+
+    internal void Create<T>( IList<T> objects, AsyncCallback<IList<string>> callback )
+    {
+      AddWeborbPropertyMapping<T>();
+      Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "createBulk",
+                     new object[] { GetTypeName( typeof( T ) ), objects }, false, callback );
+    }
+    #endregion
+    #region Bulk Update
+    internal int Update( string tableName, string whereClause, Dictionary<string, object> changes )
+    {
+      return Update( tableName, whereClause, changes, null, false );
+    }
+
+    internal void Update( string tableName, string whereClause, Dictionary<string, object> changes, AsyncCallback<int> callback )
+    {
+      Update( tableName, whereClause, changes, callback, true );
+    }
+    private int Update( string tableName, string whereClause, Dictionary<string, object> changes, AsyncCallback<int> callback, bool async )
+    {
+      if( whereClause == null || whereClause.Trim().Length == 0 )
+        throw new ArgumentNullException( String.Format( ExceptionMessage.NULL_OR_EMPTY_TEMPLATE, "Where clause" ) );
+
+      if( changes == null || changes.Count == 0 )
+        throw new ArgumentNullException( String.Format( ExceptionMessage.NULL_OR_EMPTY_TEMPLATE, "Object with changes" ) );
+
+      object[] args = new object[] { tableName, whereClause, changes };
+
+      if( async )
+        Invoker.InvokeAsync<int>( PERSISTENCE_MANAGER_SERVER_ALIAS, "updateBulk", args, callback );
+      else
+        return Invoker.InvokeSync<int>( PERSISTENCE_MANAGER_SERVER_ALIAS, "updateBulk", args );
+
+      // not used
+      return -1;
+    }
+    #endregion
+    #region Bulk Delete
+    internal int Remove( string tableName, string whereClause )
+    {
+      return Remove( tableName, whereClause, null, false );
+    }
+
+    internal void Remove( string tableName, string whereClause, AsyncCallback<int> callback )
+    {
+      Remove( tableName, whereClause, callback, true );
+    }
+    private int Remove( string tableName, string whereClause, AsyncCallback<int> callback, bool async )
+    {
+      if( whereClause == null || whereClause.Trim().Length == 0 )
+        throw new ArgumentNullException( String.Format( ExceptionMessage.NULL_OR_EMPTY_TEMPLATE, "Where clause" ) );
+
+      object[] args = new object[] { tableName, whereClause };
+
+      if( async )
+        Invoker.InvokeAsync<int>( PERSISTENCE_MANAGER_SERVER_ALIAS, "removeBulk", args, callback );
+      else
+        return Invoker.InvokeSync<int>( PERSISTENCE_MANAGER_SERVER_ALIAS, "removeBulk", args );
+
+      // not used
+      return -1;
+    }
+    #endregion
     #region Save
     public T Save<T>( T entity )
     {
@@ -525,7 +595,7 @@ namespace BackendlessAPI.Service
       AddRelation<T>( parentTableName, parent, columnName, children, null );
     }
 
-    public void AddRelation<T>( string parentTableName, T parent, string columnName, object[] children, AsyncCallback<object> callback )
+    public void AddRelation<T>( string parentTableName, T parent, string columnName, object[] children, AsyncCallback<int> callback )
     {
       string parentObjectId = GetEntityId<T>( parent );
 
@@ -539,7 +609,7 @@ namespace BackendlessAPI.Service
       object[] args = new object[] { parentTableName, columnName, parentObjectId, childObjectIds };
 
       if( callback != null )
-        Invoker.InvokeAsync<object>( PERSISTENCE_MANAGER_SERVER_ALIAS, "addRelation", args, true, callback );
+        Invoker.InvokeAsync<int>( PERSISTENCE_MANAGER_SERVER_ALIAS, "addRelation", args, true, callback );
       else 
         Invoker.InvokeSync<object>( PERSISTENCE_MANAGER_SERVER_ALIAS, "addRelation", args, true );
     }
@@ -565,12 +635,12 @@ namespace BackendlessAPI.Service
     #endregion
 
     #region SET RELATION
-    public void SetRelation<T>( string parentTableName, T parent, string columnName, object[] children )
+    public int SetRelation<T>( string parentTableName, T parent, string columnName, object[] children )
     {
-      SetRelation<T>( parentTableName, parent, columnName, children, null );
+      return SetRelation<T>( parentTableName, parent, columnName, children, null );
     }
 
-    public void SetRelation<T>( string parentTableName, T parent, string columnName, object[] children, AsyncCallback<object> callback )
+    public int SetRelation<T>( string parentTableName, T parent, string columnName, object[] children, AsyncCallback<int> callback )
     {
       string parentObjectId = GetEntityId<T>( parent );
 
@@ -584,9 +654,12 @@ namespace BackendlessAPI.Service
       object[] args = new object[] { parentTableName, columnName, parentObjectId, childObjectIds };
 
       if( callback != null )
-        Invoker.InvokeAsync<object>( PERSISTENCE_MANAGER_SERVER_ALIAS, "setRelation", args, true, callback );
+        Invoker.InvokeAsync<int>( PERSISTENCE_MANAGER_SERVER_ALIAS, "setRelation", args, true, callback );
       else
-        Invoker.InvokeSync<object>( PERSISTENCE_MANAGER_SERVER_ALIAS, "setRelation", args, true );
+        return Invoker.InvokeSync<int>( PERSISTENCE_MANAGER_SERVER_ALIAS, "setRelation", args, true );
+
+      // needed for the async call - is not used
+      return 0;
     }
 
     public int SetRelation<T>( string parentTableName, T parent, string columnName, string whereClause )
@@ -611,28 +684,30 @@ namespace BackendlessAPI.Service
     #endregion
 
     #region DELETE RELATION
-    public void DeleteRelation<T>( string parentTableName, T parent, string columnName, object[] children )
+    public int DeleteRelation<T>( string parentTableName, T parent, string columnName, object[] children )
     {
-      DeleteRelation<T>( parentTableName, parent, columnName, children );
+      return DeleteRelation<T>( parentTableName, parent, columnName, children );
     }
 
-    public void DeleteRelation<T>( string parentTableName, T parent, string columnName, object[] children, AsyncCallback<object> callback )
+    public void DeleteRelation<T>( string parentTableName, T parent, string columnName, object[] children, AsyncCallback<int> callback )
     {
       string parentObjectId = GetEntityId<T>( parent );
 
       IList<string> childObjectIds = new List<string>();
       foreach( object child in children )
       {
-        string childObjectId = GetEntityId<object>( child );
-        childObjectIds.Add( childObjectId );
+        if( child.GetType().Equals( typeof( string ) ) )
+          childObjectIds.Add( (string) child );
+        else
+          childObjectIds.Add( GetEntityId<object>( child ) );
       }
 
       object[] args = new object[] { parentTableName, columnName, parentObjectId, childObjectIds };
 
       if( callback != null )
-        Invoker.InvokeAsync<object>( PERSISTENCE_MANAGER_SERVER_ALIAS, "deleteRelation", args, true, callback );
+        Invoker.InvokeAsync<int>( PERSISTENCE_MANAGER_SERVER_ALIAS, "deleteRelation", args, true, callback );
       else
-        Invoker.InvokeSync<object>( PERSISTENCE_MANAGER_SERVER_ALIAS, "deleteRelation", args, true );
+        Invoker.InvokeSync<int>( PERSISTENCE_MANAGER_SERVER_ALIAS, "deleteRelation", args, true );
     }
 
     public int DeleteRelation<T>( string parentTableName, T parent, string columnName, string whereClause )

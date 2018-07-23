@@ -1,11 +1,24 @@
 ﻿using System.Collections.Generic;
 using BackendlessAPI.Async;
 using BackendlessAPI.Persistence;
+using BackendlessAPI.RT.Data;
 
 namespace BackendlessAPI.Data
 {
   public interface IDataStore<T>
   {
+    #region BULL CREATE
+    IList<string> Create( IList<T> objects );
+    void Create( IList<T> objects, AsyncCallback<IList<string>> responder );
+    #endregion
+    #region BULK UPDATE
+    int Update( string whereClause, Dictionary<string, object> changes );
+    void Update( string whereClause, Dictionary<string, object> changes, AsyncCallback<int> callback );
+    #endregion
+    #region BULK DELETE
+    int Remove( string whereClause );
+    void Remove( string whereClause, AsyncCallback<int> callback );
+    #endregion
     #region SAVE OBJECT
     T Save( T entity );
 
@@ -13,12 +26,7 @@ namespace BackendlessAPI.Data
     #endregion
     #region REMOVE OBJECT
     long Remove( T entity );
-
     void Remove( T entity, AsyncCallback<long> responder );
-
-    long Remove( string objectId );
-
-    void Remove( string objectId, AsyncCallback<long> responder );
     #endregion
     #region FIND FIRST
     T FindFirst();
@@ -96,22 +104,27 @@ namespace BackendlessAPI.Data
     #endregion
     #region ADD RELATION
     void AddRelation( T parent, string columnName, object[] children );
-    void AddRelation( T parent, string columnName, object[] children, AsyncCallback<object> callback );
+    void AddRelation( T parent, string columnName, object[] children, AsyncCallback<int> callback );
 
     int AddRelation( T parent, string columnName, string whereClause );
     void AddRelation( T parent, string columnName, string whereClause, AsyncCallback<int> callback );
-
-    void SetRelation( T parent, string columnName, object[] children );
-    void SetRelation( T parent, string columnName, object[] children, AsyncCallback<object> callback );
+    #endregion
+    #region SET RELATION
+    int SetRelation( T parent, string columnName, object[] children );
+    void SetRelation( T parent, string columnName, object[] children, AsyncCallback<int> callback );
 
     int SetRelation( T parent, string columnName, string whereClause );
     void SetRelation( T parent, string columnName, string whereClause, AsyncCallback<int> callback );
-
-    void DeleteRelation( T parent, string columnName, object[] children );
-    void DeleteRelation( T parent, string columnName, object[] children, AsyncCallback<object> callback );
+    #endregion
+    #region DELETE RELATION
+    int DeleteRelation( T parent, string columnName, object[] children );
+    void DeleteRelation( T parent, string columnName, object[] children, AsyncCallback<int> callback );
 
     int DeleteRelation( T parent, string columnName, string whereClause );
     void DeleteRelation( T parent, string columnName, string whereClause, AsyncCallback<int> callback );
+    #endregion
+    #region RT
+    IEventHandler<T> RT();
     #endregion
   }
 }

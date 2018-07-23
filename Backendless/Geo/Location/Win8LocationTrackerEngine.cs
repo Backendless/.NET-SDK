@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 
+#if UNIVERSALW8
 using Windows.ApplicationModel.Background;
 using Windows.Storage;
 using Windows.UI.Core;
@@ -120,3 +121,4 @@ namespace BackendlessAPI.Geo.Location
     }
   }
 }
+#endif

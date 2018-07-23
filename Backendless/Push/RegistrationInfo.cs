@@ -1,10 +1,12 @@
 ﻿using System;
 #if UNIVERSALW8
 using Windows.Networking;
-#else
+#endif
+#if WINDOWS_PHONE || WINDOWS_PHONE8
 using Microsoft.Phone.Notification;
 #endif
 
+#if UNIVERSALW8 || WINDOWS_PHONE || WINDOWS_PHONE8
 namespace BackendlessAPI.Push
 {
   internal class RegistrationDecorator
@@ -55,3 +57,4 @@ namespace BackendlessAPI.Push
     public DateTime RegistrationExpiration { get; set; }
   }
 }
+#endif

@@ -7,6 +7,7 @@ using BackendlessAPI.Service;
 using Weborb.Config;
 using Weborb.Types;
 using Weborb.Util;
+using Weborb.Util.Logging;
 using Weborb.V3Types;
 using Weborb.Writer;
 using BackendlessAPI.IO;
@@ -14,13 +15,15 @@ using BackendlessAPI.Utils;
 using BackendlessAPI.Caching;
 using BackendlessAPI.Counters;
 using BackendlessAPI.Logging;
+using BackendlessAPI.RT;
 
 namespace BackendlessAPI
 {
   public static class Backendless
   {
+    public static long BACKENDLESSLOG = Weborb.Util.Logging.Log.getCode( "BACKENDLESS LOG" );
     public static string URL = "https://api.backendless.com";
-    
+
     public static PersistenceService Persistence;
     public static PersistenceService Data;
     public static GeoService Geo;
@@ -32,12 +35,13 @@ namespace BackendlessAPI
     public static CounterService Counters;
     public static LoggingService Logging;
     public static CustomService CustomService;
+    public static IRTService RT;
 
     public static string AppId { get; private set; }
 
     public static string APIKey { get; private set; }
 
-    static Backendless() 
+    static Backendless()
     {
       Types.AddAbstractTypeMapping( typeof( IList<> ), typeof( List<> ) );
       Types.AddClientClassMapping( "flex.messaging.messages.AcknowledgeMessage", typeof( AckMessage ) );
@@ -58,7 +62,11 @@ namespace BackendlessAPI
         throw new ArgumentNullException( ExceptionMessage.NULL_APPLICATION_ID );
 
       if( string.IsNullOrEmpty( apiKey ) )
-        throw new ArgumentNullException(ExceptionMessage.NULL_SECRET_KEY);
+        throw new ArgumentNullException( ExceptionMessage.NULL_SECRET_KEY );
+
+      Log.addLogger( Log.DEFAULTLOGGER, new ConsoleLogger() );
+      Log.startLogging( BACKENDLESSLOG );
+      Quobject.EngineIoClientDotNet.Modules.LogManager.Enabled = true;
 
       AppId = applicationId;
       APIKey = apiKey;
@@ -74,7 +82,8 @@ namespace BackendlessAPI
       Counters = CounterService.GetInstance();
       Logging = new LoggingService();
       CustomService = new CustomService();
-      
+      RT = new RTServiceImpl();
+
       MessageWriter.DefaultWriter = new UnderflowWriter();
       MessageWriter.AddAdditionalTypeWriter( typeof( BackendlessUser ), new BackendlessUserWriter() );
       ORBConfig.GetInstance().getObjectFactories().AddArgumentObjectFactory( typeof( BackendlessUser ).FullName, new BackendlessUserFactory() );

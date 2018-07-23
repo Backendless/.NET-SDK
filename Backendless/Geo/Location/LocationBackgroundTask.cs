@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+#if UNIVERSALW8
 using Windows.ApplicationModel.Background;
 using Windows.Devices.Geolocation;
 using Windows.Storage;
@@ -105,3 +106,4 @@ namespace BackendlessAPI.Geo.Location
         }
     }
 }
+#endif
