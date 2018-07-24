@@ -1,6 +1,5 @@
 # git ignore file
 _UpgradeReport_Files*/
-Backendless.Test/
 TestResults/
 Samples/
 sdk/
@@ -75,8 +74,7 @@ BackendlessUnitySDK/BackendlessUnitySDK.suo
 Backendless/Bin/NET_45/Debug/*
 packages/
 .idea/
-Backendless.Test/bin/
-Backendless.Test/Release*/
+Projects/Backendless.Test/bin/
 **/obj/
 
 Backendless.Test/bin*/
