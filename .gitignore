@@ -3,7 +3,6 @@ _UpgradeReport_Files*/
 TestResults/
 Samples/
 sdk/
-BackendlessTests.NET.vsmdi
 Backendless/Backedless-Universal-W8.sln
 Backendless/Bin/Debug/*
 package-sdk/*
@@ -12,8 +11,6 @@ Backendless/UpgradeLog*.htm
 Backendless/*.suo
 Backendless.NET.suo
 Backendless.NET.v11.suo
-Backendless.Test/.DS_Store
-Backendless.Test/bin/Release*/
 Backendless.zip
 Backendless/.DS_Store
 Backendless.Test/bin/Release*/
@@ -46,11 +43,6 @@ Samples/MessagingService/UserServiceDemo/obj/Debug*/
 Samples/MessagingService/UserServiceDemo/obj/Release*/
 Samples/MessagingService/UserServiceDemo/Bin/Debug*/
 Samples/MessagingService/UserServiceDemo/Bin/Release*/
-Backendless/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
-Backendless/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
-Backendless/obj/NET_40_Debug/DesignTimeResolveAssemblyReferencesInput.cache
-Backendless/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
-Backendless/obj/NET_40_Debug/DesignTimeResolveAssemblyReferencesInput.cache
 Samples/DataService/ToDoDemo/Bin/Release/ToDoDemo.dll
 Samples/DataService/ToDoDemo/Bin/Release/ToDoDemo.pdb
 Samples/DataService/ToDoDemo/obj/Release/DesignTimeResolveAssemblyReferencesInput.cache
@@ -74,12 +66,11 @@ BackendlessUnitySDK/BackendlessUnitySDK.suo
 Backendless/Bin/NET_45/Debug/*
 packages/
 .idea/
-Projects/Backendless.Test/bin/
 **/obj/
 
-Backendless.Test/bin*/
 Projects/Backendless.NET.Framework4.0/bin*/
 Projects/Backendless.NET.Framework4.5.2/bin*/
 Projects/Backendless.NET.Framework4.7.1/bin*/
 Projects/Backendless.Unity.Framework4.5.2/bin/Debug*/
 !Projects/Backendless.Unity.Framework4.5.2/bin/Debug/Backendless.dll
+Projects/Backendless.Test/bin/Debug/**/
