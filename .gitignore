@@ -1,14 +1,10 @@
 # git ignore file
 _UpgradeReport_Files*/
 Backendless.Test/
-Backendless/obj
-Backendless/obj/*
 TestResults/
 Samples/
 sdk/
 BackendlessTests.NET.vsmdi
-Backendless/obj/NET_40_Debug/*
-Backendless/Bin/NET_20/*
 Backendless/Backedless-Universal-W8.sln
 Backendless/Bin/Debug/*
 package-sdk/*
@@ -21,7 +17,6 @@ Backendless.Test/.DS_Store
 Backendless.Test/bin/Release*/
 Backendless.zip
 Backendless/.DS_Store
-Backendless/obj*/
 Backendless.Test/bin/Release*/
 Backendless/BackendlessWP.csproj
 Backendless/BackendlessWP.csproj.user
@@ -31,16 +26,10 @@ Backendless/BackendlessWP-vs2010.csproj.user
 Backendless/Bin/.DS_Store
 Backendless/Dependency/.DS_Store
 Backendless/Dependency*/
-Backendless/obj*/
 Backendless-vs2013.NET.sln
 Backendless-vs2013.NET.v12.suo
 Samples/DataService/ToDoDemo/Bin*/
 Samples/DataService/ToDoDemo/obj*/
-Backendless/obj/NET_40_Debug*/
-Backendless/obj/NET_40_Debug*/
-Backendless/obj/UNITY_WEB_PLAYER*/
-Backendless/obj/NET_40_Debug*/
-Backendless/obj/UNITY_WEB_PLAYER*/
 *.DS_Store
 Samples/GeoService/GeoServiceDemo/obj/Debug*/
 Samples/GeoService/GeoServiceDemo/obj/Release*/
@@ -71,10 +60,6 @@ Samples/DataService/ToDoDemo/obj/Release/ToDoDemo.csprojResolveAssemblyReference
 Samples/DataService/ToDoDemo/obj/Release/ToDoDemo.dll
 Samples/DataService/ToDoDemo/obj/Release/ToDoDemo.pdb
 
-Backendless/obj/NET_20_Debug*/
-Backendless/obj/NET_40_Release*/
-Backendless/obj/NET_45_Debug*/
-Backendless/obj/Release*/
 Backendless.NET.userprefs
 
 ConsoleTest*/
@@ -89,4 +74,14 @@ BackendlessUnitySDK/BackendlessUnitySDK.suo
 .vs/
 Backendless/Bin/NET_45/Debug/*
 packages/
+.idea/
+Backendless.Test/bin/
+Backendless.Test/Release*/
+**/obj/
 
+Backendless.Test/bin*/
+Projects/Backendless.NET.Framework4.0/bin*/
+Projects/Backendless.NET.Framework4.5.2/bin*/
+Projects/Backendless.NET.Framework4.7.1/bin*/
+Projects/Backendless.Unity.Framework4.5.2/bin/Debug*/
+!Projects/Backendless.Unity.Framework4.5.2/bin/Debug/Backendless.dll

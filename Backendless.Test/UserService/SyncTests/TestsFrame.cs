@@ -83,7 +83,7 @@ namespace BackendlessAPI.Test.UserService.SyncTests
     [TestInitialize]
     public void SetUp()
     {
-      Backendless.URL = "http://" + Defaults.BACKENDLESS_HOST + ":9000";
+      Backendless.URL = "http://" + Defaults.BACKENDLESS_HOST;
       Backendless.InitApp( Defaults.TEST_APP_ID, Defaults.TEST_SECRET_KEY );
     }
 

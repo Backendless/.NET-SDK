@@ -4,6 +4,7 @@ using System.Threading;
 using Backendless.Test;
 using BackendlessAPI.Exception;
 using BackendlessAPI.Messaging;
+using BackendlessAPI.RT.Messaging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace BackendlessAPI.Test.MessagingService.SyncTests
@@ -21,7 +22,7 @@ namespace BackendlessAPI.Test.MessagingService.SyncTests
     public static object message;
     public static string publisher;
     public static Dictionary<string, string> headers;
-    public Subscription subscription;
+    public IChannel channel;
 
     public static string testResult;
 
@@ -129,8 +130,11 @@ namespace BackendlessAPI.Test.MessagingService.SyncTests
     [TestCleanup]
     public void tearDown()
     {
-      if( subscription != null )
-        subscription.CancelSubscription();
+      if (channel != null)
+      {
+        channel.RemoveAllMessageListeners();
+        channel.Leave();
+      }
     }
   }
 }

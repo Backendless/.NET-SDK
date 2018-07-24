@@ -1,0 +1,86 @@
+{
+  "runtimeTarget": {
+    "name": ".NETStandard,Version=v2.0/",
+    "signature": "d676ad1b81df070348deef2255d4c3fa3d137a6a"
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETStandard,Version=v2.0": {},
+    ".NETStandard,Version=v2.0/": {
+      "Backendless/1.0.0": {
+        "dependencies": {
+          "EngineIoClientDotNet": "1.0.7",
+          "NETStandard.Library": "2.0.1",
+          "SocketIoClientDotNet": "1.0.7.1",
+          "System.Collections.Immutable": "1.5.0"
+        },
+        "runtime": {
+          "Backendless.dll": {}
+        }
+      },
+      "EngineIoClientDotNet/1.0.7": {
+        "runtime": {
+          "lib/net45/EngineIoClientDotNet.dll": {}
+        }
+      },
+      "Microsoft.NETCore.Platforms/1.1.0": {},
+      "NETStandard.Library/2.0.1": {
+        "dependencies": {
+          "Microsoft.NETCore.Platforms": "1.1.0"
+        }
+      },
+      "SocketIoClientDotNet/1.0.7.1": {
+        "runtime": {
+          "lib/net45/SocketIoClientDotNet.dll": {}
+        }
+      },
+      "System.Collections.Immutable/1.5.0": {
+        "runtime": {
+          "lib/netstandard2.0/System.Collections.Immutable.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Backendless/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "EngineIoClientDotNet/1.0.7": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-PP2eRjKKKmE+tvrhJS0NKrRIQ/Pk5gfkp+FAcycHW8TcDWa7B9fQQnBvI/swJt5c5DOTBHacgV2eV4PO3jweig==",
+      "path": "engineioclientdotnet/1.0.7",
+      "hashPath": "engineioclientdotnet.1.0.7.nupkg.sha512"
+    },
+    "Microsoft.NETCore.Platforms/1.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-UZnEZ1hultXRxmgI7MlP2d5KiDkIS+hDS3S3E95N6jthk3ygEp+Sv5++Xdrmj4O0+ow0lXugoGjHLOGv27WfUw==",
+      "path": "microsoft.netcore.platforms/1.1.0",
+      "hashPath": "microsoft.netcore.platforms.1.1.0.nupkg.sha512"
+    },
+    "NETStandard.Library/2.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-oA6nwv9MhEKYvLpjZ0ggSpb1g4CQViDVQjLUcDWg598jtvJbpfeP2reqwI1GLW2TbxC/Ml7xL6BBR1HmKPXlTg==",
+      "path": "netstandard.library/2.0.1",
+      "hashPath": "netstandard.library.2.0.1.nupkg.sha512"
+    },
+    "SocketIoClientDotNet/1.0.7.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-kMMhG7yJPsiVdz6Uto9HbM/J6NpxUB0Xh0anAmspc1tl357k3mu7xCCrIyGGzV1HAhsCSgY7udsLJfIVl9nAhA==",
+      "path": "socketioclientdotnet/1.0.7.1",
+      "hashPath": "socketioclientdotnet.1.0.7.1.nupkg.sha512"
+    },
+    "System.Collections.Immutable/1.5.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-RGxi2aQoXgZ5ge0zxrKqI4PU9LrYYoLC+cnEnWXKsSduCOUhE1GEAAoTexUVT8RZOILQyy1B27HC8Xw/XLGzdQ==",
+      "path": "system.collections.immutable/1.5.0",
+      "hashPath": "system.collections.immutable.1.5.0.nupkg.sha512"
+    }
+  }
+}

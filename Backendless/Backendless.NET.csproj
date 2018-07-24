@@ -171,7 +171,6 @@
     <Compile Include="IO\BackendlessUserFactory.cs" />
     <Compile Include="IO\BackendlessUserWriter.cs" />
     <Compile Include="IO\UnderflowWriter.cs" />
-    <Compile Include="Logging\LogBatch.cs" />
     <Compile Include="Logging\LogBuffer.cs" />
     <Compile Include="Logging\Logger.cs" />
     <Compile Include="Logging\LoggingService.cs" />

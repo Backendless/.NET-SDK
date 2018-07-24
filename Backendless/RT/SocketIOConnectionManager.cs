@@ -1,5 +1,9 @@
 ﻿using System;
+#if !(NET_40 || NET_35)
 using System.Collections.Immutable;
+#endif
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using BackendlessAPI.Utils;
 using BackendlessAPI.Engine;
@@ -39,7 +43,11 @@ namespace BackendlessAPI.RT
         opts.Query[ "apiKey" ] = Backendless.APIKey;
         opts.Query[ "clientId" ] = Backendless.Messaging.DeviceID;
         opts.Query[ "binary" ] = "true";
+        #if !(NET_40 || NET_35)
         opts.Transports = ImmutableList.Create<String>( "websocket" );
+        #else
+        opts.Transports = (new string[] {"websocket"}).ToList();
+        #endif
         String host = rtLookupService.Lookup() + opts.Path;
 
         //if( host.StartsWith( "https://" ) )
@@ -49,7 +57,7 @@ namespace BackendlessAPI.RT
         {
           String userToken = HeadersManager.GetInstance().Headers[ HeadersEnum.USER_TOKEN_KEY.Header ];
 
-          if( userToken != null && userToken.Length > 0 )
+          if( !string.IsNullOrEmpty(userToken) )
             opts.Query[ "userToken" ] = userToken;
         }
 

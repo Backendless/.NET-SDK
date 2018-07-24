@@ -2,7 +2,7 @@
 {
   internal class Defaults
   {
-    public const string BACKENDLESS_HOST = "192.168.0.5";
+    public const string BACKENDLESS_HOST = "api.backendless.com";
     public const string BACKENDLESS_CONSOLE_PORT = "3000";
     public const string BACKENDLESS_CONSOLE_PATH = "/";
     public const string TEST_APP_ID = "EC73287F-2FF4-5552-FF53-F880C3807E00";

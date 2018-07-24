@@ -16,7 +16,7 @@ namespace BackendlessAPI.Test.MessagingService.SyncTests
       SetLatch();
       SetMessage();
 
-      subscription = Backendless.Messaging.Subscribe( TEST_CHANNEL, new PublishSubscription() );
+      channel = Backendless.Messaging.Subscribe( TEST_CHANNEL );
       messageStatus = Backendless.Messaging.Publish( message, TEST_CHANNEL );
 
       Assert.IsNotNull( messageStatus.MessageId, "Server didn't set a messageId for the message" );
@@ -34,7 +34,7 @@ namespace BackendlessAPI.Test.MessagingService.SyncTests
       SetMessage();
       SetPublisher();
 
-      subscription = Backendless.Messaging.Subscribe( TEST_CHANNEL, new PublishSubscription() );
+      channel = Backendless.Messaging.Subscribe( TEST_CHANNEL );
 
       PublishOptions publishOptions = new PublishOptions();
       publishOptions.PublisherId = publisher;
@@ -56,7 +56,7 @@ namespace BackendlessAPI.Test.MessagingService.SyncTests
       SetMessage();
       SetHeaders();
 
-      subscription = Backendless.Messaging.Subscribe( TEST_CHANNEL, new PublishSubscription() );
+      channel = Backendless.Messaging.Subscribe( TEST_CHANNEL );
 
       PublishOptions publishOptions = new PublishOptions();
       publishOptions.Headers = headers;
@@ -83,36 +83,24 @@ namespace BackendlessAPI.Test.MessagingService.SyncTests
       SubscriptionOptions subscriptionOptions = new SubscriptionOptions();
       subscriptionOptions.Subtopic = subtopic;
 
-      subscription = Backendless.Messaging.Subscribe( TEST_CHANNEL, new AsyncCallback<List<Message>>( messages =>
+      channel = Backendless.Messaging.Subscribe( TEST_CHANNEL );
+
+      channel.AddMessageListener<Message>((resultMessage) =>
+      {
+        if (resultMessage.MessageId.Equals(messageStatus.MessageId))
         {
-          try
+          Assert.AreEqual(message, resultMessage.Data, "Server returned a message with a wrong message data");
+
+          foreach (var key in PublishTest.headers.Keys)
           {
-            Assert.IsNotNull( messages, "Server returned a null object instead of messages list" );
-
-            foreach( Message resultMessage in messages )
-            {
-              if( resultMessage.MessageId.Equals( messageStatus.MessageId ) )
-              {
-                Assert.AreEqual( message, resultMessage.Data, "Server returned a message with a wrong message data" );
-
-                foreach( var key in PublishTest.headers.Keys )
-                {
-                  Assert.IsTrue( resultMessage.Headers.ContainsKey( key ),
-                                 "Server returned a message with wrong headers" );
-                  Assert.IsTrue( resultMessage.Headers[key].Equals( PublishTest.headers[key] ),
-                                 "Server returned a message with wrong headers" );
-                }
-
-                latch.Signal();
-              }
-            }
+            Assert.IsTrue(resultMessage.Headers.ContainsKey(key),
+              "Server returned a message with wrong headers");
+            Assert.IsTrue(resultMessage.Headers[key].Equals(PublishTest.headers[key]),
+              "Server returned a message with wrong headers");
           }
-          catch( System.Exception t )
-          {
-            FailCountDownWith( t );
-          }
-        }, FailCountDownWith ), subscriptionOptions );
-
+        }
+      });
+          
       PublishOptions publishOptions = new PublishOptions();
       publishOptions.Headers = headers;
       publishOptions.Subtopic = subtopic;
@@ -133,7 +121,7 @@ namespace BackendlessAPI.Test.MessagingService.SyncTests
       SetLatch();
       SetMessage( 16 );
 
-      subscription = Backendless.Messaging.Subscribe( TEST_CHANNEL, new PublishSubscription() );
+      channel = Backendless.Messaging.Subscribe( TEST_CHANNEL );
       messageStatus = Backendless.Messaging.Publish( message, TEST_CHANNEL );
 
       Assert.IsNotNull( messageStatus.MessageId, "Server didn't set a messageId for the message" );
@@ -150,7 +138,7 @@ namespace BackendlessAPI.Test.MessagingService.SyncTests
       SetLatch();
       SetMessage( "foomessage" );
 
-      subscription = Backendless.Messaging.Subscribe( TEST_CHANNEL, new PublishSubscription() );
+      channel = Backendless.Messaging.Subscribe( TEST_CHANNEL );
       messageStatus = Backendless.Messaging.Publish( message, TEST_CHANNEL );
 
       Assert.IsNotNull( messageStatus.MessageId, "Server didn't set a messageId for the message" );
@@ -167,7 +155,7 @@ namespace BackendlessAPI.Test.MessagingService.SyncTests
       SetLatch();
       SetMessage( DateTime.Now );
 
-      subscription = Backendless.Messaging.Subscribe( TEST_CHANNEL, new PublishSubscription() );
+      channel = Backendless.Messaging.Subscribe( TEST_CHANNEL );
       messageStatus = Backendless.Messaging.Publish( message, TEST_CHANNEL );
 
       Assert.IsNotNull( messageStatus.MessageId, "Server didn't set a messageId for the message" );
@@ -184,7 +172,7 @@ namespace BackendlessAPI.Test.MessagingService.SyncTests
       SetLatch();
       SetMessage( true );
 
-      subscription = Backendless.Messaging.Subscribe( TEST_CHANNEL, new PublishSubscription() );
+      channel = Backendless.Messaging.Subscribe( TEST_CHANNEL );
       messageStatus = Backendless.Messaging.Publish( message, TEST_CHANNEL );
 
       Assert.IsNotNull( messageStatus.MessageId, "Server didn't set a messageId for the message" );
@@ -204,7 +192,7 @@ namespace BackendlessAPI.Test.MessagingService.SyncTests
       var wpPerson = new WPPerson {Age = 22, Name = "Vasya"};
       SetMessage( wpPerson );
 
-      subscription = Backendless.Messaging.Subscribe( TEST_CHANNEL, new PublishSubscription() );
+      channel = Backendless.Messaging.Subscribe( TEST_CHANNEL );
       messageStatus = Backendless.Messaging.Publish( message, TEST_CHANNEL );
 
       Assert.IsNotNull( messageStatus.MessageId, "Server didn't set a messageId for the message" );
@@ -226,7 +214,7 @@ namespace BackendlessAPI.Test.MessagingService.SyncTests
 
       SetMessage( new[] {person123451, androidPerson123452} );
 
-      subscription = Backendless.Messaging.Subscribe( TEST_CHANNEL, new PublishSubscription() );
+      channel = Backendless.Messaging.Subscribe( TEST_CHANNEL );
       messageStatus = Backendless.Messaging.Publish( message, TEST_CHANNEL );
 
       Assert.IsNotNull( messageStatus.MessageId, "Server didn't set a messageId for the message" );
@@ -243,7 +231,7 @@ namespace BackendlessAPI.Test.MessagingService.SyncTests
       SetLatch();
       SetMessage();
 
-      subscription = Backendless.Messaging.Subscribe( TEST_CHANNEL, new PublishSubscription() );
+      channel = Backendless.Messaging.Subscribe( TEST_CHANNEL );
 
       DeliveryOptions deliveryOptions = new DeliveryOptions();
       deliveryOptions.PushSinglecast = new List<string> {deviceRegistrationId};
@@ -263,13 +251,13 @@ namespace BackendlessAPI.Test.MessagingService.SyncTests
       SetLatch( 5 );
       SetMessage();
 
-      String channel = "channel" + GetRandomstringMessage();
+      String channelName = "channel" + GetRandomstringMessage();
 
-      subscription = Backendless.Messaging.Subscribe( channel, new PublishSubscription() );
+      channel = Backendless.Messaging.Subscribe( channelName );
 
       DeliveryOptions deliveryOptions = new DeliveryOptions();
       deliveryOptions.RepeatEvery = 2;
-      messageStatus = Backendless.Messaging.Publish( message, channel, null, deliveryOptions );
+      messageStatus = Backendless.Messaging.Publish( message, channelName, null, deliveryOptions );
 
       Assert.IsNotNull( messageStatus.MessageId, "Server didn't set a messageId for the message" );
       Assert.IsTrue( messageStatus.Status.Equals( PublishStatusEnum.SCHEDULED ),
@@ -288,30 +276,28 @@ namespace BackendlessAPI.Test.MessagingService.SyncTests
       SetMessage();
       counter = 0;
 
-      subscription = Backendless.Messaging.Subscribe( TEST_CHANNEL,
-                                                      new ResponseCallback<List<Message>>( this )
-                                                        {
-                                                          ResponseHandler = response =>
-                                                            {
-                                                              if( ++counter == 10 )
-                                                              {
-                                                                try
-                                                                {
-                                                                  Assert.IsTrue(
-                                                                    Backendless.Messaging.Cancel( messageStatus.MessageId ),
-                                                                    "Server returned a wrong result status" );
-                                                                }
-                                                                catch( System.Exception t )
-                                                                {
-                                                                  FailCountDownWith( t );
-                                                                }
-                                                                finally
-                                                                {
-                                                                  latch.Signal();
-                                                                }
-                                                              }
-                                                            }
-                                                        } );
+      channel = Backendless.Messaging.Subscribe( TEST_CHANNEL );
+        
+        channel.AddMessageListener<Message>((message) =>
+          {
+            if( ++counter == 10 )
+            {
+              try
+              {
+                Assert.IsTrue(
+                  Backendless.Messaging.Cancel( messageStatus.MessageId ),
+                  "Server returned a wrong result status" );
+              }
+              catch( System.Exception t )
+              {
+                FailCountDownWith( t );
+              }
+              finally
+              {
+                latch.Signal();
+              }
+            }        
+          } );
 
       DeliveryOptions deliveryOptions = new DeliveryOptions();
       deliveryOptions.RepeatEvery = 2;
@@ -323,65 +309,6 @@ namespace BackendlessAPI.Test.MessagingService.SyncTests
 
       Await();
       CheckResult();
-    }
-  }
-
-  internal class PublishSubscription : AsyncCallback<List<Message>>
-  {
-    public PublishSubscription() : base( messages =>
-      {
-        if( PublishTest.messageStatus == null )
-          return;
-
-        Assert.IsNotNull( messages, "Server returned a null object instead of messages list" );
-
-        foreach( Message resultMessage in messages )
-        {
-          if( resultMessage.MessageId.StartsWith( PublishTest.messageStatus.MessageId ) )
-          {
-            try
-            {
-              if( PublishTest.message is WPPerson[] )
-              {
-                Assert.IsTrue( resultMessage.Data is WPPerson[], "Server returned wrong object type" );
-
-                foreach( WPPerson wpPerson in (WPPerson[]) PublishTest.message )
-                  Assert.IsTrue( ((List<WPPerson>) resultMessage.Data).Contains( wpPerson ),
-                                 "Server return didn't contain expected object" );
-              }
-              else
-              {
-                Assert.AreEqual( PublishTest.message.ToString(), resultMessage.Data.ToString(),
-                                 "Server returned a message with a wrong message data" );
-              }
-
-              if( PublishTest.publisher != null )
-              {
-                Assert.AreEqual( PublishTest.publisher, resultMessage.PublisherId,
-                                 "Server returned a message with a wrong publisher" );
-              }
-
-              if( PublishTest.headers != null )
-              {
-                foreach( var key in PublishTest.headers.Keys )
-                {
-                  Assert.IsTrue( resultMessage.Headers.ContainsKey( key ),
-                                 "Server returned a message with wrong headers" );
-                  Assert.IsTrue( resultMessage.Headers[key].Equals( PublishTest.headers[key] ),
-                                 "Server returned a message with wrong headers" );
-                }
-              }
-            }
-            catch( System.Exception t )
-            {
-              PublishTest.FailCountDownWith( t );
-            }
-
-            PublishTest.latch.Signal();
-          }
-        }
-      }, fault => PublishTest.FailCountDownWith( fault ) )
-    {
     }
   }
 }

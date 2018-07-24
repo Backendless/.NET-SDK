@@ -1,0 +1,828 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="$PROJECT_DIR$" t="IncludeFlat">
+      <e p="Backendless" t="IncludeRecursive">
+        <e p="Async" t="Include">
+          <e p="AsyncCallback.cs" t="Include" />
+          <e p="Fault.cs" t="Include" />
+          <e p="Result.cs" t="Include" />
+          <e p="UploadCallback.cs" t="Include" />
+        </e>
+        <e p="Backendless.cs" t="Include" />
+        <e p="Backendless.NET.csproj" t="IncludeRecursive" />
+        <e p="BackendlessUser.cs" t="Include" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="Caching" t="Include">
+          <e p="Cache.cs" t="Include" />
+          <e p="CacheService.cs" t="Include" />
+          <e p="ICache.cs" t="Include" />
+        </e>
+        <e p="Counters" t="Include">
+          <e p="AtomicImpl.cs" t="Include" />
+          <e p="CounterService.cs" t="Include" />
+          <e p="IAtomic.cs" t="Include" />
+        </e>
+        <e p="Data" t="Include">
+          <e p="BackendlessSimpleQuery.cs" t="Include" />
+          <e p="BackendlessV3DataExtensionMethods.cs" t="Include" />
+          <e p="DataStoreFactory.cs" t="Include" />
+          <e p="DictionaryDrivenDataStore.cs" t="Include" />
+          <e p="IBackendlessQuery.cs" t="Include" />
+          <e p="IDataStore.cs" t="Include" />
+        </e>
+        <e p="Engine" t="Include">
+          <e p="HeadersManager.cs" t="Include" />
+          <e p="Invoker.cs" t="Include" />
+        </e>
+        <e p="Events" t="Include">
+          <e p="Events.cs" t="Include" />
+        </e>
+        <e p="Exception" t="Include">
+          <e p="BackendlessException.cs" t="Include" />
+          <e p="BackendlessFault.cs" t="Include" />
+          <e p="ExceptionMessage.cs" t="Include" />
+          <e p="NoSocketIOException.cs" t="Include" />
+        </e>
+        <e p="File" t="Include">
+          <e p="BackendlessFile.cs" t="Include" />
+          <e p="FilePermission.cs" t="Include" />
+          <e p="Security" t="Include">
+            <e p="AbstractFilePermission.cs" t="Include" />
+            <e p="BasePermission.cs" t="Include" />
+            <e p="FileOperation.cs" t="Include" />
+            <e p="FileRolePermission.cs" t="Include" />
+            <e p="FileUserPermission.cs" t="Include" />
+          </e>
+        </e>
+        <e p="Geo" t="Include">
+          <e p="BackendlessGeoQuery.cs" t="Include" />
+          <e p="Fence" t="Include">
+            <e p="ClientCallback.cs" t="Include" />
+            <e p="FenceType.cs" t="Include" />
+            <e p="GeoFence.cs" t="Include" />
+            <e p="GeofenceCallback.cs" t="Include" />
+            <e p="GeoFenceMonitoring.cs" t="Include" />
+            <e p="ICallback.cs" t="Include" />
+            <e p="ServerCallback.cs" t="Include" />
+          </e>
+          <e p="GeoCategory.cs" t="Include" />
+          <e p="GeoCluster.cs" t="Include" />
+          <e p="GeoMath.cs" t="Include" />
+          <e p="GeoPoint.cs" t="Include" />
+          <e p="Location" t="Include">
+            <e p="IBackendlessLocationListener.cs" t="Include" />
+            <e p="ILocationTrackerEngine.cs" t="Include" />
+            <e p="LocationBackgroundTask.cs" t="Include" />
+            <e p="LocationTracker.cs" t="Include" />
+            <e p="NoOpLocationTrackingEngine.cs" t="Include" />
+            <e p="Win8LocationTrackerEngine.cs" t="Include" />
+          </e>
+          <e p="SearchMatchesResult.cs" t="Include" />
+          <e p="UNITS.cs" t="Include" />
+        </e>
+        <e p="IO" t="Include">
+          <e p="BackendlessUserFactory.cs" t="Include" />
+          <e p="BackendlessUserWriter.cs" t="Include" />
+          <e p="UnderflowWriter.cs" t="Include" />
+        </e>
+        <e p="Logging" t="Include">
+          <e p="LogBuffer.cs" t="Include" />
+          <e p="Logger.cs" t="Include" />
+          <e p="LoggingService.cs" t="Include" />
+          <e p="LogLevel.cs" t="Include" />
+          <e p="LogMessage.cs" t="Include" />
+        </e>
+        <e p="Messaging" t="Include">
+          <e p="BodyParts.cs" t="Include" />
+          <e p="DeliveryOptions.cs" t="Include" />
+          <e p="DeviceRegistrationDto.cs" t="Include" />
+          <e p="Message.cs" t="Include" />
+          <e p="MessageStatus.cs" t="Include" />
+          <e p="PublishMessageInfo.cs" t="Include" />
+          <e p="PublishOptions.cs" t="Include" />
+          <e p="PublishStatusEnum.cs" t="Include" />
+          <e p="PushPolicyEnum.cs" t="Include" />
+          <e p="SubscriptionOptions.cs" t="Include" />
+        </e>
+        <e p="obj" t="ExcludeRecursive" />
+        <e p="packages.config" t="Include" />
+        <e p="Persistence" t="Include">
+          <e p="AbstractDataPermission.cs" t="Include" />
+          <e p="BackendlessDataQuery.cs" t="Include" />
+          <e p="BackendlessEntity.cs" t="Include" />
+          <e p="DataPermission.cs" t="Include" />
+          <e p="DataQueryBuilder.cs" t="Include" />
+          <e p="LoadRelationsQueryBuilder.cs" t="Include" />
+          <e p="PagedQueryBuilder.cs" t="Include" />
+          <e p="PermissionTypes.cs" t="Include" />
+          <e p="PersistenceOperation.cs" t="Include" />
+          <e p="QueryOptions.cs" t="Include" />
+          <e p="QueryOptionsBuilder.cs" t="Include" />
+          <e p="Security" t="Include">
+            <e p="Find.cs" t="Include" />
+            <e p="Remove.cs" t="Include" />
+            <e p="Update.cs" t="Include" />
+          </e>
+        </e>
+        <e p="Properties" t="Include">
+          <e p="AssemblyInfo.cs" t="Include" />
+        </e>
+        <e p="Push" t="Include">
+          <e p="PushNotificationsBinding.cs" t="Include" />
+          <e p="Registrar.cs" t="Include" />
+          <e p="RegistrationInfo.cs" t="Include" />
+        </e>
+        <e p="RT" t="Include">
+          <e p="AbstractListenerFactory.cs" t="Include" />
+          <e p="AbstractRequest.cs" t="Include" />
+          <e p="AsyncRTClient.cs" t="Include" />
+          <e p="Command" t="Include">
+            <e p="Command.cs" t="Include" />
+            <e p="CommandListener.cs" t="Include" />
+            <e p="CommandRequest.cs" t="Include" />
+          </e>
+          <e p="ConnectListener.cs" t="Include" />
+          <e p="Data" t="Include">
+            <e p="BulkEvent.cs" t="Include" />
+            <e p="DataSubscription.cs" t="Include" />
+            <e p="EventHandlerFactory.cs" t="Include" />
+            <e p="EventHandlerImpl.cs" t="Include" />
+            <e p="IEventHandler.cs" t="Include" />
+            <e p="RTDataEvents.cs" t="Include" />
+          </e>
+          <e p="IRTClient.cs" t="Include" />
+          <e p="IRTRequest.cs" t="Include" />
+          <e p="IRTService.cs" t="Include" />
+          <e p="Messaging" t="Include">
+            <e p="ChannelImpl.cs" t="Include" />
+            <e p="IChannel.cs" t="Include" />
+            <e p="MessageInfoCallback.cs" t="Include" />
+            <e p="MessagingCommandRequest.cs" t="Include" />
+            <e p="MessagingSubscription.cs" t="Include" />
+          </e>
+          <e p="MethodTypes.cs" t="Include" />
+          <e p="ReconnectAttempt.cs" t="Include" />
+          <e p="RTCallback.cs" t="Include" />
+          <e p="RTCallbackWithFault.cs" t="Include" />
+          <e p="RTClientFactory.cs" t="Include" />
+          <e p="RTClientSocketIO.cs" t="Include" />
+          <e p="RTClientWithoutSocketIO.cs" t="Include" />
+          <e p="RTErrorType.cs" t="Include" />
+          <e p="RTListenerImpl.cs" t="Include" />
+          <e p="RTLookupService.cs" t="Include" />
+          <e p="RTMethodRequest.cs" t="Include" />
+          <e p="RTServiceImpl.cs" t="Include" />
+          <e p="RTSubscription.cs" t="Include" />
+          <e p="SocketIOConnectionManager.cs" t="Include" />
+          <e p="SubscriptionNames.cs" t="Include" />
+          <e p="Users" t="Include">
+            <e p="UserInfo.cs" t="Include" />
+            <e p="UserStatus.cs" t="Include" />
+            <e p="UserStatusResponse.cs" t="Include" />
+          </e>
+        </e>
+        <e p="Service" t="Include">
+          <e p="BaseService.cs" t="Include" />
+          <e p="CustomService.cs" t="Include" />
+          <e p="FileService.cs" t="Include" />
+          <e p="GeoService.cs" t="Include" />
+          <e p="MessagingService.cs" t="Include" />
+          <e p="PersistenceService.cs" t="Include" />
+          <e p="Property" t="Include">
+            <e p="AbstractProperty.cs" t="Include" />
+            <e p="DateTypeEnum.cs" t="Include" />
+            <e p="ObjectProperty.cs" t="Include" />
+            <e p="UserProperty.cs" t="Include" />
+          </e>
+          <e p="UserService.cs" t="Include" />
+        </e>
+        <e p="Utils" t="Include">
+          <e p="ILoginStorage.cs" t="Include" />
+          <e p="ITimeoutManager.cs" t="Include" />
+          <e p="Json.cs" t="Include" />
+          <e p="LoginStorage.cs" t="Include" />
+          <e p="TimeoutManagerImpl.cs" t="Include" />
+          <e p="UnderflowStore.cs" t="Include" />
+          <e p="WeborbSerializationHelper.cs" t="Include" />
+        </e>
+        <e p="WebORB" t="Include">
+          <e p=".DS_Store" t="Include" />
+          <e p="Client" t="Include">
+            <e p=".DS_Store" t="Include" />
+            <e p="AsyncToken.cs" t="Include" />
+            <e p="DefaultResponder.cs" t="Include" />
+            <e p="Engine.cs" t="Include" />
+            <e p="Fault.cs" t="Include" />
+            <e p="HttpEngine.cs" t="Include" />
+            <e p="ISubscribeResponder.cs" t="Include" />
+            <e p="PublishingResponder.cs" t="Include" />
+            <e p="Responder.cs" t="Include" />
+            <e p="Result.cs" t="Include" />
+            <e p="SubscribeAdaptedResponder.cs" t="Include" />
+            <e p="SubscribeResponder.cs" t="Include" />
+            <e p="Subscription.cs" t="Include" />
+            <e p="WeborbClient.cs" t="Include" />
+          </e>
+          <e p="Config" t="Include">
+            <e p=".DS_Store" t="Include" />
+            <e p="_svn" t="Include">
+              <e p="prop-base" t="Include" />
+              <e p="props" t="Include" />
+              <e p="text-base" t="Include" />
+              <e p="tmp" t="Include">
+                <e p="prop-base" t="Include" />
+                <e p="props" t="Include" />
+                <e p="text-base" t="Include" />
+                <e p="wcprops" t="Include" />
+              </e>
+              <e p="wcprops" t="Include" />
+            </e>
+            <e p="ORBConfig.cs" t="Include" />
+          </e>
+          <e p="Datatypes.cs" t="Include" />
+          <e p="Exceptions" t="Include">
+            <e p=".DS_Store" t="Include" />
+            <e p="_svn" t="Include">
+              <e p="prop-base" t="Include" />
+              <e p="props" t="Include" />
+              <e p="text-base" t="Include" />
+              <e p="tmp" t="Include">
+                <e p="prop-base" t="Include" />
+                <e p="props" t="Include" />
+                <e p="text-base" t="Include" />
+                <e p="wcprops" t="Include" />
+              </e>
+              <e p="wcprops" t="Include" />
+            </e>
+            <e p="InspectionException.cs" t="Include" />
+            <e p="LicenseException.cs" t="Include" />
+            <e p="ServiceException.cs" t="Include" />
+            <e p="UnadaptableTypeException.cs" t="Include" />
+          </e>
+          <e p="Message" t="Include">
+            <e p=".DS_Store" t="Include" />
+            <e p="_svn" t="Include">
+              <e p="prop-base" t="Include" />
+              <e p="props" t="Include" />
+              <e p="text-base" t="Include" />
+              <e p="tmp" t="Include">
+                <e p="prop-base" t="Include" />
+                <e p="props" t="Include" />
+                <e p="text-base" t="Include" />
+                <e p="wcprops" t="Include" />
+              </e>
+              <e p="wcprops" t="Include" />
+            </e>
+            <e p="Body.cs" t="Include" />
+            <e p="Header.cs" t="Include" />
+            <e p="Request.cs" t="Include" />
+          </e>
+          <e p="ORBConstants.cs" t="Include" />
+          <e p="Protocols" t="Include">
+            <e p=".DS_Store" t="Include" />
+            <e p="_svn" t="Include">
+              <e p="prop-base" t="Include" />
+              <e p="props" t="Include" />
+              <e p="text-base" t="Include" />
+              <e p="tmp" t="Include">
+                <e p="prop-base" t="Include" />
+                <e p="props" t="Include" />
+                <e p="text-base" t="Include" />
+                <e p="wcprops" t="Include" />
+              </e>
+              <e p="wcprops" t="Include" />
+            </e>
+            <e p="Amf" t="Include">
+              <e p=".DS_Store" t="Include" />
+              <e p="_svn" t="Include">
+                <e p="prop-base" t="Include" />
+                <e p="props" t="Include" />
+                <e p="text-base" t="Include" />
+                <e p="tmp" t="Include">
+                  <e p="prop-base" t="Include" />
+                  <e p="props" t="Include" />
+                  <e p="text-base" t="Include" />
+                  <e p="wcprops" t="Include" />
+                </e>
+                <e p="wcprops" t="Include" />
+              </e>
+              <e p="RequestParser.cs" t="Include" />
+            </e>
+            <e p="IMessageFactory.cs" t="Include" />
+            <e p="JsonRPC" t="Include">
+              <e p="BufferedCharReader.cs" t="Include" />
+              <e p="IJsonReader.cs" t="Include" />
+              <e p="JsonReader.cs" t="Include" />
+              <e p="JsonTextReader.cs" t="Include" />
+              <e p="JsonTextWriter.cs" t="Include" />
+              <e p="JsonToken.cs" t="Include" />
+              <e p="JsonTokenClass.cs" t="Include" />
+              <e p="JsonWriter.cs" t="Include" />
+              <e p="JsonWriterBracket.cs" t="Include" />
+              <e p="RequestParser.cs" t="Include" />
+            </e>
+            <e p="UnknownRequestFormatException.cs" t="Include" />
+          </e>
+          <e p="Reader" t="Include">
+            <e p=".DS_Store" t="Include" />
+            <e p="_svn" t="Include">
+              <e p="prop-base" t="Include" />
+              <e p="props" t="Include" />
+              <e p="text-base" t="Include" />
+              <e p="tmp" t="Include">
+                <e p="prop-base" t="Include" />
+                <e p="props" t="Include" />
+                <e p="text-base" t="Include" />
+                <e p="wcprops" t="Include" />
+              </e>
+              <e p="wcprops" t="Include" />
+            </e>
+            <e p="AnonymousObject.cs" t="Include" />
+            <e p="AnonymousObjectReader.cs" t="Include" />
+            <e p="ArrayCollectionType.cs" t="Include" />
+            <e p="ArrayReader.cs" t="Include" />
+            <e p="ArrayType.cs" t="Include" />
+            <e p="BooleanReader.cs" t="Include" />
+            <e p="BooleanType.cs" t="Include" />
+            <e p="BoundPropertyBagReader.cs" t="Include" />
+            <e p="CacheableAdaptingTypeWrapper.cs" t="Include" />
+            <e p="ConcreteObject.cs" t="Include" />
+            <e p="DateReader.cs" t="Include" />
+            <e p="DateType.cs" t="Include" />
+            <e p="INamedType.cs" t="Include" />
+            <e p="IntegerReader.cs" t="Include" />
+            <e p="ITypeReader.cs" t="Include" />
+            <e p="JsonRPC" t="Include">
+              <e p="ArrayReader.cs" t="Include" />
+              <e p="BooleanReader.cs" t="Include" />
+              <e p="JsonNumberObject.cs" t="Include" />
+              <e p="NullReader.cs" t="Include" />
+              <e p="NumberReader.cs" t="Include" />
+              <e p="ObjectReader.cs" t="Include" />
+              <e p="StringReader.cs" t="Include" />
+            </e>
+            <e p="LongUTFStringReader.cs" t="Include" />
+            <e p="NamedObject.cs" t="Include" />
+            <e p="NamedObjectReader.cs" t="Include" />
+            <e p="NotAReader.cs" t="Include" />
+            <e p="NullReader.cs" t="Include" />
+            <e p="NullType.cs" t="Include" />
+            <e p="NumberObject.cs" t="Include" />
+            <e p="NumberReader.cs" t="Include" />
+            <e p="ParseContext.cs" t="Include" />
+            <e p="PointerReader.cs" t="Include" />
+            <e p="ReaderUtils.cs" t="Include" />
+            <e p="ReferenceCache.cs" t="Include" />
+            <e p="RefObject.cs" t="Include" />
+            <e p="SkipTypeReader.cs" t="Include" />
+            <e p="StringType.cs" t="Include" />
+            <e p="UndefinedType.cs" t="Include" />
+            <e p="UndefinedTypeReader.cs" t="Include" />
+            <e p="UTFStringReader.cs" t="Include" />
+            <e p="V3ArrayReader.cs" t="Include" />
+            <e p="V3ByteArrayReader.cs" t="Include" />
+            <e p="V3DateReader.cs" t="Include" />
+            <e p="V3ObjectReader.cs" t="Include" />
+            <e p="V3Reader.cs" t="Include" />
+            <e p="V3StringReader.cs" t="Include" />
+            <e p="V3VectorReader.cs" t="Include" />
+            <e p="XmlDocument.cs" t="Include" />
+          </e>
+          <e p="Registry" t="Include">
+            <e p=".DS_Store" t="Include" />
+            <e p="_svn" t="Include">
+              <e p="prop-base" t="Include" />
+              <e p="props" t="Include" />
+              <e p="text-base" t="Include" />
+              <e p="tmp" t="Include">
+                <e p="prop-base" t="Include" />
+                <e p="props" t="Include" />
+                <e p="text-base" t="Include" />
+                <e p="wcprops" t="Include" />
+              </e>
+              <e p="wcprops" t="Include" />
+            </e>
+            <e p="ServiceRegistry.cs" t="Include" />
+          </e>
+          <e p="Service" t="Include">
+            <e p=".DS_Store" t="Include" />
+            <e p="_svn" t="Include">
+              <e p="prop-base" t="Include" />
+              <e p="props" t="Include" />
+              <e p="text-base" t="Include" />
+              <e p="tmp" t="Include">
+                <e p="prop-base" t="Include" />
+                <e p="props" t="Include" />
+                <e p="text-base" t="Include" />
+                <e p="wcprops" t="Include" />
+              </e>
+              <e p="wcprops" t="Include" />
+            </e>
+            <e p="ExcludePropertyAttribute.cs" t="Include" />
+            <e p="IMemberRenameAttribute.cs" t="Include" />
+            <e p="IPropertyExclusionAttribute.cs" t="Include" />
+            <e p="PropertyRenaming.cs" t="Include" />
+            <e p="SetClientClassMemberNameAttribute.cs" t="Include" />
+          </e>
+          <e p="Types" t="Include">
+            <e p=".DS_Store" t="Include" />
+            <e p="_svn" t="Include">
+              <e p="prop-base" t="Include" />
+              <e p="props" t="Include" />
+              <e p="text-base" t="Include" />
+              <e p="tmp" t="Include">
+                <e p="prop-base" t="Include" />
+                <e p="props" t="Include" />
+                <e p="text-base" t="Include" />
+                <e p="wcprops" t="Include" />
+              </e>
+              <e p="wcprops" t="Include" />
+            </e>
+            <e p="Generic" t="Include">
+              <e p=".DS_Store" t="Include" />
+              <e p="WebORBArray.cs" t="Include" />
+              <e p="WebORBArrayCollection.cs" t="Include" />
+            </e>
+            <e p="IAdaptingType.cs" t="Include" />
+            <e p="ICacheableAdaptingType.cs" t="Include" />
+            <e p="IWebORBArray.cs" t="Include" />
+            <e p="IWebORBArrayCollection.cs" t="Include" />
+            <e p="IWebORBVector.cs" t="Include" />
+            <e p="TypedObject.cs" t="Include" />
+            <e p="Types.cs" t="Include" />
+            <e p="WebORBArray.cs" t="Include" />
+            <e p="WebORBArrayCollection.cs" t="Include" />
+          </e>
+          <e p="Util" t="Include">
+            <e p=".DS_Store" t="Include" />
+            <e p="AMFSerializer.cs" t="Include" />
+            <e p="FileInfoComparer.cs" t="Include" />
+            <e p="IArgumentObjectFactory.cs" t="Include" />
+            <e p="IdentityComparer.cs" t="Include" />
+            <e p="IExternalizable.cs" t="Include" />
+            <e p="IO" t="Include">
+              <e p=".DS_Store" t="Include" />
+              <e p="_svn" t="Include">
+                <e p="prop-base" t="Include" />
+                <e p="props" t="Include" />
+                <e p="text-base" t="Include" />
+                <e p="tmp" t="Include">
+                  <e p="prop-base" t="Include" />
+                  <e p="props" t="Include" />
+                  <e p="text-base" t="Include" />
+                  <e p="wcprops" t="Include" />
+                </e>
+                <e p="wcprops" t="Include" />
+              </e>
+              <e p="FlashorbBinaryReader.cs" t="Include" />
+              <e p="FlashorbBinaryWriter.cs" t="Include" />
+              <e p="Serializer.cs" t="Include" />
+            </e>
+            <e p="IServiceObjectFactory.cs" t="Include" />
+            <e p="KeyValuePair.cs" t="Include" />
+            <e p="LinkedList.cs" t="Include" />
+            <e p="ListEnumerator.cs" t="Include" />
+            <e p="ListNode.cs" t="Include" />
+            <e p="Log" t="Include">
+              <e p=".DS_Store" t="Include" />
+              <e p="_svn" t="Include">
+                <e p="prop-base" t="Include" />
+                <e p="props" t="Include" />
+                <e p="text-base" t="Include" />
+                <e p="tmp" t="Include">
+                  <e p="prop-base" t="Include" />
+                  <e p="props" t="Include" />
+                  <e p="text-base" t="Include" />
+                  <e p="wcprops" t="Include" />
+                </e>
+                <e p="wcprops" t="Include" />
+              </e>
+              <e p="AbstractLogger.cs" t="Include" />
+              <e p="ConsoleLogger.cs" t="Include" />
+              <e p="ExceptionHolder.cs" t="Include" />
+              <e p="ILogger.cs" t="Include" />
+              <e p="Log.cs" t="Include" />
+              <e p="LoggingConstants.cs" t="Include" />
+            </e>
+            <e p="ObjectFactories.cs" t="Include" />
+            <e p="ObjectProxy.cs" t="Include" />
+            <e p="ORBUtil.cs" t="Include" />
+            <e p="RequestContext.cs" t="Include" />
+            <e p="StringUtil.cs" t="Include" />
+            <e p="ThreadContext.cs" t="Include" />
+            <e p="TypeLoader.cs" t="Include" />
+            <e p="UTF8Util.cs" t="Include" />
+            <e p="Value.cs" t="Include" />
+          </e>
+          <e p="V3Types" t="Include">
+            <e p=".DS_Store" t="Include" />
+            <e p="_svn" t="Include">
+              <e p="prop-base" t="Include" />
+              <e p="props" t="Include" />
+              <e p="text-base" t="Include" />
+              <e p="tmp" t="Include">
+                <e p="prop-base" t="Include" />
+                <e p="props" t="Include" />
+                <e p="text-base" t="Include" />
+                <e p="wcprops" t="Include" />
+              </e>
+              <e p="wcprops" t="Include" />
+            </e>
+            <e p="AckMessage.cs" t="Include" />
+            <e p="AsyncMessage.cs" t="Include" />
+            <e p="BodyHolder.cs" t="Include" />
+            <e p="BodyHolderFactory.cs" t="Include" />
+            <e p="BodyHolderWriter.cs" t="Include" />
+            <e p="CommandMessage.cs" t="Include" />
+            <e p="ErrMessage.cs" t="Include" />
+            <e p="ReqMessage.cs" t="Include" />
+            <e p="V3Message.cs" t="Include" />
+          </e>
+          <e p="Writer" t="Include">
+            <e p=".DS_Store" t="Include" />
+            <e p="AbstractReferenceableTypeWriter.cs" t="Include" />
+            <e p="AbstractUnreferenceableTypeWriter.cs" t="Include" />
+            <e p="Amf" t="Include">
+              <e p="AmfFormatter.cs" t="Include" />
+              <e p="AmfV3Formatter.cs" t="Include" />
+            </e>
+            <e p="AMFBodyWriter.cs" t="Include" />
+            <e p="AMFHeaderWriter.cs" t="Include" />
+            <e p="AMFMessageWriter.cs" t="Include" />
+            <e p="ArrayCollectionWriter.cs" t="Include" />
+            <e p="ArrayReferenceWriter.cs" t="Include" />
+            <e p="ArrayWriter.cs" t="Include" />
+            <e p="BooleanWriter.cs" t="Include" />
+            <e p="BoundPropertyBagWriter.cs" t="Include" />
+            <e p="ByteArrayWriter.cs" t="Include" />
+            <e p="ClassDefinition.cs" t="Include" />
+            <e p="CollectionWriter.cs" t="Include" />
+            <e p="DateReferenceWriter.cs" t="Include" />
+            <e p="DateTimeOffsetReferenceWriter.cs" t="Include" />
+            <e p="DateTimeOffsetWriter.cs" t="Include" />
+            <e p="DateWriter.cs" t="Include" />
+            <e p="DynamicReferenceWriter.cs" t="Include" />
+            <e p="EnumerationWriter.cs" t="Include" />
+            <e p="EnumeratorWriter.cs" t="Include" />
+            <e p="GuidWriter.cs" t="Include" />
+            <e p="IntegerWriter.cs" t="Include" />
+            <e p="IObjectSerializer.cs" t="Include" />
+            <e p="IProtocolFormatter.cs" t="Include" />
+            <e p="IReferenceWriter.cs" t="Include" />
+            <e p="ITypeWriter.cs" t="Include" />
+            <e p="JsonRPC" t="Include">
+              <e p="JsonNumberWriter.cs" t="Include" />
+              <e p="JsonRPCFormatter.cs" t="Include" />
+            </e>
+            <e p="MessageWriter.cs" t="Include" />
+            <e p="MultiDimArrayWriter.cs" t="Include" />
+            <e p="NullWriter.cs" t="Include" />
+            <e p="NumberObjectWriter.cs" t="Include" />
+            <e p="NumberWriter.cs" t="Include" />
+            <e p="ObjectReferenceWriter.cs" t="Include" />
+            <e p="ObjectSerializer.cs" t="Include" />
+            <e p="ObjectWriter.cs" t="Include" />
+            <e p="PropertyBagWriter.cs" t="Include" />
+            <e p="ReferenceCache.cs" t="Include" />
+            <e p="ReferenceTypeEnum.cs" t="Include" />
+            <e p="RuntimeTypeWriter.cs" t="Include" />
+            <e p="ServiceExceptionWriter.cs" t="Include" />
+            <e p="Specialized" t="Include">
+              <e p=".DS_Store" t="Include" />
+              <e p="EnumValue.cs" t="Include" />
+            </e>
+            <e p="StringReferenceWriter.cs" t="Include" />
+            <e p="StringWriter.cs" t="Include" />
+            <e p="TimeSpanWriter.cs" t="Include" />
+            <e p="TypedObjectWriter.cs" t="Include" />
+            <e p="V3ObjectSerializer.cs" t="Include" />
+            <e p="V3ReferenceCache.cs" t="Include" />
+          </e>
+        </e>
+      </e>
+      <e p="Backendless.NET.sln" t="IncludeFlat" />
+      <e p="Backendless.NET.vsmdi" t="Include" />
+      <e p="Backendless.Test" t="IncludeRecursive">
+        <e p="Backendless.Test.csproj" t="IncludeRecursive" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="Defaults.cs" t="Include" />
+        <e p="FileService" t="Include">
+          <e p="AsyncTests" t="Include">
+            <e p="DeleteTest.cs" t="Include" />
+            <e p="TestsFrame.cs" t="Include" />
+            <e p="UploadTests.cs" t="Include" />
+          </e>
+        </e>
+        <e p="GeoService" t="Include">
+          <e p="AsyncTests" t="Include">
+            <e p="AddPointTest.cs" t="Include" />
+            <e p="CategoryTest.cs" t="Include" />
+            <e p="GetPointsTest.cs" t="Include" />
+            <e p="RetrievingCategoriesTest.cs" t="Include" />
+            <e p="TestsFrame.cs" t="Include" />
+          </e>
+          <e p="SyncTests" t="Include">
+            <e p="AddPointTest.cs" t="Include" />
+            <e p="CategoryTest.cs" t="Include" />
+            <e p="GetPointsTest.cs" t="Include" />
+            <e p="RetrievingCategoriesTest.cs" t="Include" />
+            <e p="TestsFrame.cs" t="Include" />
+          </e>
+        </e>
+        <e p="IAsyncTest.cs" t="Include" />
+        <e p="ITest.cs" t="Include" />
+        <e p="MessagingService" t="Include">
+          <e p="SyncTests" t="Include">
+            <e p="PublishTest.cs" t="Include" />
+            <e p="SubscriptionTest.cs" t="Include" />
+            <e p="TestsFrame.cs" t="Include" />
+          </e>
+        </e>
+        <e p="obj" t="ExcludeRecursive" />
+        <e p="packages.config" t="Include" />
+        <e p="PersistenceService" t="Include">
+          <e p="AsyncEntities" t="Include">
+            <e p="BaseEntities" t="Include">
+              <e p="CreatedEntityAsync.cs" t="Include" />
+              <e p="ObjectIdEntityAsync.cs" t="Include" />
+              <e p="UpdatedEntityAsync.cs" t="Include" />
+            </e>
+            <e p="CollectionEntities" t="Include">
+              <e p="GetPageEntityAsync.cs" t="Include" />
+              <e p="NextPageEntityAsync.cs" t="Include" />
+            </e>
+            <e p="DeleteEntities" t="Include">
+              <e p="BaseDeleteEntityAsync.cs" t="Include" />
+            </e>
+            <e p="FindEntities" t="Include">
+              <e p="BaseFindEntityAsync.cs" t="Include" />
+              <e p="FindAllEntityAsync.cs" t="Include" />
+              <e p="FindBasePropertiesAsync.cs" t="Include" />
+              <e p="FindEmptyTableEntityAsync.cs" t="Include" />
+              <e p="FindFirstEntityAsync.cs" t="Include" />
+              <e p="FindLastEntityAsync.cs" t="Include" />
+              <e p="FindTooBigOffsetAsync.cs" t="Include" />
+              <e p="FindTooBigPagesizeAsync.cs" t="Include" />
+              <e p="FindWithPageSizeAndOffsetEntityAsync.cs" t="Include" />
+              <e p="FindWithPropertiesEntityAsync.cs" t="Include" />
+              <e p="FindWithWhereEntityAsync.cs" t="Include" />
+            </e>
+            <e p="PrimitiveEntities" t="Include">
+              <e p="BooleanEntityAsync.cs" t="Include" />
+              <e p="DateEntityAsync.cs" t="Include" />
+              <e p="DoubleEntityAsync.cs" t="Include" />
+              <e p="IntEntityAsync.cs" t="Include" />
+              <e p="StringEntityAsync.cs" t="Include" />
+            </e>
+            <e p="UniqueWPPersonAsync.cs" t="Include" />
+            <e p="UpdateEntities" t="Include">
+              <e p="BaseUpdateEntityAsync.cs" t="Include" />
+            </e>
+            <e p="WPPersonAsync.cs" t="Include" />
+          </e>
+          <e p="AsyncTests" t="Include">
+            <e p="CollectionTest.cs" t="Include" />
+            <e p="DeleteObjectTest.cs" t="Include" />
+            <e p="FindObjectTest.cs" t="Include" />
+            <e p="RetrievePropertiesTest.cs" t="Include" />
+            <e p="SaveNewObjectTest.cs" t="Include" />
+            <e p="TestsFrame.cs" t="Include" />
+            <e p="UpdateRecordTest.cs" t="Include" />
+          </e>
+          <e p="Entities" t="Include">
+            <e p="BaseEntities" t="Include">
+              <e p="CreatedEntity.cs" t="Include" />
+              <e p="ObjectIdEntity.cs" t="Include" />
+              <e p="UpdatedEntity.cs" t="Include" />
+            </e>
+            <e p="CollectionEntities" t="Include">
+              <e p="GetPageEntity.cs" t="Include" />
+              <e p="NextPageEntity.cs" t="Include" />
+            </e>
+            <e p="DeleteEntities" t="Include">
+              <e p="BaseDeleteEntity.cs" t="Include" />
+            </e>
+            <e p="FindEntities" t="Include">
+              <e p="BaseFindEntity.cs" t="Include" />
+              <e p="FindAllEntity.cs" t="Include" />
+              <e p="FindBaseProperties.cs" t="Include" />
+              <e p="FindEmptyTableEntity.cs" t="Include" />
+              <e p="FindFirstEntity.cs" t="Include" />
+              <e p="FindLastEntity.cs" t="Include" />
+              <e p="FindTooBigOffset.cs" t="Include" />
+              <e p="FindTooBigPagesize.cs" t="Include" />
+              <e p="FindWithPageSizeAndOffsetEntity.cs" t="Include" />
+              <e p="FindWithPropertiesEntity.cs" t="Include" />
+              <e p="FindWithWhereEntity.cs" t="Include" />
+            </e>
+            <e p="PrimitiveEntities" t="Include">
+              <e p="BooleanEntity.cs" t="Include" />
+              <e p="DateEntity.cs" t="Include" />
+              <e p="DoubleEntity.cs" t="Include" />
+              <e p="IntEntity.cs" t="Include" />
+              <e p="StringEntity.cs" t="Include" />
+            </e>
+            <e p="UniqueWPPerson.cs" t="Include" />
+            <e p="UpdateEntities" t="Include">
+              <e p="BaseUpdateEntity.cs" t="Include" />
+            </e>
+            <e p="WPPerson.cs" t="Include" />
+          </e>
+          <e p="SyncTests" t="Include">
+            <e p="CollectionTest.cs" t="Include" />
+            <e p="DeleteObjectTest.cs" t="Include" />
+            <e p="FindObjectTest.cs" t="Include" />
+            <e p="RetrievePropertiesTest.cs" t="Include" />
+            <e p="SaveNewObjectTest.cs" t="Include" />
+            <e p="TestsFrame.cs" t="Include" />
+            <e p="UpdateRecordTest.cs" t="Include" />
+          </e>
+        </e>
+        <e p="Properties" t="Include">
+          <e p="AssemblyInfo.cs" t="Include" />
+          <e p="Settings.Designer.cs" t="Include" />
+          <e p="Settings.settings" t="Include" />
+        </e>
+        <e p="TestTest.cs" t="Include" />
+        <e p="UserService" t="Include">
+          <e p="AsyncTests" t="Include">
+            <e p="LoginTest.cs" t="Include" />
+            <e p="LogoutTest.cs" t="Include" />
+            <e p="RegistrationTest.cs" t="Include" />
+            <e p="RestorePasswordTest.cs" t="Include" />
+            <e p="TestsFrame.cs" t="Include" />
+            <e p="UpdateTest.cs" t="Include" />
+            <e p="UserPropertiesTest.cs" t="Include" />
+          </e>
+          <e p="SyncTests" t="Include">
+            <e p="InitTest.cs" t="Include" />
+            <e p="LoginTest.cs" t="Include" />
+            <e p="LogoutTest.cs" t="Include" />
+            <e p="RegistrationTests.cs" t="Include" />
+            <e p="RestorePasswordTest.cs" t="Include" />
+            <e p="TestsFrame.cs" t="Include" />
+            <e p="UpdateTest.cs" t="Include" />
+            <e p="UserPropertiesTest.cs" t="Include" />
+          </e>
+        </e>
+      </e>
+      <e p="Local.testsettings" t="Include" />
+      <e p="packages" t="ExcludeRecursive">
+        <e p="MSTest.TestAdapter.1.3.2/build/_common/Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll" t="Include" />
+        <e p="MSTest.TestAdapter.1.3.2/build/_common/Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll" t="Include" />
+        <e p="MSTest.TestAdapter.1.3.2/build/_common/Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll" t="Include" />
+      </e>
+      <e p="Projects/Backendless.NET.Framework4.0" t="IncludeRecursive">
+        <e p="Backendless.NET.Framework4.0.csproj" t="IncludeRecursive" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="obj" t="ExcludeRecursive" />
+        <e p="packages.config" t="Include" />
+        <e p="Properties" t="Include">
+          <e p="AssemblyInfo.cs" t="Include" />
+        </e>
+      </e>
+      <e p="Projects/Backendless.NET.Framework4.5.2" t="IncludeRecursive">
+        <e p="Backendless.NET.Framework4.5.2.csproj" t="IncludeRecursive" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="obj" t="ExcludeRecursive" />
+        <e p="packages.config" t="Include" />
+        <e p="Properties" t="Include">
+          <e p="AssemblyInfo.cs" t="Include" />
+        </e>
+      </e>
+      <e p="Projects/Backendless.NET.Framework4.7.1" t="IncludeRecursive">
+        <e p="Backendless.NET.Framework4.7.1.csproj" t="IncludeRecursive" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="obj" t="ExcludeRecursive" />
+        <e p="packages.config" t="Include" />
+        <e p="Properties" t="Include">
+          <e p="AssemblyInfo.cs" t="Include" />
+        </e>
+      </e>
+      <e p="Projects/Backendless.NET.Standard20" t="IncludeRecursive">
+        <e p="Backendless.NET.Standard20.csproj" t="IncludeRecursive" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netstandard2.0" t="Include">
+              <e p="Backendless.NET.Standard20.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+      </e>
+      <e p="Projects/Backendless.Unity.Framework4.5.2" t="IncludeRecursive">
+        <e p="Backendless.Unity.Framework4.5.2.csproj" t="IncludeRecursive" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="obj" t="ExcludeRecursive" />
+        <e p="packages.config" t="Include" />
+        <e p="Properties" t="Include">
+          <e p="AssemblyInfo.cs" t="Include" />
+        </e>
+      </e>
+      <e p="Solution Items" t="Include" />
+      <e p="TraceAndTestImpact.testsettings" t="Include" />
+    </e>
+    <e p="$USER_HOME$/Library/Caches/Rider2018.1/resharper-host/local/Transient/ReSharperHost/v12/SolutionCaches/_Backendless.NET.-1703326072.00" t="ExcludeRecursive" />
+  </component>
+</project>
