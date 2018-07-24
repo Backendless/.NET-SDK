@@ -13,7 +13,6 @@ Backendless.NET.suo
 Backendless.NET.v11.suo
 Backendless.zip
 Backendless/.DS_Store
-Backendless.Test/bin/Release*/
 Backendless/BackendlessWP.csproj
 Backendless/BackendlessWP.csproj.user
 Backendless/BackendlessWP-2013.sln
@@ -73,4 +72,8 @@ Projects/Backendless.NET.Framework4.5.2/bin*/
 Projects/Backendless.NET.Framework4.7.1/bin*/
 Projects/Backendless.Unity.Framework4.5.2/bin/Debug*/
 !Projects/Backendless.Unity.Framework4.5.2/bin/Debug/Backendless.dll
-Projects/Backendless.Test/bin/Debug/**/
+Projects/Backendless.Test/bin/Debug*/
+Projects/Backendless.Test/bin/Release*/
+Projects/Backendless.Test/bin/UNITY_WEB_PLAYER*/
+
+
