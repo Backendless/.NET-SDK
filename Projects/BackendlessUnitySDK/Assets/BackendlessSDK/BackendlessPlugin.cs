@@ -51,21 +51,21 @@ public class BackendlessPlugin : MonoBehaviour
         prod
     }
 
-    [SerializeField] private ENVIRONMENT version;
+    [SerializeField] private ENVIRONMENT version = ENVIRONMENT.dev;
 
     public static string sVersion = ENVIRONMENT.dev.ToString();
 
-    [SerializeField] private string DevelopmentApplicationID;
+    [SerializeField] private string DevelopmentAppID;
 
     [SerializeField] private string DevelopmentApiKey;
     
-    [SerializeField] private string ProductionApplicationID;
+    [SerializeField] private string ProductionAppID;
 
     [SerializeField] private string ProductionApiKey;
 
     public string applicationId
     {
-        get { return version == ENVIRONMENT.prod ? ProductionApplicationID : DevelopmentApplicationID; }
+        get { return version == ENVIRONMENT.prod ? ProductionAppID : DevelopmentAppID; }
         set { }
     }
 
