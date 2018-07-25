@@ -7,8 +7,8 @@
     <ProjectGuid>{0FDDA6B0-DE26-4E4E-B1D3-F98E66B6CC37}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Backendless.NET.Framework3._5</RootNamespace>
-    <AssemblyName>Backendless.NET.Framework3._5</AssemblyName>
+    <RootNamespace>BackendlessAPI</RootNamespace>
+    <AssemblyName>Backendless</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -51,9 +51,6 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Threading.Tasks.NET35, Version=3.0.2.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\packages\System.Threading.Tasks.Unofficial.3.1\lib\net35\System.Threading.Tasks.NET35.dll</HintPath>
-    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="WebSocket4Net, Version=0.15.2.11, Culture=neutral, PublicKeyToken=eb4e154b696bf72a">
       <HintPath>..\..\packages\WebSocket4Net.0.15.2\lib\net35\WebSocket4Net.dll</HintPath>
@@ -120,7 +117,6 @@
     <Compile Include="..\..\Backendless\IO\BackendlessUserFactory.cs" />
     <Compile Include="..\..\Backendless\IO\BackendlessUserWriter.cs" />
     <Compile Include="..\..\Backendless\IO\UnderflowWriter.cs" />
-    <Compile Include="..\..\Backendless\Logging\LogBatch.cs" />
     <Compile Include="..\..\Backendless\Logging\LogBuffer.cs" />
     <Compile Include="..\..\Backendless\Logging\Logger.cs" />
     <Compile Include="..\..\Backendless\Logging\LoggingService.cs" />

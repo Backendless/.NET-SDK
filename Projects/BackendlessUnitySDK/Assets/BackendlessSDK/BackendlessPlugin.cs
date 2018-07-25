@@ -1,5 +1,5 @@
 /*
-Copyright 2017 Backendless Corporation. and FUNX Corporation., All Rights Reserved.
+Copyright 2018 Backendless Corporation. and FUNX Corporation., All Rights Reserved.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ public class BackendlessPlugin : MonoBehaviour
 #if ENABLE_PUSH_PLUGIN
 #if UNITY_ANDROID
     private static AndroidJavaObject activity = null;
-#elif UNITY_IOS || UNITY_TVOS 
+#elif UNITY_IOS || UNITY_TVOS
     [System.Runtime.InteropServices.DllImport("__Internal")]
     extern static public void setListenerGameObject(string listenerName);
     [System.Runtime.InteropServices.DllImport("__Internal")]
@@ -37,65 +37,56 @@ public class BackendlessPlugin : MonoBehaviour
     extern static public void unregisterForRemoteNotifications();
 #endif
 #endif
-    
+
     private static BackendlessPlugin _instance = null;
-    public static BackendlessPlugin Instance {
-        get {
-            return _instance;
-        }
+
+    public static BackendlessPlugin Instance
+    {
+        get { return _instance; }
     }
-    
-    public enum ENVIRONMENT {
+
+    public enum ENVIRONMENT
+    {
         dev,
         prod
     }
 
-    [SerializeField]
-    private ENVIRONMENT version;
+    [SerializeField] private ENVIRONMENT version;
 
     public static string sVersion = ENVIRONMENT.dev.ToString();
+
+    [SerializeField] private string DevelopmentApplicationID;
+
+    [SerializeField] private string DevelopmentApiKey;
     
-    [SerializeField]
-    private string ProdApplicationId;
-     
-    [SerializeField]
-    private string ProdWindowsPhoneKey;
+    [SerializeField] private string ProductionApplicationID;
 
-    [SerializeField]
-    private string DevApplicationId;
+    [SerializeField] private string ProductionApiKey;
 
-    [SerializeField]
-    private string DevWindowsPhoneKey;
-
-    public string applicationId {
-        get {
-            if (version == ENVIRONMENT.prod)
-                return ProdApplicationId;
-             else
-                return DevApplicationId;
-            }
-        set {}
-    }
-
-    public string WindowsPhoneKey {
-        get {
-            if (version == ENVIRONMENT.prod)
-                return ProdWindowsPhoneKey;
-             else
-                return DevWindowsPhoneKey;
-            }
-        set {}
-    }
-                    
-    void Awake ()
+    public string applicationId
     {
-        sVersion = version.ToString();
+        get { return version == ENVIRONMENT.prod ? ProductionApplicationID : DevelopmentApplicationID; }
+        set { }
+    }
 
-        DontDestroyOnLoad (this);
-        if (_instance == null) {
+    public string APIKey
+    {
+        get { return version == ENVIRONMENT.prod ? ProductionApiKey : DevelopmentApiKey; }
+        set { }
+    }
+
+    void Awake()
+    {
+        //sVersion = version.ToString();
+
+        DontDestroyOnLoad(this);
+        if (_instance == null)
+        {
             _instance = this;
-        } else {
-            DestroyImmediate (this.gameObject); // avoid duplicate BackendlessPlugin GameObjects
+        }
+        else
+        {
+            DestroyImmediate(this.gameObject); // avoid duplicate BackendlessPlugin GameObjects
             return;
         }
 
@@ -108,12 +99,12 @@ public class BackendlessPlugin : MonoBehaviour
         Backendless.URL = "https://api.backendless.com";
 
         // Initialize Backendless
-        Backendless.InitApp (applicationId, WindowsPhoneKey);
+        Backendless.InitApp(applicationId, APIKey );
 
         // Default network timeout (this must be set after Backendless.InitApp)
         Backendless.Timeout = 30000; // 30 secs
 
-//        Backendless.Data.MapTableToType("Devices", typeof(/* type of a class that models one of your tables on Backendless and inherits Backendless Entity */));
+        //        Backendless.Data.MapTableToType("Devices", typeof(/* type of a class that models one of your tables on Backendless and inherits Backendless Entity */));
 
 #if ENABLE_PUSH_PLUGIN
         Backendless.Messaging.SetUnityRegisterDevice(UnityRegisterDevice, UnityUnregisterDevice);
@@ -121,15 +112,15 @@ public class BackendlessPlugin : MonoBehaviour
         AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
         activity = jc.GetStatic<AndroidJavaObject>("currentActivity");
         activity.Call("setUnityGameObject", this.gameObject.name);
-#elif (UNITY_IOS || UNITY_TVOS ) && !UNITY_EDITOR
+#elif (UNITY_IOS || UNITY_TVOS) && !UNITY_EDITOR
         setListenerGameObject(this.gameObject.name);
 #endif
 #endif
 
-#if UNITY_IOS || UNITY_TVOS  || UNITY_ANDROID
+#if UNITY_IOS || UNITY_TVOS || UNITY_ANDROID
         /* In order to use the .NET SDK we needed some hardcoded logic here to make sure some of its code was properly compiled for AOT on iOS.
         We'd get errors like the following when trying to delete the a record from a table.
-
+        
         Error: Code = , Message = Attempting to call method 'Weborb.Client.HttpEngine::SendRequest<System.Int64>' for which no ahead of time (AOT) code was generated., Detail = 
         UnityEngine.DebugLogHandler:Internal_Log(LogType, String, Object)
         UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
@@ -156,7 +147,7 @@ public class BackendlessPlugin : MonoBehaviour
         }
 #endif
     }
-    
+
 #if ENABLE_PUSH_PLUGIN
     public static void UnityRegisterDevice(string GCMSenderID, List<String> channels, DateTime? timestamp)
     {
@@ -199,7 +190,8 @@ public class BackendlessPlugin : MonoBehaviour
     
     void setExpiration(long expiration)
     {
-        Backendless.Messaging.DeviceRegistration.Expiration = new DateTime(1970, 1, 1, 0, 0, 0).AddMilliseconds(expiration);
+        Backendless.Messaging.DeviceRegistration.Expiration =
+ new DateTime(1970, 1, 1, 0, 0, 0).AddMilliseconds(expiration);
     }
     
     void registerDeviceOnServer(string dummy)

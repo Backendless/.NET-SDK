@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+#if !NET_35
 using System.Threading.Tasks;
+#endif
 #if UNIVERSALW8
 using Windows.ApplicationModel.Background;
 using Windows.Devices.Geolocation;

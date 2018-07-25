@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Concurrent;
 using BackendlessAPI.Async;
 using BackendlessAPI.Exception;
@@ -14,8 +15,13 @@ namespace BackendlessAPI.RT
   {
     private readonly SocketIOConnectionManager connectionManager;
 
-    private ConcurrentDictionary<String, RTSubscription> subscriptions = new ConcurrentDictionary<string, RTSubscription>();
-    private ConcurrentDictionary<String, RTMethodRequest> sentRequests = new ConcurrentDictionary<string, RTMethodRequest>();
+    #if NET_35
+    private IDictionary<String, RTSubscription> subscriptions = new Dictionary<string, RTSubscription>();
+    private IDictionary<String, RTMethodRequest> sentRequests = new Dictionary<string, RTMethodRequest>();
+  #else
+    private IDictionary<String, RTSubscription> subscriptions = new ConcurrentDictionary<string, RTSubscription>();
+    private IDictionary<String, RTMethodRequest> sentRequests = new ConcurrentDictionary<string, RTMethodRequest>();
+    #endif
     private ConcurrentQueue<RTMethodRequest> methodsToSend = new ConcurrentQueue<RTMethodRequest>();
     private ResultHandler<Object> connectCallback;
     private ResultHandler<BackendlessFault> connectErrorCallback;
@@ -98,7 +104,11 @@ namespace BackendlessAPI.RT
       }
 
       SubOff( subscriptionId );
+      #if NET_35
+      subscriptions.Remove( subscriptionId );
+      #else
       subscriptions.TryRemove( subscriptionId, out _ );
+      #endif
       Log.log( Backendless.BACKENDLESSLOG, "subscription removed" );
 
       if( subscriptions.Count == 0 && sentRequests.Count == 0 )
@@ -165,7 +175,7 @@ namespace BackendlessAPI.RT
     }
 
 
-    private IRTRequest HandleResult<T>( Object[] args, ConcurrentDictionary<String, T> requestMap, String resultKey ) where T : IRTRequest
+    private IRTRequest HandleResult<T>( Object[] args, IDictionary<String, T> requestMap, String resultKey ) where T : IRTRequest
     {
       if( args == null || args.Length < 1 )
       {
@@ -232,7 +242,11 @@ namespace BackendlessAPI.RT
         IRTRequest request = parent.HandleResult( args, parent.sentRequests, "result" );
 
         if( request != null )
+          #if NET_35
+          parent.sentRequests.Remove( request.Id );
+          #else
           parent.sentRequests.TryRemove( request.Id, out _ );
+          #endif
       }
 
       protected override void ReconnectAttempt( int attempt, int timeout )

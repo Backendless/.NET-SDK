@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Collections.Generic;
 using System.Collections.Concurrent;
 
 namespace BackendlessAPI.RT
@@ -10,11 +10,19 @@ namespace BackendlessAPI.RT
   {
     private IRTClient rt = RTClientFactory.Get();
 
-    private readonly ConcurrentDictionary<String, RTSubscription> subscriptions = new ConcurrentDictionary<string, RTSubscription>();
+    #if NET_35
+    private readonly IDictionary<String, RTSubscription> subscriptions = new Dictionary<string, RTSubscription>();
+    #else
+    private readonly IDictionary<String, RTSubscription> subscriptions = new ConcurrentDictionary<string, RTSubscription>();
+    #endif
 
     protected void AddEventListener( RTSubscription subscription )
     {
+      #if NET_35
+      subscriptions.Add( subscription.Id, subscription );
+      #else
       subscriptions.AddOrUpdate( subscription.Id, subscription, ( key, oldValue ) => subscription );
+      #endif
       rt.Subscribe( subscription );
     }
 
@@ -30,7 +38,11 @@ namespace BackendlessAPI.RT
         if( testSubscription( existingSubscription ) )
         {
           rt.Unsubscribe( existingSubscription.Id );
+          #if NET_35
+          subscriptions.Remove( existingSubscription.Id );
+          #else
           subscriptions.TryRemove( existingSubscription.Id, out _ );
+          #endif
         }
       }
     }
