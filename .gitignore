@@ -68,8 +68,11 @@ packages/
 **/obj/
 
 Projects/Backendless.NET.Framework4.0/bin*/
+!Projects/Backendless.NET.Framework4.0/bin/Debug/Backendless.dll
 Projects/Backendless.NET.Framework4.5.2/bin*/
+!Projects/Backendless.NET.Framework4.5.2/bin/Debug/Backendless.dll
 Projects/Backendless.NET.Framework4.7.1/bin*/
+!Projects/Backendless.NET.Framework4.7.1/bin/Debug/Backendless.dll
 Projects/Backendless.Unity.Framework4.5.2/bin/Debug*/
 !Projects/Backendless.Unity.Framework4.5.2/bin/Debug/Backendless.dll
 Projects/Backendless.Test/bin/Debug*/
