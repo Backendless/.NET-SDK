@@ -8,6 +8,7 @@ using Weborb.Util.Logging;
 using Weborb.Types;
 using Weborb.Reader;
 using Quobject.EngineIoClientDotNet.ComponentEmitter;
+using Quobject.SocketIoClientDotNet.Client;
 
 namespace BackendlessAPI.RT
 {
@@ -19,8 +20,8 @@ namespace BackendlessAPI.RT
     private IDictionary<String, RTSubscription> subscriptions = new Dictionary<string, RTSubscription>();
     private IDictionary<String, RTMethodRequest> sentRequests = new Dictionary<string, RTMethodRequest>();
   #else
-    private IDictionary<String, RTSubscription> subscriptions = new ConcurrentDictionary<string, RTSubscription>();
-    private IDictionary<String, RTMethodRequest> sentRequests = new ConcurrentDictionary<string, RTMethodRequest>();
+    private ConcurrentDictionary<String, RTSubscription> subscriptions = new ConcurrentDictionary<string, RTSubscription>();
+    private ConcurrentDictionary<String, RTMethodRequest> sentRequests = new ConcurrentDictionary<string, RTMethodRequest>();
     #endif
     private ConcurrentQueue<RTMethodRequest> methodsToSend = new ConcurrentQueue<RTMethodRequest>();
     private ResultHandler<Object> connectCallback;
@@ -88,7 +89,7 @@ namespace BackendlessAPI.RT
       Log.log( Backendless.BACKENDLESSLOG, String.Format( "try to subscribe {0}", subscription ) );
       subscriptions[ subscription.Id ] = subscription;
 
-      if( connectionManager.connected )
+      if( connectionManager.Socket.Io().ReadyState == Manager.ReadyStateEnum.OPEN )
         SubOn( subscription );
     }
 

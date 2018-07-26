@@ -18,6 +18,8 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 using BackendlessAPI;
 using BackendlessAPI.Engine;
 using Weborb.Client;
@@ -53,8 +55,6 @@ public class BackendlessPlugin : MonoBehaviour
 
     [SerializeField] private ENVIRONMENT version = ENVIRONMENT.dev;
 
-    public static string sVersion = ENVIRONMENT.dev.ToString();
-
     [SerializeField] private string DevelopmentAppID;
 
     [SerializeField] private string DevelopmentApiKey;
@@ -77,8 +77,10 @@ public class BackendlessPlugin : MonoBehaviour
 
     void Awake()
     {
-        //sVersion = version.ToString();
-
+        // This is needed so that the Unity client cannot connect to Backendless RT
+        // Also, it is needed on Android, so it can communicate via HTTPS
+        ServicePointManager.ServerCertificateValidationCallback = (p1, p2, p3, p4) => true;
+ 
         DontDestroyOnLoad(this);
         if (_instance == null)
         {
@@ -90,21 +92,18 @@ public class BackendlessPlugin : MonoBehaviour
             return;
         }
 
-#if UNITY_ANDROID
-        /* The following is needed to avoid the following errors on Android when using HTTPS.
-        The authentication or decryption has failed.
-        */
-        ServicePointManager.ServerCertificateValidationCallback = (p1, p2, p3, p4) => true;
-#endif
         Backendless.URL = "https://api.backendless.com";
 
+        // This redirects any logging inside of the Backendless SDK into Unity's Debug.log
+        Weborb.Util.Logging.Log.addLogger( "unitylogger", new BackendlessPlugin.UnityLogger() );
+        
         // Initialize Backendless
         Backendless.InitApp(applicationId, APIKey );
 
         // Default network timeout (this must be set after Backendless.InitApp)
         Backendless.Timeout = 30000; // 30 secs
 
-        //        Backendless.Data.MapTableToType("Devices", typeof(/* type of a class that models one of your tables on Backendless and inherits Backendless Entity */));
+        // Backendless.Data.MapTableToType("Devices", typeof(/* type of a class that models one of your tables on Backendless and inherits Backendless Entity */));
 
 #if ENABLE_PUSH_PLUGIN
         Backendless.Messaging.SetUnityRegisterDevice(UnityRegisterDevice, UnityUnregisterDevice);
@@ -216,4 +215,11 @@ public class BackendlessPlugin : MonoBehaviour
         Debug.Log("onPushMessage() message=" + message);
     }
 #endif
+    private class UnityLogger : Weborb.Util.Logging.AbstractLogger
+    {
+        public override void fireEvent(string category, object eventObject, DateTime timestamp)
+        {
+            Debug.Log( String.Format("{0}: {1}- {2}", timestamp.ToShortTimeString(), category, eventObject ));
+        }
+    }
 }

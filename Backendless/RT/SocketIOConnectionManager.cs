@@ -43,6 +43,12 @@ namespace BackendlessAPI.RT
         opts.Query[ "apiKey" ] = Backendless.APIKey;
         opts.Query[ "clientId" ] = Backendless.Messaging.DeviceID;
         opts.Query[ "binary" ] = "true";
+        
+        #if NET_35
+        opts.QueryString =
+          $"apiKey={Backendless.APIKey}&clientId={Backendless.Messaging.DeviceID}&binary=true";
+        #endif
+        
         #if !(NET_40 || NET_35)
         opts.Transports = ImmutableList.Create<String>( "websocket" );
         #else
@@ -51,7 +57,7 @@ namespace BackendlessAPI.RT
         String host = rtLookupService.Lookup() + opts.Path;
 
         //if( host.StartsWith( "https://" ) )
-        //  host = "ws://" + host.Substring( "https://".Length );
+        //  host = "http://" + host.Substring( "https://".Length );
 
         if( HeadersManager.GetInstance().Headers.ContainsKey( HeadersEnum.USER_TOKEN_KEY.Header ) )
         {
@@ -110,6 +116,10 @@ namespace BackendlessAPI.RT
         } );
 
         //socket.Connect();
+        #if NET_35
+        //socket.Connect();
+        #endif
+        
         return socket;
       }
     }
@@ -138,10 +148,12 @@ namespace BackendlessAPI.RT
     {
       Log.log( Backendless.BACKENDLESSLOG, "Try to disconnect" );
 
-      if( socket != null )
-        socket.Close();
-
-      socket = null;
+      if (socket != null)
+      {
+        Socket tempSocket = socket;
+        socket = null;
+        tempSocket.Close();
+      }
     }
 
     protected abstract void Connected();

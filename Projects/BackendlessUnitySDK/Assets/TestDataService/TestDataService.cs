@@ -5,10 +5,13 @@ using BackendlessAPI;
 using BackendlessAPI.Data;
 using BackendlessAPI.Async;
 using BackendlessAPI.Persistence;
+using UnityEditor;
 
 public class TestDataService : MonoBehaviour {
+    
 	void Start ()
     {
+        EditorApplication.playModeStateChanged += HandleOnPlayModeChanged;
         SaveTestData();
     }
 
@@ -36,6 +39,13 @@ public class TestDataService : MonoBehaviour {
                     }
                 )
            );
+        
+        Debug.Log("Adding RT listener...");
+        Backendless.Data.Of( "TestTable" ).RT().AddCreateListener((obj) =>
+        {
+            Debug.Log( "RT: Object created " );
+            Debug.Log( "RT object - " + obj );
+        });
 	}
 
     void GetTestData()
@@ -58,5 +68,14 @@ public class TestDataService : MonoBehaviour {
                     }
                 )
             );
+    }
+    
+    void HandleOnPlayModeChanged( PlayModeStateChange stateChange )
+    {
+        // This method is run whenever the playmode state is changed.
+        if ( stateChange == PlayModeStateChange.ExitingEditMode || stateChange == PlayModeStateChange.ExitingPlayMode )
+        {
+            Backendless.RT.Disconnect();
+        }
     }
 }

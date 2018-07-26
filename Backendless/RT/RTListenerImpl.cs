@@ -13,7 +13,7 @@ namespace BackendlessAPI.RT
     #if NET_35
     private readonly IDictionary<String, RTSubscription> subscriptions = new Dictionary<string, RTSubscription>();
     #else
-    private readonly IDictionary<String, RTSubscription> subscriptions = new ConcurrentDictionary<string, RTSubscription>();
+    private readonly ConcurrentDictionary<String, RTSubscription> subscriptions = new ConcurrentDictionary<string, RTSubscription>();
     #endif
 
     protected void AddEventListener( RTSubscription subscription )
