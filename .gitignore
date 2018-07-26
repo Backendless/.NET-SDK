@@ -53,14 +53,11 @@ Samples/DataService/ToDoDemo/obj/Release/ToDoDemo.pdb
 Backendless.NET.userprefs
 
 ConsoleTest*/
-BackendlessUnitySDK/Temp*/
-BackendlessUnitySDK/obj*/
-BackendlessUnitySDK/Library*/
 Local.testsettings
 TraceAndTestImpact.testsettings
 Backendless/Backedless-Universal-W8.csproj
 Backendless/Backedless-Universal-W8.csproj.user
-BackendlessUnitySDK/BackendlessUnitySDK.suo
+
 .vs/
 Backendless/Bin/NET_45/Debug/*
 packages/
@@ -78,5 +75,9 @@ Projects/Backendless.Unity.Framework4.5.2/bin/Debug*/
 Projects/Backendless.Test/bin/Debug*/
 Projects/Backendless.Test/bin/Release*/
 Projects/Backendless.Test/bin/UNITY_WEB_PLAYER*/
+Projects/BackendlessUnitySDK/Temp*/
+Projects/BackendlessUnitySDK/obj*/
+Projects/BackendlessUnitySDK/Library*/
+Projects/BackendlessUnitySDK/BackendlessUnitySDK.suo
 
 
