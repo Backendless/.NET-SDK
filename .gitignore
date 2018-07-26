@@ -5,6 +5,7 @@ Samples/
 sdk/
 Backendless/Backedless-Universal-W8.sln
 Backendless/Bin/Debug/*
+Backendless/Bin/NET_45/Debug/*
 package-sdk/*
 Backendless.NET.suo
 Backendless/UpgradeLog*.htm
@@ -59,19 +60,10 @@ Backendless/Backedless-Universal-W8.csproj
 Backendless/Backedless-Universal-W8.csproj.user
 
 .vs/
-Backendless/Bin/NET_45/Debug/*
 packages/
 .idea/
 **/obj/
 
-Projects/Backendless.NET.Framework4.0/bin*/
-!Projects/Backendless.NET.Framework4.0/bin/Debug/Backendless.dll
-Projects/Backendless.NET.Framework4.5.2/bin*/
-!Projects/Backendless.NET.Framework4.5.2/bin/Debug/Backendless.dll
-Projects/Backendless.NET.Framework4.7.1/bin*/
-!Projects/Backendless.NET.Framework4.7.1/bin/Debug/Backendless.dll
-Projects/Backendless.Unity.Framework4.5.2/bin/Debug*/
-!Projects/Backendless.Unity.Framework4.5.2/bin/Debug/Backendless.dll
 Projects/Backendless.Test/bin/Debug*/
 Projects/Backendless.Test/bin/Release*/
 Projects/Backendless.Test/bin/UNITY_WEB_PLAYER*/
