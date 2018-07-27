@@ -4,8 +4,8 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Backendless.NET.Framework4.5.2")]
-[assembly: AssemblyDescription("Backendless SDK for .NET Framework v4.5.2. Implements Backendless APIs for .NET apps")]
+[assembly: AssemblyTitle("Backendless.NET.Framework4.5")]
+[assembly: AssemblyDescription("Backendless SDK for .NET Framework v4.5. Implements Backendless APIs for .NET apps")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Backendless Corp")]
 [assembly: AssemblyProduct("Backendless.NET")]
@@ -19,7 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("7733D026-33BF-4E54-BEEC-9F86FD296E44")]
+[assembly: Guid("EC991B86-F904-49AB-93AE-109FBF5B1EA0")]
 
 // Version information for an assembly consists of the following four values:
 //

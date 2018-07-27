@@ -26,6 +26,7 @@ namespace BackendlessAPI.Service
     private const string DEFAULT_OBJECT_ID_PROPERTY_NAME_DOTNET_STYLE = "ObjectId";
     private const string DEFAULT_CREATED_FIELD_NAME_DOTNET_STYLE = "Created";
     private const string DEFAULT_UPDATED_FIELD_NAME_DOTNET_STYLE = "Updated";
+    private static readonly Dictionary<String, DictionaryDrivenDataStore> dataStores = new Dictionary<string, DictionaryDrivenDataStore>();
     public const string LOAD_ALL_RELATIONS = "*";
 
     public readonly DataPermission Permissions = new DataPermission();
@@ -588,7 +589,6 @@ namespace BackendlessAPI.Service
       Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "callStoredProcedure", args, responder );
     }
     #endregion
-
     #region ADD RELATION
     public void AddRelation<T>( string parentTableName, T parent, string columnName, object[] children )
     {
@@ -633,7 +633,6 @@ namespace BackendlessAPI.Service
       return 0;
     }
     #endregion
-
     #region SET RELATION
     public int SetRelation<T>( string parentTableName, T parent, string columnName, object[] children )
     {
@@ -682,7 +681,6 @@ namespace BackendlessAPI.Service
     }
 
     #endregion
-
     #region DELETE RELATION
     public int DeleteRelation<T>( string parentTableName, T parent, string columnName, object[] children )
     {
@@ -740,8 +738,11 @@ namespace BackendlessAPI.Service
     {
       if( tableName.ToLower().Equals( "users" ) )
         throw new System.Exception( "Table 'Users' is not accessible through this signature. Use Backendless.Data.Of( typeof( BackendlessUser ) ) instead" );
+
+      if (!dataStores.ContainsKey( tableName ) )
+        dataStores[tableName] = new DictionaryDrivenDataStore( tableName );
       
-      return new DictionaryDrivenDataStore( tableName );
+      return dataStores[ tableName ];
     }
 
     public void MapTableToType( string tableName, Type type )

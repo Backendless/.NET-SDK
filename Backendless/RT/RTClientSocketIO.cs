@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+#if !NET_35
 using System.Collections.Concurrent;
+#endif  
 using BackendlessAPI.Async;
 using BackendlessAPI.Exception;
 using BackendlessAPI.Utils;
@@ -19,11 +21,12 @@ namespace BackendlessAPI.RT
     #if NET_35
     private IDictionary<String, RTSubscription> subscriptions = new Dictionary<string, RTSubscription>();
     private IDictionary<String, RTMethodRequest> sentRequests = new Dictionary<string, RTMethodRequest>();
+    private Queue<RTMethodRequest> methodsToSend = new Queue<RTMethodRequest>();
   #else
     private ConcurrentDictionary<String, RTSubscription> subscriptions = new ConcurrentDictionary<string, RTSubscription>();
     private ConcurrentDictionary<String, RTMethodRequest> sentRequests = new ConcurrentDictionary<string, RTMethodRequest>();
-    #endif
     private ConcurrentQueue<RTMethodRequest> methodsToSend = new ConcurrentQueue<RTMethodRequest>();
+    #endif
     private ResultHandler<Object> connectCallback;
     private ResultHandler<BackendlessFault> connectErrorCallback;
     private ResultHandler<String> disconnectCallback;
@@ -89,7 +92,7 @@ namespace BackendlessAPI.RT
       Log.log( Backendless.BACKENDLESSLOG, String.Format( "try to subscribe {0}", subscription ) );
       subscriptions[ subscription.Id ] = subscription;
 
-      if( connectionManager.Socket.Io().ReadyState == Manager.ReadyStateEnum.OPEN )
+      if( connectionManager.Socket != null && connectionManager.connected ) // Socket.Io().ReadyState == Manager.ReadyStateEnum.OPEN )
         SubOn( subscription );
     }
 
@@ -141,16 +144,26 @@ namespace BackendlessAPI.RT
 
     private void Resubscribe()
     {
-      foreach( RTSubscription rtSubscription in subscriptions.Values )
-        SubOn( rtSubscription );
+      foreach (RTSubscription rtSubscription in subscriptions.Values)
+        SubOn(rtSubscription);
 
-      RTMethodRequest methodRequest;
+      RTMethodRequest methodRequest = null;
+#if NET_35
+      if( methodsToSend.Count > 0 )
+        methodRequest = methodsToSend.Dequeue();
+#else
       methodsToSend.TryDequeue( out methodRequest );
+      #endif
 
-      while( methodRequest != null )
+      while (methodRequest != null)
       {
-        MetReq( methodRequest );
-        methodsToSend.TryDequeue( out methodRequest );
+        MetReq(methodRequest);
+#if NET_35
+        if( methodsToSend.Count > 0 )
+          methodRequest = methodsToSend.Dequeue();
+#else
+      methodsToSend.TryDequeue( out methodRequest );
+      #endif
       }
     }
 

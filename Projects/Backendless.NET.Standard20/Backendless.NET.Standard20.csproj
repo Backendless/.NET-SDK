@@ -129,11 +129,6 @@
     <Folder Include="..\..\Backendless\WebORB\V3Types\_svn\wcprops" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="EngineIoClientDotNet" Version="1.0.7" />
-    <PackageReference Include="SocketIoClientDotNet" Version="1.0.7.1" />
-    <PackageReference Include="System.Collections.Immutable" Version="1.5.0" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="..\..\Backendless\Async\AsyncCallback.cs" />
     <Compile Include="..\..\Backendless\Async\Fault.cs" />
     <Compile Include="..\..\Backendless\Async\Result.cs" />
@@ -471,4 +466,8 @@
     <Compile Include="..\..\Backendless\WebORB\Writer\V3ObjectSerializer.cs" />
     <Compile Include="..\..\Backendless\WebORB\Writer\V3ReferenceCache.cs" />
   </ItemGroup>
+  <Target Name="AfterBuild">
+    <Copy SourceFiles="bin/Debug/netstandard2.0/Backendless.dll" DestinationFolder="../Nuget/Backendless.NET.Framework/lib/netstandard2.0/">
+    </Copy>
+  </Target>
 </Project>

@@ -11,9 +11,10 @@
     <AssemblyName>Backendless</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <ReleaseVersion>5.0.0.0</ReleaseVersion>
+    <SynchReleaseVersion>false</SynchReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -33,19 +34,19 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EngineIoClientDotNet, Version=1.0.7.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\packages\EngineIoClientDotNet.1.0.7\lib\net35\EngineIoClientDotNet.dll</HintPath>
+      <HintPath>packages\EngineIoClientDotNet.1.0.7\lib\net35\EngineIoClientDotNet.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
-      <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\net35\Newtonsoft.Json.dll</HintPath>
+      <HintPath>packages\Newtonsoft.Json.9.0.1\lib\net35\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="SocketIoClientDotNet, Version=1.0.7.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\packages\SocketIoClientDotNet.1.0.7.1\lib\net35\SocketIoClientDotNet.dll</HintPath>
+      <HintPath>packages\SocketIoClientDotNet.1.0.7.1\lib\net35\SocketIoClientDotNet.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="SuperSocket.ClientEngine, Version=0.10.0.0, Culture=neutral, PublicKeyToken=ee9af13f57f00acc">
-      <HintPath>..\..\packages\SuperSocket.ClientEngine.Core.0.10.0\lib\net35-client\SuperSocket.ClientEngine.dll</HintPath>
+      <HintPath>packages\SuperSocket.ClientEngine.Core.0.10.0\lib\net35-client\SuperSocket.ClientEngine.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -53,7 +54,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="WebSocket4Net, Version=0.15.2.11, Culture=neutral, PublicKeyToken=eb4e154b696bf72a">
-      <HintPath>..\..\packages\WebSocket4Net.0.15.2\lib\net35\WebSocket4Net.dll</HintPath>
+      <HintPath>packages\WebSocket4Net.0.15.2\lib\net35\WebSocket4Net.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
@@ -397,9 +398,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="..\..\Backendless\WebORB\.DS_Store" />
     <Content Include="..\..\Backendless\WebORB\Client\.DS_Store" />
     <Content Include="..\..\Backendless\WebORB\Config\.DS_Store" />
@@ -517,6 +515,9 @@
     <Folder Include="..\..\Backendless\WebORB\V3Types\_svn\tmp\wcprops" />
     <Folder Include="..\..\Backendless\WebORB\V3Types\_svn\wcprops" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
          Other similar extension points exist, see Microsoft.Common.targets.
@@ -525,4 +526,8 @@
     <Target Name="AfterBuild">
     </Target>
     -->
+  <Target Name="AfterBuild">
+    <Copy SourceFiles="bin/Debug/Backendless.dll" DestinationFolder="../Nuget/Backendless.NET.Framework/lib/net35">
+    </Copy>
+  </Target>
 </Project>

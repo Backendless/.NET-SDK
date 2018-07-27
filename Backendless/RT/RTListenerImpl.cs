@@ -33,18 +33,21 @@ namespace BackendlessAPI.RT
 
     protected void RemoveEventListener( TestSubscription testSubscription ) 
     {
+      var subscriptionsToRemove = new List<string>();
+      
       foreach( RTSubscription existingSubscription in subscriptions.Values )
-      {
         if( testSubscription( existingSubscription ) )
         {
           rt.Unsubscribe( existingSubscription.Id );
-          #if NET_35
-          subscriptions.Remove( existingSubscription.Id );
-          #else
-          subscriptions.TryRemove( existingSubscription.Id, out _ );
-          #endif
+          subscriptionsToRemove.Add( existingSubscription.Id );
         }
-      }
+      
+      foreach( var id in subscriptionsToRemove )
+          #if NET_35
+          subscriptions.Remove( id );
+          #else
+          subscriptions.TryRemove( id, out _ );
+          #endif
     }
   }
 }

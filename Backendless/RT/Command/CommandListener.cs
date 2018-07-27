@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+#if !NET_35
 using System.Collections.Concurrent;
+#endif  
 using BackendlessAPI.Exception;
 using BackendlessAPI.RT;
 using BackendlessAPI.RT.Messaging;
@@ -15,7 +17,11 @@ namespace BackendlessAPI.RT.Command
   public abstract class CommandListener<T> where T : RTSubscription
   {
     private readonly IRTClient rtClient = RTClientFactory.Get();
+    #if NET_35
+    private Queue<RTMethodRequest> commandsToSend = new Queue<RTMethodRequest>();
+    #else
     private ConcurrentQueue<RTMethodRequest> commandsToSend = new ConcurrentQueue<RTMethodRequest>();
+    #endif
 
     protected abstract List<T> GetSubscriptionHolder();
 
@@ -27,12 +33,21 @@ namespace BackendlessAPI.RT.Command
 
     public void Connected()
     {
+#if NET_35
+      var methodRequest = commandsToSend.Dequeue();
+#else
       commandsToSend.TryDequeue( out var methodRequest );
+      #endif
 
-      while( methodRequest != null )
+      while (methodRequest != null)
       {
-        rtClient.Invoke( methodRequest );
+        rtClient.Invoke(methodRequest);
+
+#if NET_35
+        methodRequest = commandsToSend.Dequeue();
+#else
         commandsToSend.TryDequeue( out methodRequest );
+  #endif
       }
     }
 

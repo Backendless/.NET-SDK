@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using BackendlessAPI.Async;
 using BackendlessAPI.Persistence;
 using BackendlessAPI.Service;
@@ -8,10 +9,15 @@ namespace BackendlessAPI.Data
 {
   internal static class DataStoreFactory
   {
+    private static readonly Dictionary<Type, Object> dataStores = new Dictionary<Type, object>();
+    
     internal static IDataStore<T> CreateDataStore<T>()
     {
-      return new DataStoreImpl<T>();
-    }
+      if (!dataStores.ContainsKey(typeof(T)))
+        dataStores[typeof(T)] = new DataStoreImpl<T>();
+      
+      return (IDataStore <T>) dataStores[ typeof( T ) ];
+   }
 
     private class DataStoreImpl<T> : IDataStore<T>
     {

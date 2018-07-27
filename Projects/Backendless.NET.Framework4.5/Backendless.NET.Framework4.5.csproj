@@ -4,12 +4,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7733D026-33BF-4E54-BEEC-9F86FD296E44}</ProjectGuid>
+    <ProjectGuid>{EC991B86-F904-49AB-93AE-109FBF5B1EA0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BackendlessAPI</RootNamespace>
     <AssemblyName>Backendless</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -33,31 +33,31 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EngineIoClientDotNet, Version=1.0.7.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>packages\EngineIoClientDotNet.1.0.7\lib\net45\EngineIoClientDotNet.dll</HintPath>
+      <HintPath>..\..\packages\EngineIoClientDotNet.1.0.7\lib\net45\EngineIoClientDotNet.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
-      <HintPath>packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="SocketIoClientDotNet, Version=1.0.7.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>packages\SocketIoClientDotNet.1.0.7.1\lib\net45\SocketIoClientDotNet.dll</HintPath>
+      <HintPath>..\..\packages\SocketIoClientDotNet.1.0.7.1\lib\net45\SocketIoClientDotNet.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="SuperSocket.ClientEngine, Version=0.10.0.0, Culture=neutral, PublicKeyToken=ee9af13f57f00acc">
-      <HintPath>packages\SuperSocket.ClientEngine.Core.0.10.0\lib\net45\SuperSocket.ClientEngine.dll</HintPath>
+      <HintPath>..\..\packages\SuperSocket.ClientEngine.Core.0.10.0\lib\net45\SuperSocket.ClientEngine.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Collections.Immutable, Version=1.2.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <HintPath>packages\System.Collections.Immutable.1.4.0\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
+      <HintPath>..\..\packages\System.Collections.Immutable.1.4.0\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="WebSocket4Net, Version=0.15.2.11, Culture=neutral, PublicKeyToken=eb4e154b696bf72a">
-      <HintPath>packages\WebSocket4Net.0.15.2\lib\net45\WebSocket4Net.dll</HintPath>
+      <HintPath>..\..\packages\WebSocket4Net.0.15.2\lib\net45\WebSocket4Net.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
@@ -530,7 +530,7 @@
     </Target>
     -->
   <Target Name="AfterBuild">
-    <Copy SourceFiles="bin/Debug/Backendless.dll" DestinationFolder="../Nuget/Backendless.NET.Framework/lib/net452">
+    <Copy SourceFiles="bin/Debug/Backendless.dll" DestinationFolder="../Nuget/Backendless.NET.Framework/lib/net45">
     </Copy>
   </Target>
 </Project>
