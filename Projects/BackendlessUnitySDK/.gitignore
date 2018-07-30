@@ -1,0 +1,9 @@
+.DS_Store
+.idea/*
+.vs/*
+obj/*
+*.suo
+Assets/*
+ProjectSettings/*
+Temp/*
+Library/*
