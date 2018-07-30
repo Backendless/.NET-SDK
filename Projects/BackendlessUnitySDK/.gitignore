@@ -1,9 +1,10 @@
 .DS_Store
-.idea/*
-.vs/*
-obj/*
+.idea/
+.vs/
+obj/
 *.suo
-Assets/*
-ProjectSettings/*
-Temp/*
-Library/*
+Assets/
+ProjectSettings/
+Temp/
+Library/
+BackendlessUnitySDK.userprefs
