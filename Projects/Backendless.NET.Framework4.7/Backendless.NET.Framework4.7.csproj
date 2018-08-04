@@ -18,7 +18,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;PURE_CLIENT_LIB</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;PURE_CLIENT_LIB;WITHRT</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -27,7 +27,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;PURE_CLIENT_LIB</DefineConstants>
+    <DefineConstants>TRACE;PURE_CLIENT_LIB;WITHRT</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -589,6 +589,8 @@
     -->
   <Target Name="AfterBuild">
     <Copy SourceFiles="bin/Debug/Backendless.dll" DestinationFolder="../Nuget/Backendless.NET.Framework/lib/net47">
+    </Copy>
+    <Copy SourceFiles="bin/Debug/Backendless.dll" DestinationFolder="../Nuget/Backendless.Unity/lib/net47">
     </Copy>
   </Target>
 </Project>

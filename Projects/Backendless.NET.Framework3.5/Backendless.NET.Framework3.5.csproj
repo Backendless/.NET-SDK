@@ -19,7 +19,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;PURE_CLIENT_LIB;NET_35</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;PURE_CLIENT_LIB;NET_35;WITHRT</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -28,7 +28,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;PURE_CLIENT_LIB;NET_35</DefineConstants>
+    <DefineConstants>TRACE;PURE_CLIENT_LIB;NET_35;WITHRT</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -528,6 +528,8 @@
     -->
   <Target Name="AfterBuild">
     <Copy SourceFiles="bin/Debug/Backendless.dll" DestinationFolder="../Nuget/Backendless.NET.Framework/lib/net35">
+    </Copy>
+    <Copy SourceFiles="bin/Debug/Backendless.dll" DestinationFolder="../Nuget/Backendless.Unity/lib/net35">
     </Copy>
   </Target>
 </Project>

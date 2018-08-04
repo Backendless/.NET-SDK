@@ -9,8 +9,9 @@ using BackendlessAPI.Engine;
 using BackendlessAPI.Exception;
 using Weborb.Types;
 using BackendlessAPI.Messaging;
+#if WITHRT
 using BackendlessAPI.RT.Messaging;
-
+#endif
 namespace BackendlessAPI.Service
 {
   public class MessagingService
@@ -484,7 +485,7 @@ namespace BackendlessAPI.Service
     #endregion
 
     #region SUBSCRIBE
-
+    #if WITHRT
     public IChannel Subscribe()
     {
       return Subscribe( DEFAULT_CHANNEL_NAME );
@@ -494,7 +495,7 @@ namespace BackendlessAPI.Service
     {
       return new ChannelImpl( channelName );
     }
-
+    #endif
     #endregion
 
     #region SEND EMAIL
