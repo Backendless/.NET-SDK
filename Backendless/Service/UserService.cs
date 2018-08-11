@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Net;
-using System.Text;
+using System.Security.Principal;
+#if !(NET_35 || NET_40)
+using System.Threading.Tasks;
+#endif
 using BackendlessAPI.Async;
 using BackendlessAPI.Engine;
 using BackendlessAPI.Exception;
@@ -15,31 +16,27 @@ namespace BackendlessAPI.Service
   public class UserService
   {
     private static string USER_MANAGER_SERVER_ALIAS = "com.backendless.services.users.UserService";
-    private BackendlessUser _currentUser;
     private ILoginStorage _loginStorage = null;
 
-    public BackendlessUser CurrentUser
-    {
-      get { return _currentUser; }
-      set { _currentUser = value; }
-    }
+    public BackendlessUser CurrentUser{ get; set; }
 
     public ILoginStorage LoginStorage
     {
-      get 
+      get
       {
         if( _loginStorage == null )
           _loginStorage = new LoginStorage();
 
-        return _loginStorage; 
+        return _loginStorage;
       }
 
-      set { _loginStorage = value; }
+      set => _loginStorage = value;
     }
 
     static UserService()
     {
-      Types.AddClientClassMapping( "com.backendless.services.users.property.AbstractProperty", typeof( AbstractProperty ) );
+      Types.AddClientClassMapping( "com.backendless.services.users.property.AbstractProperty",
+                                   typeof( AbstractProperty ) );
       Types.AddClientClassMapping( "com.backendless.services.users.property.UserProperty", typeof( UserProperty ) );
     }
 
@@ -47,10 +44,16 @@ namespace BackendlessAPI.Service
     {
       CheckUserToBeProper( user, true );
       user.PutProperties( Invoker.InvokeSync<Dictionary<string, object>>( USER_MANAGER_SERVER_ALIAS, "register",
-                                                                        new Object[] { user.Properties } ) );
+                                                                          new Object[] { user.Properties } ) );
 
       return user;
     }
+  #if !(NET_35 || NET_40)
+    public async Task<BackendlessUser> RegisterAsync( BackendlessUser user )
+    {
+      return await Task.Run( () => Register( user ) ).ConfigureAwait( false );
+    }
+  #endif
 
     public void Register( BackendlessUser user, AsyncCallback<BackendlessUser> callback )
     {
@@ -59,20 +62,19 @@ namespace BackendlessAPI.Service
         CheckUserToBeProper( user, true );
 
         var responder = new AsyncCallback<Dictionary<string, object>>( r =>
-            {
-              user.PutProperties( r );
-              if( callback != null )
-                callback.ResponseHandler.Invoke( user );
-            }, f =>
-                {
-                  if( callback != null )
-                    callback.ErrorHandler.Invoke( f );
-                  else
-                    throw new BackendlessException( f );
-                } );
+        {
+          user.PutProperties( r );
+          callback?.ResponseHandler( user );
+        }, f =>
+        {
+          if( callback != null )
+            callback.ErrorHandler.Invoke( f );
+          else
+            throw new BackendlessException( f );
+        } );
 
-        Invoker.InvokeAsync<Dictionary<string, object>>( USER_MANAGER_SERVER_ALIAS, "register",
-                                                        new Object[] { user.Properties }, responder );
+        Invoker.InvokeAsync( USER_MANAGER_SERVER_ALIAS, "register",
+                                                         new object[] { user.Properties }, responder );
       }
       catch( System.Exception ex )
       {
@@ -91,10 +93,17 @@ namespace BackendlessAPI.Service
         throw new ArgumentNullException( ExceptionMessage.WRONG_USER_ID );
 
       user.PutProperties( Invoker.InvokeSync<Dictionary<string, object>>( USER_MANAGER_SERVER_ALIAS, "update",
-                                                                        new object[] { user.Properties } ) );
+                                                                          new object[] { user.Properties } ) );
 
       return user;
     }
+
+  #if !(NET_35 || NET_40)
+    public async Task<BackendlessUser> UpdateAsync( BackendlessUser user )
+    {
+      return await Task.Run( () => Update( user ) ).ConfigureAwait( false );
+    }
+  #endif
 
     public void Update( BackendlessUser user, AsyncCallback<BackendlessUser> callback )
     {
@@ -106,20 +115,19 @@ namespace BackendlessAPI.Service
           throw new ArgumentNullException( ExceptionMessage.WRONG_USER_ID );
 
         var responder = new AsyncCallback<Dictionary<string, object>>( r =>
-            {
-              user.PutProperties( r );
-              if( callback != null )
-                callback.ResponseHandler.Invoke( user );
-            }, f =>
-                {
-                  if( callback != null )
-                    callback.ErrorHandler.Invoke( f );
-                  else
-                    throw new BackendlessException( f );
-                } );
+        {
+          user.PutProperties( r );
+          callback?.ResponseHandler( user );
+        }, f =>
+        {
+          if( callback != null )
+            callback.ErrorHandler.Invoke( f );
+          else
+            throw new BackendlessException( f );
+        } );
 
         Invoker.InvokeAsync( USER_MANAGER_SERVER_ALIAS, "update",
-                            new object[] { user.Properties }, responder );
+                             new object[] { user.Properties }, responder );
       }
       catch( System.Exception ex )
       {
@@ -130,7 +138,7 @@ namespace BackendlessAPI.Service
       }
     }
 
-    public String LoggedInUserObjectId()
+    public string LoggedInUserObjectId()
     {
       if( !LoginStorage.HasData )
         return null;
@@ -138,12 +146,7 @@ namespace BackendlessAPI.Service
       return LoginStorage.ObjectId;
     }
 
-    public BackendlessUser Login( string login, string password )
-    {
-      return Login( login, password, false );
-    }
-
-    public BackendlessUser Login( string login, string password, bool stayLoggedIn )
+    public BackendlessUser Login( string login, string password, bool stayLoggedIn = false )
     {
       if( CurrentUser != null )
         Logout();
@@ -155,17 +158,21 @@ namespace BackendlessAPI.Service
         throw new ArgumentNullException( ExceptionMessage.NULL_PASSWORD );
 
       HandleUserLogin( Invoker.InvokeSync<Dictionary<string, object>>( USER_MANAGER_SERVER_ALIAS, "login",
-                                                                     new Object[] { login, password } ), stayLoggedIn );
+                                                                       new object[] { login, password } ),
+                       stayLoggedIn );
 
       return CurrentUser;
     }
 
-    public void Login( string login, string password, AsyncCallback<BackendlessUser> callback )
+  #if !(NET_35 || NET_40)
+    public async Task<BackendlessUser> LoginAsync( string login, string password, bool stayLoggedIn = false )
     {
-      Login( login, password, callback, false );
+      return await Task.Run( () => Login( login, password, stayLoggedIn ) ).ConfigureAwait( false );
     }
+  #endif
 
-    public void Login( string login, string password, AsyncCallback<BackendlessUser> callback, bool stayLoggedIn )
+    public void Login( string login, string password, AsyncCallback<BackendlessUser> callback,
+                       bool stayLoggedIn = false )
     {
       try
       {
@@ -176,8 +183,8 @@ namespace BackendlessAPI.Service
           throw new ArgumentNullException( ExceptionMessage.NULL_PASSWORD );
 
         Invoker.InvokeAsync( USER_MANAGER_SERVER_ALIAS, "login",
-                            new Object[] { login, password },
-                            GetUserLoginAsyncHandler( callback, stayLoggedIn ) );
+                             new Object[] { login, password },
+                             GetUserLoginAsyncHandler( callback, stayLoggedIn ) );
       }
       catch( System.Exception ex )
       {
@@ -190,18 +197,25 @@ namespace BackendlessAPI.Service
 
     public bool IsValidLogin()
     {
-      if( LoginStorage.HasData && LoginStorage.UserToken != null && LoginStorage.UserToken.Length > 0 )
-          return Invoker.InvokeSync<Boolean>( USER_MANAGER_SERVER_ALIAS, "isValidUserToken",
-                                     new object[] { LoginStorage.UserToken } );
+      if( LoginStorage.HasData && !string.IsNullOrEmpty( LoginStorage.UserToken ) )
+        return Invoker.InvokeSync<Boolean>( USER_MANAGER_SERVER_ALIAS, "isValidUserToken",
+                                            new object[] { LoginStorage.UserToken } );
       else
         return CurrentUser != null;
     }
 
-    public void IsValidLogin( AsyncCallback<Boolean> callback )
+  #if !(NET_35 || NET_40)
+    public async Task<bool> IsValidLoginAsync()
     {
-      if( LoginStorage.HasData && LoginStorage.UserToken != null && LoginStorage.UserToken.Length > 0 )
-        Invoker.InvokeAsync<Boolean>( USER_MANAGER_SERVER_ALIAS, "isValidUserToken",
-                                   new object[] { LoginStorage.UserToken }, callback );
+      return await Task.Run( () => IsValidLogin() ).ConfigureAwait( false );
+    }
+  #endif
+
+    public void IsValidLogin( AsyncCallback<bool> callback )
+    {
+      if( LoginStorage.HasData && !string.IsNullOrEmpty( LoginStorage.UserToken ) )
+        Invoker.InvokeAsync( USER_MANAGER_SERVER_ALIAS, "isValidUserToken",
+                                      new object[] { LoginStorage.UserToken }, callback );
       else
         callback.ResponseHandler( CurrentUser != null );
     }
@@ -211,7 +225,7 @@ namespace BackendlessAPI.Service
       try
       {
         Invoker.InvokeSync<object>( USER_MANAGER_SERVER_ALIAS, "logout",
-                                   new object[] { } );
+                                    new object[] {} );
       }
       catch( BackendlessException exception )
       {
@@ -231,26 +245,32 @@ namespace BackendlessAPI.Service
       LoginStorage.DeleteFiles();
     }
 
+  #if !(NET_35 || NET_40)
+    public async Task LogoutAsync()
+    {
+      await Task.Run( () => Logout() ).ConfigureAwait( false );
+    }
+  #endif
+
     public void Logout( AsyncCallback<object> callback )
     {
       var responder = new AsyncCallback<object>( r =>
-          {
-            CurrentUser = null;
-            HeadersManager.GetInstance().RemoveHeader( HeadersEnum.USER_TOKEN_KEY );
-            LoginStorage.DeleteFiles();
+      {
+        CurrentUser = null;
+        HeadersManager.GetInstance().RemoveHeader( HeadersEnum.USER_TOKEN_KEY );
+        LoginStorage.DeleteFiles();
 
-            if( callback != null )
-              callback.ResponseHandler.Invoke( null );
-          }, f =>
-              {
-                if( callback != null )
-                  callback.ErrorHandler.Invoke( f );
-                else
-                  throw new BackendlessException( f );
-              } );
+        callback?.ResponseHandler( null );
+      }, f =>
+      {
+        if( callback != null )
+          callback.ErrorHandler.Invoke( f );
+        else
+          throw new BackendlessException( f );
+      } );
       Invoker.InvokeAsync( USER_MANAGER_SERVER_ALIAS, "logout",
-                          new object[] {},
-                          responder );
+                           new object[] {},
+                           responder );
     }
 
     public void RestorePassword( string identity )
@@ -259,8 +279,15 @@ namespace BackendlessAPI.Service
         throw new ArgumentNullException( ExceptionMessage.NULL_IDENTITY );
 
       Invoker.InvokeSync<object>( USER_MANAGER_SERVER_ALIAS, "restorePassword",
-                                 new object[] { identity } );
+                                  new object[] { identity } );
     }
+
+  #if !(NET_35 || NET_40)
+    public async Task RestorePasswordAsync( string identity )
+    {
+      await Task.Run( () => RestorePassword( identity ) ).ConfigureAwait( false );
+    }
+  #endif
 
     public void RestorePassword( string identity, AsyncCallback<object> callback )
     {
@@ -270,7 +297,7 @@ namespace BackendlessAPI.Service
           throw new ArgumentNullException( ExceptionMessage.NULL_IDENTITY );
 
         Invoker.InvokeAsync( USER_MANAGER_SERVER_ALIAS, "restorePassword",
-                            new object[] { identity }, callback );
+                             new object[] { identity }, callback );
       }
       catch( System.Exception ex )
       {
@@ -290,8 +317,15 @@ namespace BackendlessAPI.Service
         throw new ArgumentNullException( ExceptionMessage.NULL_ROLE_NAME );
 
       Invoker.InvokeSync<object>( USER_MANAGER_SERVER_ALIAS, "assignRole",
-                                 new object[] { identity, roleName } );
+                                  new object[] { identity, roleName } );
     }
+
+  #if !(NET_35 || NET_40)
+    public async Task AssignRoleAsync( string identity, string roleName )
+    {
+      await Task.Run( () => AssignRole( identity, roleName ) ).ConfigureAwait( false );
+    }
+  #endif
 
     public void AssignRole( string identity, string roleName, AsyncCallback<object> callback )
     {
@@ -304,8 +338,8 @@ namespace BackendlessAPI.Service
           throw new ArgumentNullException( ExceptionMessage.NULL_ROLE_NAME );
 
         Invoker.InvokeAsync( USER_MANAGER_SERVER_ALIAS, "assignRole",
-                            new object[] { identity, roleName },
-                            callback );
+                             new object[] { identity, roleName },
+                             callback );
       }
       catch( System.Exception ex )
       {
@@ -325,8 +359,15 @@ namespace BackendlessAPI.Service
         throw new ArgumentNullException( ExceptionMessage.NULL_ROLE_NAME );
 
       Invoker.InvokeSync<object>( USER_MANAGER_SERVER_ALIAS, "unassignRole",
-                                 new object[] { identity, roleName } );
+                                  new object[] { identity, roleName } );
     }
+
+  #if !(NET_35 || NET_40)
+    public async Task UnassignRoleAsync( string identity, string roleName )
+    {
+      await Task.Run( () => UnassignRole( identity, roleName ) ).ConfigureAwait( false );
+    }
+  #endif
 
     public void UnassignRole( string identity, string roleName, AsyncCallback<object> callback )
     {
@@ -339,8 +380,8 @@ namespace BackendlessAPI.Service
           throw new ArgumentNullException( ExceptionMessage.NULL_ROLE_NAME );
 
         Invoker.InvokeAsync( USER_MANAGER_SERVER_ALIAS, "unassignRole",
-                            new object[] { identity, roleName },
-                            callback );
+                             new object[] { identity, roleName },
+                             callback );
       }
       catch( System.Exception ex )
       {
@@ -354,16 +395,23 @@ namespace BackendlessAPI.Service
     public IList<string> GetUserRoles()
     {
       return Invoker.InvokeSync<List<string>>( USER_MANAGER_SERVER_ALIAS, "getUserRoles",
-          new object[] {} );
+                                               new object[] {} );
     }
+
+  #if !(NET_35 || NET_40)
+    public async Task<IList<string>> GetUserRolesAsync()
+    {
+      return await Task.Run( () => GetUserRoles() ).ConfigureAwait( false );
+    }
+  #endif
 
     public void GetUserRoles( AsyncCallback<IList<string>> callback )
     {
       try
       {
         Invoker.InvokeAsync( USER_MANAGER_SERVER_ALIAS, "getUserRoles",
-            new object[] {},
-            callback );
+                             new object[] {},
+                             callback );
       }
       catch( System.Exception ex )
       {
@@ -377,16 +425,23 @@ namespace BackendlessAPI.Service
     public List<UserProperty> DescribeUserClass()
     {
       List<UserProperty> result = Invoker.InvokeSync<List<UserProperty>>( USER_MANAGER_SERVER_ALIAS,
-                                                                         "describeUserClass",
-                                                                         new object[] {} );
+                                                                          "describeUserClass",
+                                                                          new object[] {} );
 
       return result;
     }
 
+  #if !(NET_35 || NET_40)
+    public async Task<List<UserProperty>> DescribeUserClassAsync()
+    {
+      return await Task.Run( () => DescribeUserClass() ).ConfigureAwait( false );
+    }
+  #endif
+
     public void DescribeUserClass( AsyncCallback<List<UserProperty>> callback )
     {
       Invoker.InvokeAsync( USER_MANAGER_SERVER_ALIAS, "describeUserClass",
-                          new object[] {}, callback );
+                           new object[] {}, callback );
     }
 
     private static void CheckUserToBeProper( BackendlessUser user, bool passwordCheck )
@@ -402,7 +457,7 @@ namespace BackendlessAPI.Service
     {
       HeadersManager.GetInstance()
                     .AddHeader( HeadersEnum.USER_TOKEN_KEY,
-                               invokeResult[ HeadersEnum.USER_TOKEN_KEY.Header ].ToString() );
+                                invokeResult[ HeadersEnum.USER_TOKEN_KEY.Header ].ToString() );
 
       if( CurrentUser == null )
         CurrentUser = new BackendlessUser();
@@ -418,24 +473,23 @@ namespace BackendlessAPI.Service
     }
 
     private AsyncCallback<Dictionary<string, object>> GetUserLoginAsyncHandler(
-        AsyncCallback<BackendlessUser> callback, bool stayLoggedIn )
+      AsyncCallback<BackendlessUser> callback, bool stayLoggedIn )
     {
       return new AsyncCallback<Dictionary<string, object>>( r =>
-          {
-            HandleUserLogin( r, stayLoggedIn );
+      {
+        HandleUserLogin( r, stayLoggedIn );
 
-            if( callback != null )
-              callback.ResponseHandler.Invoke( CurrentUser );
-          }, f =>
-              {
-                if( callback != null )
-                  callback.ErrorHandler.Invoke( f );
-                else
-                  throw new BackendlessException( f );
-              } );
+        callback?.ResponseHandler( CurrentUser );
+      }, f =>
+      {
+        if( callback != null )
+          callback.ErrorHandler.Invoke( f );
+        else
+          throw new BackendlessException( f );
+      } );
     }
 
-#if WINDOWS_PHONE
+  #if WINDOWS_PHONE
         public void LoginWithFacebook(Microsoft.Phone.Controls.WebBrowser webBrowser,
                                          IDictionary<string, string> facebookFieldsMappings, IList<string> permissions,
                                          AsyncCallback<BackendlessUser> callback)

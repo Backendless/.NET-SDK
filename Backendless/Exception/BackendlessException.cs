@@ -16,29 +16,17 @@ namespace BackendlessAPI.Exception
       _backendlessFault = new BackendlessFault( message );
     }
 
-    public BackendlessFault BackendlessFault
-    {
-      get { return _backendlessFault; }
-    }
+    public BackendlessFault BackendlessFault => _backendlessFault;
 
-    public string FaultCode
-    {
-      get { return _backendlessFault.FaultCode; }
-    }
+    public string FaultCode => _backendlessFault.FaultCode;
 
-    public override string Message
-    {
-      get { return _backendlessFault.Message; }
-    }
+    public override string Message => _backendlessFault.Message;
 
-    public string Detail
-    {
-      get { return _backendlessFault.Detail; }
-    }
+    public string Detail => _backendlessFault.Detail;
 
     public override string ToString()
     {
-      return String.Format( "Error code: {0}, Message: {1}", _backendlessFault.FaultCode ?? "N/A", Message ?? "N/A" );
+      return $"Error code: {_backendlessFault.FaultCode ?? "N/A"}, Message: {Message ?? "N/A"}";
     }
   }
 }

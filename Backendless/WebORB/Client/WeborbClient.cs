@@ -6,6 +6,9 @@ using System.IO;
 using System.Net;
 using System.Threading;
 using System.Security;
+#if !(NET_35 || NET_40)
+using System.Threading.Tasks;
+#endif
 
 #if (!UNIVERSALW8 && !FULL_BUILD && !PURE_CLIENT_LIB)
 using System.Windows.Controls;
@@ -682,6 +685,12 @@ namespace Weborb.Client
       asyncStreamSetInfo.responseThreadConfigurator = responseThreadConfigurator;
       _engine.Invoke( className, methodName, args, null, messageHeaders, httpRequestHeaders, responder, asyncStreamSetInfo );
     }
+    #if !(NET_35 || NET_40)
+    public async Task<T> Invoke<T>( String className, String methodName, Object[] args, IDictionary httpRequestHeaders, IDictionary messageHeaders, ResponseThreadConfigurator responseThreadConfigurator )
+    {
+      return await _engine.Invoke<T>( className, methodName, args, null, messageHeaders, httpRequestHeaders, responseThreadConfigurator );
+    }
+    #endif    
 
     internal void Invoke<T>(string className, string methodName, object[] args, IDictionary requestHeaders, IDictionary messageHeaders, IDictionary httpRequestHeader, Responder<T> responder)
     {

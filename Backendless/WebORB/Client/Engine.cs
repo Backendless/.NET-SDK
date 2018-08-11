@@ -6,6 +6,9 @@ using System.Windows.Controls;
 using System.Security;
 using System.Windows.Browser;
 #endif
+#if !(NET_35 || NET_40)
+using System.Threading.Tasks;
+#endif
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
@@ -129,6 +132,20 @@ namespace Weborb.Client
 
     internal abstract void Invoke<T>(string className, string methodName, object[] args, IDictionary requestHeaders, IDictionary messageHeaders, IDictionary httpHeaders, Responder<T> responder, AsyncStreamSetInfo<T> asyncStreamSetInfo);
     public abstract void SendRequest<T>( V3Message v3Msg, IDictionary requestHeaders, IDictionary httpHeaders, Responder<T> responder, AsyncStreamSetInfo<T> asyncStreamSetInfo );
+  #if !(NET_35 || NET_40)
+    internal abstract Task<T> Invoke<T>(string className, 
+                                        string methodName, 
+                                        object[] args, 
+                                        IDictionary requestHeaders, 
+                                        IDictionary messageHeaders, 
+                                        IDictionary httpHeaders, 
+                                        ResponseThreadConfigurator threadConfigurator );
+
+    public abstract Task<T> SendRequest<T>( V3Message v3Msg,
+                                   IDictionary requestHeaders,
+                                   IDictionary httpHeaders,
+                                   ResponseThreadConfigurator threadConfigurator );
+  #endif
     
     internal void SendRequest<T>( V3Message v3Msg, Responder<T> responder )
     {

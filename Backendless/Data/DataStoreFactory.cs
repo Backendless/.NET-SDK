@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+#if !(NET_35 || NET_40)
+using System.Threading.Tasks;
+#endif
 using BackendlessAPI.Async;
 using BackendlessAPI.Persistence;
 using BackendlessAPI.Service;
 #if WITHRT
 using BackendlessAPI.RT.Data;
+
 #endif
 
 namespace BackendlessAPI.Data
@@ -23,9 +27,17 @@ namespace BackendlessAPI.Data
 
     private class DataStoreImpl<T> : IDataStore<T>
     {
+    #region RT
+
     #if WITHRT
-      private IEventHandler<T> eventHandler = EventHandlerFactory.Of<T>();
+      private readonly IEventHandler<T> eventHandler = EventHandlerFactory.Of<T>();
+      public IEventHandler<T> RT()
+      {
+        return this.eventHandler;
+      }
     #endif
+
+    #endregion
 
     #region Bulk Create
 
@@ -33,7 +45,12 @@ namespace BackendlessAPI.Data
       {
         return Backendless.Persistence.Create( objects );
       }
-
+    #if !(NET_35 || NET_40)
+      public async Task<IList<string>> CreateAsync( IList<T> objects )
+      {
+        return await Task.Run( () => Create( objects ) ).ConfigureAwait( false );
+      }
+    #endif
       public void Create( IList<T> objects, AsyncCallback<IList<string>> responder )
       {
         Backendless.Persistence.Create( objects, responder );
@@ -47,6 +64,13 @@ namespace BackendlessAPI.Data
       {
         return Backendless.Persistence.Update( PersistenceService.GetTypeName( typeof( T ) ), whereClause, changes );
       }
+
+    #if !(NET_35 || NET_40)
+      public async Task<int> UpdateAsync( string whereClause, Dictionary<string, object> changes )
+      {
+        return await Task.Run( () => Update( whereClause, changes ) ).ConfigureAwait( false );
+      }
+    #endif
 
       public void Update( string whereClause, Dictionary<string, object> changes, AsyncCallback<int> callback )
       {
@@ -62,6 +86,13 @@ namespace BackendlessAPI.Data
         return Backendless.Persistence.Remove( PersistenceService.GetTypeName( typeof( T ) ), whereClause );
       }
 
+    #if !(NET_35 || NET_40)
+      public async Task<int> RemoveAsync( string whereClause )
+      {
+        return await Task.Run( () => Remove( whereClause ) ).ConfigureAwait( false );
+      }
+    #endif
+
       public void Remove( string whereClause, AsyncCallback<int> callback )
       {
         Backendless.Persistence.Remove( PersistenceService.GetTypeName( typeof( T ) ), whereClause, callback );
@@ -76,6 +107,13 @@ namespace BackendlessAPI.Data
         return Backendless.Persistence.Save( entity );
       }
 
+    #if !(NET_35 || NET_40)
+      public async Task<T> SaveAsync( T entity )
+      {
+        return await Task.Run( () => Save( entity ) ).ConfigureAwait( false );
+      }
+    #endif
+
       public void Save( T entity, AsyncCallback<T> responder )
       {
         Backendless.Persistence.Save( entity, responder );
@@ -89,6 +127,13 @@ namespace BackendlessAPI.Data
       {
         return Backendless.Persistence.Remove( entity );
       }
+
+    #if !(NET_35 || NET_40)
+      public async Task<long> RemoveAsync( T entity )
+      {
+        return await Task.Run( () => Remove( entity ) ).ConfigureAwait( false );
+      }
+    #endif
 
       public void Remove( T entity, AsyncCallback<long> responder )
       {
@@ -108,6 +153,18 @@ namespace BackendlessAPI.Data
       {
         return Backendless.Persistence.First<T>( queryBuilder );
       }
+
+    #if !(NET_35 || NET_40)
+      public async Task<T> FindFirstAsync()
+      {
+        return await Task.Run( () => FindFirst() ).ConfigureAwait( false );
+      }
+
+      public async Task<T> FindFirstAsync( DataQueryBuilder queryBuilder )
+      {
+        return await Task.Run( () => FindFirst( queryBuilder ) ).ConfigureAwait( false );
+      }
+    #endif
 
       public void FindFirst( AsyncCallback<T> responder )
       {
@@ -133,6 +190,18 @@ namespace BackendlessAPI.Data
         return Backendless.Persistence.Last<T>( queryBuilder );
       }
 
+    #if !(NET_35 || NET_40)
+      public async Task<T> FindLastAsync()
+      {
+        return await Task.Run( () => FindLast() ).ConfigureAwait( false );
+      }
+
+      public async Task<T> FindLastAsync( DataQueryBuilder queryBuilder )
+      {
+        return await Task.Run( () => FindLast( queryBuilder ) ).ConfigureAwait( false );
+      }
+    #endif
+
       public void FindLast( AsyncCallback<T> responder )
       {
         Backendless.Persistence.Last( responder );
@@ -157,6 +226,17 @@ namespace BackendlessAPI.Data
         return Backendless.Persistence.Find<T>( dataQueryBuilder );
       }
 
+    #if !(NET_35 || NET_40)
+      public async Task<IList<T>> FindAsync()
+      {
+        return await Task.Run( () => Find() ).ConfigureAwait( false );
+      }
+
+      public async Task<IList<T>> FindAsync( DataQueryBuilder queryBuilder )
+      {
+        return await Task.Run( () => Find( queryBuilder ) ).ConfigureAwait( false );
+      }
+    #endif
       public void Find( AsyncCallback<IList<T>> responder )
       {
         Backendless.Persistence.Find( (DataQueryBuilder) null, responder );
@@ -190,6 +270,28 @@ namespace BackendlessAPI.Data
       {
         return Backendless.Persistence.FindById<T>( id, relations, relationsDepth );
       }
+
+    #if !(NET_35 || NET_40)
+      public async Task<T> FindByIdAsync( string id )
+      {
+        return await Task.Run( () => FindById( id ) ).ConfigureAwait( false );
+      }
+
+      public async Task<T> FindByIdAsync( string id, int relationsDepth )
+      {
+        return await Task.Run( () => FindById( id, relationsDepth ) ).ConfigureAwait( false );
+      }
+
+      public async Task<T> FindByIdAsync( string id, IList<string> relations )
+      {
+        return await Task.Run( () => FindById( id, relations ) ).ConfigureAwait( false );
+      }
+
+      public async Task<T> FindByIdAsync( string id, IList<string> relations, int relationsDepth )
+      {
+        return await Task.Run( () => FindById( id, relations, relationsDepth ) ).ConfigureAwait( false );
+      }
+    #endif
 
       public void FindById( string id, AsyncCallback<T> responder )
       {
@@ -235,6 +337,28 @@ namespace BackendlessAPI.Data
         return Backendless.Persistence.FindById<T>( entity, relations, relationsDepth );
       }
 
+    #if !(NET_35 || NET_40)
+      public async Task<T> FindByIdAsync( T entity )
+      {
+        return await Task.Run( () => FindById( entity ) ).ConfigureAwait( false );
+      }
+
+      public async Task<T> FindByIdAsync( T entity, int relationsDepth )
+      {
+        return await Task.Run( () => FindById( entity, relationsDepth ) ).ConfigureAwait( false );
+      }
+
+      public async Task<T> FindByIdAsync( T entity, IList<string> relations )
+      {
+        return await Task.Run( () => FindById( entity, relations ) ).ConfigureAwait( false );
+      }
+
+      public async Task<T> FindByIdAsync( T entity, IList<string> relations, int relationsDepth )
+      {
+        return await Task.Run( () => FindById( entity, relations, relationsDepth ) ).ConfigureAwait( false );
+      }
+    #endif
+
       public void FindById( T entity, AsyncCallback<T> responder )
       {
         Backendless.Persistence.FindById<T>( entity, responder );
@@ -257,13 +381,20 @@ namespace BackendlessAPI.Data
 
     #endregion
 
-    #region LoadRelations
+    #region LOAD RELATIONS
 
       public IList<M> LoadRelations<M>( string objectId, LoadRelationsQueryBuilder<M> queryBuilder )
       {
         return Backendless.Persistence.LoadRelations( PersistenceService.GetTypeName( typeof( T ) ), objectId,
                                                       queryBuilder );
       }
+
+    #if !(NET_35 || NET_40)
+      public async Task<IList<M>> LoadRelationsAsync<M>( string objectId, LoadRelationsQueryBuilder<M> queryBuilder )
+      {
+        return await Task.Run( () => LoadRelations( objectId, queryBuilder ) ).ConfigureAwait( false );
+      }
+    #endif
 
       public void LoadRelations<M>( string objectId, LoadRelationsQueryBuilder<M> queryBuilder,
                                     AsyncCallback<IList<M>> responder )
@@ -286,6 +417,18 @@ namespace BackendlessAPI.Data
         return Backendless.Persistence.GetObjectCount<T>( dataQueryBuilder );
       }
 
+    #if !(NET_35 || NET_40)
+      public async Task<int> GetObjectCountAsync()
+      {
+        return await Task.Run( () => GetObjectCount() ).ConfigureAwait( false );
+      }
+
+      public async Task<int> GetObjectCountAsync( DataQueryBuilder dataQueryBuilder )
+      {
+        return await Task.Run( () => GetObjectCount( dataQueryBuilder ) ).ConfigureAwait( false );
+      }
+    #endif
+
       public void GetObjectCount( AsyncCallback<int> responder )
       {
         Backendless.Persistence.GetObjectCount<T>( responder );
@@ -306,22 +449,34 @@ namespace BackendlessAPI.Data
                                          children );
       }
 
-      public void AddRelation( T parent, string columnName, object[] children, AsyncCallback<int> callback )
-      {
-        Backendless.Data.AddRelation<T>( PersistenceService.GetTypeName( parent.GetType() ), parent, columnName,
-                                         children, callback );
-      }
-
       public int AddRelation( T parent, string columnName, string whereClause )
       {
         return Backendless.Data.AddRelation<T>( PersistenceService.GetTypeName( parent.GetType() ), parent, columnName,
                                                 whereClause );
       }
 
+    #if !(NET_35 || NET_40)
+      public async Task AddRelationAsync( T parent, string columnName, object[] children )
+      {
+        await Task.Run( () => AddRelation( parent, columnName, children ) ).ConfigureAwait( false );
+      }
+
+      public async Task<int> AddRelationAsync( T parent, string columnName, string whereClause )
+      {
+        return await Task.Run( () => AddRelation( parent, columnName, whereClause ) ).ConfigureAwait( false );
+      }
+    #endif
+
       public void AddRelation( T parent, string columnName, string whereClause, AsyncCallback<int> callback )
       {
         Backendless.Data.AddRelation<T>( PersistenceService.GetTypeName( parent.GetType() ), parent, columnName,
                                          whereClause, callback );
+      }
+
+      public void AddRelation( T parent, string columnName, object[] children, AsyncCallback<int> callback )
+      {
+        Backendless.Data.AddRelation<T>( PersistenceService.GetTypeName( parent.GetType() ), parent, columnName,
+                                         children, callback );
       }
 
     #endregion
@@ -334,22 +489,34 @@ namespace BackendlessAPI.Data
                                                 children );
       }
 
-      public void SetRelation( T parent, string columnName, object[] children, AsyncCallback<int> callback )
-      {
-        Backendless.Data.SetRelation<T>( PersistenceService.GetTypeName( parent.GetType() ), parent, columnName,
-                                         children, callback );
-      }
-
       public int SetRelation( T parent, string columnName, string whereClause )
       {
         return Backendless.Data.SetRelation<T>( PersistenceService.GetTypeName( parent.GetType() ), parent, columnName,
                                                 whereClause );
       }
 
+    #if !(NET_35 || NET_40)
+      public async Task<int> SetRelationAsync( T parent, string columnName, object[] children )
+      {
+        return await Task.Run( () => SetRelation( parent, columnName, children ) ).ConfigureAwait( false );
+      }
+
+      public async Task<int> SetRelationAsync( T parent, string columnName, string whereClause )
+      {
+        return await Task.Run( () => SetRelation( parent, columnName, whereClause ) ).ConfigureAwait( false );
+      }
+    #endif
+
       public void SetRelation( T parent, string columnName, string whereClause, AsyncCallback<int> callback )
       {
         Backendless.Data.SetRelation<T>( PersistenceService.GetTypeName( parent.GetType() ), parent, columnName,
                                          whereClause, callback );
+      }
+
+      public void SetRelation( T parent, string columnName, object[] children, AsyncCallback<int> callback )
+      {
+        Backendless.Data.SetRelation<T>( PersistenceService.GetTypeName( parent.GetType() ), parent, columnName,
+                                         children, callback );
       }
 
     #endregion
@@ -362,17 +529,23 @@ namespace BackendlessAPI.Data
                                                    columnName, children );
       }
 
-      public void DeleteRelation( T parent, string columnName, object[] children, AsyncCallback<int> callback )
-      {
-        Backendless.Data.DeleteRelation<T>( PersistenceService.GetTypeName( parent.GetType() ), parent, columnName,
-                                            children, callback );
-      }
-
       public int DeleteRelation( T parent, string columnName, string whereClause )
       {
         return Backendless.Data.DeleteRelation<T>( PersistenceService.GetTypeName( parent.GetType() ), parent,
                                                    columnName, whereClause );
       }
+
+    #if !(NET_35 || NET_40)
+      public async Task<int> DeleteRelationAsync( T parent, string columnName, object[] children )
+      {
+        return await Task.Run( () => DeleteRelation( parent, columnName, children ) ).ConfigureAwait( false );
+      }
+
+      public async Task<int> DeleteRelationAsync( T parent, string columnName, string whereClause )
+      {
+        return await Task.Run( () => DeleteRelation( parent, columnName, whereClause ) ).ConfigureAwait( false );
+      }
+    #endif
 
       public void DeleteRelation( T parent, string columnName, string whereClause, AsyncCallback<int> callback )
       {
@@ -380,16 +553,11 @@ namespace BackendlessAPI.Data
                                             whereClause );
       }
 
-    #endregion
-
-    #region RT
-
-    #if WITHRT
-      public IEventHandler<T> RT()
+      public void DeleteRelation( T parent, string columnName, object[] children, AsyncCallback<int> callback )
       {
-        return this.eventHandler;
+        Backendless.Data.DeleteRelation<T>( PersistenceService.GetTypeName( parent.GetType() ), parent, columnName,
+                                            children, callback );
       }
-    #endif
 
     #endregion
     }

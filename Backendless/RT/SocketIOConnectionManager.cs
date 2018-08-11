@@ -1,9 +1,8 @@
 ﻿using System;
+using System.Linq;
 #if !(NET_40 || NET_35)
 using System.Collections.Immutable;
 #endif
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using BackendlessAPI.Utils;
 using BackendlessAPI.Engine;
@@ -15,10 +14,10 @@ namespace BackendlessAPI.RT
 {
   internal abstract class SocketIOConnectionManager
   {
-    private RTLookupService rtLookupService;
-    private ITimeoutManager timeoutManager = new TimeoutManagerImpl();
+    private readonly RTLookupService rtLookupService;
+    private readonly ITimeoutManager timeoutManager = new TimeoutManagerImpl();
     private Socket socket;
-    internal Boolean connected = false;
+    internal bool connected = false;
 
     internal SocketIOConnectionManager()
     {
@@ -36,25 +35,29 @@ namespace BackendlessAPI.RT
         if( IsConnected() )
           return socket;
 
-        IOSocket.Options opts = new IOSocket.Options();
-        opts.Reconnection = false;
-        opts.Path = "/" + Backendless.AppId;
-        opts.Query = new System.Collections.Generic.Dictionary<string, string>();
-        opts.Query[ "apiKey" ] = Backendless.APIKey;
-        opts.Query[ "clientId" ] = Backendless.Messaging.DeviceID;
-        opts.Query[ "binary" ] = "true";
-        
-        #if NET_35
+        var opts = new IOSocket.Options
+        {
+          Reconnection = false,
+          Path = "/" + Backendless.AppId,
+          Query = new System.Collections.Generic.Dictionary<string, string>
+          {
+            [ "apiKey" ] = Backendless.APIKey,
+            [ "clientId" ] = Backendless.Messaging.DeviceID,
+            [ "binary" ] = "true"
+          }
+        };
+
+      #if NET_35
         opts.QueryString =
           $"apiKey={Backendless.APIKey}&clientId={Backendless.Messaging.DeviceID}&binary=true";
         #endif
         
         #if !(NET_40 || NET_35)
-        opts.Transports = ImmutableList.Create<String>( "websocket" );
+        opts.Transports = ImmutableList.Create( "websocket" );
         #else
         opts.Transports = (new string[] {"websocket"}).ToList();
         #endif
-        String host = rtLookupService.Lookup() + opts.Path;
+        var host = rtLookupService.Lookup() + opts.Path;
 
         //if( host.StartsWith( "https://" ) )
         //  host = "http://" + host.Substring( "https://".Length );
@@ -106,7 +109,7 @@ namespace BackendlessAPI.RT
         } ).On( Socket.EVENT_ERROR, ( fn ) =>
         {
           connected = false;
-          Log.log( Backendless.BACKENDLESSLOG, String.Format( "ERROR from RT server: {0}", fn ) );
+          Log.log( Backendless.BACKENDLESSLOG, $"ERROR from RT server: {fn}" );
           ConnectError( fn.ToString() );
           Reconnect();
         } ).On( Socket.EVENT_CONNECT_TIMEOUT, ( fn ) =>
@@ -114,17 +117,12 @@ namespace BackendlessAPI.RT
           connected = false;
           Log.log( Backendless.BACKENDLESSLOG, "timeout" );
         } );
-
-        //socket.Connect();
-        #if NET_35
-        //socket.Connect();
-        #endif
         
         return socket;
       }
     }
 
-    public Boolean IsConnected()
+    public bool IsConnected()
     {
       return socket != null && connected;
     }
@@ -160,13 +158,13 @@ namespace BackendlessAPI.RT
 
     protected abstract void ReconnectAttempt( int attempt, int timeout );
 
-    protected abstract void ConnectError( String error );
+    protected abstract void ConnectError( string error );
 
-    protected abstract void Disconnected( String cause );
+    protected abstract void Disconnected( string cause );
 
-    protected abstract void SubscriptionResult( params Object[] args );
+    protected abstract void SubscriptionResult( params object[] args );
 
-    protected abstract void InvocationResult( params Object[] args );
+    protected abstract void InvocationResult( params object[] args );
   }
 }
 

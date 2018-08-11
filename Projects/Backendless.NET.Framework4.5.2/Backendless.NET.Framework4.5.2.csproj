@@ -150,6 +150,9 @@
     <Compile Include="..\..\Backendless\Persistence\Security\Find.cs" />
     <Compile Include="..\..\Backendless\Persistence\Security\Remove.cs" />
     <Compile Include="..\..\Backendless\Persistence\Security\Update.cs" />
+    <Compile Include="..\..\Backendless\Properties\VersionInfo.cs">
+      <Link>Properties/VersionInfo.cs</Link>
+    </Compile>
     <Compile Include="..\..\Backendless\Push\PushNotificationsBinding.cs" />
     <Compile Include="..\..\Backendless\Push\Registrar.cs" />
     <Compile Include="..\..\Backendless\Push\RegistrationInfo.cs" />
@@ -229,6 +232,7 @@
     <Compile Include="..\..\Backendless\WebORB\Exceptions\LicenseException.cs" />
     <Compile Include="..\..\Backendless\WebORB\Exceptions\ServiceException.cs" />
     <Compile Include="..\..\Backendless\WebORB\Exceptions\UnadaptableTypeException.cs" />
+    <Compile Include="..\..\Backendless\WebORB\Exceptions\WebORBException.cs" />
     <Compile Include="..\..\Backendless\WebORB\Message\Body.cs" />
     <Compile Include="..\..\Backendless\WebORB\Message\Header.cs" />
     <Compile Include="..\..\Backendless\WebORB\Message\Request.cs" />
@@ -429,14 +433,6 @@
     <Folder Include="..\..\Backendless\WebORB\Config\_svn\tmp\text-base" />
     <Folder Include="..\..\Backendless\WebORB\Config\_svn\tmp\wcprops" />
     <Folder Include="..\..\Backendless\WebORB\Config\_svn\wcprops" />
-    <Folder Include="..\..\Backendless\WebORB\Exceptions\_svn\prop-base" />
-    <Folder Include="..\..\Backendless\WebORB\Exceptions\_svn\props" />
-    <Folder Include="..\..\Backendless\WebORB\Exceptions\_svn\text-base" />
-    <Folder Include="..\..\Backendless\WebORB\Exceptions\_svn\tmp\prop-base" />
-    <Folder Include="..\..\Backendless\WebORB\Exceptions\_svn\tmp\props" />
-    <Folder Include="..\..\Backendless\WebORB\Exceptions\_svn\tmp\text-base" />
-    <Folder Include="..\..\Backendless\WebORB\Exceptions\_svn\tmp\wcprops" />
-    <Folder Include="..\..\Backendless\WebORB\Exceptions\_svn\wcprops" />
     <Folder Include="..\..\Backendless\WebORB\Message\_svn\prop-base" />
     <Folder Include="..\..\Backendless\WebORB\Message\_svn\props" />
     <Folder Include="..\..\Backendless\WebORB\Message\_svn\text-base" />

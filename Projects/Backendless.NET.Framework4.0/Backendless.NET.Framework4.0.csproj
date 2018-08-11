@@ -146,6 +146,9 @@
     <Compile Include="..\..\Backendless\Persistence\Security\Find.cs" />
     <Compile Include="..\..\Backendless\Persistence\Security\Remove.cs" />
     <Compile Include="..\..\Backendless\Persistence\Security\Update.cs" />
+    <Compile Include="..\..\Backendless\Properties\VersionInfo.cs">
+      <Link>Properties/VersionInfo.cs</Link>
+    </Compile>
     <Compile Include="..\..\Backendless\Push\PushNotificationsBinding.cs" />
     <Compile Include="..\..\Backendless\Push\Registrar.cs" />
     <Compile Include="..\..\Backendless\Push\RegistrationInfo.cs" />

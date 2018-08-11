@@ -208,6 +208,9 @@
     <Compile Include="..\..\Backendless\Persistence\Security\Find.cs" />
     <Compile Include="..\..\Backendless\Persistence\Security\Remove.cs" />
     <Compile Include="..\..\Backendless\Persistence\Security\Update.cs" />
+    <Compile Include="..\..\Backendless\Properties\VersionInfo.cs">
+      <Link>Properties/VersionInfo.cs</Link>
+    </Compile>
     <Compile Include="..\..\Backendless\Push\PushNotificationsBinding.cs" />
     <Compile Include="..\..\Backendless\Push\Registrar.cs" />
     <Compile Include="..\..\Backendless\Push\RegistrationInfo.cs" />
@@ -287,6 +290,7 @@
     <Compile Include="..\..\Backendless\WebORB\Exceptions\LicenseException.cs" />
     <Compile Include="..\..\Backendless\WebORB\Exceptions\ServiceException.cs" />
     <Compile Include="..\..\Backendless\WebORB\Exceptions\UnadaptableTypeException.cs" />
+    <Compile Include="..\..\Backendless\WebORB\Exceptions\WebORBException.cs" />
     <Compile Include="..\..\Backendless\WebORB\Message\Body.cs" />
     <Compile Include="..\..\Backendless\WebORB\Message\Header.cs" />
     <Compile Include="..\..\Backendless\WebORB\Message\Request.cs" />
@@ -487,14 +491,6 @@
     <Folder Include="..\..\Backendless\WebORB\Config\_svn\tmp\text-base" />
     <Folder Include="..\..\Backendless\WebORB\Config\_svn\tmp\wcprops" />
     <Folder Include="..\..\Backendless\WebORB\Config\_svn\wcprops" />
-    <Folder Include="..\..\Backendless\WebORB\Exceptions\_svn\prop-base" />
-    <Folder Include="..\..\Backendless\WebORB\Exceptions\_svn\props" />
-    <Folder Include="..\..\Backendless\WebORB\Exceptions\_svn\text-base" />
-    <Folder Include="..\..\Backendless\WebORB\Exceptions\_svn\tmp\prop-base" />
-    <Folder Include="..\..\Backendless\WebORB\Exceptions\_svn\tmp\props" />
-    <Folder Include="..\..\Backendless\WebORB\Exceptions\_svn\tmp\text-base" />
-    <Folder Include="..\..\Backendless\WebORB\Exceptions\_svn\tmp\wcprops" />
-    <Folder Include="..\..\Backendless\WebORB\Exceptions\_svn\wcprops" />
     <Folder Include="..\..\Backendless\WebORB\Message\_svn\prop-base" />
     <Folder Include="..\..\Backendless\WebORB\Message\_svn\props" />
     <Folder Include="..\..\Backendless\WebORB\Message\_svn\text-base" />
@@ -593,4 +589,13 @@
     <Copy SourceFiles="bin/Debug/Backendless.dll" DestinationFolder="../Nuget/Backendless.Unity/lib/net47">
     </Copy>
   </Target>
+  <Import Project="..\..\packages\Microsoft.Packaging.Tools.1.0.0-preview2-25401-01\build\Microsoft.Packaging.Tools.targets" Condition="Exists('..\..\packages\Microsoft.Packaging.Tools.1.0.0-preview2-25401-01\build\Microsoft.Packaging.Tools.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105.The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\packages\Microsoft.Packaging.Tools.1.0.0-preview2-25401-01\build\Microsoft.Packaging.Tools.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Packaging.Tools.1.0.0-preview2-25401-01\build\Microsoft.Packaging.Tools.targets'))" />
+    <Error Condition="!Exists('..\..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets'))" />
+  </Target>
+  <Import Project="..\..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets')" />
 </Project>

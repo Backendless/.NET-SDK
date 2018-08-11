@@ -7,6 +7,9 @@ using System.Net;
 using System.Security;
 using System.Windows.Browser;
 #endif
+#if !(NET_35 || NET_40)
+using System.Threading.Tasks;
+#endif
 using System.Threading;
 using Weborb.Message;
 using Weborb.Protocols.Amf;
@@ -15,6 +18,7 @@ using Weborb.Types;
 using Weborb.Util;
 using Weborb.Util.Logging;
 using Weborb.V3Types;
+using Weborb.Exceptions;
 
 namespace Weborb.Client
 {
@@ -48,6 +52,30 @@ namespace Weborb.Client
     {
       ThreadPool.QueueUserWorkItem( state => SendHttpRequest( v3Msg, requestHeaders, httpHeaders, responder, asyncStreamSetInfo ) );
     }
+  #if !(NET_35 || NET_40)
+    
+    internal override async Task<T> Invoke<T>(string className, 
+                                     string methodName, 
+                                     object[] args, 
+                                     IDictionary requestHeaders, 
+                                     IDictionary messageHeaders, 
+                                     IDictionary httpHeaders, 
+                                     ResponseThreadConfigurator threadConfigurator )
+    {
+      return await SendRequest<T>( CreateMessageForInvocation(className, methodName, args, messageHeaders), 
+                                requestHeaders, 
+                                httpHeaders, 
+                                threadConfigurator );
+    }
+    
+    public override async Task<T> SendRequest<T>(V3Message v3Msg, 
+                                        IDictionary requestHeaders, 
+                                        IDictionary httpHeaders, 
+                                        ResponseThreadConfigurator threadConfigurator )
+    {
+      return await SendHttpRequest<T>( v3Msg, requestHeaders, httpHeaders, threadConfigurator );
+    }
+    #endif
 
     private void SendHttpRequest<T>( V3Message v3Msg, IDictionary requestHeaders, IDictionary httpHeaders, Responder<T> responder, AsyncStreamSetInfo<T> asyncStreamSetInfo )
     {
@@ -90,6 +118,88 @@ namespace Weborb.Client
       {
         HandleException(asyncStreamSetInfo, e1);
       }
+    }
+    #if !(NET_35 || NET_40)
+    private async Task<T> SendHttpRequest<T>( V3Message v3Msg, IDictionary requestHeaders, IDictionary httpHeaders,
+                                              ResponseThreadConfigurator threadConfigurator )
+    {
+      HttpWebRequest webReq;
+      try
+      {
+        webReq = GetWebRequest();
+      }
+      catch( Exception e )
+      {
+        throw new WebORBException( GetFault( e ) );
+      }
+
+      if( httpHeaders != null )
+        foreach( DictionaryEntry header in httpHeaders )
+          webReq.Headers[ header.Key.ToString() ] = header.Value.ToString();
+
+      webReq.CookieContainer = Cookies;
+
+      byte[] requestBytes = CreateRequest( v3Msg, requestHeaders );
+
+      // Set the ContentType property. 
+      webReq.ContentType = "application/x-amf";
+      // Set the Method property to 'POST' to post data to the URI.
+      webReq.Method = "POST";
+      // Start the asynchronous operation.    
+
+      Stream postStream = await webReq.GetRequestStreamAsync();
+      try
+      {
+        // End the operation.
+        postStream.Write( requestBytes, 0, requestBytes.Length );
+        postStream.Flush();
+        postStream.Close();
+
+        HttpWebResponse response = (HttpWebResponse) await webReq.GetResponseAsync();
+        threadConfigurator?.Invoke();
+
+        if( Cookies != null )
+          foreach( Cookie cookie in response.Cookies )
+            Cookies.Add( new Uri( GatewayUrl ), cookie );
+
+        var streamResponse = response.GetResponseStream();
+        var parser = new RequestParser();
+        var responseObject = parser.readMessage( streamResponse );
+        var responseData = (object[]) responseObject.getRequestBodyData();
+        var v3 = (V3Message) ((IAdaptingType) responseData[ 0 ]).defaultAdapt();
+
+        if( v3.isError )
+        {
+          var errorMessage = (ErrMessage) v3;
+          var fault = new Fault( errorMessage.faultString, errorMessage.faultDetail, errorMessage.faultCode );
+          throw new WebORBException( fault );
+        }
+
+        var body =
+          (IAdaptingType) ((AnonymousObject) ((NamedObject) responseData[ 0 ]).TypedObject).Properties[ "body" ];
+        
+        var result = (T) body.adapt( typeof( T ) );
+        return result;
+      }
+      catch( Exception exception )
+      {
+        if( exception is WebORBException )
+          throw exception;
+        
+        throw new WebORBException( GetFault( exception ) );
+      }
+    }
+    #endif
+    private Fault GetFault( Exception e )
+    {
+      Fault fault;
+
+      if( e is WebException exception && exception.Status == WebExceptionStatus.RequestCanceled )
+        fault = new Fault( TIMEOUT_FAULT_MESSAGE, TIMEOUT_FAULT_MESSAGE );
+      else
+        fault = new Fault( e.Message, e.StackTrace, INTERNAL_CLIENT_EXCEPTION_FAULT_CODE );
+
+      return fault;
     }
 
     private void HandleException<T>(AsyncStreamSetInfo<T> asyncStreamSetInfo, Exception e)
@@ -194,7 +304,7 @@ namespace Weborb.Client
         request.BeginGetResponse(new AsyncCallback(ProcessAMFResponse<T>), asyncStreamSetInfo);
         if ( Timeout > 0 )
         {
-          Timer timer = new Timer( state =>
+          var timer = new Timer( state =>
           {
             if ( !request.HaveResponse )
               request.Abort();
@@ -205,8 +315,9 @@ namespace Weborb.Client
       }
       catch (Exception exception)
       {
-        String error = exception.Message;
-        if ( exception is WebException && ( (WebException)exception ).Status == WebExceptionStatus.RequestCanceled )
+        string error = exception.Message;
+        
+        if ( exception is WebException webException && webException.Status == WebExceptionStatus.RequestCanceled )
           error = TIMEOUT_FAULT_MESSAGE;
 
 #if (!UNIVERSALW8 && !FULL_BUILD && !WINDOWS_PHONE && !PURE_CLIENT_LIB && !WINDOWS_PHONE8)
@@ -226,12 +337,8 @@ namespace Weborb.Client
 #endif
         if ( asyncStreamSetInfo != null )
         {
-          Fault fault = new Fault( error, exception.StackTrace, INTERNAL_CLIENT_EXCEPTION_FAULT_CODE );
-          if ( asyncStreamSetInfo.responder != null )
-          {
-
-            asyncStreamSetInfo.responder.ErrorHandler( fault );
-          }
+          var fault = new Fault( error, exception.StackTrace, INTERNAL_CLIENT_EXCEPTION_FAULT_CODE );
+          asyncStreamSetInfo.responder?.ErrorHandler( fault );
         }
       }
     }
@@ -242,44 +349,37 @@ namespace Weborb.Client
       {
         AsyncStreamSetInfo<T> asyncStreamSetInfo = (AsyncStreamSetInfo<T>)asyncResult.AsyncState;
 
-        if( asyncStreamSetInfo.responseThreadConfigurator != null )
-          asyncStreamSetInfo.responseThreadConfigurator();
+        asyncStreamSetInfo.responseThreadConfigurator?.Invoke();
 
         HttpWebRequest request = asyncStreamSetInfo.request;
         HttpWebResponse response = (HttpWebResponse)request.EndGetResponse( asyncResult );
         
         if(Cookies != null)
-        foreach(Cookie cookie in response.Cookies)
-        {
-          Cookies.Add(new Uri(GatewayUrl), cookie); 
-        }
+          foreach(Cookie cookie in response.Cookies)
+            Cookies.Add(new Uri(GatewayUrl), cookie);
 
-        Stream streamResponse = response.GetResponseStream();
-        long curTime = DateTime.Now.Ticks;
-        long roundTrip = (curTime - asyncStreamSetInfo.messageSentTime) / TimeSpan.TicksPerMillisecond;
-        RequestParser parser = new RequestParser();
-        Request responseObject = parser.readMessage(streamResponse);
-        object[] responseData = (object[])responseObject.getRequestBodyData();
-        V3Message v3 = (V3Message)((IAdaptingType)responseData[0]).defaultAdapt();
+        var streamResponse = response.GetResponseStream();
+        var curTime = DateTime.Now.Ticks;
+        var roundTrip = (curTime - asyncStreamSetInfo.messageSentTime) / TimeSpan.TicksPerMillisecond;
+        var parser = new RequestParser();
+        var responseObject = parser.readMessage(streamResponse);
+        var responseData = (object[])responseObject.getRequestBodyData();
+        var v3 = (V3Message)((IAdaptingType)responseData[0]).defaultAdapt();
 
         if( v3.isError )
         {
-          ErrMessage errorMessage = (ErrMessage) v3;
-          Fault fault = new Fault( errorMessage.faultString, errorMessage.faultDetail, errorMessage.faultCode );
-
-          if( asyncStreamSetInfo.responder != null )
-            asyncStreamSetInfo.responder.ErrorHandler( fault );
-
+          var errorMessage = (ErrMessage) v3;
+          var fault = new Fault( errorMessage.faultString, errorMessage.faultDetail, errorMessage.faultCode );
+          asyncStreamSetInfo.responder?.ErrorHandler( fault );
           return;
         }
 
-        IAdaptingType body = (IAdaptingType)( (AnonymousObject) ( (NamedObject) responseData[ 0 ] ).TypedObject ).Properties[ "body" ];
-        T result = (T)body.adapt( typeof( T ) );
+        var body = (IAdaptingType)( (AnonymousObject) ( (NamedObject) responseData[ 0 ] ).TypedObject ).Properties[ "body" ];
+        var result = (T)body.adapt( typeof( T ) );
 
-        if( asyncStreamSetInfo.responder != null )
-          asyncStreamSetInfo.responder.ResponseHandler( result );
+        asyncStreamSetInfo.responder?.ResponseHandler( result );
 
-      //  ProcessV3Message( v3, asyncStreamSetInfo.responder );
+        //  ProcessV3Message( v3, asyncStreamSetInfo.responder );
       }
       catch (Exception e)
       {

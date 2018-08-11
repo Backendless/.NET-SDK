@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+#if !(NET_35 || NET_40)
+using System.Threading.Tasks;
+#endif
 using BackendlessAPI.Async;
-using BackendlessAPI.Data;
 using BackendlessAPI.Engine;
 using BackendlessAPI.Exception;
 using BackendlessAPI.Geo;
 using BackendlessAPI.Geo.Fence;
 using BackendlessAPI.Geo.Location;
-using Weborb.Client;
 using Weborb.Types;
 
 namespace BackendlessAPI.Service
@@ -35,6 +36,13 @@ namespace BackendlessAPI.Service
       return Invoker.InvokeSync<GeoCategory>( GEO_MANAGER_SERVER_ALIAS, "addCategory",
                                               new object[] { categoryName } );
     }
+    
+  #if !(NET_35 || NET_40)
+    public async Task<GeoCategory> AddCategoryAsync( string categoryName )
+    {
+      return await Task.Run( () => AddCategory( categoryName ) ).ConfigureAwait( false );
+    }
+  #endif
 
     public void AddCategory( string categoryName, AsyncCallback<GeoCategory> callback )
     {
@@ -61,6 +69,13 @@ namespace BackendlessAPI.Service
       return Invoker.InvokeSync<bool>( GEO_MANAGER_SERVER_ALIAS, "deleteCategory",
                                        new object[] { categoryName } );
     }
+    
+  #if !(NET_35 || NET_40)
+    public async Task<bool> DeleteCategoryAsync( string categoryName )
+    {
+      return await Task.Run( () => DeleteCategory( categoryName ) ).ConfigureAwait( false );
+    }
+  #endif
 
     public void DeleteCategory( string categoryName, AsyncCallback<bool> callback )
     {
@@ -85,6 +100,13 @@ namespace BackendlessAPI.Service
       return Invoker.InvokeSync<List<GeoCategory>>( GEO_MANAGER_SERVER_ALIAS, "getCategories",
                                                     new object[] { } );
     }
+    
+  #if !(NET_35 || NET_40)
+    public async Task<List<GeoCategory>> GetCategoriesAsync()
+    {
+      return await Task.Run( () => GetCategories()).ConfigureAwait( false );
+    }
+  #endif
 
     public void GetCategories( AsyncCallback<List<GeoCategory>> callback )
     {
@@ -108,19 +130,9 @@ namespace BackendlessAPI.Service
       return SavePoint( latitude, longitude, null, metadata );
     }
 
-    public void SavePoint( double latitude, double longitude, Dictionary<string, string> metadata, AsyncCallback<GeoPoint> callback )
-    {
-      SavePoint( latitude, longitude, null, metadata, callback );
-    }
-
     public GeoPoint SavePoint( double latitude, double longitude, Dictionary<string, object> metadata )
     {
       return SavePoint( latitude, longitude, null, metadata );
-    }
-
-    public void SavePoint( double latitude, double longitude, Dictionary<string, object> metadata, AsyncCallback<GeoPoint> callback )
-    {
-      SavePoint( latitude, longitude, null, metadata, callback );
     }
 
     public GeoPoint SavePoint( double latitude, double longitude, List<string> categoryNames, Dictionary<string, string> metadata )
@@ -131,6 +143,38 @@ namespace BackendlessAPI.Service
     public GeoPoint SavePoint( double latitude, double longitude, List<string> categoryNames, Dictionary<string, object> metadata )
     {
       return SavePoint( new GeoPoint( latitude, longitude, categoryNames, metadata ) );
+    }
+    
+  #if !(NET_35 || NET_40)
+    public async Task<GeoPoint> SavePointAsync( double latitude, double longitude, Dictionary<string, string> metadata )
+    {
+      return await Task.Run( () => SavePoint( latitude, longitude, metadata ) ).ConfigureAwait( false );
+    }
+    
+    public async Task<GeoPoint> SavePointAsync( double latitude, double longitude, Dictionary<string, object> metadata )
+    {
+      return await Task.Run( () => SavePoint( latitude, longitude, metadata ) ).ConfigureAwait( false );
+    }
+    
+    public async Task<GeoPoint> SavePointAsync( double latitude, double longitude, List<string> categoryNames, Dictionary<string, string> metadata )
+    {
+      return await Task.Run( () => SavePoint( latitude, longitude, categoryNames, metadata ) ).ConfigureAwait( false );
+    }
+    
+    public async Task<GeoPoint> SavePointAsync( double latitude, double longitude, List<string> categoryNames, Dictionary<string, object> metadata )
+    {
+      return await Task.Run( () => SavePoint( latitude, longitude, categoryNames, metadata ) ).ConfigureAwait( false );
+    }
+  #endif
+    
+    public void SavePoint( double latitude, double longitude, Dictionary<string, string> metadata, AsyncCallback<GeoPoint> callback )
+    {
+      SavePoint( latitude, longitude, null, metadata, callback );
+    }
+    
+    public void SavePoint( double latitude, double longitude, Dictionary<string, object> metadata, AsyncCallback<GeoPoint> callback )
+    {
+      SavePoint( latitude, longitude, null, metadata, callback );
     }
 
     public void SavePoint( double latitude, double longitude, List<string> categoryNames, Dictionary<string, object> metadata, AsyncCallback<GeoPoint> callback )
@@ -161,6 +205,18 @@ namespace BackendlessAPI.Service
       return Invoker.InvokeSync<GeoPoint>( GEO_MANAGER_SERVER_ALIAS, methodName,
                                            new object[] { geoPoint } );
     }
+    
+  #if !(NET_35 || NET_40)
+    public async Task<GeoPoint> AddPointAsync( GeoPoint geoPoint )
+    {
+      return await Task.Run( () => AddPoint( geoPoint ) ).ConfigureAwait( false );
+    }
+    
+    public async Task<GeoPoint> SavePointAsync( GeoPoint geoPoint )
+    {
+      return await Task.Run( () => SavePoint( geoPoint ) ).ConfigureAwait( false );
+    }
+  #endif
 
     public void AddPoint( GeoPoint geoPoint, AsyncCallback<GeoPoint> callback )
     {
@@ -198,6 +254,13 @@ namespace BackendlessAPI.Service
       Invoker.InvokeSync<GeoPoint>( GEO_MANAGER_SERVER_ALIAS, "removePoint",
                                            new object[] { geoPoint.ObjectId } );
     }
+    
+  #if !(NET_35 || NET_40)
+    public async Task RemovePointAsync( GeoPoint geoPoint )
+    {
+      await Task.Run( () => RemovePoint( geoPoint ) ).ConfigureAwait( false );
+    }
+  #endif
 
     public void RemovePoint( GeoPoint geoPoint, AsyncCallback<GeoPoint> callback )
     {
@@ -225,11 +288,23 @@ namespace BackendlessAPI.Service
       return Invoker.InvokeSync<int>( GEO_MANAGER_SERVER_ALIAS, "count", args );
     }
 
-    public int GetGeopointCount( String geoFenceName, BackendlessGeoQuery query )
+    public int GetGeopointCount( string geoFenceName, BackendlessGeoQuery query )
     {
       Object[] args = new Object[] { geoFenceName, query };
       return Invoker.InvokeSync<int>( GEO_MANAGER_SERVER_ALIAS, "count", args );
     }
+    
+  #if !(NET_35 || NET_40)
+    public async Task<int> GetGeopointCountAsync( BackendlessGeoQuery query )
+    {
+      return await Task.Run( () => GetGeopointCount( query ) ).ConfigureAwait( false );
+    }
+    
+    public async Task<int> GetGeopointCountAsync( string geoFenceName, BackendlessGeoQuery query )
+    {
+      return await Task.Run( () => GetGeopointCount( geoFenceName, query ) ).ConfigureAwait( false );
+    }
+  #endif
 
     public void GetGeopointCount( BackendlessGeoQuery query, AsyncCallback<int> responder )
     {
@@ -237,7 +312,7 @@ namespace BackendlessAPI.Service
         Invoker.InvokeAsync<int>( GEO_MANAGER_SERVER_ALIAS, "count", args, responder );
     }
 
-    public void GetGeopointCount( String geoFenceName, BackendlessGeoQuery query, AsyncCallback<int> responder )
+    public void GetGeopointCount( string geoFenceName, BackendlessGeoQuery query, AsyncCallback<int> responder )
     {
         Object[] args = new Object[] { geoFenceName, query };
         Invoker.InvokeAsync<int>( GEO_MANAGER_SERVER_ALIAS, "count", args, responder );
@@ -247,15 +322,22 @@ namespace BackendlessAPI.Service
     public IList<GeoPoint> GetPoints( BackendlessGeoQuery geoQuery )
     {
       checkGeoQuery( geoQuery );
-      Object[] methodArgs = new Object[] { geoQuery };
-      IList<GeoPoint> result = Invoker.InvokeSync<IList<GeoPoint>>( GEO_MANAGER_SERVER_ALIAS, "getPoints", methodArgs );
+      var methodArgs = new object[] { geoQuery };
+      var result = Invoker.InvokeSync<IList<GeoPoint>>( GEO_MANAGER_SERVER_ALIAS, "getPoints", methodArgs );
 
-      foreach( GeoPoint geoPoint in result )
-        if( geoPoint is GeoCluster )
-          ( (GeoCluster) geoPoint ).GeoQuery = geoQuery;
+      foreach( var geoPoint in result )
+        if( geoPoint is GeoCluster cluster )
+          cluster.GeoQuery = geoQuery;
 
       return result;
     }
+    
+  #if !(NET_35 || NET_40)
+    public async Task<IList<GeoPoint>> GetPointsAsync( BackendlessGeoQuery query )
+    {
+      return await Task.Run( () => GetPoints( query ) ).ConfigureAwait( false );
+    }
+  #endif
 
     public void GetPoints( BackendlessGeoQuery geoQuery, AsyncCallback<IList<GeoPoint>> callback )
     {
@@ -265,12 +347,11 @@ namespace BackendlessAPI.Service
 
         var responder = new AsyncCallback<IList<GeoPoint>>( r =>
           {
-            foreach( GeoPoint geoPoint in r )
-              if( geoPoint is GeoCluster )
-                ( (GeoCluster) geoPoint ).GeoQuery = geoQuery;
+            foreach( var geoPoint in r )
+              if( geoPoint is GeoCluster cluster )
+                cluster.GeoQuery = geoQuery;
 
-            if( callback != null )
-              callback.ResponseHandler.Invoke( r );
+            callback?.ResponseHandler( r );
           }, f =>
             {
               if( callback != null )
@@ -280,7 +361,7 @@ namespace BackendlessAPI.Service
             } );
 
         Invoker.InvokeAsync( GEO_MANAGER_SERVER_ALIAS, "getPoints",
-                             new Object[] { geoQuery }, responder );
+                             new object[] { geoQuery }, responder );
       }
       catch( System.Exception ex )
       {
@@ -294,9 +375,16 @@ namespace BackendlessAPI.Service
     #region GET POINTS - CLUSTER
     public IList<GeoPoint> GetPoints( GeoCluster geoCluster )
     {
-      Object[] args = new Object[] { geoCluster.ObjectId, geoCluster.GeoQuery };
+      var args = new object[] { geoCluster.ObjectId, geoCluster.GeoQuery };
       return Invoker.InvokeSync<IList<GeoPoint>>( GEO_MANAGER_SERVER_ALIAS, "loadGeoPoints", args );
     }
+    
+  #if !(NET_35 || NET_40)
+    public async Task<IList<GeoPoint>> GetPointsAsync( GeoCluster geoCluster )
+    {
+      return await Task.Run( () => GetPoints( geoCluster ) ).ConfigureAwait( false );
+    }
+  #endif
 
     public void GetPoints( GeoCluster geoCluster, AsyncCallback<IList<GeoPoint>> callback )
     {
@@ -304,12 +392,11 @@ namespace BackendlessAPI.Service
       {
         var responder = new AsyncCallback<IList<GeoPoint>>( r =>
         {
-          foreach( GeoPoint geoPoint in r )
-            if( geoPoint is GeoCluster )
-              ( (GeoCluster) geoPoint ).GeoQuery = geoCluster.GeoQuery;
+          foreach( var geoPoint in r )
+            if( geoPoint is GeoCluster cluster )
+              cluster.GeoQuery = geoCluster.GeoQuery;
 
-          if( callback != null )
-            callback.ResponseHandler.Invoke( r );
+          callback?.ResponseHandler( r );
         }, f =>
         {
           if( callback != null )
@@ -318,7 +405,7 @@ namespace BackendlessAPI.Service
             throw new BackendlessException( f );
         } );
 
-        Object[] args = new Object[] { geoCluster.ObjectId, geoCluster.GeoQuery };
+        var args = new object[] { geoCluster.ObjectId, geoCluster.GeoQuery };
         Invoker.InvokeAsync( GEO_MANAGER_SERVER_ALIAS, "loadGeoPoints", args, responder );
       }
       catch( System.Exception ex )
@@ -331,32 +418,43 @@ namespace BackendlessAPI.Service
     }
     #endregion
     #region GET POINTS - GEOFENCE
-    public IList<GeoPoint> GetPoints( String geofenceName )
+    public IList<GeoPoint> GetPoints( string geofenceName )
     {
       return GetPoints( geofenceName, new BackendlessGeoQuery() );
     }
 
-    public IList<GeoPoint> GetPoints( String geofenceName, BackendlessGeoQuery query )
+    public IList<GeoPoint> GetPoints( string geofenceName, BackendlessGeoQuery query )
     {
       checkGeoQuery( query );
-      Object[] args = new Object[] { geofenceName, query };
+      var args = new object[] { geofenceName, query };
       return Invoker.InvokeSync<IList<GeoPoint>>( GEO_MANAGER_SERVER_ALIAS, "getPoints", args );
     }
+    
+  #if !(NET_35 || NET_40)
+    public async Task<IList<GeoPoint>> GetPointsAsync( string geofenceName )
+    {
+      return await Task.Run( () => GetPoints( geofenceName ) ).ConfigureAwait( false );
+    }
+    
+    public async Task<IList<GeoPoint>> GetPointsAsync( string geofenceName, BackendlessGeoQuery query )
+    {
+      return await Task.Run( () => GetPoints( geofenceName, query ) ).ConfigureAwait( false );
+    }
+  #endif
 
-    public void GetPoints( String geofenceName, AsyncCallback<IList<GeoPoint>> responder )
+    public void GetPoints( string geofenceName, AsyncCallback<IList<GeoPoint>> responder )
     {
       GetPoints( geofenceName, new BackendlessGeoQuery(), responder );
     }
 
-    public void GetPoints( String geofenceName, BackendlessGeoQuery query, AsyncCallback<IList<GeoPoint>> callback )
+    public void GetPoints( string geofenceName, BackendlessGeoQuery query, AsyncCallback<IList<GeoPoint>> callback )
     {
       checkGeoQuery( query );
-      Object[] args = new Object[] { geofenceName, query };
+      var args = new object[] { geofenceName, query };
       var responder = new AsyncCallback<IList<GeoPoint>>( r =>
-          {
-            if( callback != null )
-              callback.ResponseHandler.Invoke( r );
-          }, f =>
+      {
+        callback?.ResponseHandler( r );
+      }, f =>
           {
             if( callback != null )
               callback.ErrorHandler.Invoke( f );
@@ -370,17 +468,34 @@ namespace BackendlessAPI.Service
     #region RUN ONENTER - GEOFENCE
     public int RunOnEnterAction( String geoFenceName )
     {
-      Object[] args = new Object[] { geoFenceName };
+      var args = new object[] { geoFenceName };
       return Invoker.InvokeSync<int>( GEO_MANAGER_SERVER_ALIAS, "runOnEnterAction", args );
     }
 
+    public void RunOnEnterAction( string geoFenceName, GeoPoint geoPoint )
+    {
+      var args = new object[] { geoFenceName, geoPoint };
+      Invoker.InvokeSync<Object>( GEO_MANAGER_SERVER_ALIAS, "runOnEnterAction", args );
+    }
+    
+  #if !(NET_35 || NET_40)
+    public async Task<int> RunOnEnterActionAsync( string geofenceName )
+    {
+      return await Task.Run( () => RunOnEnterAction( geofenceName ) ).ConfigureAwait( false );
+    }
+    
+    public async Task RunOnEnterActionAsync( string geofenceName, GeoPoint geoPoint )
+    {
+      await Task.Run( () => RunOnEnterAction( geofenceName, geoPoint ) ).ConfigureAwait( false );
+    }
+  #endif
+    
     public void RunOnEnterAction( String geoFenceName, AsyncCallback<int> callback )
     {
-      Object[] args = new Object[] { geoFenceName };
+      var args = new object[] { geoFenceName };
       var responder = new AsyncCallback<int>( r =>
       {
-        if( callback != null )
-          callback.ResponseHandler.Invoke( r );
+        callback?.ResponseHandler( r );
       }, f =>
       {
         if( callback != null )
@@ -391,19 +506,12 @@ namespace BackendlessAPI.Service
       Invoker.InvokeAsync( GEO_MANAGER_SERVER_ALIAS, "runOnEnterAction", args, responder );
     }
 
-    public void RunOnEnterAction( String geoFenceName, GeoPoint geoPoint )
+    public void RunOnEnterAction( string geoFenceName, GeoPoint geoPoint, AsyncCallback<object> callback )
     {
-      Object[] args = new Object[] { geoFenceName, geoPoint };
-      Invoker.InvokeSync<Object>( GEO_MANAGER_SERVER_ALIAS, "runOnEnterAction", args );
-    }
-
-    public void RunOnEnterAction( String geoFenceName, GeoPoint geoPoint, AsyncCallback<Object> callback )
-    {
-      Object[] args = new Object[] { geoFenceName, geoPoint };
+      var args = new object[] { geoFenceName, geoPoint };
       var responder = new AsyncCallback<int>( r =>
       {
-        if( callback != null )
-          callback.ResponseHandler.Invoke( r );
+        callback?.ResponseHandler( r );
       }, f =>
       {
         if( callback != null )
@@ -415,42 +523,52 @@ namespace BackendlessAPI.Service
     }
     #endregion
     #region RUN ONSTAY - GEOFENCE
-    public int RunOnStayAction( String geoFenceName )
+    public int RunOnStayAction( string geoFenceName )
     {
-      Object[] args = new Object[] { geoFenceName };
+      var args = new object[] { geoFenceName };
       return Invoker.InvokeSync<int>( GEO_MANAGER_SERVER_ALIAS, "runOnStayAction", args );
     }
 
-    public void RunOnStayAction( String geoFenceName, AsyncCallback<int> callback )
+    public int RunOnStayAction( string geoFenceName, GeoPoint geoPoint )
     {
-      Object[] args = new Object[] { geoFenceName };
+      var args = new object[] { geoFenceName, geoPoint };
+      return Invoker.InvokeSync<int>( GEO_MANAGER_SERVER_ALIAS, "runOnStayAction", args );
+    }
+        
+  #if !(NET_35 || NET_40)
+    public async Task<int> RunOnStayActionAsync( string geofenceName )
+    {
+      return await Task.Run( () => RunOnStayAction( geofenceName ) ).ConfigureAwait( false );
+    }
+    
+    public async Task<int> RunOnStayActionAsync( string geofenceName, GeoPoint geoPoint )
+    {
+      return await Task.Run( () => RunOnStayAction( geofenceName, geoPoint ) ).ConfigureAwait( false );
+    }
+  #endif
+    
+    public void RunOnStayAction( string geoFenceName, AsyncCallback<int> callback )
+    {
+      var args = new object[] { geoFenceName };
       var responder = new AsyncCallback<int>( r =>
-          {
-            if( callback != null )
-              callback.ResponseHandler.Invoke( r );
-          }, f =>
-          {
-            if( callback != null )
-              callback.ErrorHandler.Invoke( f );
-            else
-              throw new BackendlessException( f );
-          } );
+      {
+        callback?.ResponseHandler( r );
+      }, f =>
+      {
+        if( callback != null )
+          callback.ErrorHandler.Invoke( f );
+        else
+          throw new BackendlessException( f );
+      } );
       Invoker.InvokeAsync( GEO_MANAGER_SERVER_ALIAS, "runOnStayAction", args, responder );
     }
 
-    public int RunOnStayAction( String geoFenceName, GeoPoint geoPoint )
+    public void RunOnStayAction( string geoFenceName, GeoPoint geoPoint, AsyncCallback<object> callback )
     {
-      Object[] args = new Object[] { geoFenceName, geoPoint };
-      return Invoker.InvokeSync<int>( GEO_MANAGER_SERVER_ALIAS, "runOnStayAction", args );
-    }
-
-    public void RunOnStayAction( String geoFenceName, GeoPoint geoPoint, AsyncCallback<Object> callback )
-    {
-      Object[] args = new Object[] { geoFenceName, geoPoint };
+      var args = new object[] { geoFenceName, geoPoint };
       var responder = new AsyncCallback<int>( r =>
       {
-        if( callback != null )
-          callback.ResponseHandler.Invoke( r );
+        callback?.ResponseHandler( r );
       }, f =>
       {
         if( callback != null )
@@ -462,19 +580,36 @@ namespace BackendlessAPI.Service
     }
     #endregion
     #region RUN ONEXIT - GEOFENCE
-    public int RunOnExitAction( String geoFenceName )
+    public int RunOnExitAction( string geoFenceName )
     {
-      Object[] args = new Object[] { geoFenceName };
+      var args = new object[] { geoFenceName };
       return Invoker.InvokeSync<int>( GEO_MANAGER_SERVER_ALIAS, "runOnExitAction", args );
     }
 
-    public void RunOnExitAction( String geoFenceName, AsyncCallback<int> callback )
+    public void RunOnExitAction( string geoFenceName, GeoPoint geoPoint )
     {
-      Object[] args = new Object[] { geoFenceName };
+      var args = new object[] { geoFenceName, geoPoint };
+      Invoker.InvokeSync<object>( GEO_MANAGER_SERVER_ALIAS, "runOnExitAction", args );
+    }
+    
+  #if !(NET_35 || NET_40)
+    public async Task<int> RunOnExitActionAsync( string geofenceName )
+    {
+      return await Task.Run( () => RunOnExitAction( geofenceName ) ).ConfigureAwait( false );
+    }
+    
+    public async Task RunOnExitActionAsync( string geofenceName, GeoPoint geoPoint )
+    {
+      await Task.Run( () => RunOnExitAction( geofenceName, geoPoint ) ).ConfigureAwait( false );
+    }
+  #endif
+    
+    public void RunOnExitAction( string geoFenceName, AsyncCallback<int> callback )
+    {
+      var args = new object[] { geoFenceName };
       var responder = new AsyncCallback<int>( r =>
       {
-        if( callback != null )
-          callback.ResponseHandler.Invoke( r );
+        callback?.ResponseHandler( r );
       }, f =>
       {
         if( callback != null )
@@ -485,19 +620,12 @@ namespace BackendlessAPI.Service
       Invoker.InvokeAsync( GEO_MANAGER_SERVER_ALIAS, "runOnExitAction", args, responder );
     }
 
-    public void RunOnExitAction( String geoFenceName, GeoPoint geoPoint )
+    public void RunOnExitAction( string geoFenceName, GeoPoint geoPoint, AsyncCallback<object> callback )
     {
-      Object[] args = new Object[] { geoFenceName, geoPoint };
-      Invoker.InvokeSync<Object>( GEO_MANAGER_SERVER_ALIAS, "runOnExitAction", args );
-    }
-
-    public void RunOnExitAction( String geoFenceName, GeoPoint geoPoint, AsyncCallback<Object> callback )
-    {
-      Object[] args = new Object[] { geoFenceName, geoPoint };
+      var args = new object[] { geoFenceName, geoPoint };
       var responder = new AsyncCallback<int>( r =>
       {
-        if( callback != null )
-          callback.ResponseHandler.Invoke( r );
+        callback?.ResponseHandler( r );
       }, f =>
       {
         if( callback != null )
@@ -628,8 +756,15 @@ namespace BackendlessAPI.Service
         throw new ArgumentException( ExceptionMessage.INCONSISTENT_GEO_RELATIVE );
 
       return Invoker.InvokeSync<IList<SearchMatchesResult>>( GEO_MANAGER_SERVER_ALIAS, "relativeFind",
-                                                                        new Object[] { geoQuery} );
+                                                                        new object[] { geoQuery} );
     }
+        
+  #if !(NET_35 || NET_40)
+    public async Task<IList<SearchMatchesResult>> RelativeFindAsync( BackendlessGeoQuery geoQuery )
+    {
+      return await Task.Run( () => RelativeFind( geoQuery ) ).ConfigureAwait( false );
+    }
+  #endif
 
     public void RelativeFind( BackendlessGeoQuery geoQuery, AsyncCallback<IList<SearchMatchesResult>> callback )
     {
@@ -643,8 +778,7 @@ namespace BackendlessAPI.Service
 
         var responder = new AsyncCallback<IList<SearchMatchesResult>>( r =>
         {
-          if( callback != null )
-            callback.ResponseHandler.Invoke( r );
+          callback?.ResponseHandler( r );
         }, f =>
         {
           if( callback != null )
@@ -654,7 +788,7 @@ namespace BackendlessAPI.Service
         } );
 
         Invoker.InvokeAsync( GEO_MANAGER_SERVER_ALIAS, "relativeFind",
-                             new Object[] { geoQuery }, responder );
+                             new object[] { geoQuery }, responder );
       }
       catch( System.Exception ex )
       {
@@ -670,8 +804,8 @@ namespace BackendlessAPI.Service
     {
       object[] methodArgs = null;
 
-      if( point is GeoCluster )
-        methodArgs = new object[] { point.ObjectId, ( (GeoCluster) point ).GeoQuery };
+      if( point is GeoCluster cluster )
+        methodArgs = new object[] { cluster.ObjectId, cluster.GeoQuery };
       else
         methodArgs = new object[] { point.ObjectId, null };
 
@@ -679,32 +813,37 @@ namespace BackendlessAPI.Service
       return point;
     }
 
+  #if !(NET_35 || NET_40)
+    public async Task<GeoPoint> LoadMetadataAsync( GeoPoint point )
+    {
+      return await Task.Run( () => LoadMetadata( point ) ).ConfigureAwait( false );
+    }
+  #endif
+    
     public void LoadMetadata( GeoPoint point, AsyncCallback<GeoPoint> callback )
     {
-      AsyncCallback<Dictionary<String, Object>> loadMetaCallback = new AsyncCallback<Dictionary<String, Object>>(
+      AsyncCallback<Dictionary<string, object>> loadMetaCallback = new AsyncCallback<Dictionary<string, object>>(
        result =>
        {
          point.Metadata = result;
 
-         if( callback != null )
-           callback.ResponseHandler.Invoke( point );
+         callback?.ResponseHandler( point );
        },
        fault =>
        {
-         if( callback != null )
-           callback.ErrorHandler.Invoke( fault );
+         callback?.ErrorHandler( fault );
        } );
 
       try
       {
         object[] methodArgs = null;
 
-        if( point is GeoCluster )
-          methodArgs = new object[] { point.ObjectId, ( (GeoCluster) point ).GeoQuery };
+        if( point is GeoCluster cluster )
+          methodArgs = new object[] { cluster.ObjectId, cluster.GeoQuery };
         else
           methodArgs = new object[] { point.ObjectId, null };
 
-        Invoker.InvokeAsync<Dictionary<String, Object>>( GEO_MANAGER_SERVER_ALIAS, "loadMetadata", methodArgs, loadMetaCallback );
+        Invoker.InvokeAsync( GEO_MANAGER_SERVER_ALIAS, "loadMetadata", methodArgs, loadMetaCallback );
       }
       catch( System.Exception ex )
       {
@@ -744,24 +883,24 @@ namespace BackendlessAPI.Service
         if( geoQuery.SearchRectangle.Length != 4 )
           throw new ArgumentException( ExceptionMessage.WRONG_SEARCH_RECTANGLE_QUERY );
 
-        if( !Double.IsNaN( geoQuery.Radius ) )
+        if( !double.IsNaN( geoQuery.Radius ) )
           throw new ArgumentException( ExceptionMessage.INCONSISTENT_GEO_QUERY );
 
-        if( !Double.IsNaN( geoQuery.Latitude ) )
+        if( !double.IsNaN( geoQuery.Latitude ) )
           throw new ArgumentException( ExceptionMessage.INCONSISTENT_GEO_QUERY );
 
-        if( !Double.IsNaN( geoQuery.Longitude ) )
+        if( !double.IsNaN( geoQuery.Longitude ) )
           throw new ArgumentException( ExceptionMessage.INCONSISTENT_GEO_QUERY );
       }
-      else if( !Double.IsNaN( geoQuery.Radius ) )
+      else if( !double.IsNaN( geoQuery.Radius ) )
       {
         if( geoQuery.Radius <= 0 )
           throw new ArgumentException( ExceptionMessage.WRONG_RADIUS );
 
-        if( Double.IsNaN( geoQuery.Latitude ) )
+        if( double.IsNaN( geoQuery.Latitude ) )
           throw new ArgumentNullException( ExceptionMessage.WRONG_LATITUDE_VALUE );
 
-        if( Double.IsNaN( geoQuery.Longitude ) )
+        if( double.IsNaN( geoQuery.Longitude ) )
           throw new ArgumentNullException( ExceptionMessage.WRONG_LONGITUDE_VALUE );
 
         CheckCoordinates( geoQuery.Latitude, geoQuery.Longitude );

@@ -17,12 +17,12 @@ namespace BackendlessAPI.Service
   public class MessagingService
   {
     private static string MESSAGING_MANAGER_SERVER_ALIAS = "com.backendless.services.messaging.MessagingService";
-    private static string DEVICE_REGISTRATION_MANAGER_SERVER_ALIAS = "com.backendless.services.messaging.DeviceRegistrationService";
+    //private static string DEVICE_REGISTRATION_MANAGER_SERVER_ALIAS = "com.backendless.services.messaging.DeviceRegistrationService";
     private static string EMAIL_MANAGER_SERVER_ALIAS = "com.backendless.services.mail.CustomersEmailService";
     private static string DEFAULT_CHANNEL_NAME = "default";
     private static String deviceId;
-    private static int CHANNEL_NAME_MAX_LENGTH = 46;
-    private static Messaging.DeviceRegistration _deviceRegistrationDto;
+    //private static int CHANNEL_NAME_MAX_LENGTH = 46;
+    //private static Messaging.DeviceRegistration _deviceRegistrationDto;
 #if UNITY
     private static AsyncCallback<string> _deviceRegisterCallback = null;
     private static AsyncCallback<bool> _deviceUnregisterCallback = null;

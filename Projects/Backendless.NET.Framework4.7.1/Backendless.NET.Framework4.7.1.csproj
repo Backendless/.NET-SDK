@@ -208,6 +208,9 @@
     <Compile Include="..\..\Backendless\Persistence\Security\Find.cs" />
     <Compile Include="..\..\Backendless\Persistence\Security\Remove.cs" />
     <Compile Include="..\..\Backendless\Persistence\Security\Update.cs" />
+    <Compile Include="..\..\Backendless\Properties\VersionInfo.cs">
+      <Link>Properties/VersionInfo.cs</Link>
+    </Compile>
     <Compile Include="..\..\Backendless\Push\PushNotificationsBinding.cs" />
     <Compile Include="..\..\Backendless\Push\Registrar.cs" />
     <Compile Include="..\..\Backendless\Push\RegistrationInfo.cs" />
@@ -287,6 +290,7 @@
     <Compile Include="..\..\Backendless\WebORB\Exceptions\LicenseException.cs" />
     <Compile Include="..\..\Backendless\WebORB\Exceptions\ServiceException.cs" />
     <Compile Include="..\..\Backendless\WebORB\Exceptions\UnadaptableTypeException.cs" />
+    <Compile Include="..\..\Backendless\WebORB\Exceptions\WebORBException.cs" />
     <Compile Include="..\..\Backendless\WebORB\Message\Body.cs" />
     <Compile Include="..\..\Backendless\WebORB\Message\Header.cs" />
     <Compile Include="..\..\Backendless\WebORB\Message\Request.cs" />
@@ -459,124 +463,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\Backendless\WebORB\.DS_Store" />
-    <Content Include="..\..\Backendless\WebORB\Client\.DS_Store" />
-    <Content Include="..\..\Backendless\WebORB\Config\.DS_Store" />
-    <Content Include="..\..\Backendless\WebORB\Exceptions\.DS_Store" />
-    <Content Include="..\..\Backendless\WebORB\Message\.DS_Store" />
-    <Content Include="..\..\Backendless\WebORB\Protocols\.DS_Store" />
-    <Content Include="..\..\Backendless\WebORB\Protocols\Amf\.DS_Store" />
-    <Content Include="..\..\Backendless\WebORB\Reader\.DS_Store" />
-    <Content Include="..\..\Backendless\WebORB\Registry\.DS_Store" />
-    <Content Include="..\..\Backendless\WebORB\Service\.DS_Store" />
-    <Content Include="..\..\Backendless\WebORB\Types\.DS_Store" />
-    <Content Include="..\..\Backendless\WebORB\Types\Generic\.DS_Store" />
-    <Content Include="..\..\Backendless\WebORB\Util\.DS_Store" />
-    <Content Include="..\..\Backendless\WebORB\Util\IO\.DS_Store" />
-    <Content Include="..\..\Backendless\WebORB\Util\Log\.DS_Store" />
-    <Content Include="..\..\Backendless\WebORB\V3Types\.DS_Store" />
-    <Content Include="..\..\Backendless\WebORB\Writer\.DS_Store" />
-    <Content Include="..\..\Backendless\WebORB\Writer\Specialized\.DS_Store" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="..\..\Backendless\WebORB\Config\_svn\prop-base" />
-    <Folder Include="..\..\Backendless\WebORB\Config\_svn\props" />
-    <Folder Include="..\..\Backendless\WebORB\Config\_svn\text-base" />
-    <Folder Include="..\..\Backendless\WebORB\Config\_svn\tmp\prop-base" />
-    <Folder Include="..\..\Backendless\WebORB\Config\_svn\tmp\props" />
-    <Folder Include="..\..\Backendless\WebORB\Config\_svn\tmp\text-base" />
-    <Folder Include="..\..\Backendless\WebORB\Config\_svn\tmp\wcprops" />
-    <Folder Include="..\..\Backendless\WebORB\Config\_svn\wcprops" />
-    <Folder Include="..\..\Backendless\WebORB\Exceptions\_svn\prop-base" />
-    <Folder Include="..\..\Backendless\WebORB\Exceptions\_svn\props" />
-    <Folder Include="..\..\Backendless\WebORB\Exceptions\_svn\text-base" />
-    <Folder Include="..\..\Backendless\WebORB\Exceptions\_svn\tmp\prop-base" />
-    <Folder Include="..\..\Backendless\WebORB\Exceptions\_svn\tmp\props" />
-    <Folder Include="..\..\Backendless\WebORB\Exceptions\_svn\tmp\text-base" />
-    <Folder Include="..\..\Backendless\WebORB\Exceptions\_svn\tmp\wcprops" />
-    <Folder Include="..\..\Backendless\WebORB\Exceptions\_svn\wcprops" />
-    <Folder Include="..\..\Backendless\WebORB\Message\_svn\prop-base" />
-    <Folder Include="..\..\Backendless\WebORB\Message\_svn\props" />
-    <Folder Include="..\..\Backendless\WebORB\Message\_svn\text-base" />
-    <Folder Include="..\..\Backendless\WebORB\Message\_svn\tmp\prop-base" />
-    <Folder Include="..\..\Backendless\WebORB\Message\_svn\tmp\props" />
-    <Folder Include="..\..\Backendless\WebORB\Message\_svn\tmp\text-base" />
-    <Folder Include="..\..\Backendless\WebORB\Message\_svn\tmp\wcprops" />
-    <Folder Include="..\..\Backendless\WebORB\Message\_svn\wcprops" />
-    <Folder Include="..\..\Backendless\WebORB\Protocols\Amf\_svn\prop-base" />
-    <Folder Include="..\..\Backendless\WebORB\Protocols\Amf\_svn\props" />
-    <Folder Include="..\..\Backendless\WebORB\Protocols\Amf\_svn\text-base" />
-    <Folder Include="..\..\Backendless\WebORB\Protocols\Amf\_svn\tmp\prop-base" />
-    <Folder Include="..\..\Backendless\WebORB\Protocols\Amf\_svn\tmp\props" />
-    <Folder Include="..\..\Backendless\WebORB\Protocols\Amf\_svn\tmp\text-base" />
-    <Folder Include="..\..\Backendless\WebORB\Protocols\Amf\_svn\tmp\wcprops" />
-    <Folder Include="..\..\Backendless\WebORB\Protocols\Amf\_svn\wcprops" />
-    <Folder Include="..\..\Backendless\WebORB\Protocols\_svn\prop-base" />
-    <Folder Include="..\..\Backendless\WebORB\Protocols\_svn\props" />
-    <Folder Include="..\..\Backendless\WebORB\Protocols\_svn\text-base" />
-    <Folder Include="..\..\Backendless\WebORB\Protocols\_svn\tmp\prop-base" />
-    <Folder Include="..\..\Backendless\WebORB\Protocols\_svn\tmp\props" />
-    <Folder Include="..\..\Backendless\WebORB\Protocols\_svn\tmp\text-base" />
-    <Folder Include="..\..\Backendless\WebORB\Protocols\_svn\tmp\wcprops" />
-    <Folder Include="..\..\Backendless\WebORB\Protocols\_svn\wcprops" />
-    <Folder Include="..\..\Backendless\WebORB\Reader\_svn\prop-base" />
-    <Folder Include="..\..\Backendless\WebORB\Reader\_svn\props" />
-    <Folder Include="..\..\Backendless\WebORB\Reader\_svn\text-base" />
-    <Folder Include="..\..\Backendless\WebORB\Reader\_svn\tmp\prop-base" />
-    <Folder Include="..\..\Backendless\WebORB\Reader\_svn\tmp\props" />
-    <Folder Include="..\..\Backendless\WebORB\Reader\_svn\tmp\text-base" />
-    <Folder Include="..\..\Backendless\WebORB\Reader\_svn\tmp\wcprops" />
-    <Folder Include="..\..\Backendless\WebORB\Reader\_svn\wcprops" />
-    <Folder Include="..\..\Backendless\WebORB\Registry\_svn\prop-base" />
-    <Folder Include="..\..\Backendless\WebORB\Registry\_svn\props" />
-    <Folder Include="..\..\Backendless\WebORB\Registry\_svn\text-base" />
-    <Folder Include="..\..\Backendless\WebORB\Registry\_svn\tmp\prop-base" />
-    <Folder Include="..\..\Backendless\WebORB\Registry\_svn\tmp\props" />
-    <Folder Include="..\..\Backendless\WebORB\Registry\_svn\tmp\text-base" />
-    <Folder Include="..\..\Backendless\WebORB\Registry\_svn\tmp\wcprops" />
-    <Folder Include="..\..\Backendless\WebORB\Registry\_svn\wcprops" />
-    <Folder Include="..\..\Backendless\WebORB\Service\_svn\prop-base" />
-    <Folder Include="..\..\Backendless\WebORB\Service\_svn\props" />
-    <Folder Include="..\..\Backendless\WebORB\Service\_svn\text-base" />
-    <Folder Include="..\..\Backendless\WebORB\Service\_svn\tmp\prop-base" />
-    <Folder Include="..\..\Backendless\WebORB\Service\_svn\tmp\props" />
-    <Folder Include="..\..\Backendless\WebORB\Service\_svn\tmp\text-base" />
-    <Folder Include="..\..\Backendless\WebORB\Service\_svn\tmp\wcprops" />
-    <Folder Include="..\..\Backendless\WebORB\Service\_svn\wcprops" />
-    <Folder Include="..\..\Backendless\WebORB\Types\_svn\prop-base" />
-    <Folder Include="..\..\Backendless\WebORB\Types\_svn\props" />
-    <Folder Include="..\..\Backendless\WebORB\Types\_svn\text-base" />
-    <Folder Include="..\..\Backendless\WebORB\Types\_svn\tmp\prop-base" />
-    <Folder Include="..\..\Backendless\WebORB\Types\_svn\tmp\props" />
-    <Folder Include="..\..\Backendless\WebORB\Types\_svn\tmp\text-base" />
-    <Folder Include="..\..\Backendless\WebORB\Types\_svn\tmp\wcprops" />
-    <Folder Include="..\..\Backendless\WebORB\Types\_svn\wcprops" />
-    <Folder Include="..\..\Backendless\WebORB\Util\IO\_svn\prop-base" />
-    <Folder Include="..\..\Backendless\WebORB\Util\IO\_svn\props" />
-    <Folder Include="..\..\Backendless\WebORB\Util\IO\_svn\text-base" />
-    <Folder Include="..\..\Backendless\WebORB\Util\IO\_svn\tmp\prop-base" />
-    <Folder Include="..\..\Backendless\WebORB\Util\IO\_svn\tmp\props" />
-    <Folder Include="..\..\Backendless\WebORB\Util\IO\_svn\tmp\text-base" />
-    <Folder Include="..\..\Backendless\WebORB\Util\IO\_svn\tmp\wcprops" />
-    <Folder Include="..\..\Backendless\WebORB\Util\IO\_svn\wcprops" />
-    <Folder Include="..\..\Backendless\WebORB\Util\Log\_svn\prop-base" />
-    <Folder Include="..\..\Backendless\WebORB\Util\Log\_svn\props" />
-    <Folder Include="..\..\Backendless\WebORB\Util\Log\_svn\text-base" />
-    <Folder Include="..\..\Backendless\WebORB\Util\Log\_svn\tmp\prop-base" />
-    <Folder Include="..\..\Backendless\WebORB\Util\Log\_svn\tmp\props" />
-    <Folder Include="..\..\Backendless\WebORB\Util\Log\_svn\tmp\text-base" />
-    <Folder Include="..\..\Backendless\WebORB\Util\Log\_svn\tmp\wcprops" />
-    <Folder Include="..\..\Backendless\WebORB\Util\Log\_svn\wcprops" />
-    <Folder Include="..\..\Backendless\WebORB\V3Types\_svn\prop-base" />
-    <Folder Include="..\..\Backendless\WebORB\V3Types\_svn\props" />
-    <Folder Include="..\..\Backendless\WebORB\V3Types\_svn\text-base" />
-    <Folder Include="..\..\Backendless\WebORB\V3Types\_svn\tmp\prop-base" />
-    <Folder Include="..\..\Backendless\WebORB\V3Types\_svn\tmp\props" />
-    <Folder Include="..\..\Backendless\WebORB\V3Types\_svn\tmp\text-base" />
-    <Folder Include="..\..\Backendless\WebORB\V3Types\_svn\tmp\wcprops" />
-    <Folder Include="..\..\Backendless\WebORB\V3Types\_svn\wcprops" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
@@ -588,7 +474,9 @@
     </Target>
     -->
   <Target Name="AfterBuild">
-    <Copy SourceFiles="bin/Debug/Backendless.dll" DestinationFolder="../Nuget/Backendless.NET.Framework/lib/net45">
+    <Copy SourceFiles="bin/Debug/Backendless.dll" DestinationFolder="../Nuget/Backendless.NET.Framework/lib/net471">
+    </Copy>
+    <Copy SourceFiles="bin/Debug/Backendless.dll" DestinationFolder="../BackendlessUnitySDK/NET 4.x/Assets/BackendlessSDK">
     </Copy>
   </Target>
 </Project>
