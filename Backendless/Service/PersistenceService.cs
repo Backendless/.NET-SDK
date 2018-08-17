@@ -8,11 +8,8 @@ using BackendlessAPI.Engine;
 using BackendlessAPI.Exception;
 using BackendlessAPI.Persistence;
 using BackendlessAPI.Property;
-using Weborb.Client;
 using Weborb.Service;
 using Weborb.Types;
-using Weborb.Writer;
-using BackendlessAPI.IO;
 using BackendlessAPI.Utils;
 
 namespace BackendlessAPI.Service
@@ -397,7 +394,10 @@ namespace BackendlessAPI.Service
     
     public IList<T> Find<T>( DataQueryBuilder dataQueryBuilder )
     {
-      BackendlessDataQuery dataQuery = dataQueryBuilder != null ? dataQueryBuilder.Build() : null;
+      if( dataQueryBuilder == null )
+        dataQueryBuilder = DataQueryBuilder.Create();
+      
+      BackendlessDataQuery dataQuery = dataQueryBuilder.Build();
       AddWeborbPropertyMapping<T>();
       var result = Invoker.InvokeSync<IList<T>>( PERSISTENCE_MANAGER_SERVER_ALIAS, "find",
                                                                  new object[] { GetTypeName( typeof( T ) ), dataQuery}, true );
@@ -418,7 +418,10 @@ namespace BackendlessAPI.Service
               throw new BackendlessException( f );
           } );
 
-      BackendlessDataQuery dataQuery = dataQueryBuilder != null ? dataQueryBuilder.Build() : null;
+      if( dataQueryBuilder == null )
+        dataQueryBuilder = DataQueryBuilder.Create();
+      
+      BackendlessDataQuery dataQuery = dataQueryBuilder.Build();
       AddWeborbPropertyMapping<T>();
       Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "find",
                            new object[] {GetTypeName( typeof( T ) ), dataQuery},
