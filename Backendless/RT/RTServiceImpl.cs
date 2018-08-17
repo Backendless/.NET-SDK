@@ -9,26 +9,26 @@ namespace BackendlessAPI.RT
   {
     private readonly IRTClient rtClient = RTClientFactory.Get();
 
-    private List<ResultHandler<object>> connectListeners = new List<ResultHandler<object>>();
-    private List<ResultHandler<String>> disconnectListeners = new List<ResultHandler<string>>();
-    private List<ResultHandler<ReconnectAttempt>> reconnectListeners = new List<ResultHandler<ReconnectAttempt>>();
-    private List<ResultHandler<BackendlessFault>> connectErrorListeners = new List<ResultHandler<BackendlessFault>>();
+    private readonly List<ConnectListener> connectListeners = new List<ConnectListener>();
+    private readonly List<DisconnectListener> disconnectListeners = new List<DisconnectListener>();
+    private readonly List<ReconnectAttemptListener> reconnectListeners = new List<ReconnectAttemptListener>();
+    private readonly List<ConnectErrorListener> connectErrorListeners = new List<ConnectErrorListener>();
 
     public RTServiceImpl()
     {
       if( rtClient.IsAvailable() )
       {
-        rtClient.SetConnectEventListener( ( result ) =>
+        rtClient.SetConnectEventListener( () =>
         {
-          foreach( ResultHandler<object> listener in connectListeners )
+          foreach( ConnectListener listener in connectListeners )
           {
-            listener( result );
+            listener();
           }
         } );
 
         rtClient.SetDisconnectEventListener( ( result ) =>
          {
-           foreach( ResultHandler<String> listener in disconnectListeners )
+           foreach( DisconnectListener listener in disconnectListeners )
            {
              listener( result );
            }
@@ -36,7 +36,7 @@ namespace BackendlessAPI.RT
 
         rtClient.SetConnectErrorEventListener( ( result ) =>
          {
-           foreach( ResultHandler<BackendlessFault> listener in connectErrorListeners )
+           foreach( ConnectErrorListener listener in connectErrorListeners )
            {
              listener( result );
            }
@@ -44,7 +44,7 @@ namespace BackendlessAPI.RT
 
         rtClient.SetReconnectAttemptEventListener( ( result ) =>
          {
-           foreach( ResultHandler<ReconnectAttempt> listener in reconnectListeners )
+           foreach( ReconnectAttemptListener listener in reconnectListeners )
            {
              listener( result );
            }
@@ -52,45 +52,45 @@ namespace BackendlessAPI.RT
       }
     }
 
-    public void AddConnectErrorListener( ResultHandler<BackendlessFault> faultHandler )
+    public void AddConnectErrorListener( ConnectErrorListener faultHandler )
     {
       connectErrorListeners.Add( faultHandler );
     }
 
-    public void RemoveConnectErrorListener( ResultHandler<BackendlessFault> listener )
+    public void RemoveConnectErrorListener( ConnectErrorListener listener )
     {
       connectErrorListeners.Remove( listener );
     }
 
-    public void AddConnectListener( ResultHandler<object> connectHandler )
+    public void AddConnectListener( ConnectListener connectListener )
     {
       if( rtClient.IsConnected() )
-        connectHandler( null );
+        connectListener();
 
-      connectListeners.Add( connectHandler );
+      connectListeners.Add( connectListener );
     }
 
-    public void RemoveConnectListener( ResultHandler<object> listener )
+    public void RemoveConnectListener( ConnectListener listener )
     {
       connectListeners.Remove( listener );
     }
 
-    public void AddDisconnectListener( ResultHandler<string> disconnectHandler )
+    public void AddDisconnectListener( DisconnectListener disconnectHandler )
     {
       disconnectListeners.Add( disconnectHandler );
     }
 
-    public void RemoveDisconnectListener( ResultHandler<String> listener )
+    public void RemoveDisconnectListener( DisconnectListener listener )
     {
       disconnectListeners.Remove( listener );
     }
 
-    public void AddReconnectAttemptListener( ResultHandler<ReconnectAttempt> reconnectAttemptHandler )
+    public void AddReconnectAttemptListener( ReconnectAttemptListener reconnectAttemptHandler )
     {
       reconnectListeners.Add( reconnectAttemptHandler );
     }
 
-    public void RemoveReconnectAttemptListener( ResultHandler<ReconnectAttempt> listener )
+    public void RemoveReconnectAttemptListener( ReconnectAttemptListener listener )
     {
       reconnectListeners.Remove( listener );
     }

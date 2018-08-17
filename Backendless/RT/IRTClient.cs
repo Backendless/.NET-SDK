@@ -16,13 +16,13 @@ namespace BackendlessAPI.RT
 
     void Invoke( RTMethodRequest methodRequest );
 
-    void SetConnectEventListener( ResultHandler<object> callback );
+    void SetConnectEventListener( ConnectListener callback );
 
-    void SetReconnectAttemptEventListener( ResultHandler<ReconnectAttempt> callback );
+    void SetReconnectAttemptEventListener( ReconnectAttemptListener callback );
 
-    void SetConnectErrorEventListener( ResultHandler<BackendlessFault> fault );
+    void SetConnectErrorEventListener( ConnectErrorListener fault );
 
-    void SetDisconnectEventListener( ResultHandler<String> callback );
+    void SetDisconnectEventListener( DisconnectListener callback );
 
     Boolean IsConnected();
 

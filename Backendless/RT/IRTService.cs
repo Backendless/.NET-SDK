@@ -5,19 +5,24 @@ using BackendlessAPI.Exception;
 
 namespace BackendlessAPI.RT
 {
+  public delegate void ConnectListener();
+  public delegate void ReconnectAttemptListener( ReconnectAttempt reconnectAttempt );
+  public delegate void ConnectErrorListener( BackendlessFault fault );
+  public delegate void DisconnectListener( String cause );
+    
   public interface IRTService
   {
-    void AddConnectListener( ResultHandler<object> listener );
-    void RemoveConnectListener( ResultHandler<object> listener );
+    void AddConnectListener( ConnectListener listener );
+    void RemoveConnectListener( ConnectListener listener );
 
-    void AddReconnectAttemptListener( ResultHandler<ReconnectAttempt> listener );
-    void RemoveReconnectAttemptListener( ResultHandler<ReconnectAttempt> listener );
+    void AddReconnectAttemptListener( ReconnectAttemptListener listener );
+    void RemoveReconnectAttemptListener( ReconnectAttemptListener listener );
 
-    void AddConnectErrorListener( ResultHandler<BackendlessFault> listener );
-    void RemoveConnectErrorListener( ResultHandler<BackendlessFault> listener );
+    void AddConnectErrorListener( ConnectErrorListener listener );
+    void RemoveConnectErrorListener( ConnectErrorListener listener );
 
-    void AddDisconnectListener( ResultHandler<String> listener );
-    void RemoveDisconnectListener( ResultHandler<String> listener );
+    void AddDisconnectListener( DisconnectListener listener );
+    void RemoveDisconnectListener( DisconnectListener listener );
 
     void RemoveConnectionListeners();
 

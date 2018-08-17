@@ -152,7 +152,7 @@ namespace Weborb.Reader
 
       int size = arrayObject.Length;
 
-      if( type.Equals( typeof( IAdaptingType ) ) )
+      if( type == typeof( IAdaptingType ) )
       {
         if( Log.isLogging( LoggingConstants.DEBUG ) )
           Log.log( LoggingConstants.DEBUG, "type is an adapting type" );
@@ -212,9 +212,9 @@ namespace Weborb.Reader
 
         return newDictionary;
       }
-      else if( type.GetInterface( "ICollection`1", true ) != null )
+      else if( type.GetInterface( "System.Collections.Generic.ICollection`1" ) != null )
       {
-        Type genericCollection = type.GetInterface( "ICollection`1", true );
+        Type genericCollection = type.GetInterface( "System.Collections.Generic.ICollection`1" );
         Type elementType = genericCollection.GetGenericArguments()[ 0 ];
         object collection = ObjectFactories.CreateServiceObject( type );
 
@@ -329,7 +329,7 @@ namespace Weborb.Reader
         return sortedList;
         }
 #endif
-      else if( type.GetInterface( "Iesi.Collections.ISet", true ) != null || type.FullName.Equals( "Iesi.Collections.ISet" ) )
+      else if( type.GetInterface( "Iesi.Collections.ISet" ) != null || type.FullName.Equals( "Iesi.Collections.ISet" ) )
       {
         if( Log.isLogging( LoggingConstants.DEBUG ) )
           Log.log( LoggingConstants.DEBUG, "type is Iesi.Collections.ISet" );
@@ -381,7 +381,7 @@ namespace Weborb.Reader
 #endif
  (formalArg.IsGenericType && canAdaptToGeneric( formalArg )) ||
       formalArg.FullName.Equals( "Iesi.Collections.ISet" ) ||
-      formalArg.GetInterface( "Iesi.Collections.ISet", true ) != null;
+      formalArg.GetInterface( "Iesi.Collections.ISet" ) != null;
     }
 
     #endregion

@@ -11,7 +11,7 @@ namespace BackendlessAPI.RT
 
     public void Connect()
     {
-      Thread thread = new Thread( new ThreadStart( () => rtClient.Connect() ) );
+      new Thread( () => rtClient.Connect() ).Start();
     }
 
     public void Disconnect()
@@ -21,7 +21,7 @@ namespace BackendlessAPI.RT
 
     public void Invoke( RTMethodRequest methodRequest )
     {
-      Thread thread = new Thread( new ThreadStart( () => rtClient.Invoke( methodRequest ) ) );
+      new Thread( () => rtClient.Invoke( methodRequest ) ).Start();
     }
 
     public bool IsAvailable()
@@ -34,47 +34,47 @@ namespace BackendlessAPI.RT
       return rtClient.IsConnected();
     }
 
-    public void SetConnectErrorEventListener( ResultHandler<BackendlessFault> fault )
+    public void SetConnectErrorEventListener( ConnectErrorListener fault )
     {
       rtClient.SetConnectErrorEventListener( fault );
     }
 
-    public void SetConnectEventListener( ResultHandler<object> callback )
+    public void SetConnectEventListener( ConnectListener callback )
     {
       rtClient.SetConnectEventListener( callback );
     }
 
-    public void SetDisconnectEventListener( ResultHandler<string> callback )
+    public void SetDisconnectEventListener( DisconnectListener callback )
     {
       rtClient.SetDisconnectEventListener( callback );
     }
 
-    public void SetReconnectAttemptEventListener( ResultHandler<ReconnectAttempt> callback )
+    public void SetReconnectAttemptEventListener( ReconnectAttemptListener callback )
     {
       rtClient.SetReconnectAttemptEventListener( callback );
     }
 
     public void Subscribe( RTSubscription subscription )
     {
-      Thread thread = new Thread( new ThreadStart( () => rtClient.Subscribe( subscription ) ) );
+      Thread thread = new Thread( () => rtClient.Subscribe( subscription ) );
       thread.Start();
     }
 
     public void Unsubscribe( string subscriptionId )
     {
-      Thread thread = new Thread( new ThreadStart( () => rtClient.Unsubscribe( subscriptionId ) ) );
+      Thread thread = new Thread( () => rtClient.Unsubscribe( subscriptionId ) );
       thread.Start();
     }
 
     public void UserLoggedIn( string userToken )
     {
-      Thread thread = new Thread( new ThreadStart( () => rtClient.UserLoggedIn( userToken ) ) );
+      Thread thread = new Thread( () => rtClient.UserLoggedIn( userToken ) );
       thread.Start();
     }
 
     public void UserLoggedOut()
     {
-      Thread thread = new Thread( new ThreadStart( () => rtClient.UserLoggedOut() ) );
+      Thread thread = new Thread( () => rtClient.UserLoggedOut() );
       thread.Start();
     }
   }

@@ -16,62 +16,62 @@ namespace BackendlessAPI.RT.Data
 
     void AddCreateListener( ObjectCreated<T> objectCreated );
 
-    void AddCreateListener( String whereClause, ObjectCreated<T> callback );
+    void AddCreateListener( string whereClause, ObjectCreated<T> callback );
 
     void RemoveCreateListeners();
 
     void RemoveCreateListener( ObjectCreated<T> objectCreated );
 
-    void RemoveCreateListener( String whereClause, ObjectCreated<T> callback );
+    void RemoveCreateListener( string whereClause, ObjectCreated<T> callback );
 
-    void RemoveCreateListeners( String whereClause );
+    void RemoveCreateListeners( string whereClause );
 
     void AddUpdateListener( ObjectUpdated<T> callback );
 
-    void AddUpdateListener( String whereClause, ObjectUpdated<T> callback );
+    void AddUpdateListener( string whereClause, ObjectUpdated<T> callback );
 
     void RemoveUpdateListeners();
 
-    void RemoveUpdateListener( String whereClause, ObjectUpdated<T> callback );
+    void RemoveUpdateListener( string whereClause, ObjectUpdated<T> callback );
 
     void RemoveUpdateListener( ObjectUpdated<T> callback );
 
-    void RemoveUpdateListeners( String whereClause );
+    void RemoveUpdateListeners( string whereClause );
 
     void AddDeleteListener( ObjectDeleted<T> callback );
 
-    void AddDeleteListener( String whereClause, ObjectDeleted<T> callback );
+    void AddDeleteListener( string whereClause, ObjectDeleted<T> callback );
 
     void RemoveDeleteListeners();
 
-    void RemoveDeleteListener( String whereClause, ObjectDeleted<T> callback );
+    void RemoveDeleteListener( string whereClause, ObjectDeleted<T> callback );
 
     void RemoveDeleteListener( ObjectDeleted<T> callback );
 
-    void RemoveDeleteListeners( String whereClause );
+    void RemoveDeleteListeners( string whereClause );
 
     void AddBulkUpdateListener( MultipleObjectsUpdated callback );
 
-    void AddBulkUpdateListener( String whereClause, MultipleObjectsUpdated callback );
+    void AddBulkUpdateListener( string whereClause, MultipleObjectsUpdated callback );
 
     void RemoveBulkUpdateListeners();
 
-    void RemoveBulkUpdateListener( String whereClause, MultipleObjectsUpdated callback );
+    void RemoveBulkUpdateListener( string whereClause, MultipleObjectsUpdated callback );
 
     void RemoveBulkUpdateListener( MultipleObjectsUpdated callback );
 
-    void RemoveBulkUpdateListeners( String whereClause );
+    void RemoveBulkUpdateListeners( string whereClause );
 
     void AddBulkDeleteListener( MultipleObjectsDeleted callback );
 
-    void AddBulkDeleteListener( String whereClause, MultipleObjectsDeleted callback );
+    void AddBulkDeleteListener( string whereClause, MultipleObjectsDeleted callback );
 
     void RemoveBulkDeleteListeners();
 
-    void RemoveBulkDeleteListener( String whereClause, MultipleObjectsDeleted callback );
+    void RemoveBulkDeleteListener( string whereClause, MultipleObjectsDeleted callback );
 
     void RemoveBulkDeleteListener( MultipleObjectsDeleted callback );
 
-    void RemoveBulkDeleteListeners( String whereClause );
+    void RemoveBulkDeleteListeners( string whereClause );
   }
 }

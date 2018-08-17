@@ -27,14 +27,14 @@ namespace BackendlessAPI.RT
     private ConcurrentDictionary<String, RTMethodRequest> sentRequests = new ConcurrentDictionary<string, RTMethodRequest>();
     private ConcurrentQueue<RTMethodRequest> methodsToSend = new ConcurrentQueue<RTMethodRequest>();
     #endif
-    private ResultHandler<Object> connectCallback;
-    private ResultHandler<BackendlessFault> connectErrorCallback;
-    private ResultHandler<String> disconnectCallback;
-    private ResultHandler<ReconnectAttempt> reconnectAttemptCallback;
+    private ConnectListener connectCallback;
+    private ConnectErrorListener connectErrorCallback;
+    private DisconnectListener disconnectCallback;
+    private ReconnectAttemptListener reconnectAttemptCallback;
 
     public RTClientSocketIO()
     {
-      connectionManager = new RTClientSocketIO.ConnectionManager( this );
+      connectionManager = new ConnectionManager( this );
     }
 
     public void Connect()
@@ -67,22 +67,22 @@ namespace BackendlessAPI.RT
       return connectionManager.IsConnected();
     }
 
-    public void SetConnectErrorEventListener( ResultHandler<BackendlessFault> fault )
+    public void SetConnectErrorEventListener( ConnectErrorListener fault )
     {
       connectErrorCallback = fault;
     }
 
-    public void SetConnectEventListener( ResultHandler<object> callback )
+    public void SetConnectEventListener( ConnectListener callback )
     {
       connectCallback = callback;
     }
 
-    public void SetDisconnectEventListener( ResultHandler<string> callback )
+    public void SetDisconnectEventListener( DisconnectListener callback )
     {
       disconnectCallback = callback;
     }
 
-    public void SetReconnectAttemptEventListener( ResultHandler<ReconnectAttempt> callback )
+    public void SetReconnectAttemptEventListener( ReconnectAttemptListener callback )
     {
       reconnectAttemptCallback = callback;
     }
@@ -238,7 +238,7 @@ namespace BackendlessAPI.RT
       protected override void Connected()
       {
         parent.Resubscribe();
-        parent.connectCallback( null );
+        parent.connectCallback();
       }
 
       protected override void ConnectError( string error )
@@ -248,7 +248,7 @@ namespace BackendlessAPI.RT
 
       protected override void Disconnected( string cause )
       {
-        parent.disconnectCallback( null );
+        parent.disconnectCallback( cause );
       }
 
       protected override void InvocationResult( params object[] args )

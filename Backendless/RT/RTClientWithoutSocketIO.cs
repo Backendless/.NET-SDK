@@ -31,22 +31,22 @@ namespace BackendlessAPI.RT
       throw new NoSocketIOException();
     }
 
-    public void SetConnectErrorEventListener( ResultHandler<BackendlessFault> fault )
+    public void SetConnectErrorEventListener( ConnectErrorListener fault )
     {
       throw new NoSocketIOException();
     }
 
-    public void SetConnectEventListener( ResultHandler<object> callback )
+    public void SetConnectEventListener( ConnectListener callback )
     {
       throw new NoSocketIOException();
     }
 
-    public void SetDisconnectEventListener( ResultHandler<string> callback )
+    public void SetDisconnectEventListener( DisconnectListener callback )
     {
       throw new NoSocketIOException();
     }
 
-    public void SetReconnectAttemptEventListener( ResultHandler<ReconnectAttempt> callback )
+    public void SetReconnectAttemptEventListener( ReconnectAttemptListener callback )
     {
       throw new NoSocketIOException();
     }
