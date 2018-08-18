@@ -766,7 +766,7 @@ namespace BackendlessAPI.Service
       {
         Type entityType = entity.GetType();
 
-        if( entityType.Equals( typeof( BackendlessUser ) ) )
+        if( entityType == typeof( BackendlessUser ) )
         {
           object entityObject = entity;
           return ( (BackendlessUser) entityObject ).ObjectId;

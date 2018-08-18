@@ -1,0 +1,11 @@
+Data Layer:
+===========
+The data layer is typically the lowest level layer of an application. Typically it consists 
+of data persistence/retreival code. In this particular application, it contains one class:
+ - TaskDatabase.cs
+
+TaskDatabase
+------------
+TaskDatabase builds on the Backendless Cloud Database and represents a specific data table, 
+in our case, the Task table. It contains methods for retreival and persistance, all based on
+the Backendless ORM.

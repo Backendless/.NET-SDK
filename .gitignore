@@ -1,7 +1,6 @@
 # git ignore file
 _UpgradeReport_Files*/
 TestResults/
-Samples/
 sdk/
 Backendless/Backedless-Universal-W8.sln
 Backendless/Bin/Debug/*
