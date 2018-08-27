@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Xamarin.Forms" Version="3.1.0.697729" />
+    <PackageReference Include="FormsToolkit" Version="2.0.1" />
+    <PackageReference Include="Xam.Plugin.ExternalMaps" Version="4.0.1" />
+    <PackageReference Include="Xam.Plugins.Messaging" Version="5.2.0" />
+    <PackageReference Include="Xamarin.Forms.Maps" Version="3.1.0.697729" />
+    <PackageReference Include="AutoMapper" Version="7.0.1" />
+    <PackageReference Include="Xamarin.FFImageLoading" Version="2.4.3.840" />
+    <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.3.840" />
+    <PackageReference Include="Refractored.MvvmHelpers" Version="1.3.0" />
+    <PackageReference Include="MvvmLightLibs" Version="5.4.1" />
+    <PackageReference Include="Xamarin.FFImageLoading.Transformations" Version="2.4.3.840" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="MainPage.xaml.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Constants\" />
+    <Folder Include="Converters\" />
+    <Folder Include="Pages\" />
+    <Folder Include="Services\" />
+    <Folder Include="ViewModels\" />
+    <Folder Include="Views\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Pages\AcquaintanceEditPage.cs">
+      <DependentUpon>..\..\Acquaint.XForms\Pages\AcquaintanceEditPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Pages\SetupPage.cs">
+      <DependentUpon>..\..\Acquaint.XForms\Pages\SetupPage.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Acquaint.Util.NetStandard\Acquaint.Util.NetStandard.csproj" />
+    <ProjectReference Include="..\..\Common\Acquaint.Models.NetStandard\Acquaint.Models.NetStandard.csproj" />
+    <ProjectReference Include="..\..\Common\Acquaint.Abstractions.NetStandard\Acquaint.Abstractions.NetStandard.csproj" />
+    <ProjectReference Include="..\..\Common\Acquant.Data.NetStandard\Acquant.Data.NetStandard.csproj" />
+  </ItemGroup>
+</Project>
