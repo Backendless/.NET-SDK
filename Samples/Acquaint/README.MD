@@ -4,19 +4,19 @@ A simple Xamarin app named *Acquaint*. The app is a simple list of contacts, eac
 
 <img src="./Screenshots/AllScreens_AllPlatforms.jpg" />
 
-##Cross-platform and native
+## Cross-platform and native
 The app is implemented in two ways in order to demonstrate the two different approaches to Xamarin app development:
 * Xamarin.Forms cross-platform UI
 * Xamarin native, with platform-specific UI implementations
 
 Both implementations are based on .NET Standard 2.0.
 
-##Two platforms
+## Two platforms
 The app targets two platforms:
 * iOS
 * Android
     
-##Integrations
+## Integrations
 Includes integrations such as:
 * getting directions
 * making calls
