@@ -67,3 +67,6 @@ All images of people in the app come from [UIFaces.com](http://uifaces.com/autho
 
 ## Clean and Rebuild
 If you see build issues when pulling updates from the repo, try cleaning and rebuilding the solution.
+
+## App Authors
+The original implementation of the app is available in the [XamarinHQ github repository](https://github.com/xamarinhq/app-acquaint). Our implementation has been updated to build with .NET Standard and replaced the Azure Mobile Backend with Backendless (which we believe made the code much cleaner :wink: )
