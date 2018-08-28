@@ -1,6 +1,6 @@
 # Acquaint
 
-A simple Xamarin app named *Acquaint*. The app is a simple list of contacts, each of which can be viewed in a detail screen and modified in an edit screen. It runs on iOS 9+ and Android 4.2+.
+A simple Xamarin app named *Acquaint*. The app is a simple list of contacts, each of which can be viewed in a detail screen and modified in an edit screen. It runs on iOS 9+ and Android 4.2+. The app uses Backendless to store contact information. The database integration layer is implemented through the `IDataSource` [abstraction](https://github.com/Backendless/.NET-SDK/blob/master/Samples/Acquaint/Common/Acquaint.Abstractions.NetStandard/IDataSource.cs).
 
 <img src="./Screenshots/AllScreens_AllPlatforms.jpg" />
 
@@ -15,6 +15,14 @@ Both implementations are based on .NET Standard 2.0.
 The app targets two platforms:
 * iOS
 * Android
+    
+## Backendless backend
+To configure the backend for the application:
+1. Register and login to your [Backendless application](https://develop.backendless.com)
+2. Obtain the `Application ID` and the `.NET API Key` and paste the values into [Settings.cs](https://github.com/Backendless/.NET-SDK/blob/master/Samples/Acquaint/Common/Acquaint.Util.NetStandard/Settings.cs). (you will find the `BackendlessAPPID` and the `BackendlessAPIKey` properties in the code).
+3. When the application runs for the first time, it will automatically create a database table called `Acquaintance` and populate it with data:
+
+<img src="./Screenshots/Backendless_Database.jpg" />
     
 ## Integrations
 Includes integrations such as:
