@@ -330,7 +330,7 @@ namespace BackendlessAPI.Data
       BackendlessDataQuery dataQuery = dataQueryBuilder.Build();
       PersistenceService.CheckPageSizeAndOffset( dataQuery );
       
-      object[] args = { tableName, dataQueryBuilder };
+      object[] args = { tableName, dataQuery };
       return Invoker.InvokeSync<IList<Dictionary<string, object>>>( PERSISTENCE_MANAGER_SERVER_ALIAS, "find", args );
     }
     

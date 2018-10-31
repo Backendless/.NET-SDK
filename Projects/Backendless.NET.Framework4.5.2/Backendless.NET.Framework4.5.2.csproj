@@ -11,6 +11,8 @@
     <AssemblyName>Backendless</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SignAssembly>True</SignAssembly>
+    <AssemblyOriginatorKeyFile>../../backendlessKey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -21,6 +23,8 @@
     <DefineConstants>DEBUG;TRACE;PURE_CLIENT_LIB;WITHRT</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <SignAssembly>True</SignAssembly>
+    <AssemblyOriginatorKeyFile>../../backendlessKey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -30,6 +34,8 @@
     <DefineConstants>TRACE;PURE_CLIENT_LIB;WITHRT</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <SignAssembly>True</SignAssembly>
+    <AssemblyOriginatorKeyFile>../../backendlessKey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EngineIoClientDotNet, Version=1.0.7.0, Culture=neutral, PublicKeyToken=null">

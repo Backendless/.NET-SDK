@@ -17,7 +17,7 @@ Every application has a unique application ID, you will see it right
 on the main dashboard. Additionally, there is also API Key which must
 be used in your client application. The API key is also available
 from the main dashboard of the Backendless backend app. Make sure to use
-the "Windows API Key". 
+the ".NET API Key". 
 
 When you obtain both application ID and API key, make sure to use them
 in the following API call to initialize your .NET/Xamarin app:

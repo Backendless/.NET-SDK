@@ -3,12 +3,18 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Backendless</AssemblyName>
     <RootNamespace>BackendlessAPI</RootNamespace>
+    <SignAssembly>True</SignAssembly>
+    <AssemblyOriginatorKeyFile>../../backendlessKey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <DefineConstants>TRACE;DEBUG;NETSTANDARD2_0;PURE_CLIENT_LIB</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NETSTANDARD2_0;PURE_CLIENT_LIB;WITHRT</DefineConstants>
+    <SignAssembly>True</SignAssembly>
+    <AssemblyOriginatorKeyFile>../../backendlessKey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <DefineConstants>TRACE;RELEASE;NETSTANDARD2_0;PURE_CLIENT_LIB</DefineConstants>
+    <DefineConstants>TRACE;RELEASE;NETSTANDARD2_0;PURE_CLIENT_LIB;WITHRT</DefineConstants>
+    <SignAssembly>True</SignAssembly>
+    <AssemblyOriginatorKeyFile>../../backendlessKey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\..\Backendless\Async\AsyncCallback.cs" />
@@ -102,6 +108,89 @@
     <Compile Include="..\..\Backendless\Push\PushNotificationsBinding.cs" />
     <Compile Include="..\..\Backendless\Push\Registrar.cs" />
     <Compile Include="..\..\Backendless\Push\RegistrationInfo.cs" />
+    <Compile Include="..\..\Backendless\RT\AbstractListenerFactory.cs">
+      <Link>AbstractListenerFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Backendless\RT\AbstractRequest.cs">
+      <Link>AbstractRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Backendless\RT\AsyncRTClient.cs">
+      <Link>AsyncRTClient.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Backendless\RT\Command\Command.cs" />
+    <Compile Include="..\..\Backendless\RT\Command\CommandListener.cs" />
+    <Compile Include="..\..\Backendless\RT\Command\CommandRequest.cs" />
+    <Compile Include="..\..\Backendless\RT\ConnectListener.cs">
+      <Link>ConnectListener.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Backendless\RT\Data\BulkEvent.cs" />
+    <Compile Include="..\..\Backendless\RT\Data\DataSubscription.cs" />
+    <Compile Include="..\..\Backendless\RT\Data\EventHandlerFactory.cs" />
+    <Compile Include="..\..\Backendless\RT\Data\EventHandlerImpl.cs" />
+    <Compile Include="..\..\Backendless\RT\Data\IEventHandler.cs" />
+    <Compile Include="..\..\Backendless\RT\Data\RTDataEvents.cs" />
+    <Compile Include="..\..\Backendless\RT\IRTClient.cs">
+      <Link>IRTClient.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Backendless\RT\IRTRequest.cs">
+      <Link>IRTRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Backendless\RT\IRTService.cs">
+      <Link>IRTService.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Backendless\RT\Messaging\ChannelImpl.cs" />
+    <Compile Include="..\..\Backendless\RT\Messaging\IChannel.cs" />
+    <Compile Include="..\..\Backendless\RT\Messaging\MessageInfoCallback.cs" />
+    <Compile Include="..\..\Backendless\RT\Messaging\MessagingCommandRequest.cs" />
+    <Compile Include="..\..\Backendless\RT\Messaging\MessagingSubscription.cs" />
+    <Compile Include="..\..\Backendless\RT\MethodTypes.cs">
+      <Link>MethodTypes.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Backendless\RT\ReconnectAttempt.cs">
+      <Link>ReconnectAttempt.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Backendless\RT\RTCallback.cs">
+      <Link>RTCallback.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Backendless\RT\RTCallbackWithFault.cs">
+      <Link>RTCallbackWithFault.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Backendless\RT\RTClientFactory.cs">
+      <Link>RTClientFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Backendless\RT\RTClientSocketIO.cs">
+      <Link>RTClientSocketIO.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Backendless\RT\RTClientWithoutSocketIO.cs">
+      <Link>RTClientWithoutSocketIO.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Backendless\RT\RTErrorType.cs">
+      <Link>RTErrorType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Backendless\RT\RTListenerImpl.cs">
+      <Link>RTListenerImpl.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Backendless\RT\RTLookupService.cs">
+      <Link>RTLookupService.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Backendless\RT\RTMethodRequest.cs">
+      <Link>RTMethodRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Backendless\RT\RTServiceImpl.cs">
+      <Link>RTServiceImpl.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Backendless\RT\RTSubscription.cs">
+      <Link>RTSubscription.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Backendless\RT\SocketIOConnectionManager.cs">
+      <Link>SocketIOConnectionManager.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Backendless\RT\SubscriptionNames.cs">
+      <Link>SubscriptionNames.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Backendless\RT\Users\UserInfo.cs" />
+    <Compile Include="..\..\Backendless\RT\Users\UserStatus.cs" />
+    <Compile Include="..\..\Backendless\RT\Users\UserStatusResponse.cs" />
     <Compile Include="..\..\Backendless\Service\BaseService.cs" />
     <Compile Include="..\..\Backendless\Service\CustomService.cs" />
     <Compile Include="..\..\Backendless\Service\FileService.cs" />
@@ -311,6 +400,20 @@
     <Compile Include="..\..\Backendless\WebORB\Writer\TypedObjectWriter.cs" />
     <Compile Include="..\..\Backendless\WebORB\Writer\V3ObjectSerializer.cs" />
     <Compile Include="..\..\Backendless\WebORB\Writer\V3ReferenceCache.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="EngineIoClientDotNet, Version=1.0.7.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\..\..\..\RiderProjects\SocketIoClientDotNet\Src\SocketIoClientDotNet.netstandard2.0\SocketIoClientDotNet.netstandard2.0\bin\Debug\netstandard2.0\EngineIoClientDotNet.dll</HintPath>
+    </Reference>
+    <Reference Include="SocketIoClientDotNet.netstandard2.0, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\..\..\..\RiderProjects\SocketIoClientDotNet\Src\SocketIoClientDotNet.netstandard2.0\SocketIoClientDotNet.netstandard2.0\bin\Debug\netstandard2.0\SocketIoClientDotNet.netstandard2.0.dll</HintPath>
+    </Reference>
+    <Reference Include="WebSocket4Net.NetStandard20, Version=0.15.2.11, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\..\..\..\RiderProjects\SocketIoClientDotNet\Src\SocketIoClientDotNet.netstandard2.0\SocketIoClientDotNet.netstandard2.0\bin\Debug\netstandard2.0\WebSocket4Net.NetStandard20.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Collections.Immutable" Version="1.5.0" />
   </ItemGroup>
   <Target Name="MyAfterBuild" AfterTargets="Build">
     <Message Text="In after build before copy">

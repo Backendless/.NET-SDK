@@ -21,4 +21,4 @@ using System.Runtime.CompilerServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("808CF48B-3D69-4A91-A31C-0EEFAC36FE18")]
-[assembly:InternalsVisibleTo("Backendless.Test")]
+[assembly:InternalsVisibleTo("Backendless.Test, PublicKey=00240000048000009400000006020000002400005253413100040000010001008de5d72fa21cc4d15db75e43992482209497e9d8783f5dfbc8bb9f393a84906da26a7f6e2b04b45b530339f3036d7491f702d3e8de255b77987b754d009ba5e3f7c501ba2916955055ef8370d5cf0c3946a8913fe46d3c12f5fbbe80f1f630058c9718f01cf41257cbfcc0be008e9bca8f816c930912148a70b8880bf707b4b6")]

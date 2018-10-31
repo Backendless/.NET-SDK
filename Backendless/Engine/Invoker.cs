@@ -88,7 +88,6 @@ namespace BackendlessAPI.Engine
       }
       catch( System.Exception ex )
       {
-        Console.WriteLine( "in Invoker exception handler");
         if( ex is WebORBException exception )
           throw new BackendlessException( new BackendlessFault( exception.Fault ) );
 
