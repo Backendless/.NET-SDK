@@ -37,7 +37,7 @@ All APIs can be secured with roles-based security. Also, you can create
 your own API services and deploy them into Backendless.
 
 Be sure to check out API documentation available at:
-[https://backendless.com/docs/dotnet/doc.html](https://backendless.com/docs/dotnet/doc.html)
+[https://backendless.com/docs/dotnet/](https://backendless.com/docs/dotnet/)
 
 If you run into any problems or have any questions, you can contact us at:
 * [Slack](http://slack.backendless.com)
