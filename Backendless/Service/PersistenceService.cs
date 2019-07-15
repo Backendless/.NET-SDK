@@ -739,8 +739,8 @@ namespace BackendlessAPI.Service
 
     public IDataStore<Dictionary<String, Object>> Of( String tableName )
     {
-      if( tableName.ToLower().Equals( "users" ) )
-        throw new System.Exception( "Table 'Users' is not accessible through this signature. Use Backendless.Data.Of( typeof( BackendlessUser ) ) instead" );
+     // if( tableName.ToLower().Equals( "users" ) )
+     //   throw new System.Exception( "Table 'Users' is not accessible through this signature. Use Backendless.Data.Of( typeof( BackendlessUser ) ) instead" );
 
       if (!dataStores.ContainsKey( tableName ) )
         dataStores[tableName] = new DictionaryDrivenDataStore( tableName );

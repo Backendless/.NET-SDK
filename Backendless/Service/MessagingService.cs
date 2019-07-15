@@ -12,37 +12,47 @@ using BackendlessAPI.Messaging;
 #if WITHRT
 using BackendlessAPI.RT.Messaging;
 #endif
+#if !(NET_35 || NET_40)
+using System.Threading.Tasks;
+#endif
 namespace BackendlessAPI.Service
 {
   public class MessagingService
   {
     private static string MESSAGING_MANAGER_SERVER_ALIAS = "com.backendless.services.messaging.MessagingService";
+
     //private static string DEVICE_REGISTRATION_MANAGER_SERVER_ALIAS = "com.backendless.services.messaging.DeviceRegistrationService";
     private static string EMAIL_MANAGER_SERVER_ALIAS = "com.backendless.services.mail.CustomersEmailService";
+    private static string EMAIL_TEMPLATE_SENDER_SERVER_ALIAS = "com.backendless.services.mail.EmailTemplateSender";
     private static string DEFAULT_CHANNEL_NAME = "default";
-    private static String deviceId;
+    private static string deviceId;
     //private static int CHANNEL_NAME_MAX_LENGTH = 46;
     //private static Messaging.DeviceRegistration _deviceRegistrationDto;
-#if UNITY
+  #if UNITY
     private static AsyncCallback<string> _deviceRegisterCallback = null;
     private static AsyncCallback<bool> _deviceUnregisterCallback = null;
     public delegate void UnityRegisterDevice( string GCMSenderID, List<String> channels, DateTime? expiration );
     public delegate void UnityUnregisterDevice();
     private UnityRegisterDevice _unityRegisterDevice;
     private UnityUnregisterDevice _unityUnregisterDevice;
-#endif
+  #endif
 
     public MessagingService()
     {
-      Types.AddClientClassMapping( "com.backendless.management.DeviceRegistrationDto", typeof( Messaging.DeviceRegistration ) );
-      Types.AddClientClassMapping( "com.backendless.services.messaging.MessageStatus", typeof( Messaging.MessageStatus ) );
-      Types.AddClientClassMapping( "com.backendless.services.messaging.PublishOptions", typeof( Messaging.PublishOptions ) );
-      Types.AddClientClassMapping( "com.backendless.services.messaging.DeliveryOptions", typeof( Messaging.DeliveryOptions ) );
-      Types.AddClientClassMapping( "com.backendless.services.messaging.PublishStatusEnum", typeof( Messaging.PublishStatusEnum ) );
+      Types.AddClientClassMapping( "com.backendless.management.DeviceRegistrationDto",
+                                   typeof( Messaging.DeviceRegistration ) );
+      Types.AddClientClassMapping( "com.backendless.services.messaging.MessageStatus",
+                                   typeof( Messaging.MessageStatus ) );
+      Types.AddClientClassMapping( "com.backendless.services.messaging.PublishOptions",
+                                   typeof( Messaging.PublishOptions ) );
+      Types.AddClientClassMapping( "com.backendless.services.messaging.DeliveryOptions",
+                                   typeof( Messaging.DeliveryOptions ) );
+      Types.AddClientClassMapping( "com.backendless.services.messaging.PublishStatusEnum",
+                                   typeof( Messaging.PublishStatusEnum ) );
       Types.AddClientClassMapping( "com.backendless.services.messaging.Message", typeof( Messaging.Message ) );
       deviceId = Guid.NewGuid().ToString();
 
-#if WINDOWS_PHONE8
+    #if WINDOWS_PHONE8
       object deviceId;
       if (!Microsoft.Phone.Info.DeviceExtendedProperties.TryGetValue("DeviceUniqueId", out deviceId))
       {
@@ -58,12 +68,12 @@ namespace BackendlessAPI.Service
           DeviceId = BitConverter.ToString( (byte[]) deviceId ).Replace( "-", "" ),
           OsVersion = System.Environment.OSVersion.Version.Major.ToString( CultureInfo.InvariantCulture )
         };
-#elif UNITY
+    #elif UNITY
       _deviceRegistrationDto = new DeviceRegistration();
-#endif
+    #endif
     }
 
-#if UNITY
+  #if UNITY
     public void SetUnityRegisterDevice( UnityRegisterDevice unityRegisterDevice, UnityUnregisterDevice unityUnregisterDevice )
     {
       _unityRegisterDevice = unityRegisterDevice;
@@ -196,9 +206,9 @@ namespace BackendlessAPI.Service
     {
       get { return _deviceRegistrationDto; }
     }
-#endif
+  #endif
 
-#if WINDOWS_PHONE || WINDOWS_PHONE8
+  #if WINDOWS_PHONE || WINDOWS_PHONE8
     public DeviceRegistration DeviceRegistration
     {
       get { return _deviceRegistrationDto; }
@@ -210,7 +220,8 @@ namespace BackendlessAPI.Service
       RegisterDevice( DEFAULT_CHANNEL_NAME, pushNotificationsBinding, callback );
     }
 
-    public void RegisterDevice(string channel, BackendlessAPI.Push.PushNotificationsBinding pushNotificationsBinding = null,
+    public void RegisterDevice(string channel, BackendlessAPI.Push.PushNotificationsBinding pushNotificationsBinding =
+ null,
                                 AsyncCallback<string> callback = null )
     {
       if( string.IsNullOrEmpty( channel ) )
@@ -219,13 +230,15 @@ namespace BackendlessAPI.Service
       RegisterDevice( new List<string> {channel}, pushNotificationsBinding, callback );
     }
 
-    public void RegisterDevice(List<string> channels, BackendlessAPI.Push.PushNotificationsBinding pushNotificationsBinding = null,
+    public void RegisterDevice(List<string> channels, BackendlessAPI.Push.PushNotificationsBinding pushNotificationsBinding
+ = null,
                                 AsyncCallback<string> callback = null )
     {
       RegisterDevice( channels, null, pushNotificationsBinding, callback );
     }
 
-    public void RegisterDevice(DateTime expiration, BackendlessAPI.Push.PushNotificationsBinding pushNotificationsBinding = null,
+    public void RegisterDevice(DateTime expiration, BackendlessAPI.Push.PushNotificationsBinding pushNotificationsBinding
+ = null,
                                 AsyncCallback<string> callback = null )
     {
       RegisterDevice( null, expiration, pushNotificationsBinding, callback );
@@ -311,17 +324,14 @@ namespace BackendlessAPI.Service
     }
 
 
-#endif
+  #endif
 
-    public String DeviceID
+    public string DeviceID
     {
-      get
-      {
-        return deviceId;
-      }
+      get { return deviceId; }
     }
 
-    #region PUBLISH SYNC (DEFAULT CHANNEL)
+  #region PUBLISH SYNC (DEFAULT CHANNEL)
 
     public Messaging.MessageStatus Publish( object message )
     {
@@ -339,63 +349,93 @@ namespace BackendlessAPI.Service
     }
 
     public Messaging.MessageStatus Publish( object message, Messaging.PublishOptions publishOptions,
-                                     Messaging.DeliveryOptions deliveryOptions )
+                                            Messaging.DeliveryOptions deliveryOptions )
     {
       return Publish( message, DEFAULT_CHANNEL_NAME, publishOptions, deliveryOptions );
     }
 
-    #endregion
+  #endregion
 
-    #region PUBLISH ASYNC (DEFAULT CHANNEL)
+  #region PUBLISH ASYNC (DEFAULT CHANNEL)
 
+  #if !(NET_35 || NET_40)
+    public async Task<MessageStatus> PublishAsync( object message )
+    {
+      return await PublishAsync( message, DEFAULT_CHANNEL_NAME );
+    }
+
+    public async Task<MessageStatus> PublishAsync( object message, PublishOptions publishOptions )
+    {
+      return await PublishAsync( message, DEFAULT_CHANNEL_NAME, publishOptions );
+    }
+
+    public async Task<MessageStatus> PublishAsync( object message, DeliveryOptions deliveryOptions )
+    {
+      return await PublishAsync( message, DEFAULT_CHANNEL_NAME, null, deliveryOptions );
+    }
+
+    public async Task<MessageStatus> PublishAsync( object message,
+                                                   PublishOptions publishOptions,
+                                                   DeliveryOptions deliveryOptions,
+                                                   AsyncCallback<MessageStatus> callback )
+    {
+      return await PublishAsync( message, DEFAULT_CHANNEL_NAME, publishOptions, deliveryOptions );
+    }
+  #endif
     public void Publish( object message, AsyncCallback<MessageStatus> callback )
     {
       Publish( message, DEFAULT_CHANNEL_NAME, callback );
     }
 
-    public void Publish( object message, Messaging.PublishOptions publishOptions, AsyncCallback<MessageStatus> callback )
+    public void Publish( object message, Messaging.PublishOptions publishOptions,
+                         AsyncCallback<MessageStatus> callback )
     {
       Publish( message, DEFAULT_CHANNEL_NAME, publishOptions, callback );
     }
 
-    public void Publish( object message, Messaging.DeliveryOptions deliveryOptions, AsyncCallback<MessageStatus> callback )
+    public void Publish( object message, Messaging.DeliveryOptions deliveryOptions,
+                         AsyncCallback<MessageStatus> callback )
     {
       Publish( message, DEFAULT_CHANNEL_NAME, null, deliveryOptions, callback );
     }
 
-    public void Publish( object message, Messaging.PublishOptions publishOptions, Messaging.DeliveryOptions deliveryOptions,
+    public void Publish( object message, Messaging.PublishOptions publishOptions,
+                         Messaging.DeliveryOptions deliveryOptions,
                          AsyncCallback<MessageStatus> callback )
     {
       Publish( message, DEFAULT_CHANNEL_NAME, publishOptions, deliveryOptions, callback );
     }
 
-    #endregion
+  #endregion
 
-    #region PUBLISH SYNC
+  #region PUBLISH SYNC
 
     public Messaging.MessageStatus Publish( object message, string channelName )
     {
       return PublishSync( message, channelName, null, null );
     }
 
-    public Messaging.MessageStatus Publish( object message, string channelName, Messaging.PublishOptions publishOptions )
+    public Messaging.MessageStatus Publish( object message, string channelName,
+                                            Messaging.PublishOptions publishOptions )
     {
       return PublishSync( message, channelName, publishOptions, null );
     }
 
-    public Messaging.MessageStatus Publish( object message, string channelName, Messaging.DeliveryOptions deliveryOptions )
+    public Messaging.MessageStatus Publish( object message, string channelName,
+                                            Messaging.DeliveryOptions deliveryOptions )
     {
       return PublishSync( message, channelName, null, deliveryOptions );
     }
 
     public Messaging.MessageStatus Publish( object message, string channelName, Messaging.PublishOptions publishOptions,
-                                     Messaging.DeliveryOptions deliveryOptions )
+                                            Messaging.DeliveryOptions deliveryOptions )
     {
       return PublishSync( message, channelName, publishOptions, deliveryOptions );
     }
 
-    private Messaging.MessageStatus PublishSync( object message, string channelName, Messaging.PublishOptions publishOptions,
-                                          Messaging.DeliveryOptions deliveryOptions )
+    private Messaging.MessageStatus PublishSync( object message, string channelName,
+                                                 Messaging.PublishOptions publishOptions,
+                                                 Messaging.DeliveryOptions deliveryOptions )
     {
       checkChannelName( channelName );
 
@@ -403,13 +443,37 @@ namespace BackendlessAPI.Service
         throw new ArgumentNullException( ExceptionMessage.NULL_MESSAGE );
 
       return Invoker.InvokeSync<Messaging.MessageStatus>( MESSAGING_MANAGER_SERVER_ALIAS, "publish",
-                                                   new[]
-                                                     { channelName, message, publishOptions, deliveryOptions } );
+                                                          new[]
+                                                            { channelName, message, publishOptions, deliveryOptions } );
     }
 
-    #endregion
+  #endregion
 
-    #region PUBLISH ASYNC
+  #region PUBLISH ASYNC
+
+  #if !(NET_35 || NET_40)
+    public async Task<MessageStatus> PublishAsync( object message, string channelName )
+    {
+      return await PublishAsync( message, channelName, null, null );
+    }
+
+    public async Task<MessageStatus> PublishAsync( object message, string channelName, PublishOptions publishOptions )
+    {
+      return await PublishAsync( message, channelName, publishOptions, null );
+    }
+
+    public async Task<MessageStatus> PublishAsync( object message, string channelName, DeliveryOptions deliveryOptions )
+    {
+      return await PublishAsync( message, channelName, null, deliveryOptions );
+    }
+
+    public async Task<MessageStatus> PublishAsync( object message, string channelName, PublishOptions publishOptions,
+                                                   DeliveryOptions deliveryOptions )
+    {
+      return await Task.Run( () => Publish( message, channelName, publishOptions, deliveryOptions ) )
+                       .ConfigureAwait( false );
+    }
+  #endif
 
     public void Publish( object message, string channelName, AsyncCallback<MessageStatus> callback )
     {
@@ -441,14 +505,24 @@ namespace BackendlessAPI.Service
                              { channelName, message, publishOptions, deliveryOptions }, callback );
     }
 
-    #endregion
+  #endregion
 
-    #region MESSAGE STATUS
+  #region MESSAGE STATUS
+
+  #if !(NET_35 || NET_40)
+    public async Task<MessageStatus> GetMessageStatusAsync( string messageId )
+    {
+      return await Task.Run( () => GetMessageStatus( messageId ) ).ConfigureAwait( false );
+    }
+
+  #endif
     public MessageStatus GetMessageStatus( string messageId )
     {
       if( messageId == null )
         throw new ArgumentNullException( ExceptionMessage.NULL_MESSAGE_ID );
-      MessageStatus messageStatus = Invoker.InvokeSync<MessageStatus>( MESSAGING_MANAGER_SERVER_ALIAS, "getMessageStatus", new object[] { messageId } );
+      MessageStatus messageStatus =
+        Invoker.InvokeSync<MessageStatus>( MESSAGING_MANAGER_SERVER_ALIAS, "getMessageStatus",
+                                           new object[] { messageId } );
 
       return messageStatus;
     }
@@ -461,9 +535,10 @@ namespace BackendlessAPI.Service
       Invoker.InvokeAsync( MESSAGING_MANAGER_SERVER_ALIAS, "getMessageStatus", new object[] { messageId }, callback );
     }
 
-    #endregion
+  #endregion
 
-    #region CANCEL MESSAGE
+  #region CANCEL MESSAGE
+
     public bool Cancel( string messageId )
     {
       if( string.IsNullOrEmpty( messageId ) )
@@ -482,10 +557,18 @@ namespace BackendlessAPI.Service
                            new Object[] { messageId }, callback );
     }
 
-    #endregion
+  #if !(NET_35 || NET_40)
+    public async Task<bool> CancelAsync( string messageId )
+    {
+      return await Task.Run( () => Cancel( messageId ) ).ConfigureAwait( false );
+    }
+  #endif
 
-    #region SUBSCRIBE
-    #if WITHRT
+  #endregion
+
+  #region SUBSCRIBE
+
+  #if WITHRT
     public IChannel Subscribe()
     {
       return Subscribe( DEFAULT_CHANNEL_NAME );
@@ -495,41 +578,158 @@ namespace BackendlessAPI.Service
     {
       return new ChannelImpl( channelName );
     }
-    #endif
-    #endregion
+  #endif
 
-    #region SEND EMAIL
-    public void SendTextEmail( String subject, String messageBody, List<String> recipients )
+  #endregion
+
+  #region PUSHTEMPLATE
+
+    public MessageStatus PushWithTemplate( string templateName )
     {
-      SendEmail( subject, new BodyParts( messageBody, null ), recipients, new List<String>() );
+      if( string.IsNullOrEmpty( templateName ) )
+        throw new ArgumentNullException( String.Format( ExceptionMessage.NULL_TEMPLATE, "Push template name" ) );
+
+      return Invoker.InvokeSync<MessageStatus>( MESSAGING_MANAGER_SERVER_ALIAS,
+                                                "pushWithTemplate",
+                                                new[] { templateName } );
     }
 
-    public void SendTextEmail( String subject, String messageBody, String recipient )
+    public void PushWithTemplate( string templateName, AsyncCallback<MessageStatus> callback )
     {
-      SendEmail( subject, new BodyParts( messageBody, null ), new List<String>() { recipient }, new List<String>() );
+      if( string.IsNullOrEmpty( templateName ) )
+        throw new ArgumentNullException( String.Format( ExceptionMessage.NULL_TEMPLATE, "Push template name" ) );
+
+      Invoker.InvokeAsync( MESSAGING_MANAGER_SERVER_ALIAS,
+                           "pushWithTemplate",
+                           new[] { templateName },
+                           callback );
     }
 
-    public void SendHTMLEmail( String subject, String messageBody, List<String> recipients )
+  #if !(NET_35 || NET_40)
+    public async Task<MessageStatus> PushWithTemplateAsync( string templateName )
     {
-      SendEmail( subject, new BodyParts( null, messageBody ), recipients, new List<String>() );
+      return await Task.Run( () => PushWithTemplate( templateName ) ).ConfigureAwait( false );
+    }
+  #endif
+
+  #endregion
+
+  #region SEND EMAIL FROM TEMPLATE
+  #if !(NET_35 || NET_40)
+    public async Task<MessageStatus> SendEmailFromTemplateAsync( string templateName, EmailEnvelope envelope )
+    {
+      return await SendEmailFromTemplateAsync( templateName, envelope, null );
     }
 
-    public void SendHTMLEmail( String subject, String messageBody, String recipient )
+    public async Task<MessageStatus> SendEmailFromTemplateAsync( string templateName, EmailEnvelope envelope, Dictionary<string, string> templateValues )
     {
-      SendEmail( subject, new BodyParts( null, messageBody ), new List<String>() { recipient }, new List<String>() );
+      return await Task.Run( () => SendEmailFromTemplate( templateName, envelope, templateValues ) ).ConfigureAwait( false );
     }
 
-    public void SendEmail( String subject, BodyParts bodyParts, String recipient, List<String> attachments )
+  #endif
+    public MessageStatus SendEmailFromTemplate( string templateName, EmailEnvelope envelope )
     {
-      SendEmail( subject, bodyParts, new List<String>() { recipient }, attachments );
+      return SendEmailFromTemplate( templateName, envelope, new Dictionary<string, string>() );
+    }
+    public MessageStatus SendEmailFromTemplate( string templateName, EmailEnvelope envelope, Dictionary<string, string> templateValues )
+    {
+      if( string.IsNullOrEmpty( templateName ) )
+        throw new ArgumentNullException( ExceptionMessage.NULL_EMPTY_TEMPLATE_NAME );
+
+      return Invoker.InvokeSync<MessageStatus>( EMAIL_TEMPLATE_SENDER_SERVER_ALIAS, "sendEmails",
+                                                new Object[] { templateName, envelope, templateValues } );
     }
 
-    public void SendEmail( String subject, BodyParts bodyParts, String recipient )
+    public void SendEmailFromTemplate( string templateName, EmailEnvelope envelope, AsyncCallback<MessageStatus> responder )
     {
-      SendEmail( subject, bodyParts, new List<String>() { recipient }, new List<String>() );
+      SendEmailFromTemplate( templateName, envelope, null, responder );
+    }
+    public void SendEmailFromTemplate( string templateName, EmailEnvelope envelope, Dictionary<string, string> templateValues, AsyncCallback<MessageStatus> responder )
+    {
+      if( string.IsNullOrEmpty( templateName ) )
+        throw new ArgumentNullException( ExceptionMessage.NULL_EMPTY_TEMPLATE_NAME );
+
+      Invoker.InvokeAsync( EMAIL_TEMPLATE_SENDER_SERVER_ALIAS, "sendEmails",
+                           new Object[] { templateName, envelope, templateValues }, responder );
+    }
+  #endregion
+  #region SEND EMAIL
+
+  #if !(NET_35 || NET_40)
+    public async Task<MessageStatus> SendTextEmailAsync( string subject, string messageBody, List<string> recipients )
+    {
+      return await SendEmailAsync( subject, new BodyParts( messageBody, null ), recipients, new List<string>() );
     }
 
-    public void SendEmail( String subject, BodyParts bodyParts, List<String> recipients, List<String> attachments )
+    public async Task<MessageStatus> SendTextEmailAsync( string subject, string messageBody, string recipient )
+    {
+      return await SendEmailAsync( subject, new BodyParts( messageBody, null ), new List<string>() { recipient },
+                            new List<string>() );
+    }
+
+    public async Task<MessageStatus> SendHTMLEmailAsync( string subject, string messageBody, List<string> recipients )
+    {
+      return await SendEmailAsync( subject, new BodyParts( null, messageBody ), recipients, new List<string>() );
+    }
+
+    public async Task<MessageStatus> SendHTMLEmailAsync( string subject, string messageBody, string recipient )
+    {
+      return await SendEmailAsync( subject, new BodyParts( null, messageBody ), new List<string>() { recipient },
+                            new List<string>() );
+    }
+
+    public async Task<MessageStatus> SendEmailAsync( string subject, BodyParts bodyParts, string recipient,
+                                                     List<string> attachments )
+    {
+      return await SendEmailAsync( subject, bodyParts, new List<string>() { recipient }, attachments );
+    }
+
+    public async Task<MessageStatus> SendEmailAsync( string subject, BodyParts bodyParts, string recipient )
+    {
+      return await SendEmailAsync( subject, bodyParts, new List<string>() { recipient }, new List<string>() );
+    }
+
+    public async Task<MessageStatus> SendEmailAsync( string subject, BodyParts bodyParts, List<string> recipients,
+                                                     List<string> attachments )
+    {
+      return await Task.Run( () => SendEmail( subject, bodyParts, recipients, attachments ) ).ConfigureAwait( false );
+    }
+  #endif
+
+    public MessageStatus SendTextEmail( string subject, string messageBody, List<string> recipients )
+    {
+      return SendEmail( subject, new BodyParts( messageBody, null ), recipients, new List<string>() );
+    }
+
+    public MessageStatus SendTextEmail( string subject, string messageBody, string recipient )
+    {
+      return SendEmail( subject, new BodyParts( messageBody, null ), new List<string>() { recipient },
+                        new List<string>() );
+    }
+
+    public MessageStatus SendHTMLEmail( string subject, string messageBody, List<string> recipients )
+    {
+      return SendEmail( subject, new BodyParts( null, messageBody ), recipients, new List<string>() );
+    }
+
+    public MessageStatus SendHTMLEmail( string subject, string messageBody, string recipient )
+    {
+      return SendEmail( subject, new BodyParts( null, messageBody ), new List<string>() { recipient },
+                        new List<string>() );
+    }
+
+    public MessageStatus SendEmail( string subject, BodyParts bodyParts, string recipient, List<string> attachments )
+    {
+      return SendEmail( subject, bodyParts, new List<string>() { recipient }, attachments );
+    }
+
+    public MessageStatus SendEmail( string subject, BodyParts bodyParts, string recipient )
+    {
+      return SendEmail( subject, bodyParts, new List<string>() { recipient }, new List<string>() );
+    }
+
+    public MessageStatus SendEmail( string subject, BodyParts bodyParts, List<string> recipients,
+                                    List<string> attachments )
     {
       if( subject == null )
         throw new ArgumentNullException( ExceptionMessage.NULL_SUBJECT );
@@ -543,41 +743,50 @@ namespace BackendlessAPI.Service
       if( attachments == null )
         throw new ArgumentNullException( ExceptionMessage.NULL_ATTACHMENTS );
 
-      Invoker.InvokeSync<object>( EMAIL_MANAGER_SERVER_ALIAS, "send", new Object[] { subject, bodyParts, recipients, attachments } );
+      return Invoker.InvokeSync<MessageStatus>( EMAIL_MANAGER_SERVER_ALIAS, "send",
+                                                new Object[] { subject, bodyParts, recipients, attachments } );
     }
 
-    public void SendTextEmail( String subject, String messageBody, List<String> recipients, AsyncCallback<object> responder )
+    public void SendTextEmail( string subject, string messageBody, List<string> recipients,
+                               AsyncCallback<MessageStatus> responder )
     {
-      SendEmail( subject, new BodyParts( messageBody, null ), recipients, new List<String>(), responder );
+      SendEmail( subject, new BodyParts( messageBody, null ), recipients, new List<string>(), responder );
     }
 
-    public void SendTextEmail( String subject, String messageBody, String recipient, AsyncCallback<object> responder )
+    public void SendTextEmail( string subject, string messageBody, string recipient,
+                               AsyncCallback<MessageStatus> responder )
     {
-      SendEmail( subject, new BodyParts( messageBody, null ), new List<String>() { recipient }, new List<String>(), responder );
+      SendEmail( subject, new BodyParts( messageBody, null ), new List<string>() { recipient }, new List<string>(),
+                 responder );
     }
 
-    public void SendHTMLEmail( String subject, String messageBody, List<String> recipients, AsyncCallback<object> responder )
+    public void SendHTMLEmail( string subject, string messageBody, List<string> recipients,
+                               AsyncCallback<MessageStatus> responder )
     {
-      SendEmail( subject, new BodyParts( null, messageBody ), recipients, new List<String>(), responder );
+      SendEmail( subject, new BodyParts( null, messageBody ), recipients, new List<string>(), responder );
     }
 
-    public void SendHTMLEmail( String subject, String messageBody, String recipient, AsyncCallback<object> responder )
+    public void SendHTMLEmail( string subject, string messageBody, string recipient,
+                               AsyncCallback<MessageStatus> responder )
     {
-      SendEmail( subject, new BodyParts( null, messageBody ), new List<String>() { recipient }, new List<String>(), responder );
+      SendEmail( subject, new BodyParts( null, messageBody ), new List<string>() { recipient }, new List<string>(),
+                 responder );
     }
 
-    public void SendEmail( String subject, BodyParts bodyParts, String recipient, List<String> attachments, AsyncCallback<object> responder )
+    public void SendEmail( string subject, BodyParts bodyParts, string recipient, List<string> attachments,
+                           AsyncCallback<MessageStatus> responder )
     {
-      SendEmail( subject, bodyParts, new List<String>() { recipient }, attachments, responder );
+      SendEmail( subject, bodyParts, new List<string>() { recipient }, attachments, responder );
     }
 
-    public void SendEmail( String subject, BodyParts bodyParts, String recipient, AsyncCallback<object> responder )
+    public void SendEmail( string subject, BodyParts bodyParts, string recipient,
+                           AsyncCallback<MessageStatus> responder )
     {
-      SendEmail( subject, bodyParts, new List<String>() { recipient }, new List<String>(), responder );
+      SendEmail( subject, bodyParts, new List<string>() { recipient }, new List<string>(), responder );
     }
 
-    public void SendEmail( String subject, BodyParts bodyParts, List<String> recipients, List<String> attachments,
-                           AsyncCallback<object> responder )
+    public void SendEmail( string subject, BodyParts bodyParts, List<string> recipients, List<string> attachments,
+                           AsyncCallback<MessageStatus> responder )
     {
       if( subject == null )
         throw new ArgumentNullException( ExceptionMessage.NULL_SUBJECT );
@@ -591,9 +800,11 @@ namespace BackendlessAPI.Service
       if( attachments == null )
         throw new ArgumentNullException( ExceptionMessage.NULL_ATTACHMENTS );
 
-      Invoker.InvokeAsync( EMAIL_MANAGER_SERVER_ALIAS, "send", new Object[] { subject, bodyParts, recipients, attachments }, responder );
+      Invoker.InvokeAsync( EMAIL_MANAGER_SERVER_ALIAS, "send",
+                           new Object[] { subject, bodyParts, recipients, attachments }, responder );
     }
-    #endregion
+
+  #endregion
 
     private void checkChannelName( string channelName )
     {

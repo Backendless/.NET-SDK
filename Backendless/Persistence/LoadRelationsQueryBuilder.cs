@@ -42,12 +42,12 @@ namespace BackendlessAPI.Persistence
       return pagedQueryBuilder.SetPageSize( pageSize );
     }
 
-    public LoadRelationsQueryBuilder<M> setOffset( int offset )
+    public LoadRelationsQueryBuilder<M> SetOffset( int offset )
     {
       return pagedQueryBuilder.SetOffset( offset );
     }
 
-    public LoadRelationsQueryBuilder<M> prepareNextPage()
+    public LoadRelationsQueryBuilder<M> PrepareNextPage()
     {
       return pagedQueryBuilder.PrepareNextPage();
     }

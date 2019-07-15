@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using BackendlessAPI.Async;
-using BackendlessAPI.Exception;
 using BackendlessAPI.Engine;
+#if !(NET_35 || NET_40)
+using System.Threading.Tasks;
+#endif
 
 namespace BackendlessAPI.Counters
 {
@@ -28,6 +28,12 @@ namespace BackendlessAPI.Counters
     }
 
     #region RESET
+    #if !(NET_35 || NET_40)
+      public async Task ResetAsync( String counterName )
+      {
+        await Task.Run( () => Reset( counterName ) ).ConfigureAwait( false );
+      }
+    #endif  
     public void Reset( String counterName )
     {
       Invoker.InvokeSync<Object>( COUNTERS_SERVER_ALIAS, "reset", new object[] { counterName } );
@@ -40,6 +46,17 @@ namespace BackendlessAPI.Counters
     #endregion
 
     #region GET
+    #if !(NET_35 || NET_40)
+      public async Task<int> GetAsync( String counterName )
+      {
+        return await Task.Run( () => Get( counterName ) ).ConfigureAwait( false );
+      }
+
+      public async Task<T> GetAsync<T>( String counterName )
+      {
+        return await Task.Run( () => Get<T>( counterName ) ).ConfigureAwait( false );
+      }
+    #endif 
     public int Get( String counterName )
     {
       return RunGetOperation<int>( "get", counterName );
@@ -57,6 +74,17 @@ namespace BackendlessAPI.Counters
     #endregion
 
     #region GET_AND_INC
+    #if !(NET_35 || NET_40)
+      public async Task<int> GetAndIncrementAsync( String counterName )
+      {
+        return await Task.Run( () => GetAndIncrement( counterName ) ).ConfigureAwait( false );
+      }
+
+      public async Task<T> GetAndIncrementAsync<T>( String counterName )
+      {
+        return await Task.Run( () => GetAndIncrement<T>( counterName ) ).ConfigureAwait( false );
+      }
+    #endif  
     public int GetAndIncrement( String counterName )
     {
       return GetAndIncrement<int>( counterName );
@@ -74,6 +102,17 @@ namespace BackendlessAPI.Counters
     #endregion
 
     #region INC_AND_GET
+    #if !(NET_35 || NET_40)
+      public async Task<int> IncrementAndGetAsync( String counterName )
+      {
+        return await Task.Run( () => IncrementAndGet( counterName ) ).ConfigureAwait( false );
+      }
+
+      public async Task<T> IncrementAndGetAsync<T>( String counterName )
+      {
+        return await Task.Run( () => IncrementAndGet<T>( counterName ) ).ConfigureAwait( false );
+      }
+    #endif  
     public int IncrementAndGet( String counterName )
     {
       return IncrementAndGet<int>( counterName );
@@ -91,6 +130,17 @@ namespace BackendlessAPI.Counters
     #endregion
 
     #region GET_AND_DEC
+    #if !(NET_35 || NET_40)
+      public async Task<int> GetAndDecrementAsync( String counterName )
+      {
+        return await Task.Run( () => GetAndDecrement( counterName ) ).ConfigureAwait( false );
+      }
+
+      public async Task<T> GetAndDecrementAsync<T>( String counterName )
+      {
+        return await Task.Run( () => GetAndDecrement<T>( counterName ) ).ConfigureAwait( false );
+      }
+    #endif  
     public int GetAndDecrement( String counterName )
     {
       return GetAndDecrement<int>( counterName );
@@ -108,6 +158,17 @@ namespace BackendlessAPI.Counters
     #endregion
 
     #region DEC_AND_GET
+    #if !(NET_35 || NET_40)
+      public async Task<int> DecrementAndGetAsync( String counterName )
+      {
+        return await Task.Run( () => DecrementAndGet( counterName ) ).ConfigureAwait( false );
+      }
+
+      public async Task<T> DecrementAndGetAsync<T>( String counterName )
+      {
+        return await Task.Run( () => DecrementAndGet<T>( counterName ) ).ConfigureAwait( false );
+      }
+    #endif
     public int DecrementAndGet( String counterName )
     {
       return DecrementAndGet<int>( counterName );
@@ -125,6 +186,17 @@ namespace BackendlessAPI.Counters
     #endregion
 
     #region ADD_AND_GET
+    #if !(NET_35 || NET_40)
+      public async Task<int> AddAndGetAsync( String counterName, Int64 value )
+      {
+        return await Task.Run( () => AddAndGet( counterName, value ) ).ConfigureAwait( false );
+      }
+
+      public async Task<T> AddAndGetAsync<T>( String counterName, Int64 value )
+      {
+        return await Task.Run( () => AddAndGet<T>( counterName, value ) ).ConfigureAwait( false );
+      }
+    #endif  
     public int AddAndGet( String counterName, Int64 value )
     {
       return AddAndGet<int>( counterName, value );
@@ -142,6 +214,17 @@ namespace BackendlessAPI.Counters
     #endregion
 
     #region GET_AND_ADD
+    #if !(NET_35 || NET_40)
+      public async Task<int> GetAndAddAsync( String counterName, Int64 value )
+      {
+        return await Task.Run( () => GetAndAdd( counterName, value ) ).ConfigureAwait( false );
+      }
+
+      public async Task<T> GetAndAddAsync<T>( String counterName, Int64 value )
+      {
+        return await Task.Run( () => GetAndAdd<T>( counterName, value ) ).ConfigureAwait( false );
+      }
+    #endif  
     public int GetAndAdd( String counterName, Int64 value )
     {
       return GetAndAdd<int>( counterName, value );
@@ -159,6 +242,12 @@ namespace BackendlessAPI.Counters
     #endregion
 
     #region COMPARE
+    #if !(NET_35 || NET_40)
+      public async Task<bool> CompareAndSetAsync( String counterName, Int64 expected, Int64 updated )
+      {
+        return await Task.Run( () => CompareAndSet( counterName, expected, updated ) ).ConfigureAwait( false );
+      }
+    #endif  
     public bool CompareAndSet( String counterName, Int64 expected, Int64 updated )
     {
       return Invoker.InvokeSync<bool>( COUNTERS_SERVER_ALIAS, "compareAndSet", new object[] { counterName, expected, updated } );

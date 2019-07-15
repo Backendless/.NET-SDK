@@ -13,7 +13,7 @@ namespace BackendlessAPI.Data
 {
   public interface IDataStore<T>
   {
-  #region BULL CREATE
+  #region BULK CREATE
 
     IList<string> Create( IList<T> objects );
   #if !(NET_35 || NET_40)

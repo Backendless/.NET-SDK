@@ -37,9 +37,10 @@
     public const string NULL_MESSAGE_ID = "Message id cannot be null or empty.";
     public const string NULL_SUBSCRIPTION_ID = "Subscription id cannot be null or empty.";
 
-    public const string NULL_FILE = "File cannot be null.";
+    public const string NULL_FILE = "File reference cannot be null.";
     public const string NULL_PATH = "File path cannot be null or empty.";
     public const string NULL_NAME = "File name cannot be null or empty.";
+    public const string NULL_FILE_CONTENTS = "File contents cannot be null or empty";
     public const string NULL_BITMAP = "Bitmap cannot be null";
     public const string NULL_COMPRESS_FORMAT = "CompressFormat cannot be null";
 
@@ -95,6 +96,7 @@
     public const string NULL_SUBJECT = "Subject cannot be null";
     public const string NULL_RECIPIENTS = "Recipients cannot be empty";
     public const string NULL_ATTACHMENTS = "Attachments cannot be null";
+    public const string NULL_EMPTY_TEMPLATE_NAME = "Email template name cannot be null or empty";
 
     public const string GEOFENCE_ALREADY_MONITORING = "The {0} geofence is already being monitored. Monitoring of the geofence must be stopped before you start it again";
     public const string GEOFENCES_MONITORING = "Cannot start geofence monitoring for all available geofences. There is another monitoring session in progress on the client-side. Make sure to stop all monitoring sessions before starting it for all available geo fences.";

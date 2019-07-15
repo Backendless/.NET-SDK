@@ -78,6 +78,9 @@
     <Compile Include="..\..\Backendless\Messaging\BodyParts.cs" />
     <Compile Include="..\..\Backendless\Messaging\DeliveryOptions.cs" />
     <Compile Include="..\..\Backendless\Messaging\DeviceRegistrationDto.cs" />
+    <Compile Include="..\..\Backendless\Messaging\EmailEnvelope.cs">
+      <Link>EmailEnvelope.cs</Link>
+    </Compile>
     <Compile Include="..\..\Backendless\Messaging\Message.cs" />
     <Compile Include="..\..\Backendless\Messaging\MessageStatus.cs" />
     <Compile Include="..\..\Backendless\Messaging\PublishMessageInfo.cs" />

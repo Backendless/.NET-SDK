@@ -1,9 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using BackendlessAPI.Async;
 using BackendlessAPI.Engine;
 using BackendlessAPI.Exception;
+#if !(NET_35 || NET_40)
+using System.Threading.Tasks;
+#endif
 
 namespace BackendlessAPI.Caching
 {
@@ -27,6 +28,18 @@ public class Cache
     return new CacheService<T>( type, key );
   }
 
+  #region PUT
+  #if !(NET_35 || NET_40)
+    public async Task PutAsync( String key, Object obj, int expire )
+    {
+      await Task.Run( () => Put( key, obj, expire ) ).ConfigureAwait( false );
+    }
+
+    public async Task PutAsync( String key, Object obj )
+    {
+      await Task.Run( () => Put( key, obj ) ).ConfigureAwait( false );
+    }
+  #endif
   public void Put( String key, Object obj, int expire, AsyncCallback<Object> callback )
   {
     byte[] bytes = serialize( obj );
@@ -48,6 +61,15 @@ public class Cache
     byte[] bytes = serialize( obj );
     Invoker.InvokeSync<object>(CACHE_SERVER_ALIAS, "putBytes", new object[] { key, bytes, expire } );
   }
+  #endregion
+    
+  #region GET
+  #if !(NET_35 || NET_40)
+    public async Task<T> GetAsync<T>( String key )
+    {
+      return await Task.Run( () => Get<T>( key ) ).ConfigureAwait( false ); 
+    }
+  #endif
 
   public T Get<T>( String key )
   {
@@ -73,7 +95,15 @@ public class Cache
 
     Invoker.InvokeAsync( CACHE_SERVER_ALIAS, "getBytes", new Object[] { key }, interimCallback );
   }
-
+  #endregion
+    
+  #region CONTAINS
+  #if !(NET_35 || NET_40)
+    public async Task<Boolean> ContainsAsync( String key )
+    {
+      return await Task.Run( () => Contains( key ) ).ConfigureAwait( false ); 
+    }
+  #endif  
   public Boolean Contains( String key )
   {
     return Invoker.InvokeSync<Boolean>( CACHE_SERVER_ALIAS, "containsKey", new Object[] { key } );
@@ -83,7 +113,15 @@ public class Cache
   {
     Invoker.InvokeAsync( CACHE_SERVER_ALIAS, "containsKey", new Object[] { key }, callback );
   }
-
+  #endregion
+    
+  #region EXPIREIN
+  #if !(NET_35 || NET_40)
+    public async Task ExpireInAsync( String key, int seconds )
+    {
+      await Task.Run( () => ExpireIn( key, seconds ) ).ConfigureAwait( false ); 
+    }
+  #endif  
   public void ExpireIn( String key, int seconds )
   {
     Invoker.InvokeSync<object>( CACHE_SERVER_ALIAS, "extendLife", new Object[] { key, seconds } );
@@ -93,7 +131,15 @@ public class Cache
   {
     Invoker.InvokeAsync( CACHE_SERVER_ALIAS, "extendLife", new Object[] { key, seconds }, callback );
   }
-
+  #endregion
+    
+  #region EXPIREAT
+  #if !(NET_35 || NET_40)
+    public async Task ExpireAtAsync( String key, int timestamp )
+    {
+      await Task.Run( () => ExpireAt( key, timestamp ) ).ConfigureAwait( false ); 
+    }
+  #endif  
   public void ExpireAt( String key, int timestamp )
   {
     Invoker.InvokeSync<object>( CACHE_SERVER_ALIAS, "expireAt", new Object[] { key, timestamp } );
@@ -103,7 +149,15 @@ public class Cache
   {
     Invoker.InvokeAsync( CACHE_SERVER_ALIAS, "expireAt", new Object[] { key, timestamp }, callback );
   }
-
+  #endregion
+    
+  #region DELETE
+  #if !(NET_35 || NET_40)
+    public async Task DeleteAsync( String key )
+    {
+      await Task.Run( () => Delete( key ) ).ConfigureAwait( false ); 
+    }
+  #endif  
   public void Delete( String key )
   {
     Invoker.InvokeSync<object>( CACHE_SERVER_ALIAS, "delete", new Object[] { key } );
@@ -113,6 +167,7 @@ public class Cache
   {
     Invoker.InvokeAsync( CACHE_SERVER_ALIAS, "delete", new Object[] { key }, callback );
   }
+  #endregion
 
   private static T deserialize<T>( byte[] bytes )
   {

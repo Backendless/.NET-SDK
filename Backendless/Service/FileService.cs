@@ -11,7 +11,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 #if !(NET_35 || NET_40)
 using System.Threading.Tasks;
-
 #endif
 
 namespace BackendlessAPI.Service
@@ -61,7 +60,54 @@ namespace BackendlessAPI.Service
       if( fileStream == null || string.IsNullOrEmpty( Path.GetFileName( fileStream.Name ) ) )
         throw new ArgumentNullException( ExceptionMessage.NULL_FILE );
 
-      return await MakeFileUploadAsync( fileStream, remotePath, overwrite, uploadCallback );
+      var fileName = Path.GetFileName( fileStream.Name );
+
+      //You cannot get name of IsolatedStorageFileStream the normal way, it always returns [Unknown] (making it pass the checks against null)
+      if( fileStream.GetType() == typeof( System.IO.IsolatedStorage.IsolatedStorageFileStream ) )
+        fileName = Path.GetFileName( ((System.IO.IsolatedStorage.IsolatedStorageFileStream) fileStream).Name );
+
+      return await MakeFileUploadAsync( fileStream, remotePath, fileName, overwrite, uploadCallback );
+    }
+    
+    public async Task<BackendlessFile> UploadAsync( byte[] bytes, string remotePath, string fileName )
+    {
+      return await UploadAsync( bytes, remotePath, fileName, false );
+    }
+
+    public async Task<BackendlessFile> UploadAsync( byte[] bytes, string remotePath, string fileName, bool overwrite )
+    {
+      return await UploadAsync( bytes, remotePath, fileName, overwrite, new EmptyUploadCallback() );
+    }
+
+    public async Task<BackendlessFile> UploadAsync( byte[] bytes, string remotePath, string fileName,
+                                                    UploadCallback uploadCallback )
+    {
+      return await UploadAsync( bytes, remotePath, fileName, false, uploadCallback );
+    }
+
+    public async Task<BackendlessFile> UploadAsync( byte[] bytes,
+                                                    string remotePath,
+                                                    string fileName,
+                                                    bool overwrite,
+                                                    UploadCallback uploadCallback )
+    {
+      if( string.IsNullOrEmpty( remotePath ) )
+        throw new ArgumentNullException( ExceptionMessage.NULL_PATH );
+
+      if( bytes == null || bytes.Length == 0 )
+        throw new ArgumentNullException( ExceptionMessage.NULL_FILE_CONTENTS );
+      
+      if( string.IsNullOrEmpty( fileName ) )
+        throw new ArgumentNullException( ExceptionMessage.NULL_NAME );
+
+
+      MemoryStream memoryStream = new MemoryStream();
+      {
+        memoryStream.Write( bytes, 0, bytes.Length );
+        memoryStream.Flush();
+        memoryStream.Seek( 0, SeekOrigin.Begin );
+        return await MakeFileUploadAsync( memoryStream, remotePath, fileName, overwrite, uploadCallback );
+      }
     }
   #endif
 
@@ -438,18 +484,11 @@ namespace BackendlessAPI.Service
     }
 
   #if !(NET_35 || NET_40)
-    private async Task<BackendlessFile> MakeFileUploadAsync( FileStream fileStream, string path, bool overwrite,
+    private async Task<BackendlessFile> MakeFileUploadAsync( Stream fileStream, string path, string fileName, bool overwrite,
                                                              UploadCallback uploadCallback )
     {
       string boundary = DateTime.Now.Ticks.ToString( "x" );
       byte[] boundaryBytes = Encoding.UTF8.GetBytes( "\r\n--" + boundary + "--\r\n" );
-
-      var fileName = Path.GetFileName( fileStream.Name );
-
-      //You cannot get name of IsolatedStorageFileStream the normal way, it always returns [Unknown] (making it pass the checks against null)
-      if( fileStream.GetType() == typeof( System.IO.IsolatedStorage.IsolatedStorageFileStream ) )
-        fileName = Path.GetFileName( ((System.IO.IsolatedStorage.IsolatedStorageFileStream) fileStream).Name );
-
       var sb = new StringBuilder();
       sb.Append( "--" );
       sb.Append( boundary );
@@ -493,7 +532,7 @@ namespace BackendlessAPI.Service
     }
 
     private async Task<BackendlessFile> RequestStreamCallbackAsync( Stream postStream,
-                                                                    FileStream fileStream,
+                                                                    Stream fileStream,
                                                                     WebRequest httpRequest,
                                                                     UploadCallback uploadCallback,
                                                                     byte[] headerBytes,

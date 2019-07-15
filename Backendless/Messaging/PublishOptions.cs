@@ -42,7 +42,7 @@ namespace BackendlessAPI.Messaging
       this.Subtopic = subtopic;
     }
 
-    public PublishOptions( string publisherId, Dictionary<string, string> headers, string subtopic )
+    public PublishOptions( string publisherId, Dictionary<string, object> headers, string subtopic )
     {
       this.PublisherId = publisherId;
       this.Headers = headers;
@@ -53,15 +53,15 @@ namespace BackendlessAPI.Messaging
     public string PublisherId { get; set; }
 
     [SetClientClassMemberName( "headers" )]
-    public Dictionary<string, string> Headers { get; set; }
+    public Dictionary<string, object> Headers { get; set; }
 
     [SetClientClassMemberName( "subtopic" )]
     public string Subtopic { get; set; }
 
-    public void AddHeader( string key, string value )
+    public void AddHeader( string key, object value )
     {
       if( Headers == null )
-        Headers = new Dictionary<string, string>();
+        Headers = new Dictionary<string, object>();
 
       Headers[ key ] = value;
     }
