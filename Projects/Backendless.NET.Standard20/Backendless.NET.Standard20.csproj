@@ -399,18 +399,15 @@
     <Compile Include="..\..\Backendless\WebORB\Writer\V3ReferenceCache.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="EngineIoClientDotNet, Version=1.0.7.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\..\..\..\RiderProjects\SocketIoClientDotNet\Src\SocketIoClientDotNet.netstandard2.0\SocketIoClientDotNet.netstandard2.0\bin\Debug\netstandard2.0\EngineIoClientDotNet.dll</HintPath>
-    </Reference>
-    <Reference Include="SocketIoClientDotNet.netstandard2.0, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\..\..\..\RiderProjects\SocketIoClientDotNet\Src\SocketIoClientDotNet.netstandard2.0\SocketIoClientDotNet.netstandard2.0\bin\Debug\netstandard2.0\SocketIoClientDotNet.netstandard2.0.dll</HintPath>
-    </Reference>
-    <Reference Include="WebSocket4Net.NetStandard20, Version=0.15.2.11, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\..\..\..\RiderProjects\SocketIoClientDotNet\Src\SocketIoClientDotNet.netstandard2.0\SocketIoClientDotNet.netstandard2.0\bin\Debug\netstandard2.0\WebSocket4Net.NetStandard20.dll</HintPath>
-    </Reference>
+    <PackageReference Include="System.Collections.Immutable" Version="1.5.0" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="System.Collections.Immutable" Version="1.5.0" />
+    <Reference Include="EngineIoClientDotNet, Version=1.0.2.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\..\..\backendless\myprojects\socketio\EngineIoClientDotNet\Src\EngineIoClientDotNet.netstandard2.0\bin\Release\netstandard2.0\EngineIoClientDotNet.dll</HintPath>
+    </Reference>
+    <Reference Include="SocketIoClientDotNet, Version=1.0.2.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\..\..\backendless\myprojects\socketio\SocketIoClientDotNet\Src\SocketIoClientDotNet.netstandard2.0\bin\Debug\netstandard2.0\SocketIoClientDotNet.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Target Name="MyAfterBuild" AfterTargets="Build">
     <Message Text="In after build before copy">

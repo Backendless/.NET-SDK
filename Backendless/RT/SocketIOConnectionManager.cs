@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 #if !(NET_40 || NET_35)
+using System.CodeDom;
 using System.Collections.Immutable;
 #endif
 using System.Threading;
@@ -52,8 +53,10 @@ namespace BackendlessAPI.RT
           $"apiKey={Backendless.APIKey}&clientId={Backendless.Messaging.DeviceID}&binary=true";
         #endif
         
-        #if !(NET_40 || NET_35)
-        opts.Transports = ImmutableList.Create( "websocket" );
+        #if( NET_45 )
+          opts.Transports = Quobject.Collections.Immutable.ImmutableList.Create( "websocket" );
+        #elif !(NET_40 || NET_35)
+            opts.Transports = ImmutableList.Create( "websocket" );
         #else
         opts.Transports = (new string[] {"websocket"}).ToList();
         #endif
