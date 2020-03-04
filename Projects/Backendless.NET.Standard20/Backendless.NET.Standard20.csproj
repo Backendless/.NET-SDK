@@ -402,11 +402,14 @@
     <PackageReference Include="System.Collections.Immutable" Version="1.5.0" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="dependencies" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="EngineIoClientDotNet, Version=1.0.2.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\..\..\backendless\myprojects\socketio\EngineIoClientDotNet\Src\EngineIoClientDotNet.netstandard2.0\bin\Release\netstandard2.0\EngineIoClientDotNet.dll</HintPath>
+      <HintPath>dependencies\EngineIoClientDotNet.dll</HintPath>
     </Reference>
     <Reference Include="SocketIoClientDotNet, Version=1.0.2.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\..\..\backendless\myprojects\socketio\SocketIoClientDotNet\Src\SocketIoClientDotNet.netstandard2.0\bin\Debug\netstandard2.0\SocketIoClientDotNet.dll</HintPath>
+      <HintPath>dependencies\SocketIoClientDotNet.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Target Name="MyAfterBuild" AfterTargets="Build">

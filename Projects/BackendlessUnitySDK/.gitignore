@@ -3,8 +3,6 @@
 .vs/
 obj/
 *.suo
-Assets/
-ProjectSettings/
 Temp/
 Library/
 BackendlessUnitySDK.userprefs
