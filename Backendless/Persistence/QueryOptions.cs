@@ -20,7 +20,7 @@ namespace BackendlessAPI.Persistence
     {
       PageSize = pageSize;
       Offset = offset;
-      SortBy = new List<String> {sortBy};
+      SortBy = new List<String> { sortBy };
     }
 
     public QueryOptions( int pageSize, int offset, string sortBy, int relationsDepth )
@@ -29,6 +29,15 @@ namespace BackendlessAPI.Persistence
       Offset = offset;
       SortBy = new List<String> { sortBy };
       RelationsDepth = relationsDepth;
+    }
+
+    public QueryOptions( int pageSize, int offset, string sortBy, int relationsDepth, int relationsPageSize )
+    {
+      PageSize = pageSize;
+      Offset = offset;
+      SortBy = new List<String> { sortBy };
+      RelationsDepth = relationsDepth;
+      RelationsPageSize = relationsPageSize;
     }
 
     [SetClientClassMemberName( "pageSize" )]
@@ -43,12 +52,10 @@ namespace BackendlessAPI.Persistence
     [SetClientClassMemberName( "relationsDepth" )]
     public int RelationsDepth { get; set; }
 
+    [SetClientClassMemberName( "relationsPageSize" )]
+    public int RelationsPageSize { get; set; }
+
     [SetClientClassMemberName( "related" )]
     public List<string> Related { get; set; }
-
-    public QueryOptions NewInstance()
-    {
-      return new QueryOptions {PageSize = PageSize, Offset = Offset, SortBy = SortBy, Related = Related};
-    }
   }
 }

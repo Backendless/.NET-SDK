@@ -8,8 +8,8 @@ namespace BackendlessAPI.Persistence
     private List<String> sortBy;
     private List<String> related;
     private int relationsDepth;
+    private int relationsPageSize;
     private Builder builder;
-
     internal QueryOptionsBuilder( Builder builder )
     {
       sortBy = new List<String>();
@@ -18,10 +18,11 @@ namespace BackendlessAPI.Persistence
     }
 
     internal QueryOptions Build()
-    {
+    { 
       QueryOptions queryOptions = new QueryOptions();
       queryOptions.Related = related;
       queryOptions.RelationsDepth = relationsDepth;
+      queryOptions.RelationsPageSize = relationsPageSize;
       queryOptions.SortBy = sortBy;
       return queryOptions;
     }
@@ -70,6 +71,17 @@ namespace BackendlessAPI.Persistence
     public Builder SetRelationsDepth( int relationsDepth )
     {
       this.relationsDepth = relationsDepth;
+      return builder;
+    }
+
+    public int GetRelationsPageSize()
+    {
+      return relationsPageSize;
+    }
+
+    public Builder SetRelationsPageSize( int relationsPageSize )
+    {
+      this.relationsPageSize = relationsPageSize;
       return builder;
     }
   }

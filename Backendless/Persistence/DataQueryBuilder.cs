@@ -122,6 +122,15 @@ namespace BackendlessAPI.Persistence
       return queryOptionsBuilder.SetRelationsDepth( relationsDepth );
     }
 
+    public int GetRelationsPageSize()
+    {
+      return queryOptionsBuilder.GetRelationsPageSize();
+    }
+    public DataQueryBuilder SetRelationsPageSize( int relationsPageSize )
+    {
+      return queryOptionsBuilder.SetRelationsPageSize( relationsPageSize );
+    }
+
     public DataQueryBuilder SetGroupBy( List<String> groupBy )
     {
       this.groupBy = new List<String>();
