@@ -10,7 +10,6 @@ namespace BackendlessAPI.Persistence
     private int relationsDepth;
     private int relationsPageSize;
     private Builder builder;
-    
     internal QueryOptionsBuilder( Builder builder )
     {
       sortBy = new List<String>();
