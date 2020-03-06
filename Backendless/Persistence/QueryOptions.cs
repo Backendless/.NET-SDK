@@ -20,10 +20,18 @@ namespace BackendlessAPI.Persistence
     {
       PageSize = pageSize;
       Offset = offset;
-      SortBy = new List<String> {sortBy};
+      SortBy = new List<String> { sortBy };
     }
 
-    public QueryOptions( int pageSize, int offset, int relationsPageSize , string sortBy, int relationsDepth )
+    public QueryOptions( int pageSize, int offset, string sortBy, int relationsDepth )
+    {
+      PageSize = pageSize;
+      Offset = offset;
+      SortBy = new List<String> { sortBy };
+      RelationsDepth = relationsDepth;
+    }
+
+    public QueryOptions( int pageSize, int offset, string sortBy, int relationsDepth, int relationsPageSize )
     {
       PageSize = pageSize;
       Offset = offset;

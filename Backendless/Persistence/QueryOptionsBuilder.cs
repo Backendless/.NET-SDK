@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace BackendlessAPI.Persistence
 {
-    public class QueryOptionsBuilder<Builder>
+  public class QueryOptionsBuilder<Builder>
   {
     private List<String> sortBy;
     private List<String> related;
@@ -77,13 +77,13 @@ namespace BackendlessAPI.Persistence
 
     public int GetRelationsPageSize()
     {
-        return relationsPageSize;
+      return relationsPageSize;
     }
 
-    public Builder SetRelationsPageSize(int relationsPageSize)
+    public Builder SetRelationsPageSize( int relationsPageSize )
     {
-        this.relationsPageSize = relationsPageSize;
-        return builder;
+      this.relationsPageSize = relationsPageSize;
+      return builder;
     }
   }
 }
