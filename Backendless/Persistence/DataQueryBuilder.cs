@@ -124,11 +124,11 @@ namespace BackendlessAPI.Persistence
 
     public int GetRelationsPageSize()
     {
-        return queryOptionsBuilder.GetRelationsPageSize();
+      return queryOptionsBuilder.GetRelationsPageSize();
     }
     public DataQueryBuilder SetRelationsPageSize( int relationsPageSize )
     {
-        return queryOptionsBuilder.SetRelationsPageSize( relationsPageSize );
+      return queryOptionsBuilder.SetRelationsPageSize( relationsPageSize );
     }
 
     public DataQueryBuilder SetGroupBy( List<String> groupBy )
