@@ -17,8 +17,7 @@ namespace BackendlessAPI.Persistence
       properties = new List<String>();
       pagedQueryBuilder = new PagedQueryBuilder<DataQueryBuilder>( this );
       queryOptionsBuilder = new QueryOptionsBuilder<DataQueryBuilder>( this );
-      groupBy = new List<string>();
-      havingClause = "";
+      groupBy.Add( "" );
     }
 
     public static DataQueryBuilder Create()
@@ -144,14 +143,14 @@ namespace BackendlessAPI.Persistence
 
     public DataQueryBuilder AddGroupBy( List<String> groupBy )
     {
-      this.groupBy = this.groupBy != null ? this.groupBy : new List<String>();
+      this.groupBy = this.groupBy ?? new List<String>();
       this.groupBy.AddRange( groupBy );
       return this;
     }
 
     public DataQueryBuilder AddGroupBy ( String groupBy )
     {
-         this.groupBy.AddRange( new List<string> { groupBy });
+         this.groupBy.Add( groupBy );
          return this;
     }
 
