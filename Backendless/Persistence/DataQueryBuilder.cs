@@ -139,6 +139,12 @@ namespace BackendlessAPI.Persistence
       return this;
     }
 
+    public DataQueryBuilder SetGroupBy ( string groupBy )
+    {
+      this.groupBy = new List<string> { groupBy };
+      return this;
+    }
+
     public DataQueryBuilder AddGroupBy( List<String> groupBy )
     {
       this.groupBy = this.groupBy ?? new List<String>();
@@ -148,8 +154,9 @@ namespace BackendlessAPI.Persistence
 
     public DataQueryBuilder AddGroupBy ( String groupBy )
     {
-         this.groupBy = new List<string> { groupBy };
-         return this;
+      this.groupBy = this.groupBy ?? new List<string>();
+      this.groupBy.Add( groupBy );
+      return this;
     }
 
     public DataQueryBuilder SetHavingClause( String havingClause )
