@@ -35,8 +35,23 @@ namespace BackendlessAPI.Persistence
       QueryOptions = queryOptions;
     }
 
+    public BackendlessDataQuery( List<string> properties, string whereClause, QueryOptions queryOptions, List<string> groupBy, string havingClause )
+    {
+      Properties = properties;
+      WhereClause = whereClause;
+      QueryOptions = queryOptions;
+      GroupBy = groupBy;
+      HavingClause = havingClause;
+    }
+
     [SetClientClassMemberName( "whereClause" )]
     public string WhereClause { get; set; }
+
+    [SetClientClassMemberName( "groupBy" )]
+    public List<string> GroupBy { get; set; }
+
+    [SetClientClassMemberName( "havingClause" )]
+    public string HavingClause { get; set; }
 
     [SetClientClassMemberName( "queryOptions" )]
     public QueryOptions QueryOptions { get; set; }
@@ -48,11 +63,11 @@ namespace BackendlessAPI.Persistence
     public int PageSize { get;set; }
 
     [SetClientClassMemberName( "offset" )]
-    public int Offset {get; set;}
+    public int Offset { get; set; }
 
     public IBackendlessQuery NewInstance()
     {
-      return new BackendlessDataQuery {Properties = Properties, WhereClause = WhereClause, QueryOptions = QueryOptions};
+      return new BackendlessDataQuery {Properties = Properties, WhereClause = WhereClause, QueryOptions = QueryOptions, GroupBy = GroupBy, HavingClause = HavingClause};
     }
   }
 }
