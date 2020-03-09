@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using BackendlessAPI.Data;
 using Weborb.Service;
 
@@ -13,12 +14,12 @@ namespace BackendlessAPI.Persistence
     {
     }
 
-    public BackendlessDataQuery( List<string> properties )
+    public BackendlessDataQuery( List<String> properties )
     {
       Properties = properties;
     }
 
-    public BackendlessDataQuery( string whereClause )
+    public BackendlessDataQuery( String whereClause )
     {
       WhereClause = whereClause;
     }
@@ -28,31 +29,46 @@ namespace BackendlessAPI.Persistence
       QueryOptions = queryOptions;
     }
 
-    public BackendlessDataQuery( List<string> properties, string whereClause, QueryOptions queryOptions )
+    public BackendlessDataQuery( List<String> properties, String whereClause, QueryOptions queryOptions )
     {
       Properties = properties;
       WhereClause = whereClause;
       QueryOptions = queryOptions;
     }
 
+    public BackendlessDataQuery( List<String> properties, String whereClause, QueryOptions queryOptions, List<String> groupBy, String havingClause )
+    {
+      Properties = properties;
+      WhereClause = whereClause;
+      QueryOptions = queryOptions;
+      GroupBy = groupBy;
+      HavingClause = havingClause;
+    }
+
     [SetClientClassMemberName( "whereClause" )]
-    public string WhereClause { get; set; }
+    public String WhereClause { get; set; }
+
+    [SetClientClassMemberName( "groupBy" )]
+    public List<String> GroupBy { get; set; }
+
+    [SetClientClassMemberName( "havingClause" )]
+    public String HavingClause { get; set; }
 
     [SetClientClassMemberName( "queryOptions" )]
     public QueryOptions QueryOptions { get; set; }
 
     [SetClientClassMemberName( "properties" )]
-    public List<string> Properties { get; set; }
+    public List<String> Properties { get; set; }
 
     [SetClientClassMemberName( "pageSize" )]
     public int PageSize { get;set; }
 
     [SetClientClassMemberName( "offset" )]
-    public int Offset {get; set;}
+    public int Offset { get; set; }
 
     public IBackendlessQuery NewInstance()
     {
-      return new BackendlessDataQuery {Properties = Properties, WhereClause = WhereClause, QueryOptions = QueryOptions};
+      return new BackendlessDataQuery {Properties = Properties, WhereClause = WhereClause, QueryOptions = QueryOptions, GroupBy = GroupBy, HavingClause = HavingClause};
     }
   }
 }
