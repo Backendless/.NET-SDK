@@ -13,12 +13,12 @@ namespace BackendlessAPI.Persistence
     {
     }
 
-    public BackendlessDataQuery( List<string> properties )
+    public BackendlessDataQuery( List<String> properties )
     {
       Properties = properties;
     }
 
-    public BackendlessDataQuery( string whereClause )
+    public BackendlessDataQuery( String whereClause )
     {
       WhereClause = whereClause;
     }
@@ -28,14 +28,14 @@ namespace BackendlessAPI.Persistence
       QueryOptions = queryOptions;
     }
 
-    public BackendlessDataQuery( List<string> properties, string whereClause, QueryOptions queryOptions )
+    public BackendlessDataQuery( List<String> properties, String whereClause, QueryOptions queryOptions )
     {
       Properties = properties;
       WhereClause = whereClause;
       QueryOptions = queryOptions;
     }
 
-    public BackendlessDataQuery( List<string> properties, string whereClause, QueryOptions queryOptions, List<string> groupBy, string havingClause )
+    public BackendlessDataQuery( List<String> properties, String whereClause, QueryOptions queryOptions, List<String> groupBy, String havingClause )
     {
       Properties = properties;
       WhereClause = whereClause;
@@ -45,19 +45,19 @@ namespace BackendlessAPI.Persistence
     }
 
     [SetClientClassMemberName( "whereClause" )]
-    public string WhereClause { get; set; }
+    public String WhereClause { get; set; }
 
     [SetClientClassMemberName( "groupBy" )]
-    public List<string> GroupBy { get; set; }
+    public List<String> GroupBy { get; set; }
 
     [SetClientClassMemberName( "havingClause" )]
-    public string HavingClause { get; set; }
+    public String HavingClause { get; set; }
 
     [SetClientClassMemberName( "queryOptions" )]
     public QueryOptions QueryOptions { get; set; }
 
     [SetClientClassMemberName( "properties" )]
-    public List<string> Properties { get; set; }
+    public List<String> Properties { get; set; }
 
     [SetClientClassMemberName( "pageSize" )]
     public int PageSize { get;set; }
