@@ -60,10 +60,9 @@ namespace BackendlessAPI.Persistence
       return properties;
     }
 
-    public DataQueryBuilder SetProperties( List<String> properties, params String[] property )
+    public DataQueryBuilder SetProperties( List<String> properties )
     {
       this.properties = properties;
-      this.properties.AddRange( property );
       return this;
     }
     
@@ -80,10 +79,9 @@ namespace BackendlessAPI.Persistence
       return this;
     }
 
-    public DataQueryBuilder AddProperties( List<String> properties, params String[] property )
+    public DataQueryBuilder AddProperties( List<String> properties )
     {
       this.properties.AddRange( properties );
-      this.properties.AddRange( property );
       return this;
     }
 
