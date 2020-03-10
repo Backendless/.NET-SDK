@@ -65,10 +65,29 @@ namespace BackendlessAPI.Persistence
       this.properties = properties;
       return this;
     }
+    
+    public DataQueryBuilder SetProperties( params String[] properties )
+    {
+      this.properties = new List<String>();
+      this.properties.AddRange( properties );
+      return this;
+    }
 
     public DataQueryBuilder AddProperty( String property )
     {
       this.properties.Add( property );
+      return this;
+    }
+
+    public DataQueryBuilder AddProperties( List<String> properties )
+    {
+      this.properties.AddRange( properties );
+      return this;
+    }
+
+    public DataQueryBuilder AddProperties( params String[] properties )
+    { 
+      this.properties.AddRange( properties );
       return this;
     }
 
