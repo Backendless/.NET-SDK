@@ -482,7 +482,7 @@ namespace BackendlessAPI.Service
       lock (currentUserLock)
       {
         HandleUserLogin(Invoker.InvokeSync<Dictionary<string, object>>(USER_MANAGER_SERVER_ALIAS,
-                                                       "loginAsGuest", new object[] { }), stayLoggedIn);
+                                                "loginAsGuest", new object[] { }), stayLoggedIn);
         return CurrentUser;
       }
     }
