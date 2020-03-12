@@ -474,39 +474,39 @@ namespace BackendlessAPI.Service
 
     public BackendlessUser LoginAsGuest()
     {
-      return LoginAsGuest(false);
+      return LoginAsGuest( false );
     }
 
-    public BackendlessUser LoginAsGuest(bool stayLoggedIn)
+    public BackendlessUser LoginAsGuest( bool stayLoggedIn )
     {
-      lock (currentUserLock)
+      lock ( currentUserLock )
       {
-        HandleUserLogin(Invoker.InvokeSync<Dictionary<string, object>>(USER_MANAGER_SERVER_ALIAS,
-                                                "loginAsGuest", new object[] { }), stayLoggedIn);
+        HandleUserLogin( Invoker.InvokeSync<Dictionary<string, object>>( USER_MANAGER_SERVER_ALIAS,
+                                                "loginAsGuest", new object[] { } ), stayLoggedIn );
         return CurrentUser;
       }
     }
 
-    public void LoginAsGuest(AsyncCallback<BackendlessUser> responder)
+    public void LoginAsGuest( AsyncCallback<BackendlessUser> responder )
     {
-      LoginAsGuest(responder, false);
+      LoginAsGuest( responder, false );
     }
 
-    public void LoginAsGuest(AsyncCallback<BackendlessUser> responder, bool stayLoggedIn)
+    public void LoginAsGuest( AsyncCallback<BackendlessUser> responder, bool stayLoggedIn )
     {
-      lock(currentUserLock)
+      lock( currentUserLock )
       { 
         try
         {
-          Invoker.InvokeAsync(USER_MANAGER_SERVER_ALIAS, "loginAsGuest", new Object[] { },
-                                       GetUserLoginAsyncHandler(responder, stayLoggedIn));
+          Invoker.InvokeAsync( USER_MANAGER_SERVER_ALIAS, "loginAsGuest", new Object[] { },
+                                       GetUserLoginAsyncHandler( responder, stayLoggedIn ) );
         }
-        catch (System.Exception ex)
+        catch ( System.Exception ex )
         {
-          if(responder != null)
-            responder.ErrorHandler.Invoke(new BackendlessFault(ex.Message));
-              else
-                throw;
+          if( responder != null )
+            responder.ErrorHandler.Invoke( new BackendlessFault( ex.Message ) );
+          else
+            throw;
         }
       }
     }
@@ -529,14 +529,14 @@ namespace BackendlessAPI.Service
     }
 
   #if WINDOWS_PHONE
-        public void LoginWithFacebook(Microsoft.Phone.Controls.WebBrowser webBrowser,
+        public void LoginWithFacebook( Microsoft.Phone.Controls.WebBrowser webBrowser,
                                          IDictionary<string, string> facebookFieldsMappings, IList<string> permissions,
-                                         AsyncCallback<BackendlessUser> callback)
+                                         AsyncCallback<BackendlessUser> callback )
         {
             try
             {
-                if (webBrowser == null)
-                    throw new ArgumentNullException(ExceptionMessage.NUL_WEBBROWSER);
+                if ( webBrowser == null )
+                    throw new ArgumentNullException( ExceptionMessage.NUL_WEBBROWSER );
 
                 Invoker.InvokeAsync(USER_MANAGER_SERVER_ALIAS, "getFacebookServiceAuthorizationUrlLink",
                                     new Object[]
@@ -545,23 +545,23 @@ namespace BackendlessAPI.Service
                                             HeadersManager.GetInstance().Headers[HeadersEnum.APP_TYPE_NAME.Header],
                                             facebookFieldsMappings, permissions
                                         },
-                                    GetSocialEasyLoginAsyncHandler(webBrowser, callback));
+                                    GetSocialEasyLoginAsyncHandler( webBrowser, callback ) );
             }
-            catch (System.Exception ex)
+            catch ( System.Exception ex )
             {
-                if (callback != null)
-                    callback.ErrorHandler.Invoke(new BackendlessFault(ex.Message));
+                if ( callback != null )
+                    callback.ErrorHandler.Invoke( new BackendlessFault( ex.Message ) );
                 else
                     throw;
             }
         }
 
-        public void LoginWithTwitter(Microsoft.Phone.Controls.WebBrowser webBrowser,
-                                        IDictionary<string, string> twitterFieldsMappings, AsyncCallback<BackendlessUser> callback)
+        public void LoginWithTwitter( Microsoft.Phone.Controls.WebBrowser webBrowser,
+                                        IDictionary<string, string> twitterFieldsMappings, AsyncCallback<BackendlessUser> callback )
         {
             try
             {
-                if (webBrowser == null)
+                if ( webBrowser == null )
                     throw new ArgumentNullException(ExceptionMessage.NUL_WEBBROWSER);
 
                 Invoker.InvokeAsync(USER_MANAGER_SERVER_ALIAS, "getTwitterServiceAuthorizationUrlLink",
@@ -571,37 +571,37 @@ namespace BackendlessAPI.Service
                                             HeadersManager.GetInstance().Headers[HeadersEnum.APP_TYPE_NAME.Header],
                                             twitterFieldsMappings
                                         },
-                                    GetSocialEasyLoginAsyncHandler(webBrowser, callback));
+                                    GetSocialEasyLoginAsyncHandler( webBrowser, callback ) );
             }
-            catch (System.Exception ex)
+            catch ( System.Exception ex )
             {
-                if (callback != null)
-                    callback.ErrorHandler.Invoke(new BackendlessFault(ex.Message));
+                if ( callback != null )
+                    callback.ErrorHandler.Invoke(new BackendlessFault( ex.Message ) );
                 else
                     throw;
             }
         }
 
-        private AsyncCallback<string> GetSocialEasyLoginAsyncHandler(Microsoft.Phone.Controls.WebBrowser webBrowser,
-                                                                     AsyncCallback<BackendlessUser> callback)
+        private AsyncCallback<string> GetSocialEasyLoginAsyncHandler( Microsoft.Phone.Controls.WebBrowser webBrowser,
+                                                                     AsyncCallback<BackendlessUser> callback )
         {
             return new AsyncCallback<string>(
-                response => Deployment.Current.Dispatcher.BeginInvoke(() =>
+                response => Deployment.Current.Dispatcher.BeginInvoke( () =>
                     {
-                        var uri = new Uri(response, UriKind.Absolute);
+                        var uri = new Uri( response, UriKind.Absolute );
 
                         webBrowser.IsScriptEnabled = true;
-                        webBrowser.ScriptNotify += (sender, args) =>
+                        webBrowser.ScriptNotify += ( sender, args ) =>
                             {
-                                var result = (new Utils.Json()).Deserialize(args.Value);
-                                GetUserLoginAsyncHandler(callback, false).ResponseHandler.Invoke(result);
+                                var result = ( new Utils.Json() ).Deserialize( args.Value );
+                                GetUserLoginAsyncHandler( callback, false ).ResponseHandler.Invoke( result );
                             };
                         webBrowser.Navigate(uri);
                     }), fault =>
                         {
-                            if (callback != null)
-                                callback.ErrorHandler.Invoke(fault);
-                        });
+                            if ( callback != null )
+                                callback.ErrorHandler.Invoke( fault );
+                        } );
         }
 #endif
   }
