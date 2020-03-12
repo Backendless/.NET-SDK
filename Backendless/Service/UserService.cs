@@ -17,7 +17,7 @@ namespace BackendlessAPI.Service
   {
     private static string USER_MANAGER_SERVER_ALIAS = "com.backendless.services.users.UserService";
     private ILoginStorage _loginStorage = null;
-
+    private static Object currentUserLock = new Object();
     public BackendlessUser CurrentUser{ get; set; }
 
     public ILoginStorage LoginStorage
@@ -472,8 +472,47 @@ namespace BackendlessAPI.Service
       }
     }
 
+    public BackendlessUser LoginAsGuest()
+    {
+      return LoginAsGuest(false);
+    }
+
+    public BackendlessUser LoginAsGuest(bool stayLoggedIn)
+    {
+      lock (currentUserLock)
+      {
+        HandleUserLogin(Invoker.InvokeSync<Dictionary<string, object>>(USER_MANAGER_SERVER_ALIAS,
+                                                       "loginAsGuest", new object[] { }), stayLoggedIn);
+        return CurrentUser;
+      }
+    }
+
+    public void LoginAsGuest(AsyncCallback<BackendlessUser> responder)
+    {
+      LoginAsGuest(responder, false);
+    }
+
+    public void LoginAsGuest(AsyncCallback<BackendlessUser> responder, bool stayLoggedIn)
+    {
+      lock(currentUserLock)
+      { 
+        try
+        {
+          Invoker.InvokeAsync(USER_MANAGER_SERVER_ALIAS, "loginAsGuest", new Object[] { },
+                                       GetUserLoginAsyncHandler(responder, stayLoggedIn));
+        }
+        catch (System.Exception ex)
+        {
+          if(responder != null)
+            responder.ErrorHandler.Invoke(new BackendlessFault(ex.Message));
+              else
+                throw;
+        }
+      }
+    }
+
     private AsyncCallback<Dictionary<string, object>> GetUserLoginAsyncHandler(
-      AsyncCallback<BackendlessUser> callback, bool stayLoggedIn )
+                     AsyncCallback<BackendlessUser> callback, bool stayLoggedIn )
     {
       return new AsyncCallback<Dictionary<string, object>>( r =>
       {
