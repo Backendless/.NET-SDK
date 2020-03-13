@@ -486,9 +486,12 @@ namespace BackendlessAPI.Service
 
     public BackendlessUser LoginAsGuest( bool stayLoggedIn )
     {
-      HandleUserLogin( Invoker.InvokeSync<Dictionary<string, object>>( USER_MANAGER_SERVER_ALIAS,
+      //lock(currentUserLock)
+      //{
+        HandleUserLogin( Invoker.InvokeSync<Dictionary<string, object>>( USER_MANAGER_SERVER_ALIAS,
                                                 "loginAsGuest", new object[] { } ), stayLoggedIn );
-      return CurrentUser;
+        return CurrentUser;
+      //}
     }
 
     public void LoginAsGuest( AsyncCallback<BackendlessUser> responder )
