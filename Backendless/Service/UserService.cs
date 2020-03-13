@@ -472,6 +472,13 @@ namespace BackendlessAPI.Service
       }
     }
 
+  #if !(NET_35 || NET_40)
+    public async Task<BackendlessUser> LoginAsGuestAsync( bool stayLoggedIn = false )
+    {
+      return await Task.Run( () => LoginAsGuest( stayLoggedIn ) ).ConfigureAwait( false );
+    }
+  #endif
+
     public BackendlessUser LoginAsGuest()
     {
       return LoginAsGuest( false );
@@ -479,12 +486,9 @@ namespace BackendlessAPI.Service
 
     public BackendlessUser LoginAsGuest( bool stayLoggedIn )
     {
-      lock ( currentUserLock )
-      {
-        HandleUserLogin( Invoker.InvokeSync<Dictionary<string, object>>( USER_MANAGER_SERVER_ALIAS,
+      HandleUserLogin( Invoker.InvokeSync<Dictionary<string, object>>( USER_MANAGER_SERVER_ALIAS,
                                                 "loginAsGuest", new object[] { } ), stayLoggedIn );
-        return CurrentUser;
-      }
+      return CurrentUser;
     }
 
     public void LoginAsGuest( AsyncCallback<BackendlessUser> responder )
