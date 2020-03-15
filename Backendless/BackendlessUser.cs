@@ -9,7 +9,7 @@ namespace BackendlessAPI
   {
     public const string PASSWORD_KEY = "password";
     public const string EMAIL_KEY = "email";
-    private const string LOCALE = "blUserLocale";
+    public const string LOCALE = "blUserLocale";
     private const string ID_KEY = "objectId";
 
     private Dictionary<string, object> _properties = new Dictionary<string, object>();
