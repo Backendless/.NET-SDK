@@ -21,7 +21,7 @@ namespace BackendlessAPI
 
     static Dictionary<object, String> values = new Dictionary<object, String>(){ { 0, "Cartesian"},{ 4200, "Pulkovo_1995"},
                                    { 4326, "WGS84" },{3867,"WGS 84 / Pseudo-Mercator"}, {3395, "WGS 84 / World Mercator"}};
-    public static String valueBySRSId( int srsId )
+    public static String GetName()
     {
       if ( values["srsId"] != null )
         return values["srsId"]; 

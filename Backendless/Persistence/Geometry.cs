@@ -6,8 +6,41 @@ using System.Threading.Tasks;
 
 namespace BackendlessAPI
 {
-  abstract class Geometry<T>
+  abstract public class Geometry<T>
   {
+    protected SpatialReferenceSystemEnum srs;
+
+    protected Geometry( SpatialReferenceSystemEnum srs )
+    {
+      if ( srs == null )
+        throw new ArgumentNullException( "Spatial Reference System(SRS) cannot be null" );
+      this.srs = srs;
+    }
+
+    public static T FromWKT( String wellKnownText )
+    {
+      return ( T )new WKTParser().Read( wellKnownText );
+    }
+
+    public static T FromGeoJSON( String geoJSON )
+    {
+      return ( T )new GeoJSONParser().Read( geoJSON );
+    }
+
+    public static T FromWKT( String wellKnownText, SpatialReferenceSystemEnum srs )
+    {
+      return ( T )new WKTParser( srs ).Read( wellKnownText );
+    }
+
+    public static T FromGeoJSON( String geoJSON, SpatialReferenceSystemEnum srs )
+    {
+      return ( T )new GeoJSONParser( srs ).Read( geoJSON );
+    }
+    public SpatialReferenceSystemEnum getSRS()
+    {
+      return srs;
+    }
+    
     abstract public String GetGeoJSONType();
 
     abstract public String GetWKTType();
