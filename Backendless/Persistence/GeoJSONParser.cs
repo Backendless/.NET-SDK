@@ -10,14 +10,14 @@ namespace BackendlessAPI
   public class GeoJSONParser<T> where T : Geometry
   {
     private T geomClass;
-    private SpatialReferenceSystemEnum srs;
+    private SpatialReferenceSystemEnum.ReferenceSystemEnum srs;
 
     public GeoJSONParser()
     {
       this( null, null ); //ask it
     }
     
-    public GeoJSONParser( SpatialReferenceSystemEnum srs )
+    public GeoJSONParser( SpatialReferenceSystemEnum.ReferenceSystemEnum srs )
     {
       this( srs, null );//ask it
     }

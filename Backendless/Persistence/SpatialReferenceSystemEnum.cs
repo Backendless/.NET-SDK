@@ -16,7 +16,7 @@ namespace BackendlessAPI
       WGS84_WORLD_MECATOR = 3395
     }
 
-    public static ReferenceSystemEnum SERVER_DEFAULT = ReferenceSystemEnum.CARTESIAN;
+    public static ReferenceSystemEnum SERVER_DEFAULT = ReferenceSystemEnum.CARTESIAN
     public static ReferenceSystemEnum DEFAULT = ReferenceSystemEnum.WGS84;
 
     static Dictionary<object, String> values = new Dictionary<object, String>(){ { 0, "Cartesian"},{ 4200, "Pulkovo_1995"},

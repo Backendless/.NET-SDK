@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BackendlessAPI
 {
-  abstract public class Geometry<T>
+  abstract public class Geometry
   {
     protected SpatialReferenceSystemEnum srs;
 
