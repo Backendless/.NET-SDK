@@ -4,6 +4,8 @@ using BackendlessAPI.Utils;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Reflection;
 
 namespace BackendlessAPI
 {
@@ -27,13 +29,24 @@ namespace BackendlessAPI
     public GeoJSONParser( SpatialReferenceSystemEnum.ReferenceSystemEnum srs, String geomClassName )
     {
       this.srs = srs;
-      if(geomClassName != null)
+      if ( geomClassName != null )
       {
-        T unchekedClazz = ( T )Type.GetType( geomClassName );
+        try
+        {
+          Assembly asm = Assembly.GetExecutingAssembly();
+          T unchekedClazz = ( T )asm.CreateInstance( geomClassName );
+          this.geomClass = unchekedClazz;
+        }
+        catch
+        {
+          throw new ArgumentException( $"'geomClassName' contains uknown class '{geomClassName}'." );
+        }
       }
+      else
+        this.geomClass = null;
     }
 
-    public Geometry<T> Read( String geoJSON )
+    public Geometry Read( String geoJSON )
     {
       if ( geoJSON == null )
         return null;
@@ -41,12 +54,21 @@ namespace BackendlessAPI
       Dictionary<string, object> geoJSONMap;
       try
       {
-        
+        Json json = new Json();
+        geoJSONMap = json.Deserialize( geoJSON );
       }
-      catch( Exception ex )
+      catch( System.Exception ex )
       {
         throw new GeoJSONParserException( ex );
       }
+      return Read( geoJSONMap );
+    }
+
+    public Geometry Read(Dictionary<string, object> geoJSON)
+    {
+      //string type = (string) geoJSON.Get("type");
+      //Object coordinatesObj = geoJSON.Get("coordinates");
+      //int srsId = (int) geoJSON.Keys;
     }
     
     public class GeoJSONParserException
