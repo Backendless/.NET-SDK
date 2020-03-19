@@ -32,7 +32,7 @@ namespace BackendlessAPI
       String type = tokenizer.NextToken().ToString();
       try
       {
-        return ReadGeometryTaggedText( tokenizer, type )
+        return ReadGeometryTaggedText( tokenizer, type );
       }
       catch( IOException ex )
       {
@@ -61,6 +61,7 @@ namespace BackendlessAPI
       try
       {
         int type = tokenizer.NextToken();
+
         switch ( type )
         {
           case StreamTokenizer.TT_WORD:
@@ -72,10 +73,10 @@ namespace BackendlessAPI
             return L_PAREN;
           case ')':
             return R_PAREN;
-
           case ',':
             return COMMA;
         }
+
         throw new WKTParseException( $"Uknown type: '{( char )type}'" );
       }
       catch ( IOException ex )
@@ -96,6 +97,7 @@ namespace BackendlessAPI
         case StreamTokenizer.TT_WORD:
           return $"'{tokenizer.StringValue}'";
       }
+
       return $"'{( char )tokenizer.ttype}'";
     }
 
@@ -104,6 +106,7 @@ namespace BackendlessAPI
       String nextWord = GetNextWord( tokenizer );
       if ( nextWord.Equals( EMPTY ) || nextWord.Equals( L_PAREN ) )
         return nextWord;
+
       throw new WKTParseException( $"Excepted: {EMPTY} or {L_PAREN}" );
     }
 
@@ -112,6 +115,7 @@ namespace BackendlessAPI
       String nextWord = GetNextWord( tokenizer );
       if ( nextWord.Equals( COMMA ) || nextWord.Equals( R_PAREN ) )
         return nextWord;
+
       throw new WKTParseException( $"Excepted: {COMMA} or {R_PAREN}" );
     }
 
@@ -120,6 +124,7 @@ namespace BackendlessAPI
       String nextWord = GetNextWord( tokenizer );
       if ( nextWord.Equals( R_PAREN ) )
         return nextWord;
+
       throw new WKTParseException( $"Excepted: {R_PAREN}" );
     }
 
@@ -172,6 +177,7 @@ namespace BackendlessAPI
           }
         }
       }
+
       throw new WKTParseException( "Excepted: number" );
     }
     private List<double[]> GetCoordinateSequence( StreamTokenizer tokenizer, bool tryParen )
@@ -179,12 +185,15 @@ namespace BackendlessAPI
       String nextWord = GetNextEmptyOrOpener( tokenizer );
       if ( nextWord.Equals( EMPTY ) )
         return null;
+
       List<double[]> coordinates = new List<double[]>();
+
       do
       {
         coordinates.Add( GetCoordinate( tokenizer, tryParen ) );
       }
       while ( GetNextCloserOrComma( tokenizer ).Equals( COMMA ) );
+
       return coordinates;
     }
 

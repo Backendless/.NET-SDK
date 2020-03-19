@@ -33,14 +33,17 @@ namespace BackendlessAPI
     {
     }
 
-    public GeometryDTO(String geomClass, int srsId, String geoJSON)
+    public GeometryDTO( String geomClass, int srsId, String geoJSON )
     {
       this.geomClass = geomClass;
       this.srsId = srsId;
       this.geoJSON = geoJSON;
     }
 
-    //public T Geometry where T : Geometry()
+    public T ToGeometry<T>() where T : Geometry
+    {
+      GeoJSONParser<Geometry> geoJSONParser = new GeoJSONParser<Geometry>( SpatialReferenceSystemEnum.GetName(), geomClass )
+    }
     public override bool Equals( object obj )
     {
       if ( this == obj )

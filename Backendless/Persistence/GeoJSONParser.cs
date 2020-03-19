@@ -12,27 +12,24 @@ namespace BackendlessAPI
     private T geomClass;
     private SpatialReferenceSystemEnum.ReferenceSystemEnum srs;
 
-    public GeoJSONParser()
+    public GeoJSONParser() : this( SpatialReferenceSystemEnum.DEFAULT, null )
     {
-      this( null, null ); //ask it
     }
     
-    public GeoJSONParser( SpatialReferenceSystemEnum.ReferenceSystemEnum srs )
+    public GeoJSONParser( SpatialReferenceSystemEnum.ReferenceSystemEnum srs ) : this( srs, null )
     {
-      this( srs, null );//ask it
     }
 
-    public GeoJSONParser( String geomClassName )
+    public GeoJSONParser( String geomClassName ) : this( SpatialReferenceSystemEnum.DEFAULT, geomClassName )
     {
-      this( null, geomClass );
     }
 
-    public GeoJSONParser( SpatialReferenceSystemEnum srs, String geomClassName)
+    public GeoJSONParser( SpatialReferenceSystemEnum.ReferenceSystemEnum srs, String geomClassName )
     {
       this.srs = srs;
       if(geomClassName != null)
       {
-
+        T unchekedClazz = ( T )Type.GetType( geomClassName );
       }
     }
 
