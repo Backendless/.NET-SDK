@@ -40,10 +40,10 @@ namespace BackendlessAPI
       this.geoJSON = geoJSON;
     }
 
-    public T ToGeometry<T>() where T : Geometry
+    /*public T ToGeometry<T>() where T : Geometry
     {
       GeoJSONParser<Geometry> geoJSONParser = new GeoJSONParser<Geometry>( SpatialReferenceSystemEnum.GetName(), geomClass )
-    }
+    }*/
     public override bool Equals( object obj )
     {
       if ( this == obj )

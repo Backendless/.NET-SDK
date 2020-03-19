@@ -64,18 +64,25 @@ namespace BackendlessAPI
       return Read( geoJSONMap );
     }
 
-    public Geometry Read(Dictionary<string, object> geoJSON)
+    /*public Geometry Read(Dictionary<string, object> geoJSON)
     {
       //string type = (string) geoJSON.Get("type");
       //Object coordinatesObj = geoJSON.Get("coordinates");
       //int srsId = (int) geoJSON.Keys;
-    }
+    }*/
     
-    public class GeoJSONParserException
+    public class GeoJSONParserException : System.Exception
     {
-      public GeoJSONParserException( String message )
+      public GeoJSONParserException( String message ) : base( message )
       {
-        
+      }
+
+      public GeoJSONParserException( System.Exception exception ) : base ( exception.Message )
+      {
+      }
+
+      public GeoJSONParserException( String message, System.Exception exception) : base( message, exception )
+      {
       }
     }
   }

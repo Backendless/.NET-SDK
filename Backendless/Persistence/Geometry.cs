@@ -8,35 +8,35 @@ namespace BackendlessAPI
 {
   abstract public class Geometry
   {
-    protected SpatialReferenceSystemEnum srs;
+    protected SpatialReferenceSystemEnum.ReferenceSystemEnum srs;
 
-    protected Geometry( SpatialReferenceSystemEnum srs )
+    protected Geometry( SpatialReferenceSystemEnum.ReferenceSystemEnum srs )
     {
-      if ( srs == null )
-        throw new ArgumentNullException( "Spatial Reference System(SRS) cannot be null" );
+      /*if ( srs == null )
+        throw new ArgumentNullException( "Spatial Reference System(SRS) cannot be null" );*/
       this.srs = srs;
     }
 
-    public static T FromWKT( String wellKnownText )
+    public static T FromWKT<T>( String wellKnownText ) where T : Geometry
     {
       return ( T )new WKTParser().Read( wellKnownText );
     }
 
-    public static T FromGeoJSON( String geoJSON )
+    public static T FromGeoJSON<T>( String geoJSON ) where T : Geometry
     {
-      return ( T )new GeoJSONParser().Read( geoJSON );
+      return ( T )new GeoJSONParser<T>().Read( geoJSON );
     }
 
-    public static T FromWKT( String wellKnownText, SpatialReferenceSystemEnum srs )
+    public static T FromWKT<T>( String wellKnownText, SpatialReferenceSystemEnum.ReferenceSystemEnum srs ) where T : Geometry
     {
       return ( T )new WKTParser( srs ).Read( wellKnownText );
     }
 
-    public static T FromGeoJSON( String geoJSON, SpatialReferenceSystemEnum srs )
+    public static T FromGeoJSON<T>( String geoJSON, SpatialReferenceSystemEnum.ReferenceSystemEnum srs ) where T : Geometry
     {
-      return ( T )new GeoJSONParser( srs ).Read( geoJSON );
+      return ( T )new GeoJSONParser<T>( srs ).Read( geoJSON );
     }
-    public SpatialReferenceSystemEnum getSRS()
+    public SpatialReferenceSystemEnum.ReferenceSystemEnum getSRS()
     {
       return srs;
     }

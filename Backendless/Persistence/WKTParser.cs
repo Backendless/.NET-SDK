@@ -224,6 +224,48 @@ namespace BackendlessAPI
       throw new WKTParseException( $"Uknown geometry type: '{type}'" );
     }
 
+    private Point ReadPointText ( StreamTokenizer tokenizer )
+    {
+      List<double[]> coordinateSequence = GetCoordinateSequence( tokenizer, false );
+      if ( coordinateSequence == null )
+        return null;
+
+      return new Point( this.srs ).SetX( coordinateSequence.ElementAt( 0 )[0]).SetY(coordinateSequence.ElementAt(0)[1]);
+    }
+
+    private LineString ReadLineStringText( StreamTokenizer tokenizer )
+    {
+      List<double[]> coordinateSequence = GetCoordinateSequence( tokenizer, false );
+      if ( coordinateSequence == null )
+        return null;
+
+      List<Point> points = new List<Point>();
+      foreach ( double[] coordinates in coordinateSequence )
+        points.Add( new Point( srs ).SetX( coordinates[0] ).SetY( coordinates[1] ) );
+
+      return new LineString( points, this.srs );
+    }
+
+    private Polygon ReadPolygonText( StreamTokenizer tokenizer )
+    {
+      String nextToken = GetNextEmptyOrOpener( tokenizer );
+      if ( nextToken.Equals( EMPTY ) )
+        return null;
+
+      LineString shell = ReadLineStringText( tokenizer );
+      List<LineString> holes = new List<LineString>();
+
+      nextToken = GetNextCloserOrComma( tokenizer );
+      while( nextToken.Equals(COMMA))
+      {
+        LineString hole = ReadLineStringText( tokenizer );
+        holes.Add( hole );
+        nextToken = GetNextCloserOrComma( tokenizer );
+      }
+
+      return new Polygon( shell, holes, srs );
+    }
+
     private class WKTParseException : System.Exception
     {
       public WKTParseException( String message ) : base( message )
