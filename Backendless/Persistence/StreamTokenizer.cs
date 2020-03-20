@@ -558,14 +558,26 @@ using System.Collections.Generic;
           }
 
           if ((ctype & CT_ALPHA) != 0) {
-              int i = 0;
-              do {
-              buf[i++] = (char) c;
-              c = Read();
-              ctype = c < 0 ? CT_WHITESPACE : c < 256 ? ct[c] : CT_ALPHA;
+              buf.Clear();
+              do{
+                if( c == 32 )//|| (char)c == ')' )//|| (char)c == '(')
+                {
+                  c = Read();
+                  continue;
+                }
+                if( ( char )c != '(' )
+                { 
+                  buf.Add((char) c);
+                  c = Read(); 
+                }
+
+                ctype = c < 0 ? CT_WHITESPACE : c < 256 ? ct[c] : CT_ALPHA;
+
+                if(c==32 && char.IsDigit(buf[buf.Count - 1]))
+                  ctype = CT_WHITESPACE;
               } while ((ctype & (CT_ALPHA | CT_DIGIT)) != 0);
               peekc = c;
-              StringValue = new string(buf.ToArray(), 0, i);
+              StringValue = new string(buf.ToArray(), 0, buf.ToArray().Length);
               if (forceLower)
               StringValue = StringValue.ToLower();
               return ttype = TT_WORD;

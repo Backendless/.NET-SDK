@@ -2,6 +2,7 @@
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
+using System.Globalization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,7 +10,7 @@ namespace BackendlessAPI
 {
   public class WKTParser
   {
-    private static String EMPTY = "EMPTY";
+    private static String EMPTY = "";
     private static String COMMA = ",";
     private static String L_PAREN = "(";
     private static String R_PAREN = ")";
@@ -169,7 +170,11 @@ namespace BackendlessAPI
         {
           try
           {
-            return Double.Parse( tokenizer.StringValue );
+            NumberFormatInfo NFI = new NumberFormatInfo()
+            {
+              NumberDecimalSeparator = "."
+            };
+            return Double.Parse( tokenizer.StringValue, NFI );
           }
           catch ( FormatException ex )
           {
@@ -203,7 +208,9 @@ namespace BackendlessAPI
       if ( opened = tryParen && IsOpenerNext( tokenizer ) )
         tokenizer.NextToken();
 
-      double[] sequence = new double[2] { GetNextNumber( tokenizer ), GetNextNumber( tokenizer ) };
+      double[] sequence = new double[2];
+      sequence[0] = GetNextNumber( tokenizer );
+      sequence[1] = GetNextNumber( tokenizer );
 
       if ( opened )
         GetNextCloser( tokenizer );
