@@ -22,20 +22,22 @@ namespace BackendlessAPI
       return ( T )new WKTParser().Read( wellKnownText );
     }
 
-    public static T FromGeoJSON<T>( String geoJSON ) where T : Geometry
+   /* public static T FromGeoJSON<T>( String geoJSON ) where T : Geometry
     {
       return ( T )new GeoJSONParser<T>().Read( geoJSON );
-    }
+    }*/
 
     public static T FromWKT<T>( String wellKnownText, SpatialReferenceSystemEnum.ReferenceSystemEnum srs ) where T : Geometry
     {
       return ( T )new WKTParser( srs ).Read( wellKnownText );
     }
 
-    public static T FromGeoJSON<T>( String geoJSON, SpatialReferenceSystemEnum.ReferenceSystemEnum srs ) where T : Geometry
+    /*public static T FromGeoJSON<T>( String geoJSON, SpatialReferenceSystemEnum.ReferenceSystemEnum srs ) where T : Geometry
     {
       return ( T )new GeoJSONParser<T>( srs ).Read( geoJSON );
-    }
+    }*/
+
+
     public SpatialReferenceSystemEnum.ReferenceSystemEnum getSRS()
     {
       return srs;

@@ -11,7 +11,7 @@ namespace BackendlessAPI
 {
   public class GeoJSONParser<T> where T : Geometry
   {
-    private T geomClass;
+   /* private T geomClass;
     private SpatialReferenceSystemEnum.ReferenceSystemEnum srs;
 
     public GeoJSONParser() : this( SpatialReferenceSystemEnum.DEFAULT, null )
@@ -46,7 +46,7 @@ namespace BackendlessAPI
         this.geomClass = null;
     }
 
-    public Geometry Read( String geoJSON )
+   /* public Geometry Read( String geoJSON )
     {
       if ( geoJSON == null )
         return null;
@@ -62,7 +62,7 @@ namespace BackendlessAPI
         throw new GeoJSONParserException( ex );
       }
       return Read( geoJSONMap );
-    }
+    }*/
 
     /*public Geometry Read(Dictionary<string, object> geoJSON)
     {
@@ -71,7 +71,7 @@ namespace BackendlessAPI
       //int srsId = (int) geoJSON.Keys;
     }*/
     
-    public class GeoJSONParserException : System.Exception
+   /* public class GeoJSONParserException : System.Exception
     {
       public GeoJSONParserException( String message ) : base( message )
       {
@@ -84,6 +84,6 @@ namespace BackendlessAPI
       public GeoJSONParserException( String message, System.Exception exception) : base( message, exception )
       {
       }
-    }
+    }*/
   }
 }

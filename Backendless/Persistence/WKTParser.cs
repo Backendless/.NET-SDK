@@ -27,9 +27,9 @@ namespace BackendlessAPI
 
     public Geometry Read( String wellKnownText )
     {
-      StreamReader reader = new StreamReader( wellKnownText );
-      StreamTokenizer tokenizer = new StreamTokenizer( reader );
-      String type = tokenizer.NextToken().ToString();
+      StringReader reader = new StringReader( wellKnownText );
+      StreamTokenizer tokenizer = CreateTokenizer( reader );
+      String type = GetNextWord( tokenizer ).ToUpper();
       try
       {
         return ReadGeometryTaggedText( tokenizer, type );
@@ -40,7 +40,7 @@ namespace BackendlessAPI
       }
     }
 
-    private static StreamTokenizer CreateTokenizer( StreamReader reader )
+    private static StreamTokenizer CreateTokenizer( TextReader reader )
     {
       StreamTokenizer tokenizer = new StreamTokenizer( reader );
       tokenizer.ResetSyntax();
