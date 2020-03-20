@@ -3,8 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Globalization;
-using System.Text;
-using System.Threading.Tasks;
+using BackendlessAPI.Utils;
 
 namespace BackendlessAPI
 {
