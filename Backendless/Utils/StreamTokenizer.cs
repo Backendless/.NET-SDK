@@ -1,39 +1,44 @@
-/**
-   * The <code>StreamTokenizer</code> class takes an input stream and
-   * parses it into "tokens", allowing the tokens to be
-   * Read one at a time. The parsing process is controlled by a table
-   * and a number of flags that can be set to various states. The
-   * stream tokenizer can recognize identifiers, numbers, quoted
-   * strings, and various comment styles.
-   * <p>
-   * Each byte Read from the input stream is regarded as a character
-   * in the range <code>'&#92;u0000'</code> through <code>'&#92;u00FF'</code>.
-   * The character value is used to look up five possible attributes of
-   * the character: <i>white space</i>, <i>alphabetic</i>,
-   * <i>numeric</i>, <i>string quote</i>, and <i>comment character</i>.
-   * Each character can have zero or more of these attributes.
-   * <p>
-   * In addition, an instance has four flags. These flags indicate:
-   * <ul>
-   * <li>Whether line terminators are to be returned as tokens or treated
-   *     as white space that merely separates tokens.
-   * <li>Whether C-style comments are to be recognized and skipped.
-   * <li>Whether C++-style comments are to be recognized and skipped.
-   * <li>Whether the characters of identifiers are converted to lowercase.
-   * </ul>
-   * <p>
-   * A typical application first constructs an instance of this class,
-   * sets up the syntax tables, and then repeatedly loops calling the
-   * <code>nextToken</code> method in each iteration of the loop until
-   * it returns the value <code>TT_EOF</code>.
-   *
-   */
 
-  public class StreamTokenizer : IEnumerable<int>
+
+
+using System;
+using System.Collections.Generic;
+using System.IO;
+/**
+* The <code>StreamTokenizer</code> class takes an input stream and
+* parses it into "tokens", allowing the tokens to be
+* Read one at a time. The parsing process is controlled by a table
+* and a number of flags that can be set to various states. The
+* stream tokenizer can recognize identifiers, numbers, quoted
+* strings, and various comment styles.
+* <p>
+* Each byte Read from the input stream is regarded as a character
+* in the range <code>'&#92;u0000'</code> through <code>'&#92;u00FF'</code>.
+* The character value is used to look up five possible attributes of
+* the character: <i>white space</i>, <i>alphabetic</i>,
+* <i>numeric</i>, <i>string quote</i>, and <i>comment character</i>.
+* Each character can have zero or more of these attributes.
+* <p>
+* In addition, an instance has four flags. These flags indicate:
+* <ul>
+* <li>Whether line terminators are to be returned as tokens or treated
+*     as white space that merely separates tokens.
+* <li>Whether C-style comments are to be recognized and skipped.
+* <li>Whether C++-style comments are to be recognized and skipped.
+* <li>Whether the characters of identifiers are converted to lowercase.
+* </ul>
+* <p>
+* A typical application first constructs an instance of this class,
+* sets up the syntax tables, and then repeatedly loops calling the
+* <code>nextToken</code> method in each iteration of the loop until
+* it returns the value <code>TT_EOF</code>.
+*
+*/
+public class StreamTokenizer : IEnumerable<int>
   {
 
       /* Only one of these will be non-null */
-      private StreamReader reader = null;
+      private TextReader reader = null;
 
       private List<char> buf = new List<char>();
 
@@ -86,6 +91,7 @@
        * The initial value of this field is -4.
        *
        */
+
       public int ttype = TT_NOTHING;
 
       /**
@@ -161,7 +167,7 @@
        *
        * @param r  a Reader object providing the input stream.
        */
-      public StreamTokenizer(StreamReader r) : this()
+      public StreamTokenizer(TextReader r) : this()
       {
           if (r == null) 
           {
@@ -554,14 +560,14 @@
           }
 
           if ((ctype & CT_ALPHA) != 0) {
-              int i = 0;
+              buf.Clear();
               do {
-              buf[i++] = (char) c;
+              buf.Add((char) c);
               c = Read();
               ctype = c < 0 ? CT_WHITESPACE : c < 256 ? ct[c] : CT_ALPHA;
               } while ((ctype & (CT_ALPHA | CT_DIGIT)) != 0);
               peekc = c;
-              StringValue = new string(buf.ToArray(), 0, i);
+              StringValue = new string(buf.ToArray(), 0, buf.ToArray().Length);
               if (forceLower)
               StringValue = StringValue.ToLower();
               return ttype = TT_WORD;

@@ -52,7 +52,7 @@ namespace BackendlessAPI
       tokenizer.WordChars( '-', '-' );
       tokenizer.WordChars( '+', '+' );
       tokenizer.WordChars( '.', '.' );
-      tokenizer.WordChars( 0, ' ' );
+      tokenizer.WhitespaceChars( 0, ' ' );
       tokenizer.CommentChar( '#' );
 
       return tokenizer;
