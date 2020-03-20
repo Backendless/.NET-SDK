@@ -30,16 +30,17 @@
    */
 
 using System;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
-  public class StreamTokenizer : IEnumerable<int>
+public class StreamTokenizer : IEnumerable<int>
   {
 
       /* Only one of these will be non-null */
       private TextReader reader = null;
 
-      private List<char> buf = new List<char>();
+      private char[] buf = new char[ 20 ];
 
       /**
        * The next character to be considered by the nextToken method.  May also
@@ -147,7 +148,7 @@ using System.Collections.Generic;
       public double NumberValue { get; private set; }
 
       /** Private constructor that initializes everything except the streams. */
-      private StreamTokenizer() 
+      private StreamTokenizer()
       {
           WordChars('a', 'z');
           WordChars('A', 'Z');
@@ -558,26 +559,22 @@ using System.Collections.Generic;
           }
 
           if ((ctype & CT_ALPHA) != 0) {
-              buf.Clear();
-              do{
-                if( c == 32 )//|| (char)c == ')' )//|| (char)c == '(')
-                {
-                  c = Read();
-                  continue;
-                }
-                if( ( char )c != '(' )
-                { 
-                  buf.Add((char) c);
-                  c = Read(); 
-                }
+              int i = 0;
+              do
+              {
+                  if( i >= buf.Length )
+                  {
+                      char[] tempBuf = new char[buf.Length * 2];
+                      Array.Copy( buf, tempBuf, buf.Length );
+                      buf = tempBuf;
+                  }
 
-                ctype = c < 0 ? CT_WHITESPACE : c < 256 ? ct[c] : CT_ALPHA;
-
-                if(c==32 && char.IsDigit(buf[buf.Count - 1]))
-                  ctype = CT_WHITESPACE;
+                  buf[i++] = (char) c;
+              c = Read();
+              ctype = c < 0 ? CT_WHITESPACE : c < 256 ? ct[c] : CT_ALPHA;
               } while ((ctype & (CT_ALPHA | CT_DIGIT)) != 0);
               peekc = c;
-              StringValue = new string(buf.ToArray(), 0, buf.ToArray().Length);
+              StringValue = new string( new ArraySegment<char>( buf, 0, i ).ToArray() );
               if (forceLower)
               StringValue = StringValue.ToLower();
               return ttype = TT_WORD;
@@ -638,6 +635,13 @@ using System.Collections.Generic;
                   c = d;
                   d = Read();
               }
+
+                  if( i >= buf.Length )
+                  {
+                      char[] tempBuf = new char[buf.Length * 2];
+                      Array.Copy( buf, tempBuf, buf.Length );
+                      buf = tempBuf;
+                  }
               buf[i++] = (char)c;
               }
 
@@ -647,7 +651,7 @@ using System.Collections.Generic;
                */
               peekc = (d == ttype) ? NEED_CHAR : d;
 
-              StringValue = new string(buf.ToArray(), 0, i);
+              StringValue = new string(new ArraySegment<char>( buf, 0, i ).ToArray());
               return ttype;
           }
 
