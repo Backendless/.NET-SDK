@@ -9,17 +9,17 @@ namespace BackendlessAPI
   public class Point : Geometry
   {
     public static double PRECISION = .000000001;
-    public static String GEOJSON_TYPE = "Point";
+    public const String GEOJSON_TYPE = "Point";
     public static String WKT_TYPE = GEOJSON_TYPE.ToUpper();
 
     private double x;
     private double y;
 
-    public Point() : base(SpatialReferenceSystemEnum.DEFAULT)
+    public Point() : base(SpatialReferenceSystem.DEFAULT)
     {
     }
 
-    public Point( SpatialReferenceSystemEnum.ReferenceSystemEnum srs) :base(srs)
+    public Point( ReferenceSystemEnum srs) :base(srs)
     {
     }
 

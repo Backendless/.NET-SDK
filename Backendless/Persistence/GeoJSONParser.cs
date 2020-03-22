@@ -4,29 +4,28 @@ using BackendlessAPI.Utils;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Controls;
 using System.Reflection;
 
 namespace BackendlessAPI
 {
   public class GeoJSONParser<T> where T : Geometry
   {
-   /* private T geomClass;
-    private SpatialReferenceSystemEnum.ReferenceSystemEnum srs;
+    private T geomClass;
+    private ReferenceSystemEnum srs;
 
-    public GeoJSONParser() : this( SpatialReferenceSystemEnum.DEFAULT, null )
+    public GeoJSONParser() : this( SpatialReferenceSystem.DEFAULT, null )
     {
     }
     
-    public GeoJSONParser( SpatialReferenceSystemEnum.ReferenceSystemEnum srs ) : this( srs, null )
+    public GeoJSONParser( ReferenceSystemEnum srs ) : this( srs, null )
     {
     }
 
-    public GeoJSONParser( String geomClassName ) : this( SpatialReferenceSystemEnum.DEFAULT, geomClassName )
+    public GeoJSONParser( String geomClassName ) : this( SpatialReferenceSystem.DEFAULT, geomClassName )
     {
     }
 
-    public GeoJSONParser( SpatialReferenceSystemEnum.ReferenceSystemEnum srs, String geomClassName )
+    public GeoJSONParser( ReferenceSystemEnum srs, String geomClassName )
     {
       this.srs = srs;
       if ( geomClassName != null )
@@ -46,7 +45,7 @@ namespace BackendlessAPI
         this.geomClass = null;
     }
 
-   /* public Geometry Read( String geoJSON )
+    public Geometry Read( String geoJSON )
     {
       if ( geoJSON == null )
         return null;
@@ -54,24 +53,95 @@ namespace BackendlessAPI
       Dictionary<string, object> geoJSONMap;
       try
       {
-        Json json = new Json();
-        geoJSONMap = json.Deserialize( geoJSON );
+        geoJSONMap = (new Json()).Deserialize( geoJSON );
       }
       catch( System.Exception ex )
       {
         throw new GeoJSONParserException( ex );
       }
       return Read( geoJSONMap );
-    }*/
+    }
 
-    /*public Geometry Read(Dictionary<string, object> geoJSON)
+    public Geometry Read( Dictionary<string, object> geoJSON )
     {
-      //string type = (string) geoJSON.Get("type");
-      //Object coordinatesObj = geoJSON.Get("coordinates");
-      //int srsId = (int) geoJSON.Keys;
-    }*/
-    
-   /* public class GeoJSONParserException : System.Exception
+      string type = ( string )geoJSON[ "type" ];
+      Object coordinatesObj = geoJSON[ "coordinates" ];
+
+      Object[] coordinates = null;
+      if ( coordinatesObj is List<Point> )
+      {
+        coordinates = ( ( List<Point> )coordinatesObj ).ToArray();
+      }
+      else if ( coordinatesObj != null )
+        coordinates = ( Object[] )coordinatesObj;
+
+      if ( type == null || coordinates == null )
+        throw new GeoJSONParserException( "Both 'type' and 'coordinates' should be present in GeoJSON object." );
+      if ( this.geomClass == null || this.geomClass.GetType() == typeof( Geometry ) || typeof( Point ) == this.geomClass.GetType()
+          || typeof( LineString ) == this.geomClass.GetType() || typeof( Polygon ) == this.geomClass.GetType() )
+      {
+        switch ( type )
+        {
+          case Point.GEOJSON_TYPE:
+            return ConstructPointFromCoordinates( coordinates );
+          case LineString.GEOJSON_TYPE:
+            return ConstructLineStringFromCoordinates( coordinates );
+          case Polygon.GEOJSON_TYPE:
+            return ConstructPolygonFromCoordinates( coordinates );
+        }
+      }
+      else
+        throw new GeoJSONParserException( $"Unknown geometry class: '{this.geomClass}" );
+
+      throw new GeoJSONParserException( $"Unknown geometry type: '{type}'" );
+    }
+
+    private Point ConstructPointFromCoordinates( Object[] coordinatePair )
+    {
+      return new Point( this.srs ).SetX( ( double )coordinatePair[0] ).SetY( ( double )coordinatePair[1] );
+    }
+
+    private LineString ConstructLineStringFromCoordinates( Object[] arrayOfCoordinatePairs)
+    {
+      List<Point> points = new List<Point>();
+
+      Object[] coordinatePairNumbers;
+      foreach(Object coordinatePairObj in arrayOfCoordinatePairs)
+      {
+        if ( coordinatePairObj is List<Point> )
+          coordinatePairNumbers = ( ( List<Point> )coordinatePairObj ).ToArray();
+        else
+          coordinatePairNumbers = ( Object[] )coordinatePairObj;
+        points.Add( new Point( this.srs ).SetX( ( double )coordinatePairNumbers[0] ).SetY( ( double )coordinatePairNumbers[1] ) );
+      }
+      return new LineString( points, this.srs );
+    }
+
+    private Polygon ConstructPolygonFromCoordinates( Object[] arrayOfCoordinateArrayPairs )
+    {
+      List<LineString> lineStrings = new List<LineString>();
+
+      Object[] arrayOfCoordinatePairs;
+      foreach( Object arrayOfCoordinatePairsObj in arrayOfCoordinateArrayPairs )
+      {
+        if ( arrayOfCoordinatePairsObj is List<Point> )
+          arrayOfCoordinatePairs = ( ( List<Point> )arrayOfCoordinatePairsObj ).ToArray();
+        else
+          arrayOfCoordinatePairs = ( Object[] )arrayOfCoordinatePairsObj;
+
+        LineString lineString = ConstructLineStringFromCoordinates( arrayOfCoordinatePairs );
+        lineStrings.Add( lineString );
+      }
+      if ( lineStrings == null )
+        throw new GeoJSONParserException( "Polygon's GeoJSON should contain at least one LineString." );
+
+      LineString shell = lineStrings.ElementAt( 0 );
+      List<LineString> holes = ( List<LineString> )lineStrings.Skip( 1 );
+
+      return new Polygon( shell, holes, srs );
+    }
+
+    public class GeoJSONParserException : System.Exception
     {
       public GeoJSONParserException( String message ) : base( message )
       {
@@ -84,6 +154,6 @@ namespace BackendlessAPI
       public GeoJSONParserException( String message, System.Exception exception) : base( message, exception )
       {
       }
-    }*/
+    }
   }
 }

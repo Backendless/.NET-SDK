@@ -15,13 +15,13 @@ namespace BackendlessAPI
     private static String R_PAREN = ")";
     private static String NAN_SYMBOL = "NaN";
 
-    private SpatialReferenceSystemEnum.ReferenceSystemEnum srs;
+    private ReferenceSystemEnum srs;
 
-    public WKTParser( SpatialReferenceSystemEnum.ReferenceSystemEnum srs )
+    public WKTParser( ReferenceSystemEnum srs )
     {
       this.srs = srs;
     }
-    public WKTParser() : this( SpatialReferenceSystemEnum.DEFAULT )
+    public WKTParser() : this( SpatialReferenceSystem.DEFAULT )
     {
     }
 

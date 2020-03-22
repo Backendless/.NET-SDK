@@ -8,31 +8,31 @@ namespace BackendlessAPI
 {
   public class Polygon : Geometry
   {
-    public static String GEOJSON_TYPE = "Polygon";
+    public const String GEOJSON_TYPE = "Polygon";
     public static String WKT_TYPE = GEOJSON_TYPE.ToUpper();
 
     private LineString boundary;
     private List<LineString> holes;
 
-    public Polygon( LineString boundary ) : this( boundary, null, SpatialReferenceSystemEnum.DEFAULT )
+    public Polygon( LineString boundary ) : this( boundary, null, SpatialReferenceSystem.DEFAULT )
     {
     }
 
-    public Polygon( List<Point> boundary, List<LineString> holes ) : this( boundary, holes, SpatialReferenceSystemEnum.DEFAULT )
+    public Polygon( List<Point> boundary, List<LineString> holes ) : this( boundary, holes, SpatialReferenceSystem.DEFAULT )
     {
     }
 
-    public Polygon( List<Point> boundary, List<LineString> holes, SpatialReferenceSystemEnum.ReferenceSystemEnum srs)
+    public Polygon( List<Point> boundary, List<LineString> holes, SpatialReferenceSystem.ReferenceSystemEnum srs)
     : this( new LineString( boundary, srs), holes, srs )
     {
     }
 
     public Polygon( LineString boundary, List<LineString> holes ) 
-    : this( boundary, holes, SpatialReferenceSystemEnum.DEFAULT )
+    : this( boundary, holes, SpatialReferenceSystem.DEFAULT )
     {
     }
 
-    public Polygon( LineString boundary, List<LineString> holes, SpatialReferenceSystemEnum.ReferenceSystemEnum srs )
+    public Polygon( LineString boundary, List<LineString> holes, ReferenceSystemEnum srs )
     :base( srs )
     {
       if ( boundary == null )

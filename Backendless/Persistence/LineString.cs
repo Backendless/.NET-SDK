@@ -8,16 +8,16 @@ namespace BackendlessAPI
 {
   public class LineString : Geometry
   {
-    public static String GEOJSON_TYPE = "LineString";
+    public const String GEOJSON_TYPE = "LineString";
     public static String WKT_TYPE = GEOJSON_TYPE.ToUpper();
 
     private List<Point> points;
 
-    public LineString( List<Point> points) : this( points, SpatialReferenceSystemEnum.DEFAULT )
+    public LineString( List<Point> points) : this( points, SpatialReferenceSystem.DEFAULT )
     {
     }
 
-    public LineString(List<Point> points, SpatialReferenceSystemEnum.ReferenceSystemEnum srs ) : base( srs )
+    public LineString(List<Point> points, ReferenceSystemEnum srs ) : base( srs )
     {
       this.points = new List<Point>( points );
     }
