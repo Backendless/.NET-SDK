@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-
+using System.Globalization;
 namespace BackendlessAPI.Utils
 {
     public class Json
@@ -371,11 +371,14 @@ namespace BackendlessAPI.Utils
                     else //Double array
                     {
                         List<double> doubleArray = new List<double>();
-
+                        NumberFormatInfo NFI = new NumberFormatInfo()
+                        {
+                          NumberDecimalSeparator = "."
+                        };
                         for (int valCnt = 0; valCnt < arrayvalues.Count; valCnt++)
                         {
                             string val = arrayvalues[valCnt].ToString().Trim();
-                            doubleArray.Add(double.Parse(val));
+                            doubleArray.Add(double.Parse(val, NFI));
                         }
 
                         return doubleArray;

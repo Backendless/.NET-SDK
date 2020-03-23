@@ -22,7 +22,7 @@ namespace BackendlessAPI
     {
     }
 
-    public Polygon( List<Point> boundary, List<LineString> holes, SpatialReferenceSystem.ReferenceSystemEnum srs)
+    public Polygon( List<Point> boundary, List<LineString> holes, ReferenceSystemEnum srs)
     : this( new LineString( boundary, srs), holes, srs )
     {
     }
