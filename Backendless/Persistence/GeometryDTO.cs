@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Reflection;
 
 namespace BackendlessAPI
 {
@@ -40,10 +41,16 @@ namespace BackendlessAPI
       this.geoJSON = geoJSON;
     }
 
-    /*public T ToGeometry<T>() where T : Geometry
+    public T ToGeometry<T>() where T : Geometry
     {
-      GeoJSONParser<Geometry> geoJSONParser = new GeoJSONParser<Geometry>( SpatialReferenceSystemEnum.GetName(), geomClass )
-    }*/
+      GeoJSONParser<T> geoJSONParser = ( object )srsId != null ?
+                new GeoJSONParser<T>( SpatialReferenceSystem.GetName( srsId ), geomClass ) :
+                new GeoJSONParser<T>( geomClass );
+      Assembly asm = Assembly.GetExecutingAssembly();
+      T result = ( T )geoJSONParser.Read( this.geoJSON );
+      return result;
+    }
+
     public override bool Equals( object obj )
     {
       if ( this == obj )
