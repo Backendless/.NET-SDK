@@ -115,8 +115,8 @@ namespace BackendlessAPI
       if ( !( obj is Polygon ) )
         return false;
       Polygon polygon = ( Polygon )obj;
-      return this.boundary.Equals( polygon.boundary ) && this.holes.Equals( polygon.holes )
-                                                              && ( this.srs == polygon.srs );
+      return boundary.Equals( polygon.boundary ) && holes.SequenceEqual( polygon.holes )
+                                                              && ( srs == polygon.srs );
     }
 
     public override int GetHashCode()
