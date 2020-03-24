@@ -33,7 +33,7 @@ namespace BackendlessAPI
     }
 
     public Polygon( LineString boundary, List<LineString> holes, ReferenceSystemEnum srs )
-    :base( srs )
+    : base( srs )
     {
       if ( boundary == null )
         throw new ArgumentException( "The 'shell' shouldn't be null." );
@@ -42,7 +42,7 @@ namespace BackendlessAPI
         this.holes = new List<LineString>( holes );
       }
       else
-        this.holes = new List<LineString>( holes );
+        this.holes = new List<LineString>();
 
       this.boundary = boundary;
     }
@@ -103,7 +103,7 @@ namespace BackendlessAPI
 
       if ( this.GetHoles() != null )
         foreach ( LineString ls in this.GetHoles() )
-          sb.Append( '(' ).Append( this.GetBoundary().WKTCoordinatePairs() ).Append( ")," );
+          sb.Append( '(' ).Append( ls.WKTCoordinatePairs() ).Append( ")," );
 
       return sb.ToString();
     }
@@ -115,8 +115,8 @@ namespace BackendlessAPI
       if ( !( obj is Polygon ) )
         return false;
       Polygon polygon = ( Polygon )obj;
-      return Object.Equals( this.boundary, polygon.boundary ) && Object.Equals( this.holes, polygon.holes )
-                                                                                     && srs == polygon.srs;
+      return this.boundary.Equals( polygon.boundary ) && this.holes.Equals( polygon.holes )
+                                                              && ( this.srs == polygon.srs );
     }
 
     public override int GetHashCode()

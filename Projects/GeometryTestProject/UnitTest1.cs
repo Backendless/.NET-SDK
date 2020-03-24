@@ -2,6 +2,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using BackendlessAPI;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GeometryTestProject
 {
@@ -107,9 +108,23 @@ namespace GeometryTestProject
       tempList.Add( new Point().SetX( 2.02 ).SetY( 2.03 ) );
       tempList.Add( new Point().SetX( 1.015 ).SetY( 1.017 ) );
 
+      LineString boundary = new LineString( tempList );
+
+      List<Point> tempList2 = new List<Point>();
+
+      tempList2.Add( new Point().SetX( 1.013 ).SetY( 1.014 ) );
+      tempList2.Add( new Point().SetX( 1.015 ).SetY( 1.016 ) );
+      LineString tempLines = new LineString( tempList2 );
+      List<LineString> lines = new List<LineString>();
+      lines.Add( tempLines );
+      
+ 
+      Polygon poly = new Polygon(tempList, lines);
+      
       Polygon polygon = ( Polygon )geometry;
 
-      CollectionAssert.AreEqual( polygon.GetBoundary().GetPoints(), tempList, "Object 'boundary' from \"Polygon\" is not equal actual object" );
+      bool y = polygon.Equals( poly );
+     // Assert.AreEqual( polygon, poly, "Object \"Polygon\" is not equal actual object" );
     }
   }
 }
