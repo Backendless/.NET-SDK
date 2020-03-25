@@ -71,7 +71,7 @@ namespace BackendlessAPI
       if ( !( obj is LineString ) )
         return false;
       LineString that = ( LineString )obj;
-      return Object.Equals( this.points, that.points ) && this.srs == that.srs;
+      return points.SequenceEqual( that.points ) && this.srs == that.srs;
     }
 
     public override int GetHashCode()

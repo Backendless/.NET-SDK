@@ -15,6 +15,7 @@ using BackendlessAPI.Utils;
 using BackendlessAPI.Caching;
 using BackendlessAPI.Counters;
 using BackendlessAPI.Logging;
+using BackendlessAPI.Geo;
 
 #if WITHRT
 using BackendlessAPI.RT;
@@ -94,8 +95,17 @@ namespace BackendlessAPI
   
       MessageWriter.DefaultWriter = new UnderflowWriter();
       MessageWriter.AddAdditionalTypeWriter( typeof( BackendlessUser ), new BackendlessUserWriter() );
+      MessageWriter.AddAdditionalTypeWriter( typeof( Geometry ), new BackendlessGeometryWriter() );
+      MessageWriter.AddAdditionalTypeWriter( typeof( Point ), new BackendlessGeometryWriter() );
+      MessageWriter.AddAdditionalTypeWriter( typeof( LineString ), new BackendlessGeometryWriter() );
+      MessageWriter.AddAdditionalTypeWriter( typeof( Polygon ), new BackendlessGeometryWriter() );
       ORBConfig.GetInstance().getObjectFactories().AddArgumentObjectFactory( typeof( BackendlessUser ).FullName, new BackendlessUserFactory() );
-
+      ORBConfig.GetInstance().getObjectFactories().AddArgumentObjectFactory( typeof( GeometryDTO ).FullName, new BackendlessGeometryFactory() );
+      ORBConfig.GetInstance().getObjectFactories().AddArgumentObjectFactory( typeof( Geometry ).FullName, new BackendlessGeometryFactory() );
+      ORBConfig.GetInstance().getObjectFactories().AddArgumentObjectFactory( typeof( Point ).FullName, new BackendlessGeometryFactory() );
+      ORBConfig.GetInstance().getObjectFactories().AddArgumentObjectFactory( typeof( LineString ).FullName, new BackendlessGeometryFactory() );
+      ORBConfig.GetInstance().getObjectFactories().AddArgumentObjectFactory( typeof( Polygon ).FullName, new BackendlessGeometryFactory() );
+ 
       HeadersManager.CleanHeaders();
       LoginStorage loginStorage = new LoginStorage();
 

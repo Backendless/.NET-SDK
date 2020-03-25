@@ -6,6 +6,54 @@ using System.Linq;
 
 namespace GeometryTestProject
 {
+  public class Person
+  {
+    private Point pickUpLocation;
+    private Point dropOffLocation;
+    private String personName;
+    private String objectId;
+
+    public String getObjectId()
+    {
+      return objectId;
+    }
+
+    public void setObjectId( String objectId )
+    {
+      this.objectId = objectId;
+    }
+
+    public Point getPickupLocation()
+    {
+      return pickUpLocation;
+    }
+
+    public void setPickupLocation( Point pickUpLocation )
+    {
+      this.pickUpLocation = pickUpLocation;
+    }
+
+    public Point getDropOffLocation()
+    {
+      return dropOffLocation;
+    }
+
+    public void setDropOffLocation( Point dropOffLocation )
+    {
+      this.dropOffLocation = dropOffLocation;
+    }
+
+    public String GetPersonName()
+    {
+      return personName;
+    }
+
+    public void setPersonName( String personName )
+    {
+      this.personName = personName;
+    }
+  }
+
   [TestClass]
   public class UnitTest1
   {
@@ -33,14 +81,14 @@ namespace GeometryTestProject
       Type t = typeof( LineString );
       Assert.IsInstanceOfType( geometry, t, "Type is not a \"LineString\"" );
       List<Point> list = new List<Point>();
-      list.Add( new Point().SetX(5.0).SetY(10.2));
+      list.Add( new Point().SetX( 5.0 ).SetY( 10.2 ) );
       list.Add( new Point().SetX( 3.05 ).SetY( 8.6 ) );
-      list.Add( new Point().SetX(2.04).SetY(11.006) );
+      list.Add( new Point().SetX( 2.04 ).SetY( 11.006 ) );
 
       LineString finalLine = new LineString( list );
       LineString line = ( LineString )geometry;
 
-      Assert.AreEqual( line, finalLine , "Points was not Equal" );
+      Assert.AreEqual( line, finalLine, "Points was not Equal" );
     }
     [TestMethod]
     public void TestMethodPolygon()
@@ -128,14 +176,62 @@ namespace GeometryTestProject
       LineString tempLines = new LineString( tempList2 );
       List<LineString> lines = new List<LineString>();
       lines.Add( tempLines );
-      
- 
-      Polygon poly = new Polygon(tempList, lines);
-      
+
+
+      Polygon poly = new Polygon( tempList, lines );
+
       Polygon polygon = ( Polygon )geometry;
 
       bool y = polygon.Equals( poly );
       Assert.AreEqual( polygon, poly, "Object \"Polygon\" is not equal actual object" );
+    }
+
+    [TestMethod]
+    public void TestReceiveGeo()
+    {
+      Backendless.InitApp( "B5D20616-5565-2674-FF73-C5CAC72BD200", "18BF3443-B8A8-48E1-90ED-2783F9AF2D40" );
+
+      Dictionary<string, object> result = Backendless.Data.Of( "Person" ).FindFirst();
+    }
+    [TestMethod]
+    public void TestGeoSave()
+    {
+      Backendless.InitApp( "B5D20616-5565-2674-FF73-C5CAC72BD200", "18BF3443-B8A8-48E1-90ED-2783F9AF2D40" );
+
+      Dictionary<string, object> pers = new Dictionary<string, object>();
+      pers.Add( "orderName", "Person name" );
+      pers.Add( "pickUpLocation", new Point().SetX( 50.1 ).SetY( 30.1 ) );
+      pers.Add( "dropOffLocation", new Point().SetX( 50.2 ).SetY( 30.2 ) );
+
+      List<Point> list = new List<Point>();
+      list.Add( new Point().SetX( 5.0 ).SetY( 10.2 ) );
+      list.Add( new Point().SetX( 3.05 ).SetY( 8.6 ) );
+      list.Add( new Point().SetX( 2.04 ).SetY( 11.006 ) );
+
+      LineString finalLine = new LineString( list );
+      pers.Add( "LineValue", finalLine );
+
+      List<Point> tempList = new List<Point>();
+      tempList.Add( new Point().SetX( 1.01 ).SetY( 1.02 ) );
+      tempList.Add( new Point().SetX( 2.01 ).SetY( 2.02 ) );
+      tempList.Add( new Point().SetX( 2.02 ).SetY( 2.03 ) );
+      tempList.Add( new Point().SetX( 1.015 ).SetY( 1.017 ) );
+
+      List<Point> tempList2 = new List<Point>();
+
+      tempList2.Add( new Point().SetX( 1.013 ).SetY( 1.014 ) );
+      tempList2.Add( new Point().SetX( 1.015 ).SetY( 1.016 ) );
+
+      LineString tempLines = new LineString( tempList2 );
+      List<LineString> lines = new List<LineString>();
+      lines.Add( tempLines );
+
+
+      Polygon poly = new Polygon( tempList, lines );
+      pers.Add( "PolyValue", poly );
+
+      Backendless.Data.Of( "Person" ).Save( pers );
+      Console.ReadKey();
     }
   }
 }
