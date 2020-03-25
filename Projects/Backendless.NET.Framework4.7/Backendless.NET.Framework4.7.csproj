@@ -198,20 +198,28 @@
     <Compile Include="..\..\Backendless\Persistence\AbstractDataPermission.cs" />
     <Compile Include="..\..\Backendless\Persistence\BackendlessDataQuery.cs" />
     <Compile Include="..\..\Backendless\Persistence\BackendlessEntity.cs" />
+    <Compile Include="..\..\Backendless\Persistence\BackendlessGeometryFactory.cs" />
+    <Compile Include="..\..\Backendless\Persistence\BackendlessGeometryWriter.cs" />
     <Compile Include="..\..\Backendless\Persistence\DataPermission.cs" />
     <Compile Include="..\..\Backendless\Persistence\DataQueryBuilder.cs" />
+    <Compile Include="..\..\Backendless\Persistence\GeoJSONParser.cs" />
+    <Compile Include="..\..\Backendless\Persistence\Geometry.cs" />
+    <Compile Include="..\..\Backendless\Persistence\GeometryDTO.cs" />
+    <Compile Include="..\..\Backendless\Persistence\LineString.cs" />
     <Compile Include="..\..\Backendless\Persistence\LoadRelationsQueryBuilder.cs" />
     <Compile Include="..\..\Backendless\Persistence\PagedQueryBuilder.cs" />
     <Compile Include="..\..\Backendless\Persistence\PermissionTypes.cs" />
     <Compile Include="..\..\Backendless\Persistence\PersistenceOperation.cs" />
+    <Compile Include="..\..\Backendless\Persistence\Point.cs" />
+    <Compile Include="..\..\Backendless\Persistence\Polygon.cs" />
     <Compile Include="..\..\Backendless\Persistence\QueryOptions.cs" />
     <Compile Include="..\..\Backendless\Persistence\QueryOptionsBuilder.cs" />
     <Compile Include="..\..\Backendless\Persistence\Security\Find.cs" />
     <Compile Include="..\..\Backendless\Persistence\Security\Remove.cs" />
     <Compile Include="..\..\Backendless\Persistence\Security\Update.cs" />
-    <Compile Include="..\..\Backendless\Properties\VersionInfo.cs">
-      <Link>Properties/VersionInfo.cs</Link>
-    </Compile>
+    <Compile Include="..\..\Backendless\Persistence\SpatialReferenceSystem.cs" />
+    <Compile Include="..\..\Backendless\Persistence\WKTParser.cs" />
+    <Compile Include="..\..\Backendless\Properties\VersionInfo.cs" />
     <Compile Include="..\..\Backendless\Push\PushNotificationsBinding.cs" />
     <Compile Include="..\..\Backendless\Push\Registrar.cs" />
     <Compile Include="..\..\Backendless\Push\RegistrationInfo.cs" />
@@ -269,6 +277,7 @@
     <Compile Include="..\..\Backendless\Utils\ITimeoutManager.cs" />
     <Compile Include="..\..\Backendless\Utils\Json.cs" />
     <Compile Include="..\..\Backendless\Utils\LoginStorage.cs" />
+    <Compile Include="..\..\Backendless\Utils\StreamTokenizer.cs" />
     <Compile Include="..\..\Backendless\Utils\TimeoutManagerImpl.cs" />
     <Compile Include="..\..\Backendless\Utils\UnderflowStore.cs" />
     <Compile Include="..\..\Backendless\Utils\WeborbSerializationHelper.cs" />
@@ -461,38 +470,7 @@
     <Compile Include="..\..\Backendless\WebORB\Writer\TypedObjectWriter.cs" />
     <Compile Include="..\..\Backendless\WebORB\Writer\V3ObjectSerializer.cs" />
     <Compile Include="..\..\Backendless\WebORB\Writer\V3ReferenceCache.cs" />
-    <Compile Include="BackendlessGeometryFactory.cs" />
-    <Compile Include="BackendlessGeometryWriter.cs" />
-    <Compile Include="GeoJSONParser.cs" />
-    <Compile Include="Geometry.cs" />
-    <Compile Include="GeometryDTO.cs" />
-    <Compile Include="LineString.cs" />
-    <Compile Include="Point.cs" />
-    <Compile Include="Polygon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SpatialReferenceSystem.cs" />
-    <Compile Include="StreamTokenizer.cs" />
-    <Compile Include="WKTParser.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="..\..\Backendless\WebORB\.DS_Store" />
-    <Content Include="..\..\Backendless\WebORB\Client\.DS_Store" />
-    <Content Include="..\..\Backendless\WebORB\Config\.DS_Store" />
-    <Content Include="..\..\Backendless\WebORB\Exceptions\.DS_Store" />
-    <Content Include="..\..\Backendless\WebORB\Message\.DS_Store" />
-    <Content Include="..\..\Backendless\WebORB\Protocols\.DS_Store" />
-    <Content Include="..\..\Backendless\WebORB\Protocols\Amf\.DS_Store" />
-    <Content Include="..\..\Backendless\WebORB\Reader\.DS_Store" />
-    <Content Include="..\..\Backendless\WebORB\Registry\.DS_Store" />
-    <Content Include="..\..\Backendless\WebORB\Service\.DS_Store" />
-    <Content Include="..\..\Backendless\WebORB\Types\.DS_Store" />
-    <Content Include="..\..\Backendless\WebORB\Types\Generic\.DS_Store" />
-    <Content Include="..\..\Backendless\WebORB\Util\.DS_Store" />
-    <Content Include="..\..\Backendless\WebORB\Util\IO\.DS_Store" />
-    <Content Include="..\..\Backendless\WebORB\Util\Log\.DS_Store" />
-    <Content Include="..\..\Backendless\WebORB\V3Types\.DS_Store" />
-    <Content Include="..\..\Backendless\WebORB\Writer\.DS_Store" />
-    <Content Include="..\..\Backendless\WebORB\Writer\Specialized\.DS_Store" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
