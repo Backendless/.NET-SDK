@@ -6,54 +6,6 @@ using System.Linq;
 
 namespace GeometryTestProject
 {
-  public class Person
-  {
-    private Point pickUpLocation;
-    private Point dropOffLocation;
-    private String personName;
-    private String objectId;
-
-    public String getObjectId()
-    {
-      return objectId;
-    }
-
-    public void setObjectId( String objectId )
-    {
-      this.objectId = objectId;
-    }
-
-    public Point getPickupLocation()
-    {
-      return pickUpLocation;
-    }
-
-    public void setPickupLocation( Point pickUpLocation )
-    {
-      this.pickUpLocation = pickUpLocation;
-    }
-
-    public Point getDropOffLocation()
-    {
-      return dropOffLocation;
-    }
-
-    public void setDropOffLocation( Point dropOffLocation )
-    {
-      this.dropOffLocation = dropOffLocation;
-    }
-
-    public String GetPersonName()
-    {
-      return personName;
-    }
-
-    public void setPersonName( String personName )
-    {
-      this.personName = personName;
-    }
-  }
-
   [TestClass]
   public class UnitTest1
   {
@@ -203,6 +155,7 @@ namespace GeometryTestProject
       pers.Add( "PersonName", "Person name" );
       pers.Add( "pickUpLocation", new Point().SetX( 50.1 ).SetY( 30.1 ) );
       pers.Add( "dropOffLocation", new Point().SetX( 50.2 ).SetY( 30.2 ) );
+
       Backendless.Data.Of( "Person" ).Save( pers );
       Assert.IsTrue( true );
     }
@@ -221,6 +174,8 @@ namespace GeometryTestProject
       pers.Add( "LineValue", finalLine );
 
       Backendless.Data.Of( "Person" ).Save( pers );
+
+      Assert.IsTrue( true );
     }
     
     [TestMethod]
@@ -230,15 +185,22 @@ namespace GeometryTestProject
       Dictionary<string, object> pers = new Dictionary<string, object>();
 
       List<Point> tempList = new List<Point>();
-      tempList.Add( new Point().SetX( 1.01 ).SetY( 1.02 ) );
-      tempList.Add( new Point().SetX( 2.01 ).SetY( 2.02 ) );
-      tempList.Add( new Point().SetX( 2.02 ).SetY( 2.03 ) );
-      tempList.Add( new Point().SetX( 1.015 ).SetY( 1.017 ) );
+
+      tempList.Add( new Point().SetX( -77.05786152 ).SetY( 38.87261877 ) );
+      tempList.Add( new Point().SetX( -77.0546978 ).SetY( 38.87296123 ) );
+      tempList.Add( new Point().SetX( -77.05317431 ).SetY( 38.87061405 ) );
+      tempList.Add( new Point().SetX( -77.0555883 ).SetY( 38.86882611 ) );
+      tempList.Add( new Point().SetX( -77.05847435 ).SetY( 38.87002898 ) );
+      tempList.Add( new Point().SetX( -77.05786152 ).SetY( 38.87261877 ) );
 
       List<Point> tempList2 = new List<Point>();
 
-      tempList2.Add( new Point().SetX( 1.013 ).SetY( 1.014 ) );
-      tempList2.Add( new Point().SetX( 1.015 ).SetY( 1.016 ) );
+      tempList2.Add( new Point().SetX( -77.05579215 ).SetY( 38.87026286 ) );
+      tempList2.Add( new Point().SetX( -77.05491238 ).SetY( 38.87087264 ) );
+      tempList2.Add( new Point().SetX( -77.05544882 ).SetY( 38.87170794 ) );
+      tempList2.Add( new Point().SetX( -77.05669337 ).SetY( 38.87156594 ) );
+      tempList2.Add( new Point().SetX( -77.05684357 ).SetY( 38.87072228 ) );
+      tempList2.Add( new Point().SetX( -77.05579215 ).SetY( 38.87026286 ) );
 
       LineString tempLines = new LineString( tempList2 );
       List<LineString> lines = new List<LineString>();
@@ -249,6 +211,9 @@ namespace GeometryTestProject
       pers.Add( "PolyValue", poly );
 
       Backendless.Data.Of( "Person" ).Save( pers );
+      
+      Assert.IsTrue( true );
+      Console.ReadKey();
     }
   }
 }

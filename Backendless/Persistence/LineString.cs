@@ -59,9 +59,13 @@ namespace BackendlessAPI
     {
       StringBuilder sb = new StringBuilder();
       foreach ( Point p in this.GetPoints() )
-        sb.Append( p.WKTCoordinatePairs() ).Append( ',' );
+      {
+        sb.Append( p.WKTCoordinatePairs() );
 
-      return sb.ToString().Substring( 0, sb.Length - 2 );
+        if (points[points.Count - 1] != p)
+          sb.Append( ',' );
+      }
+      return sb.ToString();
     }
 
     public override bool Equals( object obj )
