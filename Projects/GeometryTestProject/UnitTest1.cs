@@ -192,16 +192,25 @@ namespace GeometryTestProject
       Backendless.InitApp( "B5D20616-5565-2674-FF73-C5CAC72BD200", "18BF3443-B8A8-48E1-90ED-2783F9AF2D40" );
 
       Dictionary<string, object> result = Backendless.Data.Of( "Person" ).FindFirst();
+      Assert.IsTrue( true );
     }
     [TestMethod]
-    public void TestGeoSave()
+    public void TestPointSave()
     {
       Backendless.InitApp( "B5D20616-5565-2674-FF73-C5CAC72BD200", "18BF3443-B8A8-48E1-90ED-2783F9AF2D40" );
 
       Dictionary<string, object> pers = new Dictionary<string, object>();
-      pers.Add( "orderName", "Person name" );
+      pers.Add( "PersonName", "Person name" );
       pers.Add( "pickUpLocation", new Point().SetX( 50.1 ).SetY( 30.1 ) );
       pers.Add( "dropOffLocation", new Point().SetX( 50.2 ).SetY( 30.2 ) );
+      Backendless.Data.Of( "Person" ).Save( pers );
+      Assert.IsTrue( true );
+    }
+    [TestMethod]
+    public void TestLineStringSave()
+    {
+      Backendless.InitApp( "B5D20616-5565-2674-FF73-C5CAC72BD200", "18BF3443-B8A8-48E1-90ED-2783F9AF2D40" );
+      Dictionary<string, object> pers = new Dictionary<string, object>();
 
       List<Point> list = new List<Point>();
       list.Add( new Point().SetX( 5.0 ).SetY( 10.2 ) );
@@ -210,6 +219,15 @@ namespace GeometryTestProject
 
       LineString finalLine = new LineString( list );
       pers.Add( "LineValue", finalLine );
+
+      Backendless.Data.Of( "Person" ).Save( pers );
+    }
+    
+    [TestMethod]
+    public void TestPolygonSave()
+    {
+      Backendless.InitApp( "B5D20616-5565-2674-FF73-C5CAC72BD200", "18BF3443-B8A8-48E1-90ED-2783F9AF2D40" );
+      Dictionary<string, object> pers = new Dictionary<string, object>();
 
       List<Point> tempList = new List<Point>();
       tempList.Add( new Point().SetX( 1.01 ).SetY( 1.02 ) );
@@ -231,7 +249,6 @@ namespace GeometryTestProject
       pers.Add( "PolyValue", poly );
 
       Backendless.Data.Of( "Person" ).Save( pers );
-      Console.ReadKey();
     }
   }
 }

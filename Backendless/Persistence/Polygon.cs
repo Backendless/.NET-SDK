@@ -105,7 +105,7 @@ namespace BackendlessAPI
         foreach ( LineString ls in this.GetHoles() )
           sb.Append( '(' ).Append( ls.WKTCoordinatePairs() ).Append( ")," );
 
-      return sb.ToString();
+      return sb.ToString().Insert( sb.Length - 3, ")" ).Substring( 0, sb.Length - 2 );
     }
 
     public override bool Equals( object obj )
