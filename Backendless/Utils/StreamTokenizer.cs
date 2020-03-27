@@ -618,7 +618,13 @@ namespace BackendlessAPI.Utils
                 } while( (ctype & (CT_ALPHA | CT_DIGIT)) != 0 );
 
                 peekc = c;
-                StringValue = new string( new ArraySegment<char>( buf, 0, i ).ToArray() );
+
+                #if !(NET_35 || NET_40)
+                    StringValue = new string( new ArraySegment<char>( buf, 0, i ).ToArray() );
+                #else
+                     StringValue = new string( new ArraySegment<char>( buf, 0, i ).Array );
+                 #endif
+
                 if( forceLower )
                     StringValue = StringValue.ToLower();
                 return ttype = TT_WORD;
@@ -710,7 +716,12 @@ namespace BackendlessAPI.Utils
                  */
                 peekc = (d == ttype) ? NEED_CHAR : d;
 
-                StringValue = new string( new ArraySegment<char>( buf, 0, i ).ToArray() );
+                #if !(NET_35 || NET_40)
+                   StringValue = new string( new ArraySegment<char>( buf, 0, i ).ToArray() );
+                #else
+                   StringValue = new string( new ArraySegment<char>( buf, 0, i ).Array );
+                #endif
+
                 return ttype;
             }
 
