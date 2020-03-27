@@ -18,7 +18,7 @@ namespace BackendlessAPI.Geo
 
       if ( iAdaptingType is AnonymousObject )
       {
-        Dictionary<string, object> properties = ( Dictionary<string, object> )iAdaptingType.defaultAdapt();
+        Dictionary<object, object> properties = ( Dictionary<object, object> )iAdaptingType.defaultAdapt();
         String geoJson = ( String )properties["geoJson"];
 
         if ( geoJson == null )

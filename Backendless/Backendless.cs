@@ -55,6 +55,11 @@ namespace BackendlessAPI
       Types.AddClientClassMapping( "flex.messaging.messages.CommandMessage", typeof( CommandMessage ) );
       Types.AddClientClassMapping( "flex.messaging.messages.ErrorMessage", typeof( ErrMessage ) );
       Types.AddClientClassMapping( "flex.messaging.io.ArrayCollection", typeof( ObjectProxy ) );
+      Types.AddClientClassMapping( "com.backendless.persistence.GeometryDTO", typeof( GeometryDTO ));
+      Types.AddClientClassMapping( "com.backendless.persistence.Point", typeof( Point ));
+      Types.AddClientClassMapping( "com.backendless.persistence.LineString", typeof( LineString ));
+      Types.AddClientClassMapping( "com.backendless.persistence.Polygon", typeof( Polygon ));
+      
       ORBConfig.GetInstance()
                .getObjectFactories()
                .AddArgumentObjectFactory( "Weborb.V3Types.BodyHolder", new BodyHolderFactory() );
