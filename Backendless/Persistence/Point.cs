@@ -91,7 +91,7 @@ namespace BackendlessAPI
     }
     public override int GetHashCode()
     {
-      return x.GetHashCode() + y.GetHashCode() + srs.GetHashCode();
+      return (x + y).GetHashCode() + srs.GetHashCode();
     }
   }
 }

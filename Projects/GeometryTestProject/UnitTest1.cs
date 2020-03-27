@@ -9,6 +9,14 @@ namespace GeometryTestProject
   [TestClass]
   public class UnitTest1
   {
+    private const String APP_API_KEY = "B5D20616-5565-2674-FF73-C5CAC72BD200";
+    private const String DOTNET_API_KEY = "18BF3443-B8A8-48E1-90ED-2783F9AF2D40";
+
+    [AssemblyInitialize]
+    public static void AssemblyInit( TestContext context)
+    {
+      Backendless.InitApp( APP_API_KEY, DOTNET_API_KEY );
+    }
     [TestMethod]
     public void TestMethodPoint()
     {
@@ -139,7 +147,6 @@ namespace GeometryTestProject
     [TestMethod]
     public void TestReceiveGeo()
     {
-      Backendless.InitApp( "B5D20616-5565-2674-FF73-C5CAC72BD200", "18BF3443-B8A8-48E1-90ED-2783F9AF2D40" );
       Dictionary<string, object> result = Backendless.Data.Of( "Order" ).FindFirst();
       String StrCoordinates = "POINT(40.41 -3.706)";
 
@@ -149,20 +156,17 @@ namespace GeometryTestProject
     [TestMethod]
     public void TestPointSave()
     {
-      Backendless.InitApp( "B5D20616-5565-2674-FF73-C5CAC72BD200", "18BF3443-B8A8-48E1-90ED-2783F9AF2D40" );
-
       Dictionary<string, object> pers = new Dictionary<string, object>();
       pers.Add( "PersonName", "Person name" );
       pers.Add( "pickUpLocation", new Point().SetX( 30.05 ).SetY( 10.1 ) );
 
       pers = Backendless.Data.Of( "Person" ).Save( pers );
       Dictionary<string, object> result = Backendless.Data.Of( "Person" ).FindById( (String)pers["objectId"] );
-      Assert.AreEqual( ( Point )pers["pickUpLocation"], ( Point )result["pickUpLocation"], "Saved Point object equal to received" );
+      Assert.AreEqual( ( Point )result["pickUpLocation"], new Point().SetX(30.05).SetY(10.1), "Saved Point object equal to received" );
     }
     [TestMethod]
     public void TestLineStringSave()
     {
-      Backendless.InitApp( "B5D20616-5565-2674-FF73-C5CAC72BD200", "18BF3443-B8A8-48E1-90ED-2783F9AF2D40" );
       Dictionary<string, object> pers = new Dictionary<string, object>();
 
       List<Point> list = new List<Point>();
@@ -175,13 +179,11 @@ namespace GeometryTestProject
 
       pers = Backendless.Data.Of( "Person" ).Save( pers );
       Dictionary<string, object> result = Backendless.Data.Of( "Person" ).FindById( ( String )pers["objectId"] );
-      Assert.AreEqual( ( LineString )pers["LineValue"], ( LineString )result["LineValue"], "Saved LineString object equal to received" );
-    }
-    
+      Assert.AreEqual( ( LineString )result["LineValue"], finalLine, "Saved LineString object equal to received" );
+    }   
     [TestMethod]
     public void TestPolygonSave()
     {
-      Backendless.InitApp( "B5D20616-5565-2674-FF73-C5CAC72BD200", "18BF3443-B8A8-48E1-90ED-2783F9AF2D40" );
       Dictionary<string, object> pers = new Dictionary<string, object>();
 
       List<Point> tempList = new List<Point>();
@@ -212,13 +214,11 @@ namespace GeometryTestProject
 
       pers = Backendless.Data.Of( "Person" ).Save( pers );
       Dictionary<string, object> result = Backendless.Data.Of( "Person" ).FindById( ( String )pers["objectId"] );
-      Assert.AreEqual( ( Polygon )pers["PolyValue"], ( Polygon )result["PolyValue"], "Saved Polygon object equal to received" );
+      Assert.AreEqual( ( Polygon )result["PolyValue"], poly, "Saved Polygon object equal to received" );
     }
-
     [TestMethod]
     public void PointWKTEquals()
     {
-      Backendless.InitApp( "B5D20616-5565-2674-FF73-C5CAC72BD200", "18BF3443-B8A8-48E1-90ED-2783F9AF2D40" );
       Dictionary<string, object> pers = new Dictionary<string, object>();
 
       WKTParser wkt = new WKTParser();
@@ -231,11 +231,9 @@ namespace GeometryTestProject
       pers.Add( "pickUpLocation", point );
       Backendless.Data.Of( "person" ).Save( pers );
     }
-
     [TestMethod]
     public void LineStringWKTEquals()
     {
-      Backendless.InitApp( "B5D20616-5565-2674-FF73-C5CAC72BD200", "18BF3443-B8A8-48E1-90ED-2783F9AF2D40" );
       Dictionary<string, object> pers = new Dictionary<string, object>();
 
       WKTParser wkt = new WKTParser();
@@ -248,11 +246,9 @@ namespace GeometryTestProject
       pers.Add( "LineValue", line );
       Backendless.Data.Of( "Person" ).Save( pers );
     }
-
     [TestMethod]
     public void PolygonWKTEquals()
     {
-      Backendless.InitApp( "B5D20616-5565-2674-FF73-C5CAC72BD200", "18BF3443-B8A8-48E1-90ED-2783F9AF2D40" );
       Dictionary<string, object> pers = new Dictionary<string, object>();
 
       WKTParser wkt = new WKTParser();
@@ -266,6 +262,23 @@ namespace GeometryTestProject
       
       pers.Add("PolyValue", poly);
       Backendless.Data.Of( "Person" ).Save( pers );
+    }
+    [TestMethod]
+    public void PullAndComapreGeoObjects()
+    {
+      Dictionary<string, object> pers = Backendless.Data.Of( "GeoObject" ).FindFirst();
+      WKTParser wkt = new WKTParser();
+      Point point = (Point)wkt.Read("POINT (40.41 -3.706)");
+      Geometry geometry = wkt.Read("POINT (10.2 48.5)");
+      LineString line = (LineString)wkt.Read("LINESTRING (30.1 10.05, 30.2 10.04)");
+      Polygon poly = (Polygon)wkt.Read("POLYGON((-77.05786152 38.87261877,-77.0546978 38.87296123,-77.05317431 38.87061405," +
+      "-77.0555883 38.86882611,-77.05847435 38.87002898,-77.05786152 38.87261877),(-77.05579215 38.87026286," +
+      "-77.05491238 38.87087264,-77.05544882 38.87170794,-77.05669337 38.87156594,-77.05684357 38.87072228," +
+      "-77.05579215 38.87026286))");
+      Assert.AreEqual( pers["PointCol"], point, "Point WKT data are not equals" );
+      Assert.AreEqual( pers["GeometryCol"], geometry, "Geometry(Point) WKT data are not equals" );
+      Assert.AreEqual( pers["LineStringCol"], line, "LineString WKT data are not equals" );
+      Assert.AreEqual( pers["PolygonCol"], poly, "Polygon WKT data are not equals" );
     }
   }
 }

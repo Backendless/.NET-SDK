@@ -63,7 +63,7 @@ namespace BackendlessAPI
 
     public override int GetHashCode()
     {
-      return geomClass.GetHashCode() + srsId.GetHashCode() + geoJSON.GetHashCode();
+      return (geomClass + srsId + geoJSON).GetHashCode();
     }
   }
 }
