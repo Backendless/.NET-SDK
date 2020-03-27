@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace BackendlessAPI
 {
@@ -123,7 +122,7 @@ namespace BackendlessAPI
 
     public override int GetHashCode()
     {
-      return (boundary, holes, srs).GetHashCode();
+      return boundary.GetHashCode() + holes.GetHashCode() + srs.GetHashCode();
     }
   }
 }

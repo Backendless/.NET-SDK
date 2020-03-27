@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace BackendlessAPI
 {
@@ -80,7 +79,7 @@ namespace BackendlessAPI
 
     public override int GetHashCode()
     {
-      return ( points, srs ).GetHashCode();
+      return  points.GetHashCode() + srs.GetHashCode();
     }
   }
 }

@@ -132,17 +132,27 @@
     <Compile Include="..\..\Backendless\Persistence\AbstractDataPermission.cs" />
     <Compile Include="..\..\Backendless\Persistence\BackendlessDataQuery.cs" />
     <Compile Include="..\..\Backendless\Persistence\BackendlessEntity.cs" />
+	<Compile Include="..\..\Backendless\Persistence\BackendlessGeometryFactory.cs" />
+    <Compile Include="..\..\Backendless\Persistence\BackendlessGeometryWriter.cs" />
     <Compile Include="..\..\Backendless\Persistence\DataPermission.cs" />
     <Compile Include="..\..\Backendless\Persistence\DataQueryBuilder.cs" />
+	<Compile Include="..\..\Backendless\Persistence\GeoJSONParser.cs" />
+    <Compile Include="..\..\Backendless\Persistence\Geometry.cs" />
+    <Compile Include="..\..\Backendless\Persistence\GeometryDTO.cs" />
+    <Compile Include="..\..\Backendless\Persistence\LineString.cs" />
     <Compile Include="..\..\Backendless\Persistence\LoadRelationsQueryBuilder.cs" />
     <Compile Include="..\..\Backendless\Persistence\PagedQueryBuilder.cs" />
     <Compile Include="..\..\Backendless\Persistence\PermissionTypes.cs" />
     <Compile Include="..\..\Backendless\Persistence\PersistenceOperation.cs" />
+	<Compile Include="..\..\Backendless\Persistence\Point.cs" />
+    <Compile Include="..\..\Backendless\Persistence\Polygon.cs" />
     <Compile Include="..\..\Backendless\Persistence\QueryOptions.cs" />
     <Compile Include="..\..\Backendless\Persistence\QueryOptionsBuilder.cs" />
     <Compile Include="..\..\Backendless\Persistence\Security\Find.cs" />
     <Compile Include="..\..\Backendless\Persistence\Security\Remove.cs" />
     <Compile Include="..\..\Backendless\Persistence\Security\Update.cs" />
+	<Compile Include="..\..\Backendless\Persistence\SpatialReferenceSystem.cs" />
+    <Compile Include="..\..\Backendless\Persistence\WKTParser.cs" />
     <Compile Include="..\..\Backendless\Properties\VersionInfo.cs">
       <Link>Properties/VersionInfo.cs</Link>
     </Compile>
@@ -203,6 +213,7 @@
     <Compile Include="..\..\Backendless\Utils\ITimeoutManager.cs" />
     <Compile Include="..\..\Backendless\Utils\Json.cs" />
     <Compile Include="..\..\Backendless\Utils\LoginStorage.cs" />
+	<Compile Include="..\..\Backendless\Utils\StreamTokenizer.cs" />
     <Compile Include="..\..\Backendless\Utils\TimeoutManagerImpl.cs" />
     <Compile Include="..\..\Backendless\Utils\UnderflowStore.cs" />
     <Compile Include="..\..\Backendless\Utils\WeborbSerializationHelper.cs" />

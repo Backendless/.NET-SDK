@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Reflection;
 
 namespace BackendlessAPI
@@ -64,7 +63,7 @@ namespace BackendlessAPI
 
     public override int GetHashCode()
     {
-      return ( geomClass, srsId, geoJSON ).GetHashCode();
+      return geomClass.GetHashCode() + srsId.GetHashCode() + geoJSON.GetHashCode();
     }
   }
 }
