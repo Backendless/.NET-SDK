@@ -215,5 +215,53 @@ namespace GeometryTestProject
       Assert.IsTrue( true );
       Console.ReadKey();
     }
+
+    [TestMethod]
+    public void PointWKTEquals()
+    {
+      Backendless.InitApp( "B5D20616-5565-2674-FF73-C5CAC72BD200", "18BF3443-B8A8-48E1-90ED-2783F9AF2D40" );
+
+      WKTParser wkt = new WKTParser();
+      Point point = (Point)wkt.Read( "POINT(30.05 10.1)" );
+
+      Assert.AreEqual( point.AsWKT(), "POINT(30.05 10.1)", "Point WKT data are not equals" );
+      Dictionary<string, object> pers = new Dictionary<string, object>();
+      pers.Add( "pickUpLocation", point );
+      Backendless.Data.Of( "person" ).Save( pers );
+    }
+
+    [TestMethod]
+    public void LineStringWKTEquals()
+    {
+      Backendless.InitApp( "B5D20616-5565-2674-FF73-C5CAC72BD200", "18BF3443-B8A8-48E1-90ED-2783F9AF2D40" );
+
+      WKTParser wkt = new WKTParser();
+      LineString line = ( LineString )wkt.Read( "LINESTRING(5.0 10.2,3.05 8.6,2.04 11.006)" );
+
+      Assert.AreEqual( line.AsWKT(), "LINESTRING(5 10.2,3.05 8.6,2.04 11.006)", "LineString WKT data are not equals" );
+      Dictionary<string, object> pers = new Dictionary<string, object>();
+      pers.Add( "LineValue", line );
+      Backendless.Data.Of( "Person" ).Save( pers );
+    }
+
+    [TestMethod]
+    public void PolygonWKTEquals()
+    {
+      Backendless.InitApp( "B5D20616-5565-2674-FF73-C5CAC72BD200", "18BF3443-B8A8-48E1-90ED-2783F9AF2D40" );
+
+      WKTParser wkt = new WKTParser();
+      Polygon poly = ( Polygon )wkt.Read( "POLYGON((-77.05786152 38.87261877,-77.0546978 38.87296123,-77.05317431 38.87061405," +
+                                "-77.0555883 38.86882611,-77.05847435 38.87002898,-77.05786152 38.87261877),(-77.05579215 38.87026286," +
+                                "-77.05491238 38.87087264,-77.05544882 38.87170794,-77.05669337 38.87156594,-77.05684357 38.87072228," +
+                                "-77.05579215 38.87026286))" );
+      Assert.AreEqual( poly.AsWKT(), "POLYGON((-77.05786152 38.87261877,-77.0546978 38.87296123,-77.05317431 38.87061405," +
+      "-77.0555883 38.86882611,-77.05847435 38.87002898,-77.05786152 38.87261877),(-77.05579215 38.87026286," +
+      "-77.05491238 38.87087264,-77.05544882 38.87170794,-77.05669337 38.87156594,-77.05684357 38.87072228," +
+      "-77.05579215 38.87026286))", "Polygon WKT data are not equals" );
+      Dictionary<string, object> pers = new Dictionary<string, object>();
+      pers.Add("PolyValue", poly);
+      Backendless.Data.Of( "Person" ).Save( pers );
+
+    }
   }
 }

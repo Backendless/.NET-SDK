@@ -72,13 +72,13 @@ namespace BackendlessAPI
     
     internal override String WKTCoordinatePairs()
     {
-      return $"{x.ToString( "0.00000000", System.Globalization.CultureInfo.InvariantCulture )}" +
-             $" {y.ToString( "0.00000000", System.Globalization.CultureInfo.InvariantCulture )}";
+      return $"{x.ToString( System.Globalization.CultureInfo.GetCultureInfo( "en-US" ) )}" +
+             $" {y.ToString( System.Globalization.CultureInfo.GetCultureInfo( "en-US" ))}";
     }
     internal override String JSONCoordinatePairs()
     {
-      return $"[{x.ToString( "0.00000000", System.Globalization.CultureInfo.InvariantCulture )}," +
-             $" {y.ToString( "0.00000000", System.Globalization.CultureInfo.InvariantCulture )}]";
+      return $"[{x.ToString( System.Globalization.CultureInfo.GetCultureInfo( "en-US" ) )}," +
+             $" {y.ToString( System.Globalization.CultureInfo.GetCultureInfo( "en-US" ) )}]";
     }
     public override bool Equals( object obj )
     {
