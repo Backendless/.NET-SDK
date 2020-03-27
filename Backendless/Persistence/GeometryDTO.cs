@@ -46,7 +46,7 @@ namespace BackendlessAPI
       GeoJSONParser<T> geoJSONParser = ( object )srsId != null ?
                 new GeoJSONParser<T>( SpatialReferenceSystem.GetName( srsId ), geomClass ) :
                 new GeoJSONParser<T>( geomClass );
-      Assembly asm = Assembly.GetExecutingAssembly();
+      Assembly.GetExecutingAssembly();
       T result = ( T )geoJSONParser.Read( this.geoJSON );
       return result;
     }
