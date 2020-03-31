@@ -82,7 +82,7 @@ namespace BackendlessAPI
       if( !( obj is LineString ) )
         return false;
 
-      LineString that = ( LineString )obj;
+      LineString that = (LineString) obj;
 
       return srs == that.srs && points.SequenceEqual( that.points );
     }

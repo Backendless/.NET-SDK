@@ -33,7 +33,7 @@ namespace BackendlessAPI
         try
         {
           Assembly asm = Assembly.GetExecutingAssembly();
-          T unchekedClazz = ( T ) asm.CreateInstance( geomClassName );
+          T unchekedClazz = (T) asm.CreateInstance( geomClassName );
           geomClass = unchekedClazz;
         }
         catch
@@ -66,21 +66,21 @@ namespace BackendlessAPI
 
     public Geometry Read( Dictionary<string, object> geoJSON )
     {
-      string type = ( string ) geoJSON[ "type" ];
+      string type = (string) geoJSON[ "type" ];
       Object coordinatesObj = geoJSON[ "coordinates" ];
 
       Object[] coordinates = null;
 
       if ( coordinatesObj is List<Object> )
-        coordinates = ( ( List<Object> ) coordinatesObj ).ToArray();
+        coordinates = ((List<Object>) coordinatesObj).ToArray();
 
       else if ( coordinatesObj != null )
-        coordinates = ( ( List<Double> ) coordinatesObj ).Select( d => ( Object ) d ).ToArray();
+        coordinates = ((List<Double>) coordinatesObj).Select( d => (Object) d ).ToArray();
        
       if( type == null || coordinates == null )
         throw new GeoJSONParserException( "Both 'type' and 'coordinates' should be present in GeoJSON object." );
 
-      if( this.geomClass == null || this.geomClass.GetType() == typeof( Geometry ) )
+      if( this.geomClass == null || this.geomClass.GetType() == typeof(Geometry) )
       {
         switch( type )
         {
@@ -101,7 +101,7 @@ namespace BackendlessAPI
 
     private Point ConstructPointFromCoordinates( Object[] coordinatePair )
     {
-      return new Point( this.srs ).SetX( ( double ) coordinatePair[ 0 ] ).SetY( ( double ) coordinatePair[ 1 ] );
+      return new Point( this.srs ).SetX((double) coordinatePair[ 0 ]).SetY((double) coordinatePair[ 1 ]);
     }
 
     private LineString ConstructLineStringFromCoordinates( Object[] arrayOfCoordinatePairs)
@@ -111,8 +111,8 @@ namespace BackendlessAPI
 
       foreach( Object coordinatePairObj in arrayOfCoordinatePairs )
       {
-        coordinatePairNumbers = ( ( List<Double> ) coordinatePairObj ).Select( d => ( Object ) d ).ToArray();
-        points.Add( new Point( this.srs ).SetX( ( double ) coordinatePairNumbers[ 0 ] ).SetY( ( double ) coordinatePairNumbers[ 1 ] ) );
+        coordinatePairNumbers = ((List<Double> ) coordinatePairObj ).Select( d => ( Object ) d ).ToArray();
+        points.Add( new Point( srs ).SetX((double) coordinatePairNumbers[ 0 ]).SetY((double) coordinatePairNumbers[ 1 ]) );
       }
 
       return new LineString( points, this.srs );
@@ -125,7 +125,7 @@ namespace BackendlessAPI
 
       foreach( Object arrayOfCoordinatePairsObj in arrayOfCoordinateArrayPairs )
       {
-        arrayOfCoordinatePairs = ( ( List<Object> ) arrayOfCoordinatePairsObj ).ToArray();
+        arrayOfCoordinatePairs = ((List<Object>) arrayOfCoordinatePairsObj).ToArray();
         LineString lineString = ConstructLineStringFromCoordinates( arrayOfCoordinatePairs );
         lineStrings.Add( lineString );
       }

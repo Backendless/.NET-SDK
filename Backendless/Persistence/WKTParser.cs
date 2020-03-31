@@ -251,7 +251,7 @@ namespace BackendlessAPI
         return null;
 
       List<Point> points = new List<Point>();
-      foreach ( double[] coordinates in coordinateSequence )
+      foreach( double[] coordinates in coordinateSequence )
         points.Add( new Point( srs ).SetX( coordinates[ 0 ] ).SetY( coordinates[ 1 ] ) );
 
       return new LineString( points, this.srs );

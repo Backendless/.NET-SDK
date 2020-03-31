@@ -88,8 +88,8 @@ namespace BackendlessAPI
       if ( !( obj is Point ) )
         return false;
 
-      Point point = ( Point ) obj;
-      return Math.Abs( point.x - x ) < PRECISION && Math.Abs( point.y - y ) < PRECISION && srs == point.srs;
+      Point point = (Point) obj;
+      return srs == point.srs && Math.Abs( point.x - x ) < PRECISION && Math.Abs( point.y - y ) < PRECISION;
     }
     
     public override int GetHashCode()
