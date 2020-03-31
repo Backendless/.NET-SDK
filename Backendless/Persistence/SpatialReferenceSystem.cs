@@ -18,13 +18,13 @@ namespace BackendlessAPI
 
     static Dictionary<object, String> values = new Dictionary<object, String>(){ { ReferenceSystemEnum.CARTESIAN, "Cartesian"},{ ReferenceSystemEnum.PULKOVO_1995, "Pulkovo_1995"},
                                    { ReferenceSystemEnum.WGS84, "WGS84" },{ ReferenceSystemEnum.WGS84_PSEUDO_MERCATOR,"WGS 84 / Pseudo-Mercator"}, { ReferenceSystemEnum.WGS84_WORLD_MECATOR, "WGS 84 / World Mercator"}};
-    public static ReferenceSystemEnum GetName(int srsId)
+    public static ReferenceSystemEnum GetName( int srsId )
     {
         foreach ( KeyValuePair<object, string> srs in values )
-          if ( srsId == ( int )srs.Key )
-            return (ReferenceSystemEnum)srs.Key;
+          if ( srsId == ( int ) srs.Key )
+            return ( ReferenceSystemEnum ) srs.Key;
          
-      throw new ArgumentException( $"SpatialReferenceSystem doesn't contain value with id {values.Keys}" );
+      throw new ArgumentException( $"SpatialReferenceSystem does not contain value with id {values.Keys}" );
     }
 
     public override String ToString()

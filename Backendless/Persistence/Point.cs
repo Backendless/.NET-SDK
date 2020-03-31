@@ -15,20 +15,20 @@ namespace BackendlessAPI
     private double x;
     private double y;
 
-    public Point() : base(SpatialReferenceSystem.DEFAULT)
+    public Point() : base( SpatialReferenceSystem.DEFAULT )
     {
     }
 
-    public Point( ReferenceSystemEnum srs) :base(srs)
+    public Point( ReferenceSystemEnum srs ) :base( srs )
     {
     }
 
-    public Point SetX(double x)
+    public Point SetX( double x )
     {
       this.x = x;
       return this;
     }
-    public Point SetY(double y)
+    public Point SetY( double y )
     {
       this.y = y;
       return this;
@@ -42,11 +42,11 @@ namespace BackendlessAPI
       return y;
     }
 
-    public Point SetLongitude(double Longitude)
+    public Point SetLongitude( double Longitude )
     {
       return SetX( x );
     }
-    public Point SetLatitude(double Latitude)
+    public Point SetLatitude( double Latitude )
     {
       return SetY( y );
     }
@@ -73,7 +73,7 @@ namespace BackendlessAPI
     internal override String WKTCoordinatePairs()
     {
       return $"{x.ToString( System.Globalization.CultureInfo.GetCultureInfo( "en-US" ) )}" +
-             $" {y.ToString( System.Globalization.CultureInfo.GetCultureInfo( "en-US" ))}";
+             $" {y.ToString( System.Globalization.CultureInfo.GetCultureInfo( "en-US" ) )}";
     }
     internal override String JSONCoordinatePairs()
     {
@@ -86,12 +86,12 @@ namespace BackendlessAPI
         return true;
       if ( !( obj is Point ) )
         return false;
-      Point point = ( Point )obj;
+      Point point = ( Point ) obj;
       return Math.Abs( point.x - x ) < PRECISION && Math.Abs( point.y - y ) < PRECISION && srs == point.srs;
     }
     public override int GetHashCode()
     {
-      return (x + y).GetHashCode() + srs.GetHashCode();
+      return ( x + y ).GetHashCode() + srs.GetHashCode();
     }
   }
 }

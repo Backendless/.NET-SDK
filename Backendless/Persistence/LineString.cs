@@ -12,11 +12,11 @@ namespace BackendlessAPI
 
     private List<Point> points;
 
-    public LineString( List<Point> points) : this( points, SpatialReferenceSystem.DEFAULT )
+    public LineString( List<Point> points ) : this( points, SpatialReferenceSystem.DEFAULT )
     {
     }
 
-    public LineString(List<Point> points, ReferenceSystemEnum srs ) : base( srs )
+    public LineString( List<Point> points, ReferenceSystemEnum srs ) : base( srs )
     {
       this.points = new List<Point>( points );
     }
@@ -48,7 +48,11 @@ namespace BackendlessAPI
       StringBuilder sb = new StringBuilder();
       sb.Append( '[' );
       foreach ( Point p in this.GetPoints() )
-        sb.Append( p.JSONCoordinatePairs() ).Append( ',' );
+      {
+        sb.Append( p.JSONCoordinatePairs() );
+        if ( points[ points.Count - 1 ] != p )
+          sb.Append( ',' );
+      }
 
       sb.AppendLine( "]" );
       return sb.ToString();
@@ -61,7 +65,7 @@ namespace BackendlessAPI
       {
         sb.Append( p.WKTCoordinatePairs() );
 
-        if (points[points.Count - 1] != p)
+        if ( points[ points.Count - 1 ] != p )
           sb.Append( ',' );
       }
       return sb.ToString();

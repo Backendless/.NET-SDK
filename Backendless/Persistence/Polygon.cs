@@ -21,8 +21,8 @@ namespace BackendlessAPI
     {
     }
 
-    public Polygon( List<Point> boundary, List<LineString> holes, ReferenceSystemEnum srs)
-    : this( new LineString( boundary, srs), holes, srs )
+    public Polygon( List<Point> boundary, List<LineString> holes, ReferenceSystemEnum srs )
+    : this( new LineString( boundary, srs ), holes, srs )
     {
     }
 
@@ -35,11 +35,9 @@ namespace BackendlessAPI
     : base( srs )
     {
       if ( boundary == null )
-        throw new ArgumentException( "The 'shell' shouldn't be null." );
+        throw new ArgumentException( "The boundary should not be null." );
       if ( holes != null )
-      {
         this.holes = new List<LineString>( holes );
-      }
       else
         this.holes = new List<LineString>();
 
@@ -51,7 +49,7 @@ namespace BackendlessAPI
       return this.boundary;
     }
 
-    public Polygon SetBoundary(LineString boundary)
+    public Polygon SetBoundary( LineString boundary )
     {
       this.boundary = boundary;
       return this;
@@ -62,7 +60,7 @@ namespace BackendlessAPI
       return this.holes;
     }
 
-    public Polygon SetHoles(List<LineString> holes)
+    public Polygon SetHoles( List<LineString> holes )
     {
       this.holes.Clear();
       this.holes.AddRange( holes );
@@ -86,9 +84,13 @@ namespace BackendlessAPI
       sb.Append( '[' );
       sb.Append( this.GetBoundary().JSONCoordinatePairs() ).Append( "," );
 
-      if( this.GetHoles() != null )
-        foreach ( LineString ls in this.GetHoles() )
-          sb.Append( ls.JSONCoordinatePairs() ).Append( "," );
+      if ( holes != null )
+        foreach ( LineString ls in holes )
+        {
+          sb.Append( ls.JSONCoordinatePairs() );
+          if ( holes[ holes.Count - 1 ] != ls )
+            sb.Append( ',' );
+        }
 
       sb.AppendLine( "]" );
         return sb.ToString();
@@ -101,12 +103,13 @@ namespace BackendlessAPI
       sb.Append( '(' ).Append( this.GetBoundary().WKTCoordinatePairs() ).Append( ")," );
 
       if ( this.GetHoles() != null )
-        foreach ( LineString ls in this.GetHoles() )
+        foreach ( LineString ls in holes
         {
           sb.Append( '(' ).Append( ls.WKTCoordinatePairs() ).Append( ')' );
-          if ( GetHoles()[GetHoles().Count - 1] != ls )
+          if ( holes[ holes.Count - 1 ] != ls )
             sb.Append( ',' );
         }
+
       return sb.ToString();
     }
 
@@ -116,7 +119,7 @@ namespace BackendlessAPI
         return true;
       if ( !( obj is Polygon ) )
         return false;
-      Polygon polygon = ( Polygon )obj;
+      Polygon polygon = ( Polygon ) obj;
       return boundary.Equals( polygon.boundary ) && holes.SequenceEqual( polygon.holes ) && srs==polygon.srs;
     }
 

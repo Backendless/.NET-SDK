@@ -28,7 +28,6 @@ namespace GeometryTestProject
 
       Point point = ( Point )geometry;
 
-
       Assert.AreEqual( point.GetX(), 30.05, "Point X was not equal to double 30.05" );
       Assert.AreEqual( point.GetY(), 10.1, "Point Y was not equal to double 10.1" );
     }
@@ -267,7 +266,9 @@ namespace GeometryTestProject
     public void PullAndComapreGeoObjects()
     {
       Dictionary<string, object> pers = Backendless.Data.Of( "GeoObject" ).FindFirst();
+
       WKTParser wkt = new WKTParser();
+
       Point point = (Point)wkt.Read("POINT (40.41 -3.706)");
       Geometry geometry = wkt.Read("POINT (10.2 48.5)");
       LineString line = (LineString)wkt.Read("LINESTRING (30.1 10.05, 30.2 10.04)");
@@ -275,10 +276,12 @@ namespace GeometryTestProject
       "-77.0555883 38.86882611,-77.05847435 38.87002898,-77.05786152 38.87261877),(-77.05579215 38.87026286," +
       "-77.05491238 38.87087264,-77.05544882 38.87170794,-77.05669337 38.87156594,-77.05684357 38.87072228," +
       "-77.05579215 38.87026286))");
+
       Assert.AreEqual( pers["PointCol"], point, "Point WKT data are not equals" );
       Assert.AreEqual( pers["GeometryCol"], geometry, "Geometry(Point) WKT data are not equals" );
       Assert.AreEqual( pers["LineStringCol"], line, "LineString WKT data are not equals" );
       Assert.AreEqual( pers["PolygonCol"], poly, "Polygon WKT data are not equals" );
     }
+
   }
 }

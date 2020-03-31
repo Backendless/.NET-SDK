@@ -32,12 +32,12 @@ namespace BackendlessAPI
         try
         {
           Assembly asm = Assembly.GetExecutingAssembly();
-          T unchekedClazz = ( T )asm.CreateInstance( geomClassName );
+          T unchekedClazz = ( T ) asm.CreateInstance( geomClassName );
           this.geomClass = unchekedClazz;
         }
         catch
         {
-          throw new ArgumentException( $"'geomClassName' contains uknown class '{geomClassName}'." );
+          throw new ArgumentException( $"'geomClassName' contains unknown class '{geomClassName}'." );
         }
       }
       else
@@ -52,7 +52,7 @@ namespace BackendlessAPI
       Dictionary<string, object> geoJSONMap;
       try
       {
-        geoJSONMap = (new Json()).Deserialize( geoJSON );
+        geoJSONMap = new Json().Deserialize( geoJSON );
       }
       catch( System.Exception ex )
       {
@@ -63,20 +63,19 @@ namespace BackendlessAPI
 
     public Geometry Read( Dictionary<string, object> geoJSON )
     {
-      string type = ( string )geoJSON[ "type" ];
-      Object coordinatesObj = geoJSON["coordinates"];
+      string type = ( string ) geoJSON[ "type" ];
+      Object coordinatesObj = geoJSON[ "coordinates" ];
 
       Object[] coordinates = null;
 
       if ( coordinatesObj is List<Object> )
-        coordinates = ( ( List<Object> )coordinatesObj ).ToArray();
+        coordinates = ( ( List<Object> ) coordinatesObj ).ToArray();
       else if ( coordinatesObj != null )
-        coordinates = ( ( List<Double> )coordinatesObj ).Select( d => ( Object )d ).ToArray();
+        coordinates = ( ( List<Double> ) coordinatesObj ).Select( d => ( Object ) d ).ToArray();
        
       if ( type == null || coordinates == null )
         throw new GeoJSONParserException( "Both 'type' and 'coordinates' should be present in GeoJSON object." );
-      if ( this.geomClass == null || this.geomClass.GetType() == typeof( Geometry ) || typeof( Point ) == this.geomClass.GetType()
-          || typeof( LineString ) == this.geomClass.GetType() || typeof( Polygon ) == this.geomClass.GetType() )
+      if ( this.geomClass == null || this.geomClass.GetType() == typeof( Geometry ) )
       {
         switch ( type )
         {
@@ -96,7 +95,7 @@ namespace BackendlessAPI
 
     private Point ConstructPointFromCoordinates( Object[] coordinatePair )
     {
-      return new Point( this.srs ).SetX( ( double )coordinatePair[0] ).SetY( ( double )coordinatePair[1] );
+      return new Point( this.srs ).SetX( ( double ) coordinatePair[ 0 ] ).SetY( ( double ) coordinatePair[ 1 ] );
     }
 
     private LineString ConstructLineStringFromCoordinates( Object[] arrayOfCoordinatePairs)
@@ -104,14 +103,14 @@ namespace BackendlessAPI
       List<Point> points = new List<Point>();
 
       Object[] coordinatePairNumbers;
-      foreach(Object coordinatePairObj in arrayOfCoordinatePairs)
+      foreach( Object coordinatePairObj in arrayOfCoordinatePairs )
       {
         if ( coordinatePairObj is List<Object> )
-          coordinatePairNumbers = ( ( List<Object> )coordinatePairObj ).ToArray();
+          coordinatePairNumbers = ( ( List<Object> ) coordinatePairObj ).ToArray();
         else
-          coordinatePairNumbers = ( ( List<Double> )coordinatePairObj ).Select( d => ( Object )d ).ToArray();
+          coordinatePairNumbers = ( ( List<Double> ) coordinatePairObj ).Select( d => ( Object ) d ).ToArray();
 
-        points.Add( new Point( this.srs ).SetX( ( double )coordinatePairNumbers[0] ).SetY( ( double )coordinatePairNumbers[1] ) );
+        points.Add( new Point( this.srs ).SetX( ( double ) coordinatePairNumbers[ 0 ] ).SetY( ( double ) coordinatePairNumbers[ 1 ] ) );
       }
       return new LineString( points, this.srs );
     }
@@ -124,9 +123,9 @@ namespace BackendlessAPI
       foreach( Object arrayOfCoordinatePairsObj in arrayOfCoordinateArrayPairs )
       {
         if ( arrayOfCoordinatePairsObj is List<LineString> )
-          arrayOfCoordinatePairs = ( ( List<LineString> )arrayOfCoordinatePairsObj ).ToArray();
+          arrayOfCoordinatePairs = ( ( List<LineString> ) arrayOfCoordinatePairsObj ).ToArray();
         else
-          arrayOfCoordinatePairs = ((List<Object>)arrayOfCoordinatePairsObj).ToArray();
+          arrayOfCoordinatePairs = ( ( List<Object> ) arrayOfCoordinatePairsObj ).ToArray();
 
         LineString lineString = ConstructLineStringFromCoordinates( arrayOfCoordinatePairs );
         lineStrings.Add( lineString );
@@ -135,7 +134,7 @@ namespace BackendlessAPI
         throw new GeoJSONParserException( "Polygon's GeoJSON should contain at least one LineString." );
 
       LineString shell = lineStrings.ElementAt( 0 );
-      List<LineString> holes = ( ( List<LineString> )lineStrings ).Skip( 1 ).ToList();
+      List<LineString> holes = lineStrings.Skip( 1 ).ToList();
 
       return new Polygon( shell, holes, srs );
     }
@@ -150,7 +149,7 @@ namespace BackendlessAPI
       {
       }
 
-      public GeoJSONParserException( String message, System.Exception exception) : base( message, exception )
+      public GeoJSONParserException( String message, System.Exception exception ) : base( message, exception )
       {
       }
     }

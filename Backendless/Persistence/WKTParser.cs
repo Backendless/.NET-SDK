@@ -77,7 +77,7 @@ namespace BackendlessAPI
             return COMMA;
         }
 
-        throw new WKTParseException( $"Uknown type: '{( char )type}'" );
+        throw new WKTParseException( $"Uknown type: '{( char ) type}'" );
       }
       catch ( IOException ex )
       {
@@ -98,7 +98,7 @@ namespace BackendlessAPI
           return $"'{tokenizer.StringValue}'";
       }
 
-      return $"'{( char )tokenizer.ttype}'";
+      return $"'{( char ) tokenizer.ttype}'";
     }
 
     private static String GetNextEmptyOrOpener( StreamTokenizer tokenizer )
@@ -208,8 +208,8 @@ namespace BackendlessAPI
         tokenizer.NextToken();
 
       double[] sequence = new double[2];
-      sequence[0] = GetNextNumber( tokenizer );
-      sequence[1] = GetNextNumber( tokenizer );
+      sequence[ 0 ] = GetNextNumber( tokenizer );
+      sequence[ 1 ] = GetNextNumber( tokenizer );
 
       if ( opened )
         GetNextCloser( tokenizer );
@@ -236,7 +236,7 @@ namespace BackendlessAPI
       if ( coordinateSequence == null )
         return null;
 
-      return new Point( this.srs ).SetX( coordinateSequence.ElementAt( 0 )[0]).SetY(coordinateSequence.ElementAt(0)[1]);
+      return new Point( this.srs ).SetX( coordinateSequence.ElementAt( 0 )[ 0 ] ).SetY( coordinateSequence.ElementAt( 0 )[ 1 ] );
     }
 
     private LineString ReadLineStringText( StreamTokenizer tokenizer )
@@ -247,7 +247,7 @@ namespace BackendlessAPI
 
       List<Point> points = new List<Point>();
       foreach ( double[] coordinates in coordinateSequence )
-        points.Add( new Point( srs ).SetX( coordinates[0] ).SetY( coordinates[1] ) );
+        points.Add( new Point( srs ).SetX( coordinates[ 0 ] ).SetY( coordinates[ 1 ] ) );
 
       return new LineString( points, this.srs );
     }
@@ -262,7 +262,7 @@ namespace BackendlessAPI
       List<LineString> holes = new List<LineString>();
 
       nextToken = GetNextCloserOrComma( tokenizer );
-      while( nextToken.Equals(COMMA))
+      while( nextToken.Equals( COMMA ) )
       {
         LineString hole = ReadLineStringText( tokenizer );
         holes.Add( hole );
@@ -277,10 +277,12 @@ namespace BackendlessAPI
       public WKTParseException( String message ) : base( message )
       {
       }
+
       public WKTParseException( System.Exception exception ) : base( exception.Message )
       {
       }
-      public WKTParseException(String message, System.Exception exception ) : base( message, exception )
+
+      public WKTParseException( String message, System.Exception exception ) : base( message, exception )
       {
       }
     }

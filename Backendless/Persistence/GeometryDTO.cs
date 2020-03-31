@@ -42,11 +42,11 @@ namespace BackendlessAPI
 
     public T ToGeometry<T>() where T : Geometry
     {
-      GeoJSONParser<T> geoJSONParser = ( object )srsId != null ?
+      GeoJSONParser<T> geoJSONParser = ( Object ) srsId != null ?
                 new GeoJSONParser<T>( SpatialReferenceSystem.GetName( srsId ), geomClass ) :
                 new GeoJSONParser<T>( geomClass );
       Assembly.GetExecutingAssembly();
-      T result = ( T )geoJSONParser.Read( this.geoJSON );
+      T result = ( T ) geoJSONParser.Read( this.geoJSON );
       return result;
     }
 
@@ -56,14 +56,14 @@ namespace BackendlessAPI
         return true;
       if ( !( obj is GeometryDTO ) )
         return false;
-      GeometryDTO that = ( GeometryDTO )obj;
+      GeometryDTO that = ( GeometryDTO ) obj;
       return Object.Equals( geomClass, that.geomClass ) && Object.Equals( srsId, that.srsId ) 
                                                     && Object.Equals( geoJSON, that.geoJSON );
     }
 
     public override int GetHashCode()
     {
-      return (geomClass + srsId + geoJSON).GetHashCode();
+      return ( geomClass + srsId + geoJSON ).GetHashCode();
     }
   }
 }
