@@ -34,10 +34,12 @@ namespace BackendlessAPI
     public Polygon( LineString boundary, List<LineString> holes, ReferenceSystemEnum srs )
     : base( srs )
     {
-      if ( boundary == null )
+      if( boundary == null )
         throw new ArgumentException( "The boundary should not be null." );
-      if ( holes != null )
+
+      if( holes != null )
         this.holes = new List<LineString>( holes );
+
       else
         this.holes = new List<LineString>();
 
@@ -84,15 +86,15 @@ namespace BackendlessAPI
       sb.Append( '[' );
       sb.Append( this.GetBoundary().JSONCoordinatePairs() ).Append( "," );
 
-      if ( holes != null )
+      if( holes != null )
         foreach ( LineString ls in holes )
         {
           sb.Append( ls.JSONCoordinatePairs() );
-          if ( holes[ holes.Count - 1 ] != ls )
+
+          if( holes[ holes.Count - 1 ] != ls )
             sb.Append( ',' );
         }
-
-      sb.AppendLine( "]" );
+        sb.AppendLine( "]" );
         return sb.ToString();
     }
 
@@ -102,11 +104,12 @@ namespace BackendlessAPI
 
       sb.Append( '(' ).Append( this.GetBoundary().WKTCoordinatePairs() ).Append( ")," );
 
-      if ( this.GetHoles() != null )
-        foreach ( LineString ls in holes
+      if( this.GetHoles() != null )
+        foreach ( LineString ls in holes )
         {
           sb.Append( '(' ).Append( ls.WKTCoordinatePairs() ).Append( ')' );
-          if ( holes[ holes.Count - 1 ] != ls )
+
+          if( holes[ holes.Count - 1 ] != ls )
             sb.Append( ',' );
         }
 
@@ -115,12 +118,14 @@ namespace BackendlessAPI
 
     public override bool Equals( object obj )
     {
-      if ( this == obj )
+      if( this == obj )
         return true;
-      if ( !( obj is Polygon ) )
+
+      if( !( obj is Polygon ) )
         return false;
+
       Polygon polygon = ( Polygon ) obj;
-      return boundary.Equals( polygon.boundary ) && holes.SequenceEqual( polygon.holes ) && srs==polygon.srs;
+      return srs==polygon.srs && boundary.Equals( polygon.boundary ) && holes.SequenceEqual( polygon.holes );
     }
 
     public override int GetHashCode()

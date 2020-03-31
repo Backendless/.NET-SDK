@@ -47,10 +47,12 @@ namespace BackendlessAPI
     {
       StringBuilder sb = new StringBuilder();
       sb.Append( '[' );
-      foreach ( Point p in this.GetPoints() )
+
+      foreach( Point p in this.GetPoints() )
       {
         sb.Append( p.JSONCoordinatePairs() );
-        if ( points[ points.Count - 1 ] != p )
+
+        if( points[ points.Count - 1 ] != p )
           sb.Append( ',' );
       }
 
@@ -61,24 +63,28 @@ namespace BackendlessAPI
     internal override String WKTCoordinatePairs()
     {
       StringBuilder sb = new StringBuilder();
-      foreach ( Point p in this.GetPoints() )
+      foreach( Point p in this.GetPoints() )
       {
         sb.Append( p.WKTCoordinatePairs() );
 
-        if ( points[ points.Count - 1 ] != p )
+        if( points[ points.Count - 1 ] != p )
           sb.Append( ',' );
       }
+
       return sb.ToString();
     }
 
     public override bool Equals( object obj )
     {
-      if ( this == obj )
+      if( this == obj )
         return true;
-      if ( !( obj is LineString ) )
+
+      if( !( obj is LineString ) )
         return false;
+
       LineString that = ( LineString )obj;
-      return points.SequenceEqual( that.points ) && this.srs == that.srs;
+
+      return srs == that.srs && points.SequenceEqual( that.points );
     }
 
     public override int GetHashCode()

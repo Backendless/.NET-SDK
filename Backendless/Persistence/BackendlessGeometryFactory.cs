@@ -13,20 +13,19 @@ namespace BackendlessAPI.Geo
       if( iAdaptingType is NamedObject )
         iAdaptingType = ( ( NamedObject ) iAdaptingType).TypedObject;
 
-      if ( iAdaptingType.GetType() == typeof( NullType ) )
+      if( iAdaptingType.GetType() == typeof( NullType ) )
         return null;
 
-      if ( iAdaptingType is AnonymousObject )
+      if( iAdaptingType is AnonymousObject )
       {
         Dictionary<object, object> properties = ( Dictionary<object, object> ) iAdaptingType.defaultAdapt();
         String geoJson = ( String ) properties[ "geoJson" ];
 
-        if ( geoJson == null )
+        if( geoJson == null )
           return null;
 
         String geomClass = ( String ) properties[ "geomClass" ];
         int srsId = ( int )properties[ "srsId" ];
-
         Geometry geometry = new GeometryDTO( geomClass, srsId, geoJson ).ToGeometry<Geometry>();
 
         return geometry;

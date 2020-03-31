@@ -66,7 +66,7 @@ namespace BackendlessAPI
         {
           case StreamTokenizer.TT_WORD:
             String word = tokenizer.StringValue;
-            if ( word.Equals( EMPTY ) )
+            if( word.Equals( EMPTY ) )
               return EMPTY;
             return word;
           case '(':
@@ -104,7 +104,8 @@ namespace BackendlessAPI
     private static String GetNextEmptyOrOpener( StreamTokenizer tokenizer )
     {
       String nextWord = GetNextWord( tokenizer );
-      if ( nextWord.Equals( EMPTY ) || nextWord.Equals( L_PAREN ) )
+
+      if( nextWord.Equals( EMPTY ) || nextWord.Equals( L_PAREN ) )
         return nextWord;
 
       throw new WKTParseException( $"Excepted: {EMPTY} or {L_PAREN}" );
@@ -113,7 +114,8 @@ namespace BackendlessAPI
     private static String GetNextCloserOrComma( StreamTokenizer tokenizer )
     {
       String nextWord = GetNextWord( tokenizer );
-      if ( nextWord.Equals( COMMA ) || nextWord.Equals( R_PAREN ) )
+
+      if( nextWord.Equals( COMMA ) || nextWord.Equals( R_PAREN ) )
         return nextWord;
 
       throw new WKTParseException( $"Excepted: {COMMA} or {R_PAREN}" );
@@ -122,7 +124,8 @@ namespace BackendlessAPI
     private String GetNextCloser( StreamTokenizer tokenizer )
     {
       String nextWord = GetNextWord( tokenizer );
-      if ( nextWord.Equals( R_PAREN ) )
+
+      if( nextWord.Equals( R_PAREN ) )
         return nextWord;
 
       throw new WKTParseException( $"Excepted: {R_PAREN}" );
@@ -158,12 +161,11 @@ namespace BackendlessAPI
 
     private double GetNextNumber( StreamTokenizer tokenizer )
     {
-
       int type = tokenizer.NextToken();
 
-      if ( type == StreamTokenizer.TT_WORD )
+      if( type == StreamTokenizer.TT_WORD )
       {
-        if ( tokenizer.StringValue.Equals( NAN_SYMBOL ) )
+        if( tokenizer.StringValue.Equals( NAN_SYMBOL ) )
           return Double.NaN;
         else
         {
@@ -187,7 +189,7 @@ namespace BackendlessAPI
     private List<double[]> GetCoordinateSequence( StreamTokenizer tokenizer, bool tryParen )
     {
       String nextWord = GetNextEmptyOrOpener( tokenizer );
-      if ( nextWord.Equals( EMPTY ) )
+      if( nextWord.Equals( EMPTY ) )
         return null;
 
       List<double[]> coordinates = new List<double[]>();
@@ -204,14 +206,14 @@ namespace BackendlessAPI
     private double[] GetCoordinate( StreamTokenizer tokenizer, bool tryParen )
     {
       bool opened;
-      if ( opened = tryParen && IsOpenerNext( tokenizer ) )
+      if( opened = tryParen && IsOpenerNext( tokenizer ) )
         tokenizer.NextToken();
 
       double[] sequence = new double[2];
       sequence[ 0 ] = GetNextNumber( tokenizer );
       sequence[ 1 ] = GetNextNumber( tokenizer );
 
-      if ( opened )
+      if( opened )
         GetNextCloser( tokenizer );
 
       return sequence;
@@ -219,21 +221,23 @@ namespace BackendlessAPI
 
     private Geometry ReadGeometryTaggedText( StreamTokenizer tokenizer, String type )
     {
-      if ( type.StartsWith( Point.WKT_TYPE ) )
+      if( type.StartsWith( Point.WKT_TYPE ) )
         return ReadPointText( tokenizer );
-      else if ( type.StartsWith( LineString.WKT_TYPE ) )
+
+      else if( type.StartsWith( LineString.WKT_TYPE ) )
         return ReadLineStringText( tokenizer );
-      else if ( type.StartsWith( Polygon.WKT_TYPE ) )
-      {
+
+      else if( type.StartsWith( Polygon.WKT_TYPE ) )
         return ReadPolygonText( tokenizer );
-      }
+
       throw new WKTParseException( $"Uknown geometry type: '{type}'" );
     }
 
     private Point ReadPointText ( StreamTokenizer tokenizer )
     {
       List<double[]> coordinateSequence = GetCoordinateSequence( tokenizer, false );
-      if ( coordinateSequence == null )
+
+      if( coordinateSequence == null )
         return null;
 
       return new Point( this.srs ).SetX( coordinateSequence.ElementAt( 0 )[ 0 ] ).SetY( coordinateSequence.ElementAt( 0 )[ 1 ] );
@@ -242,7 +246,8 @@ namespace BackendlessAPI
     private LineString ReadLineStringText( StreamTokenizer tokenizer )
     {
       List<double[]> coordinateSequence = GetCoordinateSequence( tokenizer, false );
-      if ( coordinateSequence == null )
+
+      if( coordinateSequence == null )
         return null;
 
       List<Point> points = new List<Point>();
@@ -255,7 +260,8 @@ namespace BackendlessAPI
     private Polygon ReadPolygonText( StreamTokenizer tokenizer )
     {
       String nextToken = GetNextEmptyOrOpener( tokenizer );
-      if ( nextToken.Equals( EMPTY ) )
+
+      if( nextToken.Equals( EMPTY ) )
         return null;
 
       LineString shell = ReadLineStringText( tokenizer );

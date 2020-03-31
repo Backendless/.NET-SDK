@@ -18,7 +18,6 @@ namespace BackendlessAPI
     public Point() : base( SpatialReferenceSystem.DEFAULT )
     {
     }
-
     public Point( ReferenceSystemEnum srs ) :base( srs )
     {
     }
@@ -33,6 +32,7 @@ namespace BackendlessAPI
       this.y = y;
       return this;
     }
+
     public double GetX()
     {
       return x;
@@ -50,6 +50,7 @@ namespace BackendlessAPI
     {
       return SetY( y );
     }
+
     public double GetLongitude()
     {
       return x;
@@ -63,13 +64,11 @@ namespace BackendlessAPI
     {
       return Point.GEOJSON_TYPE;
     }
-
     public override String GetWKTType()
     {
       return Point.WKT_TYPE;
     }
 
-    
     internal override String WKTCoordinatePairs()
     {
       return $"{x.ToString( System.Globalization.CultureInfo.GetCultureInfo( "en-US" ) )}" +
@@ -80,15 +79,19 @@ namespace BackendlessAPI
       return $"[{x.ToString( System.Globalization.CultureInfo.GetCultureInfo( "en-US" ) )}," +
              $" {y.ToString( System.Globalization.CultureInfo.GetCultureInfo( "en-US" ) )}]";
     }
+
     public override bool Equals( object obj )
     {
       if ( this == obj )
         return true;
+
       if ( !( obj is Point ) )
         return false;
+
       Point point = ( Point ) obj;
       return Math.Abs( point.x - x ) < PRECISION && Math.Abs( point.y - y ) < PRECISION && srs == point.srs;
     }
+    
     public override int GetHashCode()
     {
       return ( x + y ).GetHashCode() + srs.GetHashCode();

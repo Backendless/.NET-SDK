@@ -45,17 +45,18 @@ namespace BackendlessAPI
       GeoJSONParser<T> geoJSONParser = ( Object ) srsId != null ?
                 new GeoJSONParser<T>( SpatialReferenceSystem.GetName( srsId ), geomClass ) :
                 new GeoJSONParser<T>( geomClass );
-      Assembly.GetExecutingAssembly();
       T result = ( T ) geoJSONParser.Read( this.geoJSON );
       return result;
     }
 
     public override bool Equals( object obj )
     {
-      if ( this == obj )
+      if( this == obj )
         return true;
-      if ( !( obj is GeometryDTO ) )
+
+      if( !( obj is GeometryDTO ) )
         return false;
+
       GeometryDTO that = ( GeometryDTO ) obj;
       return Object.Equals( geomClass, that.geomClass ) && Object.Equals( srsId, that.srsId ) 
                                                     && Object.Equals( geoJSON, that.geoJSON );
