@@ -292,20 +292,20 @@ namespace BackendlessAPI.Utils
             }
             else if( array.Length > 0 && array[ 0 ] == '[' ) // first array element is another array
             {
-                List<object> arrayvalues = new List<object>();
+              List<object> arrayvalues = new List<object>();
                 
-                while (array.Trim() != string.Empty)
-                {
-                    int valEndIndex = GetEndIndex(array, '[', ']');
-                    string val = array.Substring(0, valEndIndex + 1).Trim();
+              while( array.Trim() != string.Empty )
+              {
+                int valEndIndex = GetEndIndex(array, '[', ']');
+                string val = array.Substring( 0, valEndIndex + 1 ).Trim();
 
-                    arrayvalues.Add(GetArrayValues(val)); //Adding object to the dictionary
+                arrayvalues.Add( GetArrayValues( val ) ); //Adding object to the dictionary
 
-                    array = array.Remove(0, valEndIndex + 1);
-                    array = array.Remove(0, IndexOfJsonSpecialChar(array, ',', '}') + 1);
-                }
+                array = array.Remove( 0, valEndIndex + 1 );
+                array = array.Remove( 0, IndexOfJsonSpecialChar( array, ',', '}' ) + 1 );
+              }
 
-                return arrayvalues;                
+              return arrayvalues;                
             }
             else //Array contents are not objects
             {
