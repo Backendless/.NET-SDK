@@ -68,7 +68,6 @@ namespace BackendlessAPI
     {
       string type = (string) geoJSON[ "type" ];
       Object coordinatesObj = geoJSON[ "coordinates" ];
-
       Object[] coordinates = null;
 
       if ( coordinatesObj is List<Object> )
@@ -111,7 +110,7 @@ namespace BackendlessAPI
 
       foreach( Object coordinatePairObj in arrayOfCoordinatePairs )
       {
-        coordinatePairNumbers = ((List<Double> ) coordinatePairObj ).Select( d => (Object) d ).ToArray();
+        coordinatePairNumbers = ((List<Double>) coordinatePairObj).Select( d => (Object) d ).ToArray();
         points.Add( new Point( srs ).SetX( (double) coordinatePairNumbers[ 0 ] ).SetY( (double) coordinatePairNumbers[ 1 ] ) );
       }
 

@@ -63,6 +63,7 @@ namespace BackendlessAPI
     internal override String WKTCoordinatePairs()
     {
       StringBuilder sb = new StringBuilder();
+
       foreach( Point p in this.GetPoints() )
       {
         sb.Append( p.WKTCoordinatePairs() );

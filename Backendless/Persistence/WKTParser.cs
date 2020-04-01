@@ -56,6 +56,7 @@ namespace BackendlessAPI
 
       return tokenizer;
     }
+
     private static String GetNextWord( StreamTokenizer tokenizer )
     {
       try
@@ -66,7 +67,8 @@ namespace BackendlessAPI
         {
           case StreamTokenizer.TT_WORD:
             String word = tokenizer.StringValue;
-            if( word.Equals( EMPTY ) )
+
+            if ( word.Equals( EMPTY ) )
               return EMPTY;
             return word;
           case '(':
@@ -77,13 +79,14 @@ namespace BackendlessAPI
             return COMMA;
         }
 
-        throw new WKTParseException( $"Uknown type: '{(char) type}'" );
+        throw new WKTParseException( $"Uknown type: '{( char )type}'" );
       }
       catch ( IOException ex )
       {
         throw new WKTParseException( ex );
       }
     }
+
     private String TokenString( StreamTokenizer tokenizer )
     {
       switch ( tokenizer.ttype )
@@ -139,7 +142,7 @@ namespace BackendlessAPI
         tokenizer.PushBack();
         return type == '(';
       }
-      catch ( IOException ex )
+      catch( IOException ex )
       {
         throw new WKTParseException( ex );
       }
@@ -189,6 +192,7 @@ namespace BackendlessAPI
     private List<double[]> GetCoordinateSequence( StreamTokenizer tokenizer, bool tryParen )
     {
       String nextWord = GetNextEmptyOrOpener( tokenizer );
+
       if( nextWord.Equals( EMPTY ) )
         return null;
 
@@ -198,7 +202,7 @@ namespace BackendlessAPI
       {
         coordinates.Add( GetCoordinate( tokenizer, tryParen ) );
       }
-      while ( GetNextCloserOrComma( tokenizer ).Equals( COMMA ) );
+      while( GetNextCloserOrComma( tokenizer ).Equals( COMMA ) );
 
       return coordinates;
     }
@@ -206,6 +210,7 @@ namespace BackendlessAPI
     private double[] GetCoordinate( StreamTokenizer tokenizer, bool tryParen )
     {
       bool opened;
+
       if( opened = tryParen && IsOpenerNext( tokenizer ) )
         tokenizer.NextToken();
 
@@ -251,6 +256,7 @@ namespace BackendlessAPI
         return null;
 
       List<Point> points = new List<Point>();
+
       foreach( double[] coordinates in coordinateSequence )
         points.Add( new Point( srs ).SetX( coordinates[ 0 ] ).SetY( coordinates[ 1 ] ) );
 
@@ -266,8 +272,8 @@ namespace BackendlessAPI
 
       LineString shell = ReadLineStringText( tokenizer );
       List<LineString> holes = new List<LineString>();
-
       nextToken = GetNextCloserOrComma( tokenizer );
+
       while( nextToken.Equals( COMMA ) )
       {
         LineString hole = ReadLineStringText( tokenizer );
