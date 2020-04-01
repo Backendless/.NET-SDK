@@ -77,7 +77,7 @@ namespace BackendlessAPI
             return COMMA;
         }
 
-        throw new WKTParseException( $"Uknown type: '{( char ) type}'" );
+        throw new WKTParseException( $"Uknown type: '{(char) type}'" );
       }
       catch ( IOException ex )
       {
@@ -98,7 +98,7 @@ namespace BackendlessAPI
           return $"'{tokenizer.StringValue}'";
       }
 
-      return $"'{( char ) tokenizer.ttype}'";
+      return $"'{(char) tokenizer.ttype}'";
     }
 
     private static String GetNextEmptyOrOpener( StreamTokenizer tokenizer )
@@ -209,7 +209,7 @@ namespace BackendlessAPI
       if( opened = tryParen && IsOpenerNext( tokenizer ) )
         tokenizer.NextToken();
 
-      double[] sequence = new double[2];
+      double[] sequence = new double[ 2 ];
       sequence[ 0 ] = GetNextNumber( tokenizer );
       sequence[ 1 ] = GetNextNumber( tokenizer );
 

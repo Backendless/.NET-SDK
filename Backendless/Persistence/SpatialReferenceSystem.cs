@@ -21,7 +21,7 @@ namespace BackendlessAPI
     public static ReferenceSystemEnum GetName( int srsId )
     {
         foreach ( KeyValuePair<object, string> srs in values )
-          if ( srsId == ( int ) srs.Key )
+          if( srsId == (int) srs.Key )
             return ( ReferenceSystemEnum ) srs.Key;
          
       throw new ArgumentException( $"SpatialReferenceSystem does not contain value with id {values.Keys}" );

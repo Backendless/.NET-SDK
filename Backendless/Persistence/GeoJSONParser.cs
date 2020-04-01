@@ -101,7 +101,7 @@ namespace BackendlessAPI
 
     private Point ConstructPointFromCoordinates( Object[] coordinatePair )
     {
-      return new Point( this.srs ).SetX((double) coordinatePair[ 0 ]).SetY((double) coordinatePair[ 1 ]);
+      return new Point( srs ).SetX( (double) coordinatePair[ 0 ] ).SetY( (double) coordinatePair[ 1 ] );
     }
 
     private LineString ConstructLineStringFromCoordinates( Object[] arrayOfCoordinatePairs)
@@ -111,8 +111,8 @@ namespace BackendlessAPI
 
       foreach( Object coordinatePairObj in arrayOfCoordinatePairs )
       {
-        coordinatePairNumbers = ((List<Double> ) coordinatePairObj ).Select( d => ( Object ) d ).ToArray();
-        points.Add( new Point( srs ).SetX((double) coordinatePairNumbers[ 0 ]).SetY((double) coordinatePairNumbers[ 1 ]) );
+        coordinatePairNumbers = ((List<Double> ) coordinatePairObj ).Select( d => (Object) d ).ToArray();
+        points.Add( new Point( srs ).SetX( (double) coordinatePairNumbers[ 0 ] ).SetY( (double) coordinatePairNumbers[ 1 ] ) );
       }
 
       return new LineString( points, this.srs );

@@ -10,7 +10,7 @@ namespace BackendlessAPI.Geo
     {
       try
       {
-        Geometry geometry = ( Geometry ) obj;
+        Geometry geometry = (Geometry) obj;
         MessageWriter.writeObject( geometry.AsWKT(), iProtocolFormatter );
       }
       catch( System.Exception ex )
