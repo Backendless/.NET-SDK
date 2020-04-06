@@ -14,7 +14,7 @@ namespace GeometryTestProject
     private const String DOTNET_API_KEY = "18BF3443-B8A8-48E1-90ED-2783F9AF2D40";
 
     [AssemblyInitialize]
-    public static void AssemblyInit( TestContext context)
+    public static void AssemblyInit( TestContext context )
     {
       Backendless.URL = "http://api.backendless.com";
       Backendless.InitApp( APP_API_KEY, DOTNET_API_KEY );
@@ -151,7 +151,7 @@ namespace GeometryTestProject
       Dictionary<string, object> result = Backendless.Data.Of( "Order" ).FindFirst();
       String StrCoordinates = "POINT(40.41 -3.706)";
 
-      Point point = (Point) result["Dot"];
+      Point point = ( Point )result["Dot"];
       Assert.AreEqual( point.AsWKT(), StrCoordinates, "Expected object Point VKT is not equal to the current object" );
     }
     [TestMethod]
@@ -162,8 +162,8 @@ namespace GeometryTestProject
       pers.Add( "pickUpLocation", new Point().SetX( 30.05 ).SetY( 10.1 ) );
 
       pers = Backendless.Data.Of( "Person" ).Save( pers );
-      Dictionary<string, object> result = Backendless.Data.Of( "Person" ).FindById( (String)pers["objectId"] );
-      Assert.AreEqual( ( Point )result["pickUpLocation"], new Point().SetX(30.05).SetY(10.1), "Saved Point object equal to received" );
+      Dictionary<string, object> result = Backendless.Data.Of( "Person" ).FindById( ( String )pers["objectId"] );
+      Assert.AreEqual( ( Point )result["pickUpLocation"], new Point().SetX( 30.05 ).SetY( 10.1 ), "Saved Point object equal to received" );
     }
     [TestMethod]
     public void TestLineStringSave()
@@ -181,7 +181,7 @@ namespace GeometryTestProject
       pers = Backendless.Data.Of( "Person" ).Save( pers );
       Dictionary<string, object> result = Backendless.Data.Of( "Person" ).FindById( ( String )pers["objectId"] );
       Assert.AreEqual( ( LineString )result["LineValue"], finalLine, "Saved LineString object equal to received" );
-    }   
+    }
     [TestMethod]
     public void TestPolygonSave()
     {
@@ -225,10 +225,10 @@ namespace GeometryTestProject
       WKTParser wkt = new WKTParser();
       String StrCoordinates = "POINT(30.05 10.1)";
 
-      Point point = (Point)wkt.Read( StrCoordinates );
+      Point point = ( Point )wkt.Read( StrCoordinates );
 
       Assert.AreEqual( point.AsWKT(), StrCoordinates, "Point WKT data are not equals" );
-      
+
       pers.Add( "pickUpLocation", point );
       Backendless.Data.Of( "person" ).Save( pers );
     }
@@ -242,8 +242,8 @@ namespace GeometryTestProject
 
       LineString line = ( LineString )wkt.Read( StrCoordinates );
 
-      Assert.AreEqual( line.AsWKT(), StrCoordinates , "LineString WKT data are not equals" );
-      
+      Assert.AreEqual( line.AsWKT(), StrCoordinates, "LineString WKT data are not equals" );
+
       pers.Add( "LineValue", line );
       Backendless.Data.Of( "Person" ).Save( pers );
     }
@@ -259,9 +259,9 @@ namespace GeometryTestProject
       "-77.05579215 38.87026286))";
 
       Polygon poly = ( Polygon )wkt.Read( StrCoordinates );
-      Assert.AreEqual( poly.AsWKT(), StrCoordinates , "Polygon WKT data are not equals" );
-      
-      pers.Add("PolyValue", poly);
+      Assert.AreEqual( poly.AsWKT(), StrCoordinates, "Polygon WKT data are not equals" );
+
+      pers.Add( "PolyValue", poly );
       Backendless.Data.Of( "Person" ).Save( pers );
     }
     [TestMethod]
@@ -271,13 +271,13 @@ namespace GeometryTestProject
 
       WKTParser wkt = new WKTParser();
 
-      Point point = (Point)wkt.Read("POINT (40.41 -3.706)");
-      Geometry geometry = wkt.Read("POINT (10.2 48.5)");
-      LineString line = (LineString)wkt.Read("LINESTRING (30.1 10.05, 30.2 10.04)");
-      Polygon poly = (Polygon)wkt.Read("POLYGON((-77.05786152 38.87261877,-77.0546978 38.87296123,-77.05317431 38.87061405," +
+      Point point = ( Point )wkt.Read( "POINT (40.41 -3.706)" );
+      Geometry geometry = wkt.Read( "POINT (10.2 48.5)" );
+      LineString line = ( LineString )wkt.Read( "LINESTRING (30.1 10.05, 30.2 10.04)" );
+      Polygon poly = ( Polygon )wkt.Read( "POLYGON((-77.05786152 38.87261877,-77.0546978 38.87296123,-77.05317431 38.87061405," +
       "-77.0555883 38.86882611,-77.05847435 38.87002898,-77.05786152 38.87261877),(-77.05579215 38.87026286," +
       "-77.05491238 38.87087264,-77.05544882 38.87170794,-77.05669337 38.87156594,-77.05684357 38.87072228," +
-      "-77.05579215 38.87026286))");
+      "-77.05579215 38.87026286))" );
 
       Assert.AreEqual( pers["PointCol"], point, "Point WKT data are not equals" );
       Assert.AreEqual( pers["GeometryCol"], geometry, "Geometry(Point) WKT data are not equals" );
@@ -331,7 +331,7 @@ namespace GeometryTestProject
     public void EP5ExcludeProperties()
     {
       DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
-      queryBuilder.AddProperties("*");
+      queryBuilder.AddProperties( "*" );
       queryBuilder.AddProperty( "trim( name )" );
       queryBuilder.ExcludeProperty( "name" );
     }
@@ -340,7 +340,7 @@ namespace GeometryTestProject
     public void EP6ExcludeProperties()
     {
       DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
-      queryBuilder.AddProperties("*");
+      queryBuilder.AddProperties( "*" );
       queryBuilder.AddProperty( "trim( name )" );
       queryBuilder.ExcludeProperty( "name" );
 
@@ -351,7 +351,7 @@ namespace GeometryTestProject
     public void EP7ExcludeProperties()
     {
       DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
-      queryBuilder.AddProperties("*");
+      queryBuilder.AddProperties( "*" );
       queryBuilder.AddProperty( "trim( name )" );
       queryBuilder.ExcludeProperty( "name" );
 
@@ -362,7 +362,7 @@ namespace GeometryTestProject
     public void EP8ExcludeProperties()
     {
       DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
-      queryBuilder.AddProperties("*");
+      queryBuilder.AddProperties( "*" );
       queryBuilder.AddProperty( "trim( name )" );
       queryBuilder.ExcludeProperty( "name" );
 
@@ -373,7 +373,7 @@ namespace GeometryTestProject
     public void EP9ExcludeProperties()
     {
       DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
-      queryBuilder.AddProperties("*", "table_B.adress", "TIME(created)" );
+      queryBuilder.AddProperties( "*", "table_B.adress", "TIME(created)" );
       queryBuilder.ExcludeProperties( "name", "location" );
     }
 

@@ -70,7 +70,7 @@ namespace BackendlessAPI.Persistence
       this.properties = properties;
       return this;
     }
-    
+
     public DataQueryBuilder SetProperties( params String[] properties )
     {
       this.properties = new List<String>();
@@ -91,7 +91,7 @@ namespace BackendlessAPI.Persistence
     }
 
     public DataQueryBuilder AddProperties( params String[] properties )
-    { 
+    {
       this.properties.AddRange( properties );
       return this;
     }
@@ -107,7 +107,7 @@ namespace BackendlessAPI.Persistence
       return new List<String>( excludeProperties );
     }
 
-    public DataQueryBuilder ExcludeProperties(List<String> excludeProperties)
+    public DataQueryBuilder ExcludeProperties( List<String> excludeProperties )
     {
       this.excludeProperties.Clear();
 
@@ -118,7 +118,7 @@ namespace BackendlessAPI.Persistence
       return this;
     }
 
-    public DataQueryBuilder ExcludeProperties( params String[] excludeProperties)
+    public DataQueryBuilder ExcludeProperties( params String[] excludeProperties )
     {
       this.excludeProperties.Clear();
 
@@ -203,7 +203,7 @@ namespace BackendlessAPI.Persistence
       return this;
     }
 
-    public DataQueryBuilder SetGroupBy ( String groupBy )
+    public DataQueryBuilder SetGroupBy( String groupBy )
     {
       this.groupBy = new List<String> { groupBy };
       return this;
@@ -216,7 +216,7 @@ namespace BackendlessAPI.Persistence
       return this;
     }
 
-    public DataQueryBuilder AddGroupBy ( String groupBy )
+    public DataQueryBuilder AddGroupBy( String groupBy )
     {
       this.groupBy = this.groupBy ?? new List<String>();
       this.groupBy.Add( groupBy );
@@ -225,8 +225,11 @@ namespace BackendlessAPI.Persistence
 
     public DataQueryBuilder SetHavingClause( String havingClause )
     {
+      if ( havingClause == null )
+        havingClause = "";
+
       this.havingClause = havingClause;
-      return this;
+      return this;   
     }
   }
 }

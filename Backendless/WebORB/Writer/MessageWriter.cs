@@ -266,7 +266,7 @@ namespace Weborb.Writer
         }
 
       // if a writer is found, use it, otherwise use the default writer
-      return writer;
+        return writer;
       }
 
     internal static ITypeWriter getWriter( Type type, IProtocolFormatter formatter, bool checkInterfaces )
