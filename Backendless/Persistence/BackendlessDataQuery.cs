@@ -60,6 +60,9 @@ namespace BackendlessAPI.Persistence
     [SetClientClassMemberName( "properties" )]
     public List<String> Properties { get; set; }
 
+    [SetClientClassMemberName( "excludePropeties" )]
+    public List<String> ExcludeProperties{ get; set; }
+
     [SetClientClassMemberName( "pageSize" )]
     public int PageSize { get;set; }
 

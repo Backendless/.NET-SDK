@@ -8,6 +8,7 @@ namespace BackendlessAPI.Persistence
     private PagedQueryBuilder<DataQueryBuilder> pagedQueryBuilder;
     private QueryOptionsBuilder<DataQueryBuilder> queryOptionsBuilder;
     private List<String> properties;
+    private List<String> excludeProperties;
     private String whereClause;
     private List<String> groupBy;
     private String havingClause;
@@ -15,8 +16,11 @@ namespace BackendlessAPI.Persistence
     private DataQueryBuilder()
     {
       properties = new List<String>();
+      excludeProperties = new List<String>();
       pagedQueryBuilder = new PagedQueryBuilder<DataQueryBuilder>( this );
       queryOptionsBuilder = new QueryOptionsBuilder<DataQueryBuilder>( this );
+      groupBy = new List<String>();
+      havingClause = "";
     }
 
     public static DataQueryBuilder Create()
@@ -29,6 +33,7 @@ namespace BackendlessAPI.Persistence
       BackendlessDataQuery dataQuery = pagedQueryBuilder.Build();
       dataQuery.QueryOptions = queryOptionsBuilder.Build();
       dataQuery.Properties = properties;
+      dataQuery.ExcludeProperties = excludeProperties;
       dataQuery.WhereClause = whereClause;
       dataQuery.GroupBy = groupBy;
       dataQuery.HavingClause = havingClause;
@@ -88,6 +93,46 @@ namespace BackendlessAPI.Persistence
     public DataQueryBuilder AddProperties( params String[] properties )
     { 
       this.properties.AddRange( properties );
+      return this;
+    }
+
+    public DataQueryBuilder AddAllProperties()
+    {
+      AddProperty( "*" );
+      return this;
+    }
+
+    public List<String> GetExcludedProperties()
+    {
+      return new List<String>( excludeProperties );
+    }
+
+    public DataQueryBuilder ExcludeProperties(List<String> excludeProperties)
+    {
+      this.excludeProperties.Clear();
+
+      if ( excludeProperties != null )
+        foreach ( String exclProp in excludeProperties )
+          this.excludeProperties.Add( exclProp );
+
+      return this;
+    }
+
+    public DataQueryBuilder ExcludeProperties( params String[] excludeProperties)
+    {
+      this.excludeProperties.Clear();
+
+      if ( excludeProperties != null )
+        foreach ( String exclProp in excludeProperties )
+          this.excludeProperties.Add( exclProp );
+
+      return this;
+    }
+
+    public DataQueryBuilder ExcludeProperty( String excludeProperty )
+    {
+      if ( excludeProperties != null )
+        this.excludeProperties.Add( excludeProperty );
       return this;
     }
 
