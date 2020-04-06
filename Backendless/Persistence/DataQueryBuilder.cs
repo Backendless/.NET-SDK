@@ -17,6 +17,8 @@ namespace BackendlessAPI.Persistence
       properties = new List<String>();
       pagedQueryBuilder = new PagedQueryBuilder<DataQueryBuilder>( this );
       queryOptionsBuilder = new QueryOptionsBuilder<DataQueryBuilder>( this );
+      groupBy = new List<String>();
+      havingClause = "";
     }
 
     public static DataQueryBuilder Create()
