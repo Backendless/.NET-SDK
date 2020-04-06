@@ -183,13 +183,10 @@ namespace BackendlessAPI.Persistence
     public DataQueryBuilder SetHavingClause( String havingClause )
     {
       if ( havingClause == null )
-      {
-        this.havingClause = "";
-        return this;
-      }
+        havingClause = "";
 
       this.havingClause = havingClause;
-      return this;
+      return this;   
     }
   }
 }
