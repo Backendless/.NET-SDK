@@ -98,8 +98,7 @@ namespace BackendlessAPI.Persistence
 
     public DataQueryBuilder AddAllProperties()
     {
-      AddProperty( "*" );
-      return this;
+      return AddProperty( "*" );
     }
 
     public List<String> GetExcludedProperties()
