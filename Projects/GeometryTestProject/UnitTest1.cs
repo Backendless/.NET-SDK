@@ -10,13 +10,13 @@ namespace GeometryTestProject
   [TestClass]
   public class UnitTest1
   {
-    private const String APP_API_KEY = "B5D20616-5565-2674-FF73-C5CAC72BD200";
-    private const String DOTNET_API_KEY = "18BF3443-B8A8-48E1-90ED-2783F9AF2D40";
+    private const String APP_API_KEY = "F8F82BF0-414F-36CB-FFE1-303FA538ED00";
+    private const String DOTNET_API_KEY = "AB320716-358B-4BBF-AF9D-4F4B98F03363";
 
     [AssemblyInitialize]
     public static void AssemblyInit( TestContext context )
     {
-      Backendless.URL = "http://api.backendless.com";
+      Backendless.URL = "http://apitest.backendless.com";
       Backendless.InitApp( APP_API_KEY, DOTNET_API_KEY );
     }
     [TestMethod]
@@ -286,16 +286,18 @@ namespace GeometryTestProject
     }
 
     [TestMethod]
-    public void EP1ExcludePropetiesEP()
+    public void EP1Find()
     {
       DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
       queryBuilder.AddAllProperties();
       queryBuilder.AddProperty( "trim( name )" );
       queryBuilder.ExcludeProperty( "name" );
+
+      IList<Dictionary<string, object>> res = Backendless.Data.Of( "A" ).Find( queryBuilder );
     }
 
     [TestMethod]
-    public void EP2ExcludeProperties()
+    public void EP2FindFirst()
     {
       DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
       queryBuilder.AddAllProperties();
@@ -306,7 +308,7 @@ namespace GeometryTestProject
     }
 
     [TestMethod]
-    public void EP3ExcludeProperties()
+    public void EP3FindLast()
     {
       DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
       queryBuilder.AddAllProperties();
@@ -317,7 +319,7 @@ namespace GeometryTestProject
     }
 
     [TestMethod]
-    public void EP4ExcludeProperties()
+    public void EP4FindById()
     {
       DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
       queryBuilder.AddAllProperties();
@@ -328,16 +330,18 @@ namespace GeometryTestProject
     }
 
     [TestMethod]
-    public void EP5ExcludeProperties()
+    public void EP5Find()
     {
       DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
       queryBuilder.AddProperties( "*" );
       queryBuilder.AddProperty( "trim( name )" );
       queryBuilder.ExcludeProperty( "name" );
+
+      IList<Dictionary<string, object>> res = Backendless.Data.Of( "A" ).Find( queryBuilder );
     }
 
     [TestMethod]
-    public void EP6ExcludeProperties()
+    public void EP6FindFirst()
     {
       DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
       queryBuilder.AddProperties( "*" );
@@ -348,7 +352,7 @@ namespace GeometryTestProject
     }
 
     [TestMethod]
-    public void EP7ExcludeProperties()
+    public void EP7FindLast()
     {
       DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
       queryBuilder.AddProperties( "*" );
@@ -359,7 +363,7 @@ namespace GeometryTestProject
     }
 
     [TestMethod]
-    public void EP8ExcludeProperties()
+    public void EP8FindById()
     {
       DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
       queryBuilder.AddProperties( "*" );
@@ -370,15 +374,17 @@ namespace GeometryTestProject
     }
 
     [TestMethod]
-    public void EP9ExcludeProperties()
+    public void EP9Find()
     {
       DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
       queryBuilder.AddProperties( "*", "table_B.adress", "TIME(created)" );
       queryBuilder.ExcludeProperties( "name", "location" );
+
+      IList<Dictionary<string, object>> res = Backendless.Data.Of( "A" ).Find( queryBuilder );
     }
 
     [TestMethod]
-    public void EP10ExcludeProperties()
+    public void EP10FindFirst()
     {
       DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
       queryBuilder.AddProperties( "*", "table_B.adress", "TIME(created)" );
@@ -388,7 +394,7 @@ namespace GeometryTestProject
     }
 
     [TestMethod]
-    public void EP11ExcludeProperties()
+    public void EP11FindLast()
     {
       DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
       queryBuilder.AddProperties( "*", "table_B.adress", "TIME(created)" );
@@ -398,7 +404,7 @@ namespace GeometryTestProject
     }
 
     [TestMethod]
-    public void EP12ExcludeProperties()
+    public void EP12FindById()
     {
       DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
       queryBuilder.AddProperties( "*", "table_B.adress", "TIME(created)" );
