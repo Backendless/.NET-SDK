@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Backendless.NET")]
-[assembly: AssemblyCopyright("Copyright © Backendless Corp 2018")]
+[assembly: AssemblyCopyright("Copyright © Backendless Corp 2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

@@ -60,15 +60,18 @@ namespace BackendlessAPI.Persistence
     [SetClientClassMemberName( "properties" )]
     public List<String> Properties { get; set; }
 
+    [SetClientClassMemberName( "excludeProperties" )]
+    public List<String> ExcludeProperties { get; set; }
+
     [SetClientClassMemberName( "pageSize" )]
-    public int PageSize { get;set; }
+    public int PageSize { get; set; }
 
     [SetClientClassMemberName( "offset" )]
     public int Offset { get; set; }
 
     public IBackendlessQuery NewInstance()
     {
-      return new BackendlessDataQuery {Properties = Properties, WhereClause = WhereClause, QueryOptions = QueryOptions, GroupBy = GroupBy, HavingClause = HavingClause};
+      return new BackendlessDataQuery { Properties = Properties, WhereClause = WhereClause, QueryOptions = QueryOptions, GroupBy = GroupBy, HavingClause = HavingClause };
     }
   }
 }

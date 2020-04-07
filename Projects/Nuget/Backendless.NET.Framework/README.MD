@@ -1,11 +1,32 @@
 # Backendless SDK for .NET/Xamarin
 
+version 5.5.1
+## What's new
+* Moved the geometry types to the BackendlessAPI.Persistence namespace.
+
+## About Backendless
 Backendless is a cloud-based serverless platform which significantly
 simplifies the process of development of web and mobile applications.
 
 This SDK provides the client-side APIs which you can use in your app
 to take advantage of the Backendless platform functionality.
 
+Backendless has a ton of awesome functionality including:
+* Real-time Database (except for the .netstandard2.0 build)
+* Real-time Publish/Subscribe Messaging (except for the .netstandard2.0 build)
+* User Management (user registration, login, logout, password recovery)
+* Push Notification
+* File operations (upload, download, copy, move, delete)
+* Geo location
+* Custom business logic
+ 
+All APIs can be secured with roles-based security. Also, you can create
+your own API services and deploy them into Backendless.
+
+Be sure to check out API documentation available at:
+[https://backendless.com/docs/dotnet/](https://backendless.com/docs/dotnet/)
+
+## Getting Started
 To get started you need to create a Backendless developer account at:
 
 [https://develop.backendless.com](https://develop.backendless.com)
@@ -24,20 +45,6 @@ using BackendlessAPI;
 
 Backendless.InitApp( "YOUR-APP-ID", "YOUR-API-KEY" );
 ```
-Backendless has a ton of awesome functionality including:
-* Real-time Database (except for the .netstandard2.0 build)
-* Real-time Publish/Subscribe Messaging (except for the .netstandard2.0 build)
-* User Management (user registration, login, logout, password recovery)
-* Push Notification
-* File operations (upload, download, copy, move, delete)
-* Geo location
-* Custom business logic
- 
-All APIs can be secured with roles-based security. Also, you can create
-your own API services and deploy them into Backendless.
-
-Be sure to check out API documentation available at:
-[https://backendless.com/docs/dotnet/](https://backendless.com/docs/dotnet/)
 
 If you run into any problems or have any questions, you can contact us at:
 * [Slack](http://slack.backendless.com)

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 
-namespace BackendlessAPI
+namespace BackendlessAPI.Persistence
 {
   public class GeometryDTO
   {

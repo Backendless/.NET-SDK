@@ -4,7 +4,7 @@ using Weborb.Reader;
 using Weborb.Types;
 using Weborb.Util;
 
-namespace BackendlessAPI.Geo
+namespace BackendlessAPI.Persistence
 {
   class BackendlessGeometryFactory : IArgumentObjectFactory
   {

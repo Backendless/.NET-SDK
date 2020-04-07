@@ -2,7 +2,7 @@
 using Weborb.Writer;
 
 
-namespace BackendlessAPI.Geo
+namespace BackendlessAPI.Persistence
 {
   public class BackendlessGeometryWriter : ITypeWriter
   {

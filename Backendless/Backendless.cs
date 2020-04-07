@@ -16,6 +16,7 @@ using BackendlessAPI.Caching;
 using BackendlessAPI.Counters;
 using BackendlessAPI.Logging;
 using BackendlessAPI.Geo;
+using BackendlessAPI.Persistence;
 
 #if WITHRT
 using BackendlessAPI.RT;
