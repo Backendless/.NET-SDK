@@ -1,22 +1,31 @@
+//#define DEV_TEST
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using BackendlessAPI;
 using BackendlessAPI.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using BackendlessAPI.Async;
 
 namespace GeometryTestProject
 {
   [TestClass]
-  public class UnitTest1
+  public class GeometryDataTypesTestClass
   {
+#if DEV_TEST
     private const String APP_API_KEY = "F8F82BF0-414F-36CB-FFE1-303FA538ED00";
     private const String DOTNET_API_KEY = "AB320716-358B-4BBF-AF9D-4F4B98F03363";
-
+#else
+    private const String APP_API_KEY = "B5D20616-5565-2674-FF73-C5CAC72BD200";
+    private const String DOTNET_API_KEY = "18BF3443-B8A8-48E1-90ED-2783F9AF2D40";
+#endif
     [AssemblyInitialize]
     public static void AssemblyInit( TestContext context )
     {
+#if DEV_TEST
       Backendless.URL = "http://apitest.backendless.com";
+#endif
       Backendless.InitApp( APP_API_KEY, DOTNET_API_KEY );
     }
     [TestMethod]
@@ -283,143 +292,6 @@ namespace GeometryTestProject
       Assert.AreEqual( pers["GeometryCol"], geometry, "Geometry(Point) WKT data are not equals" );
       Assert.AreEqual( pers["LineStringCol"], line, "LineString WKT data are not equals" );
       Assert.AreEqual( pers["PolygonCol"], poly, "Polygon WKT data are not equals" );
-    }
-
-    [TestMethod]
-    public void EP1Find()
-    {
-      DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
-      queryBuilder.AddAllProperties();
-      queryBuilder.AddProperty( "trim( name )" );
-      queryBuilder.ExcludeProperty( "name" );
-
-      IList<Dictionary<string, object>> res = Backendless.Data.Of( "A" ).Find( queryBuilder );
-    }
-
-    [TestMethod]
-    public void EP2FindFirst()
-    {
-      DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
-      queryBuilder.AddAllProperties();
-      queryBuilder.AddProperties( "trim(name)" );
-      queryBuilder.ExcludeProperty( "name" );
-
-      Dictionary<string, object> res = Backendless.Data.Of( "A" ).FindFirst( queryBuilder );
-    }
-
-    [TestMethod]
-    public void EP3FindLast()
-    {
-      DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
-      queryBuilder.AddAllProperties();
-      queryBuilder.AddProperty( "trim( name )" );
-      queryBuilder.ExcludeProperty( "name" );
-
-      Dictionary<string, object> res = Backendless.Data.Of( "A" ).FindLast( queryBuilder );
-    }
-
-    [TestMethod]
-    public void EP4FindById()
-    {
-      DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
-      queryBuilder.AddAllProperties();
-      queryBuilder.AddProperty( "trim( name )" );
-      queryBuilder.ExcludeProperty( "name" );
-
-      Dictionary<string, object> res = Backendless.Data.Of( "A" ).FindById( "52095A11-F700-948C-FFE6-196F8F177E00" );
-    }
-
-    [TestMethod]
-    public void EP5Find()
-    {
-      DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
-      queryBuilder.AddProperties( "*" );
-      queryBuilder.AddProperty( "trim( name )" );
-      queryBuilder.ExcludeProperty( "name" );
-
-      IList<Dictionary<string, object>> res = Backendless.Data.Of( "A" ).Find( queryBuilder );
-    }
-
-    [TestMethod]
-    public void EP6FindFirst()
-    {
-      DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
-      queryBuilder.AddProperties( "*" );
-      queryBuilder.AddProperty( "trim( name )" );
-      queryBuilder.ExcludeProperty( "name" );
-
-      Dictionary<string, object> res = Backendless.Data.Of( "A" ).FindFirst( queryBuilder );
-    }
-
-    [TestMethod]
-    public void EP7FindLast()
-    {
-      DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
-      queryBuilder.AddProperties( "*" );
-      queryBuilder.AddProperty( "trim( name )" );
-      queryBuilder.ExcludeProperty( "name" );
-
-      Dictionary<string, object> res = Backendless.Data.Of( "A" ).FindLast( queryBuilder );
-    }
-
-    [TestMethod]
-    public void EP8FindById()
-    {
-      DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
-      queryBuilder.AddProperties( "*" );
-      queryBuilder.AddProperty( "trim( name )" );
-      queryBuilder.ExcludeProperty( "name" );
-
-      Dictionary<string, object> res = Backendless.Data.Of( "A" ).FindById( "52095A11-F700-948C-FFE6-196F8F177E00" );
-    }
-
-    [TestMethod]
-    public void EP9Find()
-    {
-      DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
-      queryBuilder.AddProperties( "*", "table_B.adress", "TIME(created)" );
-      queryBuilder.ExcludeProperties( "name", "location" );
-
-      IList<Dictionary<string, object>> res = Backendless.Data.Of( "A" ).Find( queryBuilder );
-    }
-
-    [TestMethod]
-    public void EP10FindFirst()
-    {
-      DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
-      queryBuilder.AddProperties( "*", "table_B.adress", "TIME(created)" );
-      queryBuilder.ExcludeProperties( "name", "location" );
-
-      Dictionary<string, object> res = Backendless.Data.Of( "A" ).FindFirst( queryBuilder );
-    }
-
-    [TestMethod]
-    public void EP11FindLast()
-    {
-      DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
-      queryBuilder.AddProperties( "*", "table_B.adress", "TIME(created)" );
-      queryBuilder.ExcludeProperties( "name", "location" );
-
-      Dictionary<string, object> res = Backendless.Data.Of( "A" ).FindLast( queryBuilder );
-    }
-
-    [TestMethod]
-    public void EP12FindById()
-    {
-      DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
-      queryBuilder.AddProperties( "*", "table_B.adress", "TIME(created)" );
-      queryBuilder.ExcludeProperties( "name", "location" );
-
-      Dictionary<string, object> res = Backendless.Data.Of( "A" ).FindById( "52095A11-F700-948C-FFE6-196F8F177E00" );
-    }
-    [TestMethod]
-    public void TestAddAllProperties()
-    {
-      DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
-      queryBuilder.AddAllProperties();
-      queryBuilder.AddProperty( "trim(name)" );
-      queryBuilder.ExcludeProperty( "name" );
-      IList<Dictionary<string, object>> res = Backendless.Data.Of( "A" ).Find( queryBuilder );
     }
   }
 }
