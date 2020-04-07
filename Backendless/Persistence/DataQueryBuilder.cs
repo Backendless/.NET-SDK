@@ -111,9 +111,8 @@ namespace BackendlessAPI.Persistence
     {
       this.excludeProperties.Clear();
 
-      if ( excludeProperties != null )
-        foreach ( String exclProp in excludeProperties )
-          this.excludeProperties.Add( exclProp );
+      if( excludeProperties != null )
+        this.excludeProperties.AddRange( excludeProperties );
 
       return this;
     }
@@ -122,16 +121,15 @@ namespace BackendlessAPI.Persistence
     {
       this.excludeProperties.Clear();
 
-      if ( excludeProperties != null )
-        foreach ( String exclProp in excludeProperties )
-          this.excludeProperties.Add( exclProp );
+      if( excludeProperties != null )
+        this.excludeProperties.AddRange( excludeProperties );
 
       return this;
     }
 
     public DataQueryBuilder ExcludeProperty( String excludeProperty )
     {
-      if ( excludeProperties != null )
+      if( excludeProperties != null )
         this.excludeProperties.Add( excludeProperty );
       return this;
     }
