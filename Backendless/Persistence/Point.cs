@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 
-namespace BackendlessAPI
+namespace BackendlessAPI.Persistence
 {
   public class Point : Geometry
   {

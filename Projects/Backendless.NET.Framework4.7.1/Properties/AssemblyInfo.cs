@@ -10,7 +10,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Backendless Corp")]
 [assembly: AssemblyProduct("Backendless.NET")]
-[assembly: AssemblyCopyright("Copyright © Backendless Corp 2018")]
+[assembly: AssemblyCopyright("Copyright © Backendless Corp 2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

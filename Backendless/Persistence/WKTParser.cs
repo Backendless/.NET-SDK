@@ -5,7 +5,7 @@ using System.Linq;
 using System.Globalization;
 using BackendlessAPI.Utils;
 
-namespace BackendlessAPI
+namespace BackendlessAPI.Persistence
 {
   public class WKTParser
   {
