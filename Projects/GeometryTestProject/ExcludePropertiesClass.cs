@@ -11,19 +11,6 @@ namespace GeometryTestProject
   public class ExcludePropertiesClass
   {
     [TestMethod]
-    public void TestExcludeName_Find()
-    {
-      DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
-      queryBuilder.AddAllProperties();
-      queryBuilder.AddProperty( "trim( name )" );
-      queryBuilder.ExcludeProperty( "name" );
-
-      IList<Dictionary<string, object>> res = Backendless.Data.Of( "A" ).Find( queryBuilder );
-
-      Assert.IsTrue( !res[ 0 ].ContainsKey( "name" ) && !res[ 1 ].ContainsKey( "name" ) );
-    }
-
-    [TestMethod]
     public void TestExcludeTwoFields()
     {
       DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
@@ -32,8 +19,11 @@ namespace GeometryTestProject
 
       IList<Dictionary<string, object>> res = Backendless.Data.Of( "A" ).Find( queryBuilder );
 
-      Assert.IsTrue( !res[ 0 ].ContainsKey( "name" ) && !res[ 0 ].ContainsKey( "age" ), "First object is contains keys 'name' or 'age'" );
-      Assert.IsTrue( !res[ 1 ].ContainsKey( "name" ) && !res[ 1 ].ContainsKey( "age" ), "Second object is contains keys 'name' or 'age'" );
+      Assert.IsTrue( !res[ 0 ].ContainsKey( "name" ), "First object is contains key 'name'" );
+      Assert.IsTrue( !res[ 0 ].ContainsKey( "age" ), "First object is contains key 'age'" );
+
+      Assert.IsTrue( !res[ 1 ].ContainsKey( "name" ), "First object is contains key 'name'" );
+      Assert.IsTrue( !res[ 1 ].ContainsKey( "age" ), "First object is contains key 'age'" );
     }
 
     [TestMethod]
