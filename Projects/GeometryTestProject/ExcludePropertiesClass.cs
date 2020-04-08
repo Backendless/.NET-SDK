@@ -19,23 +19,23 @@ namespace GeometryTestProject
 
       IList<Dictionary<string, object>> res = Backendless.Data.Of( "A" ).Find( queryBuilder );
 
-      Assert.IsTrue( !res[ 0 ].ContainsKey( "name" ), "First object is contains key 'name'" );
-      Assert.IsTrue( !res[ 0 ].ContainsKey( "age" ), "First object is contains key 'age'" );
+      Assert.IsFalse( res[ 0 ].ContainsKey( "name" ), "First object is contains key 'name'" );
+      Assert.IsFalse( res[ 0 ].ContainsKey( "age" ), "First object is contains key 'age'" );
 
-      Assert.IsTrue( !res[ 1 ].ContainsKey( "name" ), "First object is contains key 'name'" );
-      Assert.IsTrue( !res[ 1 ].ContainsKey( "age" ), "First object is contains key 'age'" );
+      Assert.IsFalse( res[ 1 ].ContainsKey( "name" ), "First object is contains key 'name'" );
+      Assert.IsFalse( res[ 1 ].ContainsKey( "age" ), "First object is contains key 'age'" );
     }
 
     [TestMethod]
     public void TestCreateFieldTIME()
     {
       DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
-      queryBuilder.AddProperties( "*", "TIME(created)" );
+      queryBuilder.AddProperties( "*", "TIME(created) as myTime" );
 
       IList<Dictionary<string, object>> res = Backendless.Data.Of( "A" ).Find( queryBuilder );
 
-      Assert.IsTrue( res[ 0 ].ContainsKey( "Time" ), "First object does not contain 'Time' key" );
-      Assert.IsTrue( res[ 1 ].ContainsKey( "Time" ), "Second object does not contain 'Time' key" );
+      Assert.IsTrue( res[ 0 ].ContainsKey( "myTime" ), "First object does not contain 'myTime' key" );
+      Assert.IsTrue( res[ 1 ].ContainsKey( "myTime" ), "Second object does not contain 'myTime' key" );
     }
 
     [TestMethod]
@@ -46,8 +46,8 @@ namespace GeometryTestProject
 
       IList<Dictionary<string, object>> res = Backendless.Data.Of( "A" ).Find( queryBuilder );
 
-      Assert.IsTrue( (String) res[ 0 ][ "adress" ] == "Tom Street", "First object does not contain 'adress' field" );
-      Assert.IsTrue( (String) res[ 1 ][ "adress" ] == "Curse Street", "Second object does not contain 'adress' field" );
+      Assert.IsTrue( res[ 0 ].ContainsKey("adress"), "First object does not contain 'adress' field" );
+      Assert.IsTrue( res[ 1 ].ContainsKey("adress"), "Second object does not contain 'adress' field" );
     }
   }
 }
