@@ -22,8 +22,8 @@ namespace Weborb.Writer
 
       if ( obj is IWebORBArray )
       {
-        IEnumerator en = ( (IWebORBArray)obj ).GetEnumerator();
-        arrayObj = new object[( (IWebORBArray)obj ).Count];
+        IEnumerator en = ( (IWebORBArray) obj ).GetEnumerator();
+        arrayObj = new object[ ( (IWebORBArray) obj ).Count ];
 
         int i = 0;
         while ( en.MoveNext() )
@@ -32,17 +32,17 @@ namespace Weborb.Writer
       else
       {
         //TODO: test out this cast!
-        arrayObj = (Array)obj;
+        arrayObj = (Array) obj;
       }
 
-      if ( obj.GetType().IsAssignableFrom(typeof(Byte[])))
+      if ( obj.GetType().IsAssignableFrom( typeof( Byte[] ) ) )
       {
-        Byte[] byteArray = new byte[arrayObj.Length];
+        Byte[] byteArray = new byte[ arrayObj.Length ];
         
         for ( int i = 0; i < arrayObj.Length; i++ )
-          byteArray[i] = (Byte)arrayObj.GetValue( i );
+          byteArray[i] = (Byte) arrayObj.GetValue( i );
 
-        writer.WriteByteArray(byteArray);
+        writer.WriteByteArray( byteArray );
         return;
       }
 
