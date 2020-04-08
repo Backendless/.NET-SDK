@@ -11,56 +11,43 @@ namespace GeometryTestProject
   public class ExcludePropertiesClass
   {
     [TestMethod]
-    public void TestExcludeName_Find()
-    {
-      DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
-      queryBuilder.AddAllProperties();
-      queryBuilder.AddProperty( "trim( name )" );
-      queryBuilder.ExcludeProperty( "name" );
-
-      IList<Dictionary<string, object>> res = Backendless.Data.Of( "A" ).Find( queryBuilder );
-
-      foreach ( Dictionary<string, object> kvp in res )
-        if ( !kvp.ContainsKey( "name" ) )
-          Assert.IsTrue( true );
-        else
-          Assert.IsTrue( false );
-    }
-
-    [TestMethod]
-    public void TestExcludeName_Find_WithStar()
+    public void TestExcludeTwoFields()
     {
       DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
       queryBuilder.AddProperties( "*" );
-      queryBuilder.AddProperty( "trim( name )" );
-      queryBuilder.ExcludeProperty( "name" );
+      queryBuilder.ExcludeProperties( "name", "age" );
 
-      IList<Dictionary<string, object>> res = Backendless.Data.Of( "A" ).Find( queryBuilder );
-      foreach ( Dictionary<string, object> kvp in res )
-        if ( !kvp.ContainsKey( "name" ) )
-          Assert.IsTrue( true );
-        else
-          Assert.IsTrue( false );
+      IList<Dictionary<String, Object>> res = Backendless.Data.Of( "A" ).Find( queryBuilder );
+
+      Assert.IsFalse( res[ 0 ].ContainsKey( "name" ), "First object is contains key 'name'" );
+      Assert.IsFalse( res[ 0 ].ContainsKey( "age" ), "First object is contains key 'age'" );
+
+      Assert.IsFalse( res[ 1 ].ContainsKey( "name" ), "First object is contains key 'name'" );
+      Assert.IsFalse( res[ 1 ].ContainsKey( "age" ), "First object is contains key 'age'" );
     }
 
     [TestMethod]
-    public void TestExcludeNameAndLocation_Find_Related()
+    public void TestCreateFieldTIME()
     {
       DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
-      queryBuilder.AddProperties( "*", "table_B.adress", "TIME(created)" );
-      queryBuilder.ExcludeProperties( "name", "location" );
+      queryBuilder.AddProperties( "*", "TIME(created) as myTime" );
 
-      IList<Dictionary<string, object>> res = Backendless.Data.Of( "A" ).Find( queryBuilder );
+      IList<Dictionary<String, Object>> res = Backendless.Data.Of( "A" ).Find( queryBuilder );
 
-      foreach ( Dictionary<string, object> kvp in res )
-        if ( ( String )kvp["adress"] == "Tom Street" || ( String ) kvp["adress"] == "Curse Street" )
-        {
-          if ( kvp.ContainsKey( "Time" ) )
-            if ( !kvp.ContainsKey( "name" ) )
-              Assert.IsTrue( true );
-        }
-        else
-          Assert.IsTrue( false );
+      Assert.IsTrue( res[ 0 ].ContainsKey( "myTime" ), "First object does not contain 'myTime' key" );
+      Assert.IsTrue( res[ 1 ].ContainsKey( "myTime" ), "Second object does not contain 'myTime' key" );
+    }
+
+    [TestMethod]
+    public void TestRelatedField()
+    {
+      DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
+      queryBuilder.AddProperties( "*", "table_B.adress" );
+
+      IList<Dictionary<String, Object>> res = Backendless.Data.Of( "A" ).Find( queryBuilder );
+
+      Assert.IsTrue( res[ 0 ].ContainsKey("adress"), "First object does not contain 'adress' field" );
+      Assert.IsTrue( res[ 1 ].ContainsKey("adress"), "Second object does not contain 'adress' field" );
     }
   }
 }

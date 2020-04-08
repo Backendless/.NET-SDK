@@ -396,7 +396,7 @@ namespace Weborb.Reader
       return args.Length == 2 &&
               (arrayObject == null ||
                arrayObject.Length == 0 ||
-              ((IAdaptingType) arrayObject[ 0 ]).canAdaptTo( typeof( KeyValuePair ) ));
+              ( (IAdaptingType) arrayObject[ 0 ] ).canAdaptTo( typeof( KeyValuePair ) ) );
     }
 
     private bool isHomogeneous()
@@ -431,7 +431,7 @@ namespace Weborb.Reader
         object obj = arrayObject[ 0 ];
 
         if( typeof( IAdaptingType ).IsAssignableFrom( obj.GetType() ) )
-          return ((IAdaptingType) obj).getDefaultType();
+          return ( (IAdaptingType) obj ).getDefaultType();
         else
           return obj.GetType();
       }
@@ -452,16 +452,16 @@ namespace Weborb.Reader
       if( obj is ICacheableAdaptingType )
       {
         if( componentType == null )
-          result = ((ICacheableAdaptingType) obj).defaultAdapt( refCache );
+          result = ( (ICacheableAdaptingType) obj ).defaultAdapt( refCache );
         else
-          result = ((ICacheableAdaptingType) obj).adapt( componentType, refCache );
+          result = ( (ICacheableAdaptingType) obj ).adapt( componentType, refCache );
       }
       else if( obj is IAdaptingType )
       {
         if( componentType == null )
-          result = ((IAdaptingType) obj).defaultAdapt();
+          result = ( (IAdaptingType) obj ).defaultAdapt();
         else
-          result = ((IAdaptingType) obj).adapt( componentType );
+          result = ( (IAdaptingType) obj ).adapt( componentType );
       }
       else
       {

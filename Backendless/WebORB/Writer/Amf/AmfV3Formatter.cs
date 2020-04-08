@@ -64,7 +64,7 @@ namespace Weborb.Writer.Amf
 
     public override void WriteByteArray( byte[] array )
     {
-      writer.Write( (byte)Datatypes.BYTEARRAY_DATATYPE_V3 );
+      writer.Write( (byte) Datatypes.BYTEARRAY_DATATYPE_V3 );
       writer.WriteVarInt( array.Length << 1 | 0x1 );
       writer.Write( array );
     }
@@ -78,18 +78,18 @@ namespace Weborb.Writer.Amf
 
     internal override object EndSelectCacheObject()
     {
-      if ( stream.Length < beginSelectBytesIndex )
+      if( stream.Length < beginSelectBytesIndex )
         return new byte[ 0 ];
 
       byte[] res = new byte[ stream.Length - beginSelectBytesIndex ];
-      stream.Position = (int)beginSelectBytesIndex;
+      stream.Position = (int) beginSelectBytesIndex;
       stream.Read( res, 0, res.Length );
       return res;
     }
 
     internal override void WriteCachedObject( object cached )
     {
-      writer.Write( (byte[])cached );
+      writer.Write( (byte[]) cached );
     }
 
     public override ITypeWriter getWriter( Type type )
@@ -136,32 +136,32 @@ namespace Weborb.Writer.Amf
 
     public override void WriteMessageVersion( float version )
     {
-      writer.WriteShort( (int)version );
+      writer.WriteShort( (int) version );
     }
 
     public override void BeginWriteBodyContent()
     {
-      writer.Write( (byte)Datatypes.V3_DATATYPE );
+      writer.Write( (byte) Datatypes.V3_DATATYPE );
     }
 
     public override void BeginWriteArray( int length )
     {
-      writer.Write( (byte)Datatypes.ARRAY_DATATYPE_V3 );
+      writer.Write( (byte) Datatypes.ARRAY_DATATYPE_V3 );
       writer.WriteVarInt( length << 1 | 0x1 );
       writer.WriteVarInt( 0x1 );
     }
 
     public override void WriteBoolean( bool b )
     {
-      if ( b )
-        writer.Write( (byte)Datatypes.BOOLEAN_DATATYPE_TRUEV3 );
+      if( b )
+        writer.Write( (byte) Datatypes.BOOLEAN_DATATYPE_TRUEV3 );
       else
-        writer.Write( (byte)Datatypes.BOOLEAN_DATATYPE_FALSEV3 );
+        writer.Write( (byte) Datatypes.BOOLEAN_DATATYPE_FALSEV3 );
     }
 
     public override void WriteDate( DateTime datetime )
     {
-      writer.Write( (byte)Datatypes.DATE_DATATYPE_V3 );
+      writer.Write( (byte) Datatypes.DATE_DATATYPE_V3 );
       writer.WriteVarInt( 0x1 );
 #if( WINDOWS_PHONE8 )
        TimeSpan timeZoneOffset = TimeZoneInfo.Local.BaseUtcOffset;
@@ -171,13 +171,13 @@ namespace Weborb.Writer.Amf
       DateTime olddate = new DateTime( 1970, 1, 1 );//.ToUniversalTime();
       TimeSpan span = datetime.Subtract( olddate );
       span = span.Subtract( timeZoneOffset );
-      long totalMs = ( (long)span.TotalMilliseconds );
+      long totalMs = ( (long) span.TotalMilliseconds );
       writer.WriteDouble( totalMs );
     }
 
     public override void BeginWriteObjectMap( int size )
     {
-      writer.Write( (byte)Datatypes.OBJECT_DATATYPE_V3 );
+      writer.Write( (byte) Datatypes.OBJECT_DATATYPE_V3 );
       writer.WriteVarInt( 0x3 | size << 4 ); // classInfo with size of the property count
       writer.WriteVarInt( 1 ); // no classname
     }
@@ -189,27 +189,27 @@ namespace Weborb.Writer.Amf
 
     public override void WriteNull()
     {
-      writer.Write( (byte)Datatypes.NULL_DATATYPE_V3 );
+      writer.Write( (byte) Datatypes.NULL_DATATYPE_V3 );
     }
 
     public override void WriteInteger( int number )
     {
-      if ( number >= -268435456 && number <= 268435455 )
+      if( number >= -268435456 && number <= 268435455 )
       {
-        writer.Write( (byte)Datatypes.INTEGER_DATATYPE_V3 );
-        writer.WriteVarInt( (int)( (int)number & 0x1fffffff ) );
+        writer.Write( (byte) Datatypes.INTEGER_DATATYPE_V3 );
+        writer.WriteVarInt( (int) ( (int) number & 0x1fffffff ) );
       }
       else
       {
-        writer.Write( (byte)Datatypes.DOUBLE_DATATYPE_V3 );
+        writer.Write( (byte) Datatypes.DOUBLE_DATATYPE_V3 );
         writer.WriteDouble( number );
       }
     }
 
     public void WriteDouble( double number, bool writeMarker )
     {
-      if ( writeMarker )
-        writer.Write( (byte)Datatypes.DOUBLE_DATATYPE_V3 );
+      if( writeMarker )
+        writer.Write( (byte) Datatypes.DOUBLE_DATATYPE_V3 );
 
       writer.WriteDouble( number );
     }
@@ -236,10 +236,10 @@ namespace Weborb.Writer.Amf
 
     public override void BeginWriteNamedObject( string objectName, int fieldCount )
     {
-      writer.Write( (byte)Datatypes.OBJECT_DATATYPE_V3 );
+      writer.Write( (byte) Datatypes.OBJECT_DATATYPE_V3 );
       writer.WriteVarInt( 0x3 | fieldCount << 4 );
         
-      if ( objectName == null )
+      if( objectName == null )
         writer.WriteVarInt( 1 );
       else
       {
@@ -251,7 +251,7 @@ namespace Weborb.Writer.Amf
 
     public override void BeginWriteObject( int fieldCount )
     {
-      writer.Write( (byte)Datatypes.OBJECT_DATATYPE_V3 );
+      writer.Write( (byte) Datatypes.OBJECT_DATATYPE_V3 );
       writer.WriteVarInt( 0x3 | fieldCount << 4 );
       writer.WriteVarInt( 0x1 );
     }
@@ -263,25 +263,25 @@ namespace Weborb.Writer.Amf
 
     public override void WriteArrayReference( int refID )
     {
-      writer.Write( (byte)Datatypes.ARRAY_DATATYPE_V3 );
+      writer.Write( (byte) Datatypes.ARRAY_DATATYPE_V3 );
       writer.WriteVarInt( refID << 1 );
     }
 
     public override void WriteDateReference( int refID )
     {
-      writer.Write( (byte)Datatypes.DATE_DATATYPE_V3 );
+      writer.Write( (byte) Datatypes.DATE_DATATYPE_V3 );
       writer.WriteVarInt( refID << 1 );
     }
 
     public override void WriteObjectReference( int refID )
     {
-      writer.Write( (byte)Datatypes.OBJECT_DATATYPE_V3 );
+      writer.Write( (byte) Datatypes.OBJECT_DATATYPE_V3 );
       writer.WriteVarInt( refID << 1 );
     }
 
     public override void WriteStringReference( int refID )
     {
-      writer.Write( (byte)Datatypes.UTFSTRING_DATATYPE_V3 );
+      writer.Write( (byte) Datatypes.UTFSTRING_DATATYPE_V3 );
       writer.WriteVarInt( refID << 1 );
     }
 
@@ -292,19 +292,19 @@ namespace Weborb.Writer.Amf
 
     public void WriteString( string s, bool writeMarker )
     {
-      if ( writeMarker )
-        writer.Write( (byte)Datatypes.UTFSTRING_DATATYPE_V3 );
+      if( writeMarker )
+        writer.Write( (byte) Datatypes.UTFSTRING_DATATYPE_V3 );
 
-      if ( s.Length == 0 )
-        writer.Write( (byte)0x01 );
+      if( s.Length == 0 )
+        writer.Write( (byte) 0x01 );
       else
       {
         //UTF8Util.writeUTF( writer, s, true );
 
         byte[] buffer = utf8.GetBytes( s );
-        writer.WriteVarInt( (int)( buffer.Length << 1 | 0x1 ) );
+        writer.WriteVarInt( (int) ( buffer.Length << 1 | 0x1 ) );
 
-        if ( buffer.Length > 0 )
+        if( buffer.Length > 0 )
           writer.Write( buffer );
       }
     }
@@ -312,7 +312,7 @@ namespace Weborb.Writer.Amf
 #if (FULL_BUILD)
     public override void WriteXML( XmlNode document )
     {
-      writer.Write( (byte)Datatypes.LONGXML_DATATYPE_V3 );
+      writer.Write( (byte) Datatypes.LONGXML_DATATYPE_V3 );
       UTF8Util.writeUTF( writer, document.OuterXml, true );
     }
 #endif
@@ -321,7 +321,7 @@ namespace Weborb.Writer.Amf
     {
       int id = referenceCache.GetStringId( s );
 
-      if ( id != -1 )
+      if( id != -1 )
         writer.WriteVarInt( id << 1 );
       else
       {
@@ -333,7 +333,7 @@ namespace Weborb.Writer.Amf
     public override ProtocolBytes GetBytes()
     {
       ProtocolBytes protocolBytes = new ProtocolBytes();
-      protocolBytes.length = (int)stream.Length;
+      protocolBytes.length = (int) stream.Length;
       protocolBytes.bytes = stream.GetBuffer();
       stream.Close();
       writer.Close();
@@ -353,11 +353,11 @@ namespace Weborb.Writer.Amf
     {
       string str = "";
 
-      for ( int i = 0; i < b.Length; i++ )
+      for( int i = 0; i < b.Length; i++ )
       {
         string ch = b[ i ].ToString( "X" );
 
-        if ( ch.Length == 1 )
+        if( ch.Length == 1 )
           ch = "0" + ch;
 
         str += ch;
