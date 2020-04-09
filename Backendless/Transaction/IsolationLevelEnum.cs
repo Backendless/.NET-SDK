@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
-namespace BackendlessAPI
+namespace BackendlessAPI.Transaction
 {
   public enum LevelEnum
   {
@@ -19,10 +19,7 @@ namespace BackendlessAPI
     
     public int OperationId
     {
-      get
-      {
-        return operationId;
-      }
+      get => operationId;
     }
 
     IsolationLevelEnum( int operationId )

@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace BackendlessAPI
+namespace BackendlessAPI.Transaction.Payload
 {
   public class Selector
   {
@@ -23,26 +19,14 @@ namespace BackendlessAPI
 
     public String Conditional
     {
-      get
-      {
-        return conditional;
-      }
-      set
-      {
-        conditional = value;
-      }
+      get => conditional;
+      set => conditional = value;
     }
 
     public Object Unconditional
     {
-      get
-      {
-        return unconditional;
-      }
-      set
-      {
-        unconditional = value;
-      }
+      get => unconditional;
+      set => unconditional = value;
     }
 
     public override string ToString()

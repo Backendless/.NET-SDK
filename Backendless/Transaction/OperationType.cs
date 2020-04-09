@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BackendlessAPI
+namespace BackendlessAPI.Transaction
 {
   public enum OperationTypeEnum
   {
@@ -26,14 +26,8 @@ namespace BackendlessAPI
 
     public String OperationName
     {
-      get
-      {
-        return operationName;
-      }
-      set
-      {
-        operationName = value;
-      }
+      get => operationName;
+      set => operationName = value;
     }
     public static ReadOnlyCollection<OperationTypeEnum> supportCollectionEntityDescriptionType = new ReadOnlyCollection<OperationTypeEnum>
                                                  ( new List<OperationTypeEnum> { OperationTypeEnum.FIND } );

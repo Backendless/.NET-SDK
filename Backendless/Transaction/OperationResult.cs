@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BackendlessAPI
+namespace BackendlessAPI.Transaction
 {
   public class OperationResult<T>
   {
@@ -23,25 +23,14 @@ namespace BackendlessAPI
 
     public OperationType OperationType
     {
-      get
-      {
-        return operationType;
-      }
-      set 
-      {
-        operationType = value;
-      }
+      get => operationType;
+      set => operationType = value;
     }
+
     public T Result
     {
-      get
-      {
-        return result;
-      }
-      set   
-      {
-        result = value;
-      }
+      get => result;
+      set => result = value;
     }
   }
 }

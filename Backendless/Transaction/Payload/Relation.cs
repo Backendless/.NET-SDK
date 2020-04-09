@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BackendlessAPI
+namespace BackendlessAPI.Transaction.Payload
 {
   public class Relation : Selector
   {
@@ -36,62 +36,32 @@ namespace BackendlessAPI
 
     public Object ParentObject
     {
-      get
-      {
-        return parentObject;
-      }
-      set
-      {
-        parentObject = value;
-      }
+      get => parentObject;
+      set => parentObject = value;
     }
 
     public String RelationColumn
     {
-      get
-      {
-        return relationColumn;
-      }
-      set
-      {
-        relationColumn = value;
-      }
+      get => relationColumn;
+      set => relationColumn = value;
     }
 
     public List<String> ObjectIds
     {
-      get
-      {
-        return objectIds;
-      }
-      set
-      {
-        objectIds = value;
-      }
+      get => objectIds;
+      set => objectIds = value;
     }
 
     public String RelationTableName
     {
-      get
-      {
-        return relationTableName;
-      }
-      set
-      {
-        relationTableName = value;
-      }
+      get => relationTableName;
+      set => relationTableName = value;
     }
 
     public bool ColumnUnique
     {
-      get
-      {
-        return columnUnique;
-      } 
-      set
-      {
-        columnUnique = value;
-      } 
+      get => columnUnique;
+      set => columnUnique = value;
     }
 
     public override string ToString()
