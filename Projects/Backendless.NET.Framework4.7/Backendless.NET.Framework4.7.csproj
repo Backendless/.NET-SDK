@@ -273,6 +273,14 @@
     <Compile Include="..\..\Backendless\Service\Property\ObjectProperty.cs" />
     <Compile Include="..\..\Backendless\Service\Property\UserProperty.cs" />
     <Compile Include="..\..\Backendless\Service\UserService.cs" />
+	<Compile Include="..\..\Backendless\Transaction\Payload\Selector.cs" />
+	<Compile Include="..\..\Backendless\Transaction\Payload\Relation.cs" />
+	<Compile Include="..\..\Backendless\Transaction\Payload\UpdateBulkPayload.cs" />
+	<Compile Include="..\..\Backendless\Transaction\Payload\DeleteBulkPayload.cs" />
+	<Compile Include="..\..\Backendless\Transaction\OperationType.cs" />
+	<Compile Include="..\..\Backendless\Transaction\OperationResult.cs" />
+	<Compile Include="..\..\Backendless\Transaction\IsolationLevelEnum.cs" />
+	<Compile Include="..\..\Backendless\Transaction\TransactionOperationError.cs" />
     <Compile Include="..\..\Backendless\Utils\ILoginStorage.cs" />
     <Compile Include="..\..\Backendless\Utils\ITimeoutManager.cs" />
     <Compile Include="..\..\Backendless\Utils\Json.cs" />
