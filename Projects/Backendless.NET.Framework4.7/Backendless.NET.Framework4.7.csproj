@@ -288,6 +288,10 @@
     <Compile Include="..\..\Backendless\Transaction\Payload\Relation.cs" />
     <Compile Include="..\..\Backendless\Transaction\Payload\UpdateBulkPayload.cs" />
     <Compile Include="..\..\Backendless\Transaction\Payload\DeleteBulkPayload.cs" />
+    <Compile Include="..\..\Backendless\Transaction\OpResult.cs" />
+    <Compile Include="..\..\Backendless\Transaction\OpResultIdGenerator.cs" />
+    <Compile Include="..\..\Backendless\Transaction\OpResultValueReference.cs" />
+    <Compile Include="..\..\Backendless\Transaction\UnitOfWorkCreate.cs" />
     <Compile Include="..\..\Backendless\Transaction\UnitOfWorkResult.cs" />
     <Compile Include="..\..\Backendless\Transaction\OperationType.cs" />
     <Compile Include="..\..\Backendless\Transaction\OperationResult.cs" />
