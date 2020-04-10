@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BackendlessAPI.Transaction
 {
@@ -45,7 +42,5 @@ namespace BackendlessAPI.Transaction
       String error = this.error != null ? this.error.ToString() : "error=null";
       return "UnitOfWorkResult{success=" + success + ", " + error + ", results=" + results + "}";
     }
-
-
   }
 }

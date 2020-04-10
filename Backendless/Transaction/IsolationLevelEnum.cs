@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data.SqlClient;
-namespace BackendlessAPI.Transaction
+﻿namespace BackendlessAPI.Transaction
 {
   public enum LevelEnum
   {
-    REPEATABLE_READ/*( Connection.RANSACTION_REPEATABLE_READ )*/,
-    READ_COMMITTED/*( Connection.TRANSACTION_READ_COMMITTED )*/,
-    READ_UNCOMMITTED/*( Connection.TRANSACTION_READ_UNCOMMITTED )*/,
-    SERIALIZABLE/*( Connection.TRANSACTION_SERIALIZABLE )*/
+    READ_UNCOMMITTED = 1,
+    READ_COMMITTED = 2,
+    REPEATABLE_READ = 4,    
+    SERIALIZABLE = 8
   }
   public class IsolationLevelEnum
   {
@@ -22,9 +16,9 @@ namespace BackendlessAPI.Transaction
       get => operationId;
     }
 
-    IsolationLevelEnum( int operationId )
+    IsolationLevelEnum( LevelEnum operationId )
     {
-      this.operationId = operationId;
+      this.operationId = (int) operationId;
     }
   }
 }
