@@ -273,16 +273,22 @@
     <Compile Include="..\..\Backendless\Service\Property\ObjectProperty.cs" />
     <Compile Include="..\..\Backendless\Service\Property\UserProperty.cs" />
     <Compile Include="..\..\Backendless\Service\UserService.cs" />
-	<Compile Include="..\..\Backendless\Transaction\Operations\Operation.cs" />
-	<Compile Include="..\..\Backendless\Transaction\Operations\OperationCreate.cs" />
-	<Compile Include="..\..\Backendless\Transaction\Operations\OperationCreateBulk.cs" />
-	<Compile Include="..\..\Backendless\Transaction\Operations\OperationDelete.cs" />
-	<Compile Include="..\..\Backendless\Transaction\Operations\OperationDeleteBulk.cs" />
-	<Compile Include="..\..\Backendless\Transaction\Operations\OperationDeleteRelation.cs" />
+    <Compile Include="..\..\Backendless\Transaction\Operations\Operation.cs" />
+    <Compile Include="..\..\Backendless\Transaction\Operations\OperationCreate.cs" />
+    <Compile Include="..\..\Backendless\Transaction\Operations\OperationCreateBulk.cs" />
+    <Compile Include="..\..\Backendless\Transaction\Operations\OperationDelete.cs" />
+    <Compile Include="..\..\Backendless\Transaction\Operations\OperationDeleteBulk.cs" />
+    <Compile Include="..\..\Backendless\Transaction\Operations\OperationDeleteRelation.cs" />
+    <Compile Include="..\..\Backendless\Transaction\Operations\OperationAddRelation.cs" />
+    <Compile Include="..\..\Backendless\Transaction\Operations\OperationSetRelation.cs" />
+    <Compile Include="..\..\Backendless\Transaction\Operations\OperationUpdate.cs" />
+    <Compile Include="..\..\Backendless\Transaction\Operations\OperationUpdateBulk.cs" />
+    <Compile Include="..\..\Backendless\Transaction\Operations\OperationFind.cs" />
     <Compile Include="..\..\Backendless\Transaction\Payload\Selector.cs" />
     <Compile Include="..\..\Backendless\Transaction\Payload\Relation.cs" />
     <Compile Include="..\..\Backendless\Transaction\Payload\UpdateBulkPayload.cs" />
     <Compile Include="..\..\Backendless\Transaction\Payload\DeleteBulkPayload.cs" />
+    <Compile Include="..\..\Backendless\Transaction\UnitOfWorkResult.cs" />
     <Compile Include="..\..\Backendless\Transaction\OperationType.cs" />
     <Compile Include="..\..\Backendless\Transaction\OperationResult.cs" />
     <Compile Include="..\..\Backendless\Transaction\IsolationLevelEnum.cs" />
@@ -484,12 +490,6 @@
     <Compile Include="..\..\Backendless\WebORB\Writer\TypedObjectWriter.cs" />
     <Compile Include="..\..\Backendless\WebORB\Writer\V3ObjectSerializer.cs" />
     <Compile Include="..\..\Backendless\WebORB\Writer\V3ReferenceCache.cs" />
-    <Compile Include="Operation.cs" />
-    <Compile Include="OperationCreate.cs" />
-    <Compile Include="OperationCreateBulk.cs" />
-    <Compile Include="OperationDelete.cs" />
-    <Compile Include="OperationDeleteBulk.cs" />
-    <Compile Include="OperationDeleteRelation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace BackendlessAPI.Transaction
+namespace BackendlessAPI.Transaction.Operations
 {
   class OperationCreateBulk : Operation<List<Dictionary<String, Object>>>
   {

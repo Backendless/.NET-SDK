@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BackendlessAPI
+namespace BackendlessAPI.Transaction.Payload
 {
   class UpdateBulkPayload : Selector
   {
@@ -22,14 +22,8 @@ namespace BackendlessAPI
 
     public Dictionary<String, Object> Changes
     {
-      get
-      {
-        return changes;
-      }
-      set
-      {
-        changes = value;
-      }
+      get => changes;
+      set => changes = value;
     }
   }
 }

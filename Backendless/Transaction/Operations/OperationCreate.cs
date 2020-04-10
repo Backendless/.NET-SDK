@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace BackendlessAPI.Transaction
+namespace BackendlessAPI.Transaction.Operations
 {
   class OperationCreate : Operation<Dictionary<String, Object>>
   {
@@ -11,7 +11,7 @@ namespace BackendlessAPI.Transaction
     {
     }
 
-    OperationCreate( OperationType operationType, String table, String opResultId, Dictionary<String, Object> payload ) 
+    public OperationCreate( OperationType operationType, String table, String opResultId, Dictionary<String, Object> payload ) 
                                                                              : base( operationType, table, opResultId )
     {
       this.payload = payload;

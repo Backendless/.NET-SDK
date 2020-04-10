@@ -1,7 +1,7 @@
 ﻿using System;
 using BackendlessAPI.Transaction.Payload;
 
-namespace BackendlessAPI.Transaction
+namespace BackendlessAPI.Transaction.Operations
 {
   class OperationDelete : Operation<DeleteBulkPayload>
   {

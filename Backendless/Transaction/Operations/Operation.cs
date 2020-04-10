@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BackendlessAPI.Transaction
+namespace BackendlessAPI.Transaction.Operations
 {
   public abstract class Operation<T>
   {
