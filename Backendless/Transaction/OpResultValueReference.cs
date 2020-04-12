@@ -6,27 +6,27 @@ using System.Threading.Tasks;
 
 namespace BackendlessAPI.Transaction
 {
-  class OpResultValueReference
+  public class OpResultValueReference
   {
     private OpResult opResult;
     private Int32? resultIndex;
     private String propName;
 
-    OpResultValueReference( OpResult opResult, Int32? resultIndex, String propName )
+    public OpResultValueReference( OpResult opResult, Int32? resultIndex, String propName )
     {
       this.opResult = opResult;
       this.resultIndex = resultIndex;
       this.propName = propName;
     }
 
-    OpResultValueReference( OpResult opResult, Int32? resultIndex )
+    public OpResultValueReference( OpResult opResult, Int32? resultIndex )
     {
       this.opResult = opResult;
       this.resultIndex = resultIndex;
       propName = null;
     }
 
-    OpResultValueReference( OpResult opResult, String propName )
+    public OpResultValueReference( OpResult opResult, String propName )
     {
       this.opResult = opResult;
       resultIndex = null;
