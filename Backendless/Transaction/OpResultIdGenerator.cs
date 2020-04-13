@@ -13,7 +13,7 @@ namespace BackendlessAPI.Transaction
       this.opResultIdStrings = opResultIdStrings;
     }
 
-    String GenerateOpResultId( OperationType operationType, String tableName )
+    internal String GenerateOpResultId( OperationType operationType, String tableName )
     {
       String opResultIdGenerated;
       String key = operationType.OperationName + tableName;

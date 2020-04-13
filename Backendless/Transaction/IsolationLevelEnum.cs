@@ -4,9 +4,10 @@
   {
     READ_UNCOMMITTED = 1,
     READ_COMMITTED = 2,
-    REPEATABLE_READ = 4,    
+    REPEATABLE_READ = 4,
     SERIALIZABLE = 8
   }
+
   public class IsolationLevelEnum
   {
     private int operationId;

@@ -37,7 +37,7 @@ namespace BackendlessAPI.Transaction.Operations
       set => opResultId = value;
     }
 
-    public abstract T Payload{ get; set; }
+    public abstract T Payload{ get; set; } 
 
     public override string ToString()
     {

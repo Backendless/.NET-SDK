@@ -104,6 +104,10 @@
 	  public const string CHANNEL_NAME_TOO_LONG = "Channel names cannot be longer than 46 characters";
 
     public const string NULL_MAP = "Entity dictionary cannot be null";
+    public const string NULL_OBJECT_ID_IN_OBJECT_MAP = "Object dictionary must contain string objectId and objectId cannot be null";
     public const string NULL_BULK = "Array of obejcts/dictionaries cannot be null";
+    public const string REF_TYPE_NOT_SUPPORT = "This operation result not supported in this operation";
+    public const string OP_RESULT_ID_ALREADY_PRESENT = "This opResultId already present. OpResultId must be unique";
+    public const string OP_RESULT_FROM_THIS_OPERATION_NOT_SUPPORT_IN_THIS_PLACE = "OpResult/OpResultValueReference from this operation in this place not supported";
   }
 }

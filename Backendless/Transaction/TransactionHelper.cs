@@ -25,23 +25,143 @@ namespace BackendlessAPI.Transaction
       changes.Remove( "updated" );
     }
 
-    static OpResult MakeOpResult( String tableName, String operationResultId, OperationType operationType )
+    static internal OpResult MakeOpResult( String tableName, String operationResultId, OperationType operationType )
     {
       return new OpResult( tableName, operationResultId, operationType );
     }
 
-    static List<Dictionary<String, Object>> ConvertInstancesToMaps( List<Dictionary<String, Object>> instances )
+    static List<Object> ConvertMapsToObjectIds( List<Dictionary<String, Object>> objectMaps )
     {
-      if( instances == null )
-        throw new ArgumentException( ExceptionMessage.NULL_BULK );
+      List<Object> objectIds = new List<Object>();
 
-      List<Dictionary<String, Object>> serializedEntities = new List<Dictionary<String, Object>>();
-      foreach( Dictionary<String, Object> entity in instances )
+      foreach( Dictionary<String, Object> objectMap in objectMaps )
+        objectIds.Add( ConvertObjectMapToObjectIdOrLeaveReference( objectMap ) );
+
+      return objectIds;
+    }
+
+    static String ConvertObjectMapToObjectId( Dictionary<String, Object> objectMap )
+    {
+      if( objectMap == null )
+        throw new ArgumentException( ExceptionMessage.NULL_MAP );
+
+      Object maybeObjectId = objectMap[ "objectId" ];
+
+      if( !( maybeObjectId is String ) )
+        throw new ArgumentException( ExceptionMessage.NULL_OBJECT_ID_IN_OBJECT_MAP );
+
+      return (String) maybeObjectId;
+    }
+
+    static Object ConvertObjectMapToObjectIdOrLeaveReference( Dictionary<String, Object> objectMap )
+    {
+      if( objectMap == null )
+        throw new ArgumentException( ExceptionMessage.NULL_MAP );
+
+      if( objectMap.ContainsKey( UnitOfWork.REFERENCE_MARKER ) )
       {
-        serializedEntities.Add( entity );
+        objectMap[ UnitOfWork.PROP_NAME ] = "objectId";
+        return objectMap;
       }
 
-      return serializedEntities;
+      Object maybeObjectId = objectMap[ "objectId" ];
+      if( !( maybeObjectId is String ) )
+        throw new ArgumentException( ExceptionMessage.NULL_OBJECT_ID_IN_OBJECT_MAP );
+
+      return maybeObjectId;
     }
+
+    static Dictionary<String, Object> ConvertCreateBulkOrFindResultIndexToObjectId( OpResultValueReference parentObject )
+    {
+      Dictionary<String, Object> referenceToObjectId;
+
+      if( OperationType.supportCollectionEntityDescriptionType.Contains( parentObject.GetOpResult().GetOperationType() ) )
+        referenceToObjectId = parentObject.ResolveTo( "objectId" ).MakeReference();
+      else if( OperationType.supportListIdsResultType.Contains( parentObject.GetOpResult().GetOperationType() ) )
+        referenceToObjectId = parentObject.MakeReference();
+      else
+        throw new ArgumentException( ExceptionMessage.REF_TYPE_NOT_SUPPORT );
+
+      return referenceToObjectId;
+    }
+
+    internal static void MakeReferenceToValueFromOpResult( Dictionary<String, Object> map )
+    {
+      foreach( KeyValuePair<String, Object> kvp in map )
+      {
+        Dictionary<String, Object> entry = new Dictionary<String, Object>( map );
+
+        if( kvp.Value is OpResult )
+          if( OperationType.supportIntResultType.Contains( ( (OpResult) kvp.Value ).GetOperationType() ) )
+            entry[ kvp.Key ] = ( (OpResult) kvp.Value ).MakeReference();
+          else
+            throw new ArgumentException( ExceptionMessage.OP_RESULT_FROM_THIS_OPERATION_NOT_SUPPORT_IN_THIS_PLACE );
+
+        if( kvp.Value is OpResultValueReference )
+        {
+          OpResultValueReference reference = (OpResultValueReference) kvp.Value;
+
+          if( CreateUpdatePropName( reference ) || CreateBulkResultIndex( reference ) || FindPropNameResultIndex( reference ) )
+            entry[ kvp.Key ] = reference.MakeReference();
+          else
+            throw new ArgumentException( ExceptionMessage.OP_RESULT_FROM_THIS_OPERATION_NOT_SUPPORT_IN_THIS_PLACE );      
+        }
+      }
+    }
+
+    public static void MakeReferenceToObjecIdtFromOpResult( List<Object> listObjectIds )
+    {
+      IEnumerator<Object> iterator = listObjectIds.GetEnumerator();
+
+      while( iterator.MoveNext() )
+      {
+        Object temp = iterator.MoveNext();
+
+        if( temp is OpResult )
+          throw new ArgumentException( ExceptionMessage.OP_RESULT_FROM_THIS_OPERATION_NOT_SUPPORT_IN_THIS_PLACE );
+
+        if( temp is OpResultValueReference )
+        {
+          OpResultValueReference reference = (OpResultValueReference) temp;
+
+          if( CreateUpdateObjectId( reference ) || CreateBulkResultIndex( reference ) || FindPropNameResultIndex( reference ) )
+            temp = reference.MakeReference();
+          else
+            throw new ArgumentException( ExceptionMessage.OP_RESULT_FROM_THIS_OPERATION_NOT_SUPPORT_IN_THIS_PLACE );
+        }
+      }
+    }
+
+    private static Boolean CreateUpdateObjectId( OpResultValueReference reference )
+    {
+      return CreateUpdatePropName( reference ) && reference.GetPropName().Equals( "objectId" );
+    }
+
+    private static Boolean CreateUpdatePropName( OpResultValueReference reference )
+    {
+      return OperationType.supportEntityDescriptionResultType.Contains( reference.GetOpResult().GetOperationType() ) &&
+                                                                      reference.GetPropName() == null &&
+                                                                      reference.GetResultIndex() != null;
+    }
+
+    private static Boolean CreateBulkResultIndex( OpResultValueReference reference )
+    {
+      return OperationType.CREATE_BULK.Equals( reference.GetOpResult().GetOperationType() ) &&
+            reference.GetPropName() == null &&
+            reference.GetResultIndex() != null;
+    }
+
+    private static Boolean FindResultIndexObjectId( OpResultValueReference reference )
+    {
+      return FindPropNameResultIndex( reference ) && reference.GetPropName().Equals( "objectId" );
+    }
+
+    private static Boolean FindPropNameResultIndex( OpResultValueReference reference )
+    {
+      return OperationType.FIND.Equals( reference.GetOpResult().GetOperationType() ) &&
+            reference.GetPropName() != null &&
+            reference.GetResultIndex() != null;
+    }
+
   }
 }

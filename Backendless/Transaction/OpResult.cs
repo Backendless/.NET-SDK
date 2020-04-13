@@ -1,5 +1,7 @@
-﻿using System;
+﻿using BackendlessAPI.Exception;
+using System;
 using System.Collections.Generic;
+using BackendlessAPI.Transaction.Operations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -49,11 +51,27 @@ namespace BackendlessAPI.Transaction
       return new OpResultValueReference( this, propName );
     }
 
-    /*Dictionary<String, Object> MakeReference()
+    internal Dictionary<String, Object> MakeReference()
     {
       Dictionary<String, Object> referenceMap = new Dictionary<String, Object>();
-      //referenceMap[]
+      referenceMap[ UnitOfWork.REFERENCE_MARKER ] = true;
+      referenceMap[ UnitOfWork.OP_RESULT_ID ] = opResultId;
+      return referenceMap;
     }
-    */
+
+    public void SetOpResultId( UnitOfWork unitOfWork, String newOpResultId )
+    {
+      if( unitOfWork.OpResultIdStrings.Contains( newOpResultId ) )
+        throw new ArgumentException( ExceptionMessage.OP_RESULT_ID_ALREADY_PRESENT );
+
+      foreach( Operation<Object> operation in unitOfWork.Operations )
+        if( operation.OpResultId.Equals( opResultId ) )
+        {
+          operation.OpResultId =  newOpResultId;
+          break;
+        }
+
+      opResultId = newOpResultId;
+    }
   }
 }

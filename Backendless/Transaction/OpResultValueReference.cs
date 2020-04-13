@@ -53,7 +53,7 @@ namespace BackendlessAPI.Transaction
       return new OpResultValueReference( opResult, resultIndex, propName );
     }
 
-    /*Dictionary<String, Object> MakeReference()
+    internal Dictionary<String, Object> MakeReference()
     {
       Dictionary<String, Object> referenceMap = opResult.MakeReference();
 
@@ -64,6 +64,6 @@ namespace BackendlessAPI.Transaction
         referenceMap[ UnitOfWork.PROP_NAME ] = propName;
 
       return referenceMap;
-    }*/
+    }
   }
 }

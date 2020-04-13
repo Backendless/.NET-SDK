@@ -291,6 +291,7 @@
     <Compile Include="..\..\Backendless\Transaction\OpResult.cs" />
     <Compile Include="..\..\Backendless\Transaction\OpResultIdGenerator.cs" />
     <Compile Include="..\..\Backendless\Transaction\OpResultValueReference.cs" />
+    <Compile Include="..\..\Backendless\Transaction\UnitOfWork.cs" />
     <Compile Include="..\..\Backendless\Transaction\UnitOfWorkCreate.cs" />
     <Compile Include="..\..\Backendless\Transaction\UnitOfWorkCreateImpl.cs" />
     <Compile Include="..\..\Backendless\Transaction\UnitOfWorkDelete.cs" />
