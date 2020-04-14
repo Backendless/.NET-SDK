@@ -10,11 +10,11 @@ namespace BackendlessAPI.Transaction
 {
   class UnitOfWorkCreateImpl : UnitOfWorkCreate
   {
-    private List<Operation<Object>> operations;
+    private List<Operation<Dictionary<String, Object>>> operations;   
     private OpResultIdGenerator opResultIdGenerator;
     private Dictionary<String, Object> clazzes;
 
-    UnitOfWorkCreateImpl( List<Operation<Object>> operations, OpResultIdGenerator opResultIdGenerator, Dictionary<String, Object> clazzes )
+    UnitOfWorkCreateImpl( List<Operation<Dictionary<String, Object>>> operations, OpResultIdGenerator opResultIdGenerator, Dictionary<String, Object> clazzes )
     {
       this.operations = operations;
       this.opResultIdGenerator = opResultIdGenerator;
