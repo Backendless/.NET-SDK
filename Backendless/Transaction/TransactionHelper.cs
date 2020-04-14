@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -38,6 +40,22 @@ namespace BackendlessAPI.Transaction
         objectIds.Add( ConvertObjectMapToObjectIdOrLeaveReference( objectMap ) );
 
       return objectIds;
+    }
+    
+    internal static Dictionary<String, Object> ConvertInstanceToMaps<E>( E instance )
+    {
+      if( instance == null )
+        throw new ArgumentException( ExceptionMessage.NULL_INSTANCE );
+
+      Dictionary<String, Object> entity = new Dictionary<String, Object>();
+
+      foreach( FieldInfo field in instance.GetType().GetFields( BindingFlags.Public ) )
+      {
+        Dictionary<String, Object> tempItem = new Dictionary<string, object>();
+        entity[ field.Name ] = field.GetValue( instance );
+      }
+
+      return entity;
     }
 
     static String ConvertObjectMapToObjectId( Dictionary<String, Object> objectMap )
