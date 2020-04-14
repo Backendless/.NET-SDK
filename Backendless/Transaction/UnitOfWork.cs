@@ -17,5 +17,20 @@ namespace BackendlessAPI.Transaction
     private LevelEnum transactionIsolation = LevelEnum.REPEATABLE_READ;
     private List<Operation<Object>> operations;
     private List<String> opResultIdStrings;
+
+    public LevelEnum TransactionIsolation
+    {
+      get => transactionIsolation;
+    }
+    public List<Operation<Object>> Operations
+    {
+      get => operations;
+    }
+
+    public List<String> OpResultIdStrings
+    {
+      get => opResultIdStrings;
+    }
+
   }
 }
