@@ -10,17 +10,17 @@ namespace BackendlessAPI.Transaction
 {
   public class UnitOfWork// : IUnitOfWork
   {
-    public static String REFERENCE_MARKER = "___ref";
-    public static String OP_RESULT_ID = "opResultId";
-    public static String RESULT_INDEX = "resultIndex";
-    public static String PROP_NAME = "propName";
+    internal static String REFERENCE_MARKER = "___ref";
+    internal static String OP_RESULT_ID = "opResultId";
+    internal static String RESULT_INDEX = "resultIndex";
+    internal static String PROP_NAME = "propName";
 
     private LevelEnum transactionIsolation = LevelEnum.REPEATABLE_READ;
-    private List<Operation> operations = new List<Operation>();
-    private List<String> opResultIdStrings = new List<String>();
+    private readonly List<Operation> operations = new List<Operation>();
+    private readonly List<String> opResultIdStrings = new List<String>();
 
-    private UnitOfWorkExecutor unitOfWorkExecutor;
-    private UnitOfWorkCreate unitOfWorkCreate;
+    private readonly UnitOfWorkExecutor unitOfWorkExecutor;
+    private readonly UnitOfWorkCreate unitOfWorkCreate;
 
     public UnitOfWork()
     {

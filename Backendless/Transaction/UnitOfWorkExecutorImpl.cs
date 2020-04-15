@@ -44,11 +44,9 @@ namespace BackendlessAPI.Transaction
         Types.AddClientClassMapping( entry.Key, entry.Value );
 
       if( isAsync )
-        Invoker.InvokeAsync<UnitOfWorkResult>( TRANSACTION_MANAGER_SERVER_ALIAS, "execute", new object[]
-                                                                       { typeof( UnitOfWorkResult ), args }, true, callback );
+        Invoker.InvokeAsync<UnitOfWorkResult>( TRANSACTION_MANAGER_SERVER_ALIAS, "execute", args, false, callback );
       else
-        return Invoker.InvokeSync<UnitOfWorkResult>( TRANSACTION_MANAGER_SERVER_ALIAS, "execute", new object[]
-                                                                       { typeof( UnitOfWorkResult ), args }, true );
+        return Invoker.InvokeSync<UnitOfWorkResult>( TRANSACTION_MANAGER_SERVER_ALIAS, "execute", args, false );
 
       return null;
     }

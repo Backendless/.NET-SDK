@@ -17,16 +17,16 @@ namespace BackendlessAPI.Transaction
       get => operationName;
     }
 
-    public static OperationType CREATE { get => new OperationType("create"); }
-    public static OperationType CREATE_BULK { get => new OperationType( "createBulk" ); }
-    public static OperationType UPDATE { get => new OperationType( "update" ); }
-    public static OperationType UPDATE_BULK { get => new OperationType( "updateBulk" ); }
-    public static OperationType DELETE { get => new OperationType( "delete" ); }
-    public static OperationType DELETE_BULK { get => new OperationType( "deleteBulk" ); }
-    public static OperationType FIND { get => new OperationType( "find" ); }
-    public static OperationType ADD_RELATION{ get => new OperationType( "addToRelation" ); }
-    public static OperationType SET_RELATION { get => new OperationType( "setRelation" ); }
-    public static OperationType DELETE_RELATION { get => new OperationType( "deleteRelation" ); }
+    internal static OperationType CREATE { get => new OperationType("create"); }
+    internal static OperationType CREATE_BULK { get => new OperationType( "createBulk" ); }
+    internal static OperationType UPDATE { get => new OperationType( "update" ); }
+    internal static OperationType UPDATE_BULK { get => new OperationType( "updateBulk" ); }
+    internal static OperationType DELETE { get => new OperationType( "delete" ); }
+    internal static OperationType DELETE_BULK { get => new OperationType( "deleteBulk" ); }
+    internal static OperationType FIND { get => new OperationType( "find" ); }
+    internal static OperationType ADD_RELATION{ get => new OperationType( "addToRelation" ); }
+    internal static OperationType SET_RELATION { get => new OperationType( "setRelation" ); }
+    internal static OperationType DELETE_RELATION { get => new OperationType( "deleteRelation" ); }
 
 
     public static ReadOnlyCollection<OperationType> supportCollectionEntityDescriptionType = new ReadOnlyCollection<OperationType>
