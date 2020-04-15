@@ -109,13 +109,13 @@ namespace BackendlessAPI.Transaction
       {
         Dictionary<String, Object> entry = new Dictionary<String, Object>( map );
 
-        if( kvp.Value is OpResult )
+        if( entry[ kvp.Key ] is OpResult )
           if( OperationType.supportIntResultType.Contains( ( (OpResult) kvp.Value ).GetOperationType() ) )
             entry[ kvp.Key ] = ( (OpResult) kvp.Value ).MakeReference();
           else
             throw new ArgumentException( ExceptionMessage.OP_RESULT_FROM_THIS_OPERATION_NOT_SUPPORT_IN_THIS_PLACE );
 
-        if( kvp.Value is OpResultValueReference )
+        if( entry[ kvp.Key ] is OpResultValueReference )
         {
           OpResultValueReference reference = (OpResultValueReference) kvp.Value;
 

@@ -8,7 +8,7 @@ namespace BackendlessAPI.Transaction
     private List<String> opResultIdStrings;
     private Dictionary<String, Int32> opResultIdMaps = new Dictionary<String, Int32>();
 
-    OpResultIdGenerator( List<String> opResultIdStrings )
+    internal OpResultIdGenerator( List<String> opResultIdStrings )
     {
       this.opResultIdStrings = opResultIdStrings;
     }
