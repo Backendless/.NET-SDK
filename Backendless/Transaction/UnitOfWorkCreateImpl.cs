@@ -9,9 +9,9 @@ namespace BackendlessAPI.Transaction
   {
     private List<Operation> operations;   
     private OpResultIdGenerator opResultIdGenerator;
-    private Dictionary<String, Object> clazzes;
+    private Dictionary<String, Type> clazzes;
 
-    UnitOfWorkCreateImpl( List<Operation> operations, OpResultIdGenerator opResultIdGenerator, Dictionary<String, Object> clazzes )
+    internal UnitOfWorkCreateImpl( List<Operation> operations, OpResultIdGenerator opResultIdGenerator, Dictionary<String, Type> clazzes )
     {
       this.operations = operations;
       this.opResultIdGenerator = opResultIdGenerator;
@@ -22,7 +22,7 @@ namespace BackendlessAPI.Transaction
     {
       Dictionary<String, Object> entityMap = TransactionHelper.ConvertInstanceToMaps<E>( instance );
       String tableName = instance.GetType().Name;
-      clazzes[ "tableName" ] = instance;
+      clazzes[ "tableName" ] = instance.GetType();
       return Create( tableName, entityMap );
     }
 
