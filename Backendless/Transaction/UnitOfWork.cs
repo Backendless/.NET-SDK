@@ -1,4 +1,5 @@
-﻿using BackendlessAPI.Transaction.Operations;
+﻿using BackendlessAPI.Async;
+using BackendlessAPI.Transaction.Operations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BackendlessAPI.Transaction
 {
-  public class UnitOfWork
+  public class UnitOfWork// : IUnitOfWork
   {
     public static String REFERENCE_MARKER = "___ref";
     public static String OP_RESULT_ID = "opResultId";
@@ -15,14 +16,16 @@ namespace BackendlessAPI.Transaction
     public static String PROP_NAME = "propName";
 
     private LevelEnum transactionIsolation = LevelEnum.REPEATABLE_READ;
-    private List<Operation<Object>> operations;
+    private List<Operation> operations;
     private List<String> opResultIdStrings;
+
+    private UnitOfWorkExecutor unitOfWorkExecutor;
 
     public LevelEnum TransactionIsolation
     {
       get => transactionIsolation;
     }
-    public List<Operation<Object>> Operations
+    public List<Operation> Operations
     {
       get => operations;
     }
@@ -30,6 +33,16 @@ namespace BackendlessAPI.Transaction
     public List<String> OpResultIdStrings
     {
       get => opResultIdStrings;
+    }
+
+    public UnitOfWorkResult Execute()
+    {
+      return unitOfWorkExecutor.Execute();
+    }
+
+    public void Execute( AsyncCallback<UnitOfWorkResult> callback )
+    {
+      unitOfWorkExecutor.Equals( callback );
     }
 
   }

@@ -5,14 +5,14 @@ namespace BackendlessAPI.Transaction
 {
   public class TransactionOperationError
   {
-    private Operation<Object> operation;
+    private Operation operation;
     private String message;
 
     public TransactionOperationError()
     {
     }
 
-    public TransactionOperationError( Operation<Object> operation, String message )
+    public TransactionOperationError( Operation operation, String message )
     {
       this.operation = operation;
       this.message = message;
@@ -24,11 +24,11 @@ namespace BackendlessAPI.Transaction
       set => message = value;
     }
 
-    public Operation<Object> GetOperation()
+    public Operation GetOperation()
     {
       return operation;
     }
-    public void SetOperation( Operation<Object> operation )
+    public void SetOperation( Operation operation )
     {
       this.operation = operation;
     }

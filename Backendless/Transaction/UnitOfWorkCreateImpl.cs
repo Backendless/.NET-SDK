@@ -2,19 +2,16 @@
 using BackendlessAPI.Transaction.Operations;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BackendlessAPI.Transaction
 {
   class UnitOfWorkCreateImpl : UnitOfWorkCreate
   {
-    private List<Operation<Dictionary<String, Object>>> operations;   
+    private List<Operation> operations;   
     private OpResultIdGenerator opResultIdGenerator;
     private Dictionary<String, Object> clazzes;
 
-    UnitOfWorkCreateImpl( List<Operation<Dictionary<String, Object>>> operations, OpResultIdGenerator opResultIdGenerator, Dictionary<String, Object> clazzes )
+    UnitOfWorkCreateImpl( List<Operation> operations, OpResultIdGenerator opResultIdGenerator, Dictionary<String, Object> clazzes )
     {
       this.operations = operations;
       this.opResultIdGenerator = opResultIdGenerator;
@@ -48,7 +45,7 @@ namespace BackendlessAPI.Transaction
       List<Dictionary<String, Object>> serializedEntities = new List<Dictionary<string, object>>();
       int iterator = 0;
 
-      while( instances.Count - 1 != iterator )
+      while( instances.Count != iterator )
       {
         serializedEntities.Add( TransactionHelper.ConvertInstanceToMaps<E>( instances[ iterator ] ) );
         iterator++;

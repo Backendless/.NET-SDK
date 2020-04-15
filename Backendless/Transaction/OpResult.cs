@@ -64,7 +64,7 @@ namespace BackendlessAPI.Transaction
       if( unitOfWork.OpResultIdStrings.Contains( newOpResultId ) )
         throw new ArgumentException( ExceptionMessage.OP_RESULT_ID_ALREADY_PRESENT );
 
-      foreach( Operation<Object> operation in unitOfWork.Operations )
+      foreach( Operation operation in unitOfWork.Operations )
         if( operation.OpResultId.Equals( opResultId ) )
         {
           operation.OpResultId =  newOpResultId;

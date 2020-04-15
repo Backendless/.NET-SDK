@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace BackendlessAPI.Transaction.Operations
 {
-  class OperationCreateBulk : Operation<List<Dictionary<String, Object>>>
+  class OperationCreateBulk : Operation
   {
-    private List<Dictionary<String, Object>> payload;
+    private Object payload;
     public OperationCreateBulk()
     {
     }
@@ -16,7 +16,7 @@ namespace BackendlessAPI.Transaction.Operations
       this.payload = payload;
     }
 
-    public override List<Dictionary<string, object>> Payload
+    public override Object Payload
     {
       get => payload;
       set => payload = value;

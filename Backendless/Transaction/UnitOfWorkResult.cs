@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace BackendlessAPI.Transaction
 {
-  class UnitOfWorkResult
+  public class UnitOfWorkResult
   {
     private bool success;
     private TransactionOperationError error;

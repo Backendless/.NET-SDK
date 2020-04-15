@@ -2,21 +2,21 @@
 
 namespace BackendlessAPI.Transaction.Operations
 {
-  class OperationFind<T> : Operation<T>
+  class OperationFind : Operation
   {
-    private T payload;
+    private Object payload;
 
     public OperationFind()
     {
     }
 
-    public OperationFind( OperationType operationType, String table, String opResultId, T payload )
-                                                         : base( operationType, table, opResultId )
+    public OperationFind( OperationType operationType, String table, String opResultId, Object payload )
+                                                        // : base( operationType, table, opResultId ) 
     {
       this.payload = payload;
     }
 
-    public override T Payload
+    public override Object Payload
     {
       get => payload;
       set => payload = value;

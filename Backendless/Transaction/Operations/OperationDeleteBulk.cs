@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace BackendlessAPI.Transaction.Operations
 {
-  class OperationDeleteBulk : Operation<List<Object>>
+  class OperationDeleteBulk : Operation
   {
-    private List<Object> payload;
+    private Object payload;
 
     public OperationDeleteBulk()
     {
@@ -17,7 +17,7 @@ namespace BackendlessAPI.Transaction.Operations
       this.payload = payload;
     }
 
-    public override List<Object> Payload
+    public override Object Payload
     {
       get => payload;
       set => payload = value;

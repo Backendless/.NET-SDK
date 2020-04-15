@@ -3,9 +3,9 @@ using BackendlessAPI.Transaction.Payload;
 
 namespace BackendlessAPI.Transaction.Operations
 {
-  class OperationSetRelation : Operation<Relation>
+  class OperationSetRelation : Operation
   {
-    private Relation payload;
+    private Object payload;
 
     public OperationSetRelation()
     {
@@ -17,7 +17,7 @@ namespace BackendlessAPI.Transaction.Operations
       this.payload = payload;
     }
 
-    public override Relation Payload
+    public override Object Payload
     {
       get => payload;
       set => payload = value;

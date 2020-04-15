@@ -3,9 +3,9 @@ using BackendlessAPI.Transaction.Payload;
 
 namespace BackendlessAPI.Transaction.Operations
 {
-  class OperationUpdateBulk : Operation<UpdateBulkPayload>
+  class OperationUpdateBulk : Operation
   {
-    private UpdateBulkPayload payload;
+    private Object payload;
 
     public OperationUpdateBulk()
     {
@@ -17,7 +17,7 @@ namespace BackendlessAPI.Transaction.Operations
       this.payload = payload;
     }
 
-    public override UpdateBulkPayload Payload
+    public override Object Payload
     {
       get => payload;
       set => payload = value; 

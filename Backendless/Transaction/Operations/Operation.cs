@@ -2,7 +2,7 @@
 
 namespace BackendlessAPI.Transaction.Operations
 {
-  public abstract class Operation<T>
+  public abstract class Operation
   {
     private OperationType operationType;
     private String table;
@@ -37,7 +37,7 @@ namespace BackendlessAPI.Transaction.Operations
       set => opResultId = value;
     }
 
-    public abstract T Payload{ get; set; } 
+    public abstract Object Payload{ get; set; } 
 
     public override string ToString()
     {

@@ -6,6 +6,6 @@ namespace BackendlessAPI.Transaction
   {
     UnitOfWorkResult Execute();
 
-    void Execute( AsyncCallback<UnitOfWorkResult> responder );
+    void Execute( AsyncCallback<UnitOfWorkResult> callback );
   }
 }
