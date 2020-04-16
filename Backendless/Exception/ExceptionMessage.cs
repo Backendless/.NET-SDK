@@ -111,5 +111,8 @@
     public const string OP_RESULT_FROM_THIS_OPERATION_NOT_SUPPORT_IN_THIS_PLACE = "OpResult/OpResultValueReference from this operation in this place not supported";
     public const string NULL_INSTANCE = "Entity class cannot be null";
     public const string LIST_OPERATIONS_NULL = "List of operations in unitOfWork can not be null or empty";
+    public const string NULL_OP_RESULT = "OpResult cannot be null";
+    public const string NULL_OP_RESULT_VALUE_REFERENCE = "OpResultValueReference cannot be null";
+    public const string OP_RESULT_INDEX_YES_PROP_NAME_NOT = "This operation result in this operation must resolved only to resultIndex";
   }
 }

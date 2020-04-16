@@ -17,7 +17,7 @@ namespace BackendlessAPI.Transaction
 
     private LevelEnum transactionIsolation = LevelEnum.REPEATABLE_READ;
     private readonly List<Operation> operations = new List<Operation>();
-    private readonly List<String> opResultIdStrings = new List<String>();
+    private readonly List<String> opResultIdStrings;
 
     private readonly UnitOfWorkExecutor unitOfWorkExecutor;
     private readonly UnitOfWorkCreate unitOfWorkCreate;
@@ -25,6 +25,7 @@ namespace BackendlessAPI.Transaction
     public UnitOfWork()
     {
       Dictionary<String, Type> clazzes = new Dictionary<String, Type>();
+      opResultIdStrings = new List<String>();
       OpResultIdGenerator opResultIdGenerator = new OpResultIdGenerator( opResultIdStrings );
       unitOfWorkCreate = new UnitOfWorkCreateImpl( operations, opResultIdGenerator, clazzes );
       unitOfWorkExecutor = new UnitOfWorkExecutorImpl( this, clazzes );
@@ -32,15 +33,16 @@ namespace BackendlessAPI.Transaction
     public LevelEnum TransactionIsolation
     {
       get => transactionIsolation;
+      set => this.transactionIsolation = value;
     }
     public List<Operation> Operations
     {
       get => operations;
     }
 
-    public List<String> OpResultIdStrings
+    public List<String> GetOpResultIdStrings()
     {
-      get => opResultIdStrings;
+      return opResultIdStrings;
     }
 
     public UnitOfWorkResult Execute()

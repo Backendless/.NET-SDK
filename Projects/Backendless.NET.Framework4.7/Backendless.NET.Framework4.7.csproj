@@ -296,6 +296,7 @@
     <Compile Include="..\..\Backendless\Transaction\UnitOfWorkCreate.cs" />
     <Compile Include="..\..\Backendless\Transaction\UnitOfWorkCreateImpl.cs" />
     <Compile Include="..\..\Backendless\Transaction\UnitOfWorkDelete.cs" />
+	<Compile Include="..\..\Backendless\Transaction\UnitOfWorkDeleteImpl.cs" />
     <Compile Include="..\..\Backendless\Transaction\UnitOfWorkDeleteRelation.cs" />
     <Compile Include="..\..\Backendless\Transaction\UnitOfWorkExecutor.cs" />
     <Compile Include="..\..\Backendless\Transaction\UnitOfWorkExecutorImpl.cs" />

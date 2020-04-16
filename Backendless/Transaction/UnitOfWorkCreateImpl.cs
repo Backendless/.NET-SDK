@@ -20,7 +20,7 @@ namespace BackendlessAPI.Transaction
 
     public OpResult Create<E>( E instance ) where E : class
     {
-      Dictionary<String, Object> entityMap = TransactionHelper.ConvertInstanceToMaps<E>( instance );
+      Dictionary<String, Object> entityMap = TransactionHelper.ConvertInstanceToMap<E>( instance );
       String tableName = instance.GetType().Name;
       clazzes[ "tableName" ] = instance.GetType();
       return Create( tableName, entityMap );
@@ -47,7 +47,7 @@ namespace BackendlessAPI.Transaction
 
       while( instances.Count != iterator )
       {
-        serializedEntities.Add( TransactionHelper.ConvertInstanceToMaps<E>( instances[ iterator ] ) );
+        serializedEntities.Add( TransactionHelper.ConvertInstanceToMap<E>( instances[ iterator ] ) );
         iterator++;
       }
 

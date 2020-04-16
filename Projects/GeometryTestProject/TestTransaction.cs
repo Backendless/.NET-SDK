@@ -19,7 +19,6 @@ namespace GeometryTestProject
       order[ "age" ] = 23;
       OpResult opResult = unitOfWork.Create( "Order", order );
       unitOfWork.Execute();
-      Console.ReadKey();
     }
   }
 }

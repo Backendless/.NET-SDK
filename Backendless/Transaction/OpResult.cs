@@ -61,7 +61,7 @@ namespace BackendlessAPI.Transaction
 
     public void SetOpResultId( UnitOfWork unitOfWork, String newOpResultId )
     {
-      if( unitOfWork.OpResultIdStrings.Contains( newOpResultId ) )
+      if( unitOfWork.GetOpResultIdStrings().Contains( newOpResultId ) )
         throw new ArgumentException( ExceptionMessage.OP_RESULT_ID_ALREADY_PRESENT );
 
       foreach( Operation operation in unitOfWork.Operations )

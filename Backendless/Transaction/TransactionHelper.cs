@@ -32,7 +32,7 @@ namespace BackendlessAPI.Transaction
       return new OpResult( tableName, operationResultId, operationType );
     }
 
-    static List<Object> ConvertMapsToObjectIds( List<Dictionary<String, Object>> objectMaps )
+    internal static List<Object> ConvertMapsToObjectIds( List<Dictionary<String, Object>> objectMaps )
     {
       List<Object> objectIds = new List<Object>();
 
@@ -42,7 +42,7 @@ namespace BackendlessAPI.Transaction
       return objectIds;
     }
     
-    internal static Dictionary<String, Object> ConvertInstanceToMaps<E>( E instance )
+    internal static Dictionary<String, Object> ConvertInstanceToMap<E>( E instance )
     {
       if( instance == null )
         throw new ArgumentException( ExceptionMessage.NULL_INSTANCE );
@@ -51,14 +51,18 @@ namespace BackendlessAPI.Transaction
 
       foreach( FieldInfo field in instance.GetType().GetFields( BindingFlags.Public ) )
       {
-        Dictionary<String, Object> tempItem = new Dictionary<string, object>();
+        entity[ field.Name ] = field.GetValue( instance );
+      }
+      foreach( FieldInfo field in instance.GetType().GetFields( BindingFlags.NonPublic ) )
+      {
         entity[ field.Name ] = field.GetValue( instance );
       }
 
       return entity;
     }
 
-    static String ConvertObjectMapToObjectId( Dictionary<String, Object> objectMap )
+
+    internal static String ConvertObjectMapToObjectId( Dictionary<String, Object> objectMap )
     {
       if( objectMap == null )
         throw new ArgumentException( ExceptionMessage.NULL_MAP );
@@ -89,7 +93,7 @@ namespace BackendlessAPI.Transaction
       return maybeObjectId;
     }
 
-    static Dictionary<String, Object> ConvertCreateBulkOrFindResultIndexToObjectId( OpResultValueReference parentObject )
+    internal static Dictionary<String, Object> ConvertCreateBulkOrFindResultIndexToObjectId( OpResultValueReference parentObject )
     {
       Dictionary<String, Object> referenceToObjectId;
 

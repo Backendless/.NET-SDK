@@ -11,7 +11,7 @@ namespace BackendlessAPI.Transaction.Operations
     { 
     }
 
-    public OperationDelete( OperationType operationType, String table, String opResultId, DeleteBulkPayload payload ) 
+    public OperationDelete( OperationType operationType, String table, String opResultId, Object payload ) 
                                                                 : base( operationType, table, opResultId )
     {
       this.payload = payload;

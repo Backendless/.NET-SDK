@@ -29,19 +29,19 @@ namespace BackendlessAPI.Transaction
     internal static OperationType DELETE_RELATION { get => new OperationType( "deleteRelation" ); }
 
 
-    public static ReadOnlyCollection<OperationType> supportCollectionEntityDescriptionType = new ReadOnlyCollection<OperationType>
+    internal static ReadOnlyCollection<OperationType> supportCollectionEntityDescriptionType = new ReadOnlyCollection<OperationType>
               ( new List<OperationType> { FIND } );
 
-    public static ReadOnlyCollection<OperationType> supportListIdsResultType = new ReadOnlyCollection<OperationType>
+    internal static ReadOnlyCollection<OperationType> supportListIdsResultType = new ReadOnlyCollection<OperationType>
               ( new List<OperationType> { CREATE_BULK } );
 
-    public static ReadOnlyCollection<OperationType> supportDeletionResultType = new ReadOnlyCollection<OperationType>
+    internal static ReadOnlyCollection<OperationType> supportDeletionResultType = new ReadOnlyCollection<OperationType>
               ( new List<OperationType> { DELETE } );
 
-    public static ReadOnlyCollection<OperationType> supportIntResultType = new ReadOnlyCollection<OperationType>
+    internal static ReadOnlyCollection<OperationType> supportIntResultType = new ReadOnlyCollection<OperationType>
               ( new List<OperationType> { UPDATE_BULK, DELETE_BULK, ADD_RELATION, SET_RELATION, DELETE_RELATION } );
 
-    public static ReadOnlyCollection<OperationType> supportEntityDescriptionResultType = new ReadOnlyCollection<OperationType>
+    internal static ReadOnlyCollection<OperationType> supportEntityDescriptionResultType = new ReadOnlyCollection<OperationType>
               ( new List<OperationType> { CREATE, UPDATE } );
   }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BackendlessAPI.Transaction.Payload;
+using System;
 using System.Collections.Generic;
 
 namespace BackendlessAPI.Transaction.Operations
@@ -11,7 +12,7 @@ namespace BackendlessAPI.Transaction.Operations
     {
     }
 
-    public OperationDeleteBulk( OperationType operationType, String table, String opResultId, List<Object> payload ) 
+    public OperationDeleteBulk( OperationType operationType, String table, String opResultId, DeleteBulkPayload payload ) 
                                                                           : base( operationType, table, opResultId )
     {
       this.payload = payload;
