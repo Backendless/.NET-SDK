@@ -229,7 +229,7 @@ namespace BackendlessAPI.Data
       if( relations == null )
         relations = new List<String>();
 
-      int relationsDepth = queryBuilder.GetRelationsDepth();
+      int? relationsDepth = queryBuilder.GetRelationsDepth();
       Object[] args = new Object[] { tableName, relations, relationsDepth };
       return Invoker.InvokeSync<Dictionary<string, object>>( PERSISTENCE_MANAGER_SERVER_ALIAS, "first", args );
     }
@@ -258,7 +258,7 @@ namespace BackendlessAPI.Data
       if( relations == null )
         relations = new List<String>();
 
-      int relationsDepth = queryBuilder.GetRelationsDepth();
+      int? relationsDepth = queryBuilder.GetRelationsDepth();
       Object[] args = new Object[] { tableName, relations, relationsDepth };
       Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "first", args, responder );
     }
@@ -279,7 +279,7 @@ namespace BackendlessAPI.Data
       if( relations == null )
         relations = new List<String>();
 
-      int relationsDepth = queryBuilder.GetRelationsDepth();
+      int? relationsDepth = queryBuilder.GetRelationsDepth();
       Object[] args = new Object[] { tableName, relations, relationsDepth };
       return Invoker.InvokeSync<Dictionary<string, object>>( PERSISTENCE_MANAGER_SERVER_ALIAS, "last", args );
     }
@@ -308,7 +308,7 @@ namespace BackendlessAPI.Data
       if( relations == null )
         relations = new List<String>();
 
-      int relationsDepth = queryBuilder.GetRelationsDepth();
+      int? relationsDepth = queryBuilder.GetRelationsDepth();
       Object[] args = new Object[] { tableName, relations, relationsDepth };
       Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "last", args, responder );
     }

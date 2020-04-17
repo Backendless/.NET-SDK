@@ -49,5 +49,14 @@ namespace GeometryTestProject
       Assert.IsTrue( res[ 0 ].ContainsKey("adress"), "First object does not contain 'adress' field" );
       Assert.IsTrue( res[ 1 ].ContainsKey("adress"), "Second object does not contain 'adress' field" );
     }
+
+    [TestMethod]
+    public void TestRelation()
+    {
+      DataQueryBuilder qb = DataQueryBuilder.Create();
+      qb.AddAllProperties();
+      qb.SetRelated( new List<String>(){ "Related" } );
+      IList<Dictionary<String, Object>> res = Backendless.Data.Of( "Order" ).Find( qb );
+    }
   }
 }

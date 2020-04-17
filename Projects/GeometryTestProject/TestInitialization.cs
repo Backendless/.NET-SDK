@@ -1,4 +1,4 @@
-﻿#define DEV_TEST
+﻿//#define DEV_TEST
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using BackendlessAPI;

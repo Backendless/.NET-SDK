@@ -174,21 +174,21 @@ namespace BackendlessAPI.Persistence
       return queryOptionsBuilder.SetRelated( related );
     }
 
-    public int GetRelationsDepth()
+    public int? GetRelationsDepth()
     {
       return queryOptionsBuilder.GetRelationsDepth();
     }
 
-    public DataQueryBuilder SetRelationsDepth( int relationsDepth )
+    public DataQueryBuilder SetRelationsDepth( int? relationsDepth )
     {
       return queryOptionsBuilder.SetRelationsDepth( relationsDepth );
     }
 
-    public int GetRelationsPageSize()
+    public int? GetRelationsPageSize()
     {
       return queryOptionsBuilder.GetRelationsPageSize();
     }
-    public DataQueryBuilder SetRelationsPageSize( int relationsPageSize )
+    public DataQueryBuilder SetRelationsPageSize( int? relationsPageSize )
     {
       return queryOptionsBuilder.SetRelationsPageSize( relationsPageSize );
     }

@@ -442,7 +442,7 @@ namespace BackendlessAPI.Service
       if( relations == null )
         relations = new List<String>();
 
-      int relationsDepth = queryBuilder.GetRelationsDepth();
+      int? relationsDepth = queryBuilder.GetRelationsDepth();
 
       AddWeborbPropertyMapping<T>();
       return Invoker.InvokeSync<T>( PERSISTENCE_MANAGER_SERVER_ALIAS, "first",
@@ -462,7 +462,7 @@ namespace BackendlessAPI.Service
       if( relations == null )
         relations = new List<String>();
 
-      int relationsDepth = queryBuilder.GetRelationsDepth();
+      int? relationsDepth = queryBuilder.GetRelationsDepth();
 
       AddWeborbPropertyMapping<T>();
       Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "first",
@@ -484,7 +484,7 @@ namespace BackendlessAPI.Service
       if( relations == null )
         relations = new List<String>();
 
-      int relationsDepth = queryBuilder.GetRelationsDepth();
+      int? relationsDepth = queryBuilder.GetRelationsDepth();
 
       AddWeborbPropertyMapping<T>();
       return Invoker.InvokeSync<T>( PERSISTENCE_MANAGER_SERVER_ALIAS, "last",
@@ -504,7 +504,7 @@ namespace BackendlessAPI.Service
       if( relations == null )
         relations = new List<String>();
 
-      int relationsDepth = queryBuilder.GetRelationsDepth();
+      int? relationsDepth = queryBuilder.GetRelationsDepth();
 
       AddWeborbPropertyMapping<T>();
       Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "last",
