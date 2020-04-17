@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using Weborb.Service;
 
 namespace BackendlessAPI.Transaction
 {
   public class OperationType
   {
+    private String operationName;
     private OperationType( string operationName )
     {
       this.operationName = operationName;
     }
 
-    private String operationName;
+    [SetClientClassMemberName("operationName")]
     public String OperationName
     {
       get => operationName;

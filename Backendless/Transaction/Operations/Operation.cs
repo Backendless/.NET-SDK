@@ -1,4 +1,5 @@
 ﻿using System;
+using Weborb.Service;
 
 namespace BackendlessAPI.Transaction.Operations
 {
@@ -19,24 +20,27 @@ namespace BackendlessAPI.Transaction.Operations
       this.opResultId = opResultId;
     }
 
+    [SetClientClassMemberName("operationType")]
     public OperationType OperationType
     {
       get => operationType;
       set => operationType = value;
     }
 
+    [SetClientClassMemberName("table")]
     public String Table
     {
       get => table;
       set => table = value;
     }
 
+    [SetClientClassMemberName("opResultId")]
     public String OpResultId
     {
       get => opResultId;
       set => opResultId = value;
     }
-
+    [SetClientClassMemberName("payload")]
     public abstract Object Payload{ get; set; } 
 
     public override string ToString()

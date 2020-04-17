@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Weborb.Service;
 
 namespace BackendlessAPI.Transaction.Operations
 {
@@ -17,6 +18,7 @@ namespace BackendlessAPI.Transaction.Operations
       this.payload = payload;
     }
 
+    [SetClientClassMemberName("payload")]
     public override Object Payload
     {
       get => payload;

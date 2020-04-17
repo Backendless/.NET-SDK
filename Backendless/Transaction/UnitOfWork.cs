@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Weborb.Service;
 
 namespace BackendlessAPI.Transaction
 {
@@ -30,11 +31,14 @@ namespace BackendlessAPI.Transaction
       unitOfWorkCreate = new UnitOfWorkCreateImpl( operations, opResultIdGenerator, clazzes );
       unitOfWorkExecutor = new UnitOfWorkExecutorImpl( this, clazzes );
     }
+    [SetClientClassMemberName("isolationLevelEnum")]
     public LevelEnum TransactionIsolation
     {
       get => transactionIsolation;
       set => this.transactionIsolation = value;
     }
+    
+    [SetClientClassMemberName( "operations")]
     public List<Operation> Operations
     {
       get => operations;
