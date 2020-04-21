@@ -229,12 +229,12 @@ namespace BackendlessAPI.Data
       if( relations == null )
         relations = new List<String>();
 
-      Object[] args = new Object[] { tableName, relations, queryBuilder.GetRelationsDepth() };
+      List<Object> args = new List<Object> { tableName, relations };
 
-      if( queryBuilder.GetRelationsDepth() == null )
-        args = new Object[] { tableName, relations, queryBuilder.GetRelationsDepth() };
+      if( queryBuilder.GetRelationsDepth() != null )
+        args.Add( queryBuilder.GetRelationsDepth() );
 
-      return Invoker.InvokeSync<Dictionary<String, Object>>( PERSISTENCE_MANAGER_SERVER_ALIAS, "first", args );
+      return Invoker.InvokeSync<Dictionary<String, Object>>( PERSISTENCE_MANAGER_SERVER_ALIAS, "first", args.ToArray() );
     }
     
   #if !(NET_35 || NET_40)
@@ -261,9 +261,12 @@ namespace BackendlessAPI.Data
       if( relations == null )
         relations = new List<String>();
 
-      int? relationsDepth = queryBuilder.GetRelationsDepth();
-      Object[] args = new Object[] { tableName, relations, relationsDepth };
-      Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "first", args, responder );
+      List<Object> args = new List<Object> { tableName, relations };
+
+      if( queryBuilder.GetRelationsDepth() != null )
+        args.Add( queryBuilder.GetRelationsDepth() );
+
+      Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "first", args.ToArray(), responder );
     }
 
   #endregion
@@ -282,9 +285,12 @@ namespace BackendlessAPI.Data
       if( relations == null )
         relations = new List<String>();
 
-      int? relationsDepth = queryBuilder.GetRelationsDepth();
-      Object[] args = new Object[] { tableName, relations, relationsDepth };
-      return Invoker.InvokeSync<Dictionary<string, object>>( PERSISTENCE_MANAGER_SERVER_ALIAS, "last", args );
+      List<Object> args = new List<Object> { tableName, relations };
+
+      if( queryBuilder.GetRelationsDepth() != null )
+        args.Add( queryBuilder.GetRelationsDepth() );
+
+      return Invoker.InvokeSync<Dictionary<string, object>>( PERSISTENCE_MANAGER_SERVER_ALIAS, "last", args.ToArray() );
     }
     
   #if !(NET_35 || NET_40)
@@ -311,9 +317,12 @@ namespace BackendlessAPI.Data
       if( relations == null )
         relations = new List<String>();
 
-      int? relationsDepth = queryBuilder.GetRelationsDepth();
-      Object[] args = new Object[] { tableName, relations, relationsDepth };
-      Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "last", args, responder );
+      List<Object> args = new List<Object> { tableName, relations };
+
+      if( queryBuilder.GetRelationsDepth() != null )
+        args.Add( queryBuilder.GetRelationsDepth() );
+
+      Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "last", args.ToArray(), responder );
     }
 
   #endregion
@@ -388,7 +397,7 @@ namespace BackendlessAPI.Data
       return FindById( id, 0 );
     }
 
-    public Dictionary<string, object> FindById( string id, int relationsDepth )
+    public Dictionary<string, object> FindById( string id, int? relationsDepth )
     {
       return FindById( id, null, relationsDepth );
     }
@@ -398,7 +407,7 @@ namespace BackendlessAPI.Data
       return FindById( id, relations, 0 );
     }
 
-    public Dictionary<string, object> FindById( string id, IList<string> relations, int relationsDepth )
+    public Dictionary<string, object> FindById( string id, IList<string> relations, int? relationsDepth )
     {
       if( id == null )
         throw new ArgumentNullException( ExceptionMessage.NULL_ID );
@@ -406,8 +415,12 @@ namespace BackendlessAPI.Data
       if( relations == null )
         relations = new List<String>();
 
-      object[] args = { tableName, id, relations, relationsDepth };
-      return Invoker.InvokeSync<Dictionary<string, object>>( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById", args );
+      List<Object> args = new List<Object> { tableName, id, relations };
+
+      if( relationsDepth != null )
+        args.Add( relationsDepth );
+        
+      return Invoker.InvokeSync<Dictionary<string, object>>( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById", args.ToArray() );
     }
 
     public Dictionary<string, object> FindById( Dictionary<string, object> entity )
@@ -415,7 +428,7 @@ namespace BackendlessAPI.Data
       return FindById( entity, null, 0 );
     }
 
-    public Dictionary<string, object> FindById( Dictionary<string, object> entity, int relationsDepth )
+    public Dictionary<string, object> FindById( Dictionary<string, object> entity, int? relationsDepth )
     {
       return FindById( entity, null, relationsDepth );
     }
@@ -426,7 +439,7 @@ namespace BackendlessAPI.Data
     }
 
     public Dictionary<string, object> FindById( Dictionary<string, object> entity, IList<string> relations,
-                                                int relationsDepth )
+                                                int? relationsDepth )
     {
       if( entity == null )
         throw new ArgumentNullException( ExceptionMessage.NULL_ENTITY );
@@ -434,8 +447,12 @@ namespace BackendlessAPI.Data
       if( relations == null )
         relations = new List<String>();
 
-      object[] args = { tableName, entity, relations, relationsDepth };
-      return Invoker.InvokeSync<Dictionary<string, object>>( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById", args );
+      List<Object> args = new List<Object> { tableName, entity, relations };
+
+      if( relationsDepth != null )
+        args.Add( relationsDepth );
+
+      return Invoker.InvokeSync<Dictionary<string, object>>( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById", args.ToArray() );
     }
     
   #if !(NET_35 || NET_40)
@@ -444,7 +461,7 @@ namespace BackendlessAPI.Data
       return await Task.Run( () => FindById( id ) ).ConfigureAwait( false );
     }
     
-    public async Task<Dictionary<string, object>> FindByIdAsync( string id, int relationsDepth )
+    public async Task<Dictionary<string, object>> FindByIdAsync( string id, int? relationsDepth )
     {
       return await Task.Run( () => FindById( id, relationsDepth ) ).ConfigureAwait( false );
     }
@@ -455,7 +472,7 @@ namespace BackendlessAPI.Data
     }
 
     public async Task<Dictionary<string, object>> FindByIdAsync( string id, IList<string> relations,
-                                                                 int relationsDepth )
+                                                                 int? relationsDepth )
     {
       return await Task.Run( () => FindById( id, relations, relationsDepth ) ).ConfigureAwait( false );
     }
@@ -465,7 +482,7 @@ namespace BackendlessAPI.Data
       return await Task.Run( () => FindById( entity ) ).ConfigureAwait( false );
     }
     
-    public async Task<Dictionary<string, object>> FindByIdAsync( Dictionary<string, object> entity, int relationsDepth )
+    public async Task<Dictionary<string, object>> FindByIdAsync( Dictionary<string, object> entity, int? relationsDepth )
     {
       return await Task.Run( () => FindById( entity, relationsDepth ) ).ConfigureAwait( false );
     }
@@ -476,7 +493,7 @@ namespace BackendlessAPI.Data
     }
 
     public async Task<Dictionary<string, object>> FindByIdAsync( Dictionary<string, object> entity, IList<string> relations,
-                                                                 int relationsDepth )
+                                                                 int? relationsDepth )
     {
       return await Task.Run( () => FindById( entity, relations, relationsDepth ) ).ConfigureAwait( false );
     }
@@ -487,7 +504,7 @@ namespace BackendlessAPI.Data
       FindById( id, null, 0, responder );
     }
 
-    public void FindById( string id, int relationsDepth, AsyncCallback<Dictionary<string, object>> responder )
+    public void FindById( string id, int? relationsDepth, AsyncCallback<Dictionary<string, object>> responder )
     {
       FindById( id, null, relationsDepth, responder );
     }
@@ -497,7 +514,7 @@ namespace BackendlessAPI.Data
       FindById( id, relations, 0, responder );
     }
 
-    public void FindById( string id, IList<string> relations, int relationsDepth,
+    public void FindById( string id, IList<string> relations, int? relationsDepth,
                           AsyncCallback<Dictionary<string, object>> responder )
     {
       if( id == null )
@@ -506,8 +523,11 @@ namespace BackendlessAPI.Data
       if( relations == null )
         relations = new List<String>();
 
-      object[] args = new Object[] { tableName, id, relations, relationsDepth };
-      Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById", args, responder );
+      List<Object> args = new List<Object> { tableName, id, relations };
+      if( relationsDepth != null )
+        args.Add( relationsDepth );
+
+      Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById", args.ToArray(), responder );
     }
 
     public void FindById( Dictionary<string, object> entity, AsyncCallback<Dictionary<string, object>> responder )
@@ -515,7 +535,7 @@ namespace BackendlessAPI.Data
       FindById( entity, null, 0, responder );
     }
 
-    public void FindById( Dictionary<string, object> entity, int relationsDepth,
+    public void FindById( Dictionary<string, object> entity, int? relationsDepth,
                           AsyncCallback<Dictionary<string, object>> responder )
     {
       FindById( entity, null, relationsDepth, responder );
@@ -527,7 +547,7 @@ namespace BackendlessAPI.Data
       FindById( entity, relations, 0, responder );
     }
 
-    public void FindById( Dictionary<string, object> entity, IList<string> relations, int relationsDepth,
+    public void FindById( Dictionary<string, object> entity, IList<string> relations, int? relationsDepth,
                           AsyncCallback<Dictionary<string, object>> responder )
     {
       if( entity == null )
@@ -536,8 +556,10 @@ namespace BackendlessAPI.Data
       if( relations == null )
         relations = new List<String>();
 
-      object[] args = { tableName, entity, relations, relationsDepth };
-      Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById", args, responder );
+      List<Object> args = new List<Object> { tableName, entity, relations };
+      if( relationsDepth != null )
+        args.Add( relationsDepth );
+      Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById", args.ToArray(), responder );
     }
 
   #endregion
