@@ -483,7 +483,6 @@ namespace BackendlessAPI.Service
 
       if( queryBuilder.GetRelationsDepth() != null )
         args.Add( queryBuilder.GetRelationsDepth() );
-
       Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "first", args.ToArray(), true, callback );
     }
     #endregion 

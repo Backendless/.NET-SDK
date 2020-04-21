@@ -72,15 +72,3 @@ Projects/BackendlessUnitySDK/Library*/
 Projects/BackendlessUnitySDK/BackendlessUnitySDK.suo
 
 
-Projects/Backendless.NET.Framework4.5/bin/Debug/Newtonsoft.Json.dll
-Projects/Backendless.NET.Framework4.5/bin/Debug/Newtonsoft.Json.xml
-Projects/Backendless.NET.Framework4.5/bin/Debug/System.Collections.Immutable.dll
-Projects/Backendless.NET.Framework4.5/bin/Debug/System.Collections.Immutable.xml
-Projects/Backendless.NET.Framework4.7.1/bin/Debug/Backendless.pdb
-Projects/Backendless.NET.Framework4.7.1/bin/Debug/Newtonsoft.Json.dll
-Projects/Backendless.NET.Framework4.7.1/bin/Debug/SocketIoClientDotNet.dll
-Projects/Backendless.NET.Framework4.7.1/bin/Debug/SuperSocket.ClientEngine.dll
-*.xml
-*.dll
-*.pdb
-*.json
