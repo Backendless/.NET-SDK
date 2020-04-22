@@ -661,51 +661,42 @@ namespace BackendlessAPI.Data
     #endregion
 
   #region CREATE_ARGS
-    public Object[] CreateArgs( DataQueryBuilder qb )
+    private Object[] CreateArgs( DataQueryBuilder qb )
     {
-      List<String> relations = qb.GetRelated();
-      if( relations == null )
-        relations = new List<String>();
-
-      List<Object> args = new List<Object> { tableName, relations };
-
-      if( qb.GetRelationsDepth() != null )
-        args.Add( qb.GetRelationsDepth() );
-
-      return args.ToArray();
+      return SubArgsCreator<String>( qb.GetRelated(), qb.GetRelationsDepth() );
     }
 
-    public Object[] CreateArgs( String id, IList<String> relations, int? relationsDepth )
+    private Object[] CreateArgs( String id, IList<String> relations, int? relationsDepth )
     {
       if( id == null )
         throw new ArgumentNullException( ExceptionMessage.NULL_ID );
 
-      if( relations == null )
-        relations = new List<String>();
-
-      List<Object> args = new List<Object> { tableName, id, relations };
-
-      if( relationsDepth != null )
-        args.Add( relationsDepth );
-
-      return args.ToArray();
+      return SubArgsCreator<String>( relations, relationsDepth, id );
     }
 
-    public Object[] CreateArgs( Dictionary<string, object> entity, IList<string> relations, int? relationsDepth )
+    private Object[] CreateArgs( Dictionary<String, Object> entity, IList<String> relations, int? relationsDepth )
     {
       if( entity == null )
         throw new ArgumentNullException( ExceptionMessage.NULL_ENTITY );
 
+      return SubArgsCreator<Dictionary<String, Object>>( relations, relationsDepth, entity );
+    }
+
+    private Object[] SubArgsCreator<T>( IList<String> relations, int? Depth, T obj = null ) where T : class
+    {
+      
       if( relations == null )
         relations = new List<String>();
+      
+      List<Object> args = new List<Object> { tableName, obj, relations };
 
-      List<Object> args = new List<Object> { tableName, entity, relations };
+      if( Depth != null )
+        args.Add( Depth );
 
-      if( relationsDepth != null )
-        args.Add( relationsDepth );
+      args.RemoveAll( item => item == null );
 
       return args.ToArray();
-    }
+    } 
 #endregion
   }
 }
