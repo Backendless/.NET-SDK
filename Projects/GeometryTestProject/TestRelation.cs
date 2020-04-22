@@ -62,7 +62,8 @@ namespace GeometryTestProject
     {
       DataQueryBuilder qb = DataQueryBuilder.Create();
       qb.AddAllProperties();
-      qb.SetRelationsPageSize( null );
+      qb.SetRelationsPageSize( 0 );
+      qb.SetRelated( new List<String> { "Related" } );
       IList<Dictionary<String, Object>> res = Backendless.Data.Of( "Order" ).Find( qb );
     }
 
@@ -73,7 +74,7 @@ namespace GeometryTestProject
       qb.AddAllProperties();
       qb.SetRelated( new List<String> { "Related" } );
       IList<Order> res = Backendless.Data.Of<Order>().Find( qb );
-      Assert.IsTrue( res.Count == 3 );
+      Assert.IsTrue( res[0].Related.Count == 1 );
     }
 
     [TestMethod]
@@ -84,7 +85,7 @@ namespace GeometryTestProject
       qb.SetRelated( new List<String> { "Related" } );
       qb.SetSortBy( new List<String> { "age" } );
       IList<Dictionary<String, Object>> res = Backendless.Data.Of( "Order" ).Find( qb );
-      Assert.IsTrue( (int) res[ 0 ][ "age" ] == 5 && (int) res[1]["age"] == 10 );
+      Assert.IsTrue( (Double) res[ 0 ][ "age" ] == 5.0 && (Double) res[1]["age"] == 10.0 );
     }
   }
 }
