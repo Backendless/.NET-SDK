@@ -885,18 +885,7 @@ namespace BackendlessAPI.Service
     #region CREATE_ARGS  
     public Object[] CreateArgs<T>( DataQueryBuilder qb )
     {
-      List<String> relations = qb.GetRelated();
-
-      if( relations == null )
-        relations = new List<String>();
-
-      AddWeborbPropertyMapping<T>();
-      List<Object> args = new List<Object> { GetTypeName( typeof( T ) ), relations };
-
-      if( qb.GetRelationsDepth() != null )
-        args.Add( qb.GetRelationsDepth() );
-
-      return args.ToArray();
+      return SubArgsCreator<T>( qb.GetRelated(), qb.GetRelationsDepth(), null );
     }
 
     public Object[] CreateArgs<T>( String id, IList<String> relations, int? relationsDepth )
@@ -904,31 +893,34 @@ namespace BackendlessAPI.Service
       if( id == null )
         throw new ArgumentNullException( ExceptionMessage.NULL_ID );
 
-      if( relations == null )
-        relations = new List<String>();
-
-      AddWeborbPropertyMapping<T>();
-      List<Object> args = new List<Object> { GetTypeName( typeof( T ) ), id, relations };
-
-      if( relationsDepth != null )
-        args.Add( relationsDepth );
-
-      return args.ToArray();
+      return SubArgsCreator<T>( relations, relationsDepth, id );
     }
 
-    public Object[] CreateArgs<T>( T entity, IList<string> relations, int? relationsDepth )
+    public Object[] CreateArgs<T>( T entity, IList<String> relations, int? relationsDepth )
     {
       if( entity == null )
         throw new ArgumentNullException( ExceptionMessage.NULL_ENTITY );
 
+      return SubArgsCreator<T>( relations, relationsDepth, entity );
+
+      throw new ArgumentException( ExceptionMessage.WRONG_ENTITY_TYPE );
+    }
+
+    private Object[] SubArgsCreator<T>( IList<String> relations, int? Depth, Object obj )
+    {
       if( relations == null )
         relations = new List<String>();
 
       AddWeborbPropertyMapping<T>();
-      List<Object> args = new List<Object> { GetTypeName( typeof( T ) ), entity, relations };
+      List<Object> args = new List<Object>{ GetTypeName( typeof( T)) };
 
-      if( relationsDepth != null )
-        args.Add( relationsDepth );
+      if( obj != null )
+        args.Add( obj );
+
+      args.Add( relations );
+
+      if( Depth != null )
+        args.Add( Depth );
 
       return args.ToArray();
     }
