@@ -7,8 +7,8 @@ namespace BackendlessAPI.Persistence
   {
     private List<String> sortBy;
     private List<String> related;
-    private int relationsDepth;
-    private int relationsPageSize;
+    private int? relationsDepth;
+    private int? relationsPageSize;
     private Builder builder;
     internal QueryOptionsBuilder( Builder builder )
     {
@@ -63,23 +63,23 @@ namespace BackendlessAPI.Persistence
       return builder;
     }
 
-    public int GetRelationsDepth()
+    public int? GetRelationsDepth()
     {
       return relationsDepth;
     }
 
-    public Builder SetRelationsDepth( int relationsDepth )
+    public Builder SetRelationsDepth( int? relationsDepth )
     {
       this.relationsDepth = relationsDepth;
       return builder;
     }
 
-    public int GetRelationsPageSize()
+    public int? GetRelationsPageSize()
     {
       return relationsPageSize;
     }
 
-    public Builder SetRelationsPageSize( int relationsPageSize )
+    public Builder SetRelationsPageSize( int? relationsPageSize )
     {
       this.relationsPageSize = relationsPageSize;
       return builder;
