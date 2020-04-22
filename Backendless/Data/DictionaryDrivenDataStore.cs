@@ -678,7 +678,7 @@ namespace BackendlessAPI.Data
     {
       if( entity == null )
         throw new ArgumentNullException( ExceptionMessage.NULL_ENTITY );
-
+      
       return SubArgsCreator( relations, relationsDepth, entity );
     }
 
