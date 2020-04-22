@@ -902,8 +902,6 @@ namespace BackendlessAPI.Service
         throw new ArgumentNullException( ExceptionMessage.NULL_ENTITY );
 
       return SubArgsCreator<T>( relations, relationsDepth, entity );
-
-      throw new ArgumentException( ExceptionMessage.WRONG_ENTITY_TYPE );
     }
 
     private Object[] SubArgsCreator<T>( IList<String> relations, int? Depth, Object obj )
@@ -912,7 +910,7 @@ namespace BackendlessAPI.Service
         relations = new List<String>();
 
       AddWeborbPropertyMapping<T>();
-      List<Object> args = new List<Object>{ GetTypeName( typeof( T)) };
+      List<Object> args = new List<Object> { GetTypeName( typeof( T ) ) };
 
       if( obj != null )
         args.Add( obj );
