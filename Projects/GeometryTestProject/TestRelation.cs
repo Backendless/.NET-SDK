@@ -95,7 +95,8 @@ namespace GeometryTestProject
       qb.SetSortBy( new List<String> { "age" } );
       IList<Dictionary<String, Object>> res = Backendless.Data.Of( "Order" ).Find( qb );
 
-      Assert.IsTrue( (Double) res[ 0 ][ "age" ] == 5.0 && (Double) res[1]["age"] == 10.0 );
+      Assert.IsTrue( (Double) res[ 0 ][ "age" ] == 5.0 );
+      Assert.IsTrue( (Double) res[ 1 ][ "age" ] == 10.0 );
     }
   }
 }
