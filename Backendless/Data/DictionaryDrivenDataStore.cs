@@ -663,7 +663,7 @@ namespace BackendlessAPI.Data
   #region CREATE_ARGS
     private Object[] CreateArgs( DataQueryBuilder qb )
     {
-      return SubArgsCreator<Object>( qb.GetRelated(), qb.GetRelationsDepth() );
+      return SubArgsCreator( qb.GetRelated(), qb.GetRelationsDepth() );
     }
 
     private Object[] CreateArgs( String id, IList<String> relations, int? relationsDepth )
@@ -671,7 +671,7 @@ namespace BackendlessAPI.Data
       if( id == null )
         throw new ArgumentNullException( ExceptionMessage.NULL_ID );
 
-      return SubArgsCreator<String>( relations, relationsDepth, id );
+      return SubArgsCreator( relations, relationsDepth, id );
     }
 
     private Object[] CreateArgs( Dictionary<String, Object> entity, IList<String> relations, int? relationsDepth )
@@ -679,10 +679,10 @@ namespace BackendlessAPI.Data
       if( entity == null )
         throw new ArgumentNullException( ExceptionMessage.NULL_ENTITY );
 
-      return SubArgsCreator<Dictionary<String, Object>>( relations, relationsDepth, entity );
+      return SubArgsCreator( relations, relationsDepth, entity );
     }
 
-    private Object[] SubArgsCreator<T>( IList<String> relations, int? Depth, T obj = null ) where T : class
+    private Object[] SubArgsCreator( IList<String> relations, int? Depth, Object obj = null )
     {   
       if( relations == null )
         relations = new List<String>();
