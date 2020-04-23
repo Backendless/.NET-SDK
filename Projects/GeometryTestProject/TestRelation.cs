@@ -122,6 +122,7 @@ namespace GeometryTestProject
 
     [TestMethod]
     public void TestRelationsDepth()
+    {
       DataQueryBuilder qb = DataQueryBuilder.Create();
       qb.AddAllProperties();
       qb.SetRelationsDepth( 1 );
@@ -136,6 +137,7 @@ namespace GeometryTestProject
     {
       DataQueryBuilder qb = DataQueryBuilder.Create();
       qb.AddAllProperties();
+      qb.AddGroupBy( "Percentage" );
       Object gg = new Object();
       int i = 0;
       IList<Dictionary<String, Object>> res = Backendless.Data.Of( "CountryLanguage" ).Find( qb );
