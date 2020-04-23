@@ -128,8 +128,14 @@ namespace GeometryTestProject
       qb.SetRelationsDepth( 1 );
       qb.SetRelated( new List<String> { "Country", "City" } );
       IList<Dictionary<String, Object>> res = Backendless.Data.Of( "CountryLanguage" ).Find( qb );
-      Object entry =  res[0]["Country"];
-      Assert.IsFalse( ( (Dictionary<Object, Object>) entry ).ContainsKey( "Capital" ) );
+
+      if(res[ 0 ].ContainsKey( "Country" ) )
+      {
+        Object entry = res[ 0 ][ "Country" ];
+        Assert.IsFalse( ( (Dictionary<Object, Object>) entry ).ContainsKey( "Capital" ) );
+      }
+      else
+        Assert.IsFalse( true );
     }
 
     [TestMethod]
@@ -138,20 +144,9 @@ namespace GeometryTestProject
       DataQueryBuilder qb = DataQueryBuilder.Create();
       qb.AddAllProperties();
       qb.AddGroupBy( "Percentage" );
-      Object gg = new Object();
-      int i = 0;
       IList<Dictionary<String, Object>> res = Backendless.Data.Of( "CountryLanguage" ).Find( qb );
       foreach( Dictionary<String, Object> entry in res )
-      {
-        if( i == 0 )
-        {
-          gg = entry[ "Percentage" ];
-          i++;
-          continue;
-        }
-        Assert.IsTrue( (Double) gg < (Double) entry[ "Percentage" ] );
-        gg = entry[ "Percentage" ];
-      }
+        Assert.IsTrue( entry.ContainsKey( "Percentage" ) );
     }
   }
 }
