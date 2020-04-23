@@ -25,7 +25,7 @@ namespace GeometryTestProject
   public class TestRelation
   {
     [TestMethod]
-    public void TestRelationDepth()
+    public void TestRelations()
     {
       DataQueryBuilder qb = DataQueryBuilder.Create();
       qb.AddAllProperties();
@@ -76,7 +76,7 @@ namespace GeometryTestProject
     }
 
     [TestMethod]
-    public void TestRelationsDepth()
+    public void TestRelationsWithClass()
     {
       DataQueryBuilder qb = DataQueryBuilder.Create();
       qb.AddAllProperties();
@@ -95,8 +95,61 @@ namespace GeometryTestProject
       qb.SetSortBy( new List<String> { "age" } );
       IList<Dictionary<String, Object>> res = Backendless.Data.Of( "Order" ).Find( qb );
 
-      Assert.IsTrue( (Double) res[ 0 ][ "age" ] == 5.0 );
-      Assert.IsTrue( (Double) res[ 1 ][ "age" ] == 10.0 );
+      Assert.IsTrue( (Double) res[ 0 ][ "age" ] < (Double) res[ 1 ][ "age" ] );
+    }
+
+    [TestMethod]
+    public void TestWhereClauseZero()
+    {
+      DataQueryBuilder qb = DataQueryBuilder.Create();
+      qb.AddAllProperties();
+      qb.SetWhereClause( "name='Joe'" );
+      IList<Dictionary<String, Object>> res = Backendless.Data.Of( "Order" ).Find( qb );
+      Assert.IsTrue( res.Count == 0 );
+    }
+
+    [TestMethod]
+    public void TestWhereClauseNotZero()
+    {
+      DataQueryBuilder qb = DataQueryBuilder.Create();
+      qb.AddAllProperties();
+      qb.SetWhereClause( "Percentage > 30" );
+      IList<Dictionary<String, Object>> res = Backendless.Data.Of( "CountryLanguage" ).Find( qb );
+
+      foreach( Dictionary<String, Object> entry in res )
+        Assert.IsTrue( (Double) entry[ "Percentage" ] > 30.0 );
+    }
+
+    [TestMethod]
+    public void TestRelationsDepth()
+      DataQueryBuilder qb = DataQueryBuilder.Create();
+      qb.AddAllProperties();
+      qb.SetRelationsDepth( 1 );
+      qb.SetRelated( new List<String> { "Country", "City" } );
+      IList<Dictionary<String, Object>> res = Backendless.Data.Of( "CountryLanguage" ).Find( qb );
+      Object entry =  res[0]["Country"];
+      Assert.IsFalse( ( (Dictionary<Object, Object>) entry ).ContainsKey( "Capital" ) );
+    }
+
+    [TestMethod]
+    public void TestGroupBy()
+    {
+      DataQueryBuilder qb = DataQueryBuilder.Create();
+      qb.AddAllProperties();
+      Object gg = new Object();
+      int i = 0;
+      IList<Dictionary<String, Object>> res = Backendless.Data.Of( "CountryLanguage" ).Find( qb );
+      foreach( Dictionary<String, Object> entry in res )
+      {
+        if( i == 0 )
+        {
+          gg = entry[ "Percentage" ];
+          i++;
+          continue;
+        }
+        Assert.IsTrue( (Double) gg < (Double) entry[ "Percentage" ] );
+        gg = entry[ "Percentage" ];
+      }
     }
   }
 }
