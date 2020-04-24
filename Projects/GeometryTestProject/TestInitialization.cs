@@ -21,15 +21,11 @@ namespace GeometryTestProject
 #endif
 
     [AssemblyInitialize]
-    public static void AssemblyInit( TestContext context )
+    public static void AssemblyInit_SetupDatabaseData( TestContext context )
     {
       Backendless.URL = BKNDLSS_URL;
       Backendless.InitApp( APP_API_KEY, DOTNET_API_KEY );
-    }
 
-    [AssemblyInitialize]
-    public static void SetupDatabaseData( TestContext context )
-    {
       ////////////Сreation of the parent table "Order"////////////
 
       Dictionary<String, Object> data = new Dictionary<String, Object>();
@@ -43,7 +39,7 @@ namespace GeometryTestProject
       data.Add( "name", "Tommy" );
 
       Dictionary<String, Object> dataIdParent_2 = Backendless.Data.Of( "Order" ).Save( data );//////////Second object in the "Order" table
-                                                  /////////////////////////////////////////////
+                                                                                              /////////////////////////////////////////////
 
       ////////////Creation of the children table "Area"////////////
 
@@ -67,8 +63,8 @@ namespace GeometryTestProject
       Object[] children = new Object[] { dataIdChildren_1 };
 
       Backendless.Data.Of( "Order" ).SetRelation( dataIdParent_1, "Related:Area:n", children );//First relation
-      //////////////////////////////////////////////////////////////////////////////////////////
-      
+                                                                                               //////////////////////////////////////////////////////////////////////////////////////////
+
       children = new Object[] { dataIdChildren_2 };
 
       Backendless.Data.Of( "Order" ).SetRelation( dataIdParent_2, "Related:Area:n", children );//Second relations
