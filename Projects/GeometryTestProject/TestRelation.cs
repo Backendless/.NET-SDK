@@ -8,6 +8,7 @@ using BackendlessAPI.Async;
 
 namespace GeometryTestProject
 {
+  
   public class Area
   {
     public int UserId{ get; set; }
@@ -24,6 +25,61 @@ namespace GeometryTestProject
   [TestClass]
   public class TestRelation
   {
+    [ClassInitialize]
+    public static void TestRealtionSetupData( TestContext context )
+    {
+      try
+      {
+        Backendless.Data.Describe( "Order" );
+        Backendless.Data.Describe( "Area" );
+      }
+      catch
+      {
+        ////////////Сreation of the parent table "Order"////////////
+
+        Dictionary<String, Object> data = new Dictionary<String, Object>();
+        data.Add( "age", 10 );
+        data.Add( "name", "Nikita" );
+
+        Dictionary<String, Object> dataIdParent_1 = Backendless.Data.Of( "Order" ).Save( data );//First object in the "Order" table
+        /////////////////////////////////////////////////////////////////////////////////////////
+        data.Clear();
+        data.Add( "age", 5 );
+        data.Add( "name", "Tommy" );
+
+        Dictionary<String, Object> dataIdParent_2 = Backendless.Data.Of( "Order" ).Save( data );//Second object in the "Order" table
+        /////////////////////////////////////////////////////////////////////////////////////////
+
+        ////////////Creation of the children table "Area"////////////
+
+        data.Clear();
+        data.Add( "AreaA", "Munich" );
+        data.Add( "Categories", false );
+        data.Add( "UserId", 3 );
+
+        Dictionary<String, Object> dataIdChildren_1 = Backendless.Data.Of( "Area" ).Save( data );//First object in the "Area" table
+        //////////////////////////////////////////////////////////////////////////////////////////
+        data.Clear();
+        data.Add( "AreaA", "London" );
+        data.Add( "Categories", true );
+        data.Add( "UserId", 6 );
+
+        Dictionary<String, Object> dataIdChildren_2 = Backendless.Data.Of( "Area" ).Save( data );//Second object in the "Area" table
+        //////////////////////////////////////////////////////////////////////////////////////////
+
+        ///Сreating a connection between the objects "Order" and "Area"///
+
+        Object[] children = new Object[] { dataIdChildren_1 };
+
+        Backendless.Data.Of( "Order" ).SetRelation( dataIdParent_1, "Related:Area:n", children );//First relation
+        //////////////////////////////////////////////////////////////////////////////////////////
+
+        children = new Object[] { dataIdChildren_2 };
+
+        Backendless.Data.Of( "Order" ).SetRelation( dataIdParent_2, "Related:Area:n", children );//Second relations
+      }
+    }
+
     [TestMethod]
     public void TestRelations()
     {
