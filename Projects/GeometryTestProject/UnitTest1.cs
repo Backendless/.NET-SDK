@@ -27,14 +27,14 @@ namespace GeometryTestProject
     static HttpClient client = new HttpClient();
 
     [ClassInitialize]
-    public static void TestGeometrySetupData()
+    public static async Task TestGeometrySetupData( TestContext context )
     {
-      
+      await RunAsync();
     }
 
-    static async Task<Uri> CreateProductAsync( GeoData data )
+    static async Task<Uri> CreateProductAsync<T>( T log )
     {
-      HttpResponseMessage response = await client.PostAsJsonAsync( "", data );
+      HttpResponseMessage response = await client.PostAsJsonAsync( "https://devtest.backendless.com/console/home/login", log ); 
       response.EnsureSuccessStatusCode();
 
       //return URI of created resource
@@ -43,21 +43,21 @@ namespace GeometryTestProject
 
     static async Task RunAsync()
     {
-      client.BaseAddress = new Uri( "https://devtest.backendless.com/console/home/login" );
+      client.BaseAddress = new Uri( "https://devtest.backendless.com/B5D20616-5565-2674-FF73-C5CAC72BD200/console/data/tables/GeoData/columns" );
       client.DefaultRequestHeaders.Accept.Clear();
       client.DefaultRequestHeaders.Accept.Add( new MediaTypeWithQualityHeaderValue( "application/json" ) );
 
       try
       {
         WKTParser wkt = new WKTParser();
-        GeoData data = new GeoData
-        {
-          P1 = new Point().SetX( 40.41 ).SetY( -3.706 ),
-          pickupLocation = new Point()
 
-        };
+        String log = 
+        "{" +
+        "\"login\":\"nikita@themidnightcoders.com\"," +
+        " \"password\":\"Holailusoria1411\" " +
+        "}";
 
-        var url = await CreateProductAsync( data );
+        var url = await CreateProductAsync( log );
       }
       catch
       {
