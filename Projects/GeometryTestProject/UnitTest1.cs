@@ -54,7 +54,7 @@ namespace GeometryTestProject
         String log = 
         "{" +
         "\"login\":\"nikita@themidnightcoders.com\"," +
-        " \"password\":\"Holailusoria1411\" " +
+        " \"password\":\"password\" " +
         "}";
 
         var url = await CreateProductAsync( log );
