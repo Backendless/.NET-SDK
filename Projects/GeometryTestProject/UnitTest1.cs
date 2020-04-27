@@ -5,12 +5,66 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using BackendlessAPI.Async;
+using System.Threading.Tasks;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using BackendlessAPI.Exception;
 
 namespace GeometryTestProject
 {
   [TestClass]
   public class GeometryDataTypesTestClass
   {
+    public class GeoData
+    {
+      public Point P1{ get; set; }
+      public Point P2{ get; set; }
+      public Point pickupLocation{ get; set; }
+      public LineString LineValue{ get; set; }
+      public Polygon Poly{ get; set; }
+    }
+
+    static HttpClient client = new HttpClient();
+
+    [ClassInitialize]
+    public static void TestGeometrySetupData()
+    {
+      
+    }
+
+    static async Task<Uri> CreateProductAsync( GeoData data )
+    {
+      HttpResponseMessage response = await client.PostAsJsonAsync( "", data );
+      response.EnsureSuccessStatusCode();
+
+      //return URI of created resource
+      return response.Headers.Location;
+    }
+
+    static async Task RunAsync()
+    {
+      client.BaseAddress = new Uri( "https://devtest.backendless.com/console/home/login" );
+      client.DefaultRequestHeaders.Accept.Clear();
+      client.DefaultRequestHeaders.Accept.Add( new MediaTypeWithQualityHeaderValue( "application/json" ) );
+
+      try
+      {
+        WKTParser wkt = new WKTParser();
+        GeoData data = new GeoData
+        {
+          P1 = new Point().SetX( 40.41 ).SetY( -3.706 ),
+          pickupLocation = new Point()
+
+        };
+
+        var url = await CreateProductAsync( data );
+      }
+      catch
+      {
+        throw new ArgumentException( ExceptionMessage.ENTITY_WRONG_UPDATED_FIELD_TYPE);
+      }
+    }
+
     [TestMethod]
     public void TestMethodPoint()
     {
@@ -140,10 +194,10 @@ namespace GeometryTestProject
     [TestMethod]
     public void TestReceiveGeo()
     {
-      Dictionary<string, object> result = Backendless.Data.Of( "Order" ).FindFirst();
+      Dictionary<string, object> result = Backendless.Data.Of( "GeoData" ).FindFirst();
       String StrCoordinates = "POINT(40.41 -3.706)";
 
-      Point point = (Point) result[ "Dot" ];
+      Point point = (Point) result[ "P1" ];
       Assert.AreEqual( point.AsWKT(), StrCoordinates, "Expected object Point VKT is not equal to the current object" );
     }
     [TestMethod]
@@ -151,10 +205,10 @@ namespace GeometryTestProject
     {
       Dictionary<string, object> pers = new Dictionary<string, object>();
       pers.Add( "PersonName", "Person name" );
-      pers.Add( "pickUpLocation", new Point().SetX( 30.05 ).SetY( 10.1 ) );
+      pers.Add( "pickupLocation", new Point().SetX( 30.05 ).SetY( 10.1 ) );
 
-      pers = Backendless.Data.Of( "Person" ).Save( pers );
-      Dictionary<string, object> result = Backendless.Data.Of( "Person" ).FindById( (String) pers[ "objectId" ] );
+      pers = Backendless.Data.Of( "GeoData" ).Save( pers );
+      Dictionary<string, object> result = Backendless.Data.Of( "GeoData" ).FindById( (String) pers[ "objectId" ] );
       Assert.AreEqual( (Point)result[ "pickUpLocation" ], new Point().SetX( 30.05 ).SetY( 10.1 ), "Saved Point object equal to received" );
     }
     [TestMethod]
@@ -170,8 +224,8 @@ namespace GeometryTestProject
       LineString finalLine = new LineString( list );
       pers.Add( "LineValue", finalLine );
 
-      pers = Backendless.Data.Of( "Person" ).Save( pers );
-      Dictionary<string, object> result = Backendless.Data.Of( "Person" ).FindById( (String)pers[ "objectId" ] );
+      pers = Backendless.Data.Of( "GeoData" ).Save( pers );
+      Dictionary<string, object> result = Backendless.Data.Of( "GeoData" ).FindById( (String)pers[ "objectId" ] );
       Assert.AreEqual( (LineString)result[ "LineValue" ], finalLine, "Saved LineString object equal to received" );
     }
     [TestMethod]
