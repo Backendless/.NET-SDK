@@ -24,6 +24,12 @@ namespace GeometryTestProject
       public Polygon Poly{ get; set; }
     }
 
+    public class LoginPayload
+    {
+      public String login { get; set; }
+      public String password { get; set;}
+    }
+
     static HttpClient client = new HttpClient();
 
     [ClassInitialize]
@@ -49,13 +55,11 @@ namespace GeometryTestProject
 
       try
       {
-        WKTParser wkt = new WKTParser();
-
-        String log = 
-        "{" +
-        "\"login\":\"nikita@themidnightcoders.com\"," +
-        " \"password\":\"password\" " +
-        "}";
+        LoginPayload log = new LoginPayload
+        {
+          login = "niktia@themidnightcoders.com",
+          password = "password"
+        };
 
         var url = await CreateProductAsync( log );
       }
