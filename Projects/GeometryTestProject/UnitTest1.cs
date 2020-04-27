@@ -43,7 +43,7 @@ namespace GeometryTestProject
 
     static async Task RunAsync()
     {
-      client.BaseAddress = new Uri( "https://devtest.backendless.com/B5D20616-5565-2674-FF73-C5CAC72BD200/console/data/tables/GeoData/columns" );
+      client.BaseAddress = new Uri( "https://devtest.backendless.com/console/home/login" );
       client.DefaultRequestHeaders.Accept.Clear();
       client.DefaultRequestHeaders.Accept.Add( new MediaTypeWithQualityHeaderValue( "application/json" ) );
 
