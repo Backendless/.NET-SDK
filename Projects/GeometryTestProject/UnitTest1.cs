@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using BackendlessAPI.Exception;
+using System.Text;
+using System.Net.Http.Formatting;
 
 namespace GeometryTestProject
 {
@@ -35,39 +37,41 @@ namespace GeometryTestProject
     [ClassInitialize]
     public static async Task TestGeometrySetupData( TestContext context )
     {
-      await RunAsync();
+      await CreateColumnsAsync();
+      Dictionary<String, Object> data = new Dictionary<String, Object>();
+      data.Add( "GeoDataName", "Geo data name" );
+      Backendless.Data.Of( "GeoData" ).Save( data );
+
+      data.Clear();
+
     }
 
-    static async Task<Uri> CreateProductAsync<T>( T log )
+    static async Task<String> CreateTokenAsync()
     {
-      HttpResponseMessage response = await client.PostAsJsonAsync( "https://devtest.backendless.com/console/home/login", log ); 
-      response.EnsureSuccessStatusCode();
+      HttpRequestMessage request = new HttpRequestMessage( HttpMethod.Post, "https://devtest.backendless.com/console/home/login" );
+      request.Content = new StringContent( "{\"login\":\"nikita@themidnightcoders.com\",\"password\":\"Holailusoria1411\"}",
+                                                                                   Encoding.UTF8, "application/json" );
 
-      //return URI of created resource
-      return response.Headers.Location;
+      return client.SendAsync( request ).Result.Headers.GetValues( "auth-key" ).ToArray()[ 0 ];
     }
 
-    static async Task RunAsync()
+    static async Task CreateColumnsAsync()
     {
-      client.BaseAddress = new Uri( "https://devtest.backendless.com/console/home/login" );
-      client.DefaultRequestHeaders.Accept.Clear();
+      
+      client.BaseAddress = new Uri( "https://develop.backendless.com" );
       client.DefaultRequestHeaders.Accept.Add( new MediaTypeWithQualityHeaderValue( "application/json" ) );
+      
+      String token_Auth_Key = await CreateTokenAsync();
 
-      try
-      {
-        LoginPayload log = new LoginPayload
-        {
-          login = "niktia@themidnightcoders.com",
-          password = "password"
-        };
-
-        var url = await CreateProductAsync( log );
-      }
-      catch
-      {
-        throw new ArgumentException( ExceptionMessage.ENTITY_WRONG_UPDATED_FIELD_TYPE);
-      }
+      client.DefaultRequestHeaders.Add( "auth-key", token_Auth_Key );
+      HttpRequestMessage requestMessage = new HttpRequestMessage( HttpMethod.Post, "https://develop.backendless.com/B5D20616-5565-2674-FF73-C5CAC72BD200/console/data/tables/GeoData/columns" );
+      
+      requestMessage.Content = new StringContent( "{\"metaInfo\":{\"srsId\":4326},\"name\":\"\"," +
+                          "\"dataType\":\"POINT\",\"required\":false,\"unique\":false,\"indexed\":false}",
+                                                                      Encoding.UTF8, "application/json" );
+      var url = client.SendAsync( requestMessage );
     }
+
 
     [TestMethod]
     public void TestMethodPoint()
@@ -208,7 +212,7 @@ namespace GeometryTestProject
     public void TestPointSave()
     {
       Dictionary<string, object> pers = new Dictionary<string, object>();
-      pers.Add( "PersonName", "Person name" );
+
       pers.Add( "pickupLocation", new Point().SetX( 30.05 ).SetY( 10.1 ) );
 
       pers = Backendless.Data.Of( "GeoData" ).Save( pers );
