@@ -5,7 +5,7 @@ using BackendlessAPI;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace GeometryTestProject
+namespace TestProject
 {
   [TestClass]
   class TestInitialization

@@ -5,10 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace GeometryTestProject
+namespace TestProject
 {
   [TestClass]
-  public class ExcludePropertiesClass
+  public class ExcludePropertiesTests
   {
     [ClassInitialize]
     public static void TestExcludeSetupData( TestContext context )

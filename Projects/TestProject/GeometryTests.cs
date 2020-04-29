@@ -13,79 +13,81 @@ using System.Text;
 using System.Net.Http.Formatting;
 using System.Threading;
 
-namespace GeometryTestProject
+namespace TestProject
 {
   [TestClass]
   public class GeometryDataTypesTestClass
   {
-
     static HttpClient client;
 
     [ClassInitialize]
     public static void TestGeometrySetupData( TestContext context )
     {
-      const String POINT_NAME = "POINT";
-      const String LINESTRING_NAME = "LINESTRING";
-      const String POLYGON_NAME = "POLYGON";
-      const String GEOMETRY_NAME = "GEOMETRY";
+      try
+      {
+        Backendless.Data.Of( "GeoData" ).Find();
+      }
+      catch
+      {
+        const String POINT_NAME = "POINT";
+        const String LINESTRING_NAME = "LINESTRING";
+        const String POLYGON_NAME = "POLYGON";
+        const String GEOMETRY_NAME = "GEOMETRY";
 
-      Dictionary<String, Object> data = new Dictionary<String, Object>();
-      data.Add( "GeoDataName", "Geo data name" );
-      Dictionary<String, Object> deleteObject = Backendless.Data.Of( "GeoData" ).Save( data );
-      Backendless.Data.Of( "GeoData" ).Remove( deleteObject );
+        Dictionary<String, Object> data = new Dictionary<String, Object>();
+        data.Add( "GeoDataName", "Geo data name" );
+        Dictionary<String, Object> deleteObject = Backendless.Data.Of( "GeoData" ).Save( data );
+        Backendless.Data.Of( "GeoData" ).Remove( deleteObject );
 
-      CreateColumns( POINT_NAME, "P1");
-      Thread.Sleep( 500 );
+        CreateColumns( POINT_NAME, "P1" );
 
-      data.Add( "P1", new Point().SetX( 40.41 ).SetY( -3.706 ) );
+        data.Add( "P1", new Point().SetX( 40.41 ).SetY( -3.706 ) );
 
-      CreateColumns( POINT_NAME, "pickupLocation" );
-      Thread.Sleep( 500 );
+        CreateColumns( POINT_NAME, "pickupLocation" );
 
-      CreateColumns( LINESTRING_NAME, "LineValue" );
-      Thread.Sleep( 500 );
+        CreateColumns( LINESTRING_NAME, "LineValue" );
 
-      List<Point> list = new List<Point>();
-      list.Add( new Point().SetX( 30.1 ).SetY( 10.05 ) );
-      list.Add( new Point().SetX( 30.2 ).SetY( 10.04 ) );
+        List<Point> list = new List<Point>();
+        list.Add( new Point().SetX( 30.1 ).SetY( 10.05 ) );
+        list.Add( new Point().SetX( 30.2 ).SetY( 10.04 ) );
 
-      LineString finalLine = new LineString( list );
-      data.Add( "LineValue", finalLine );
+        LineString finalLine = new LineString( list );
+        data.Add( "LineValue", finalLine );
 
-      CreateColumns( POLYGON_NAME, "PolyValue" );
-      Thread.Sleep( 500 );
+        CreateColumns( POLYGON_NAME, "PolyValue" );
 
-      List<Point> tempList = new List<Point>();
+        List<Point> tempList = new List<Point>();
 
-      tempList.Add( new Point().SetX( -77.05786152 ).SetY( 38.87261877 ) );
-      tempList.Add( new Point().SetX( -77.0546978 ).SetY( 38.87296123 ) );
-      tempList.Add( new Point().SetX( -77.05317431 ).SetY( 38.87061405 ) );
-      tempList.Add( new Point().SetX( -77.0555883 ).SetY( 38.86882611 ) );
-      tempList.Add( new Point().SetX( -77.05847435 ).SetY( 38.87002898 ) );
-      tempList.Add( new Point().SetX( -77.05786152 ).SetY( 38.87261877 ) );
+        tempList.Add( new Point().SetX( -77.05786152 ).SetY( 38.87261877 ) );
+        tempList.Add( new Point().SetX( -77.0546978 ).SetY( 38.87296123 ) );
+        tempList.Add( new Point().SetX( -77.05317431 ).SetY( 38.87061405 ) );
+        tempList.Add( new Point().SetX( -77.0555883 ).SetY( 38.86882611 ) );
+        tempList.Add( new Point().SetX( -77.05847435 ).SetY( 38.87002898 ) );
+        tempList.Add( new Point().SetX( -77.05786152 ).SetY( 38.87261877 ) );
 
-      List<Point> tempList2 = new List<Point>();
+        List<Point> tempList2 = new List<Point>();
 
-      tempList2.Add( new Point().SetX( -77.05579215 ).SetY( 38.87026286 ) );
-      tempList2.Add( new Point().SetX( -77.05491238 ).SetY( 38.87087264 ) );
-      tempList2.Add( new Point().SetX( -77.05544882 ).SetY( 38.87170794 ) );
-      tempList2.Add( new Point().SetX( -77.05669337 ).SetY( 38.87156594 ) );
-      tempList2.Add( new Point().SetX( -77.05684357 ).SetY( 38.87072228 ) );
-      tempList2.Add( new Point().SetX( -77.05579215 ).SetY( 38.87026286 ) );
+        tempList2.Add( new Point().SetX( -77.05579215 ).SetY( 38.87026286 ) );
+        tempList2.Add( new Point().SetX( -77.05491238 ).SetY( 38.87087264 ) );
+        tempList2.Add( new Point().SetX( -77.05544882 ).SetY( 38.87170794 ) );
+        tempList2.Add( new Point().SetX( -77.05669337 ).SetY( 38.87156594 ) );
+        tempList2.Add( new Point().SetX( -77.05684357 ).SetY( 38.87072228 ) );
+        tempList2.Add( new Point().SetX( -77.05579215 ).SetY( 38.87026286 ) );
 
-      LineString tempLines = new LineString( tempList2 );
-      List<LineString> lines = new List<LineString>();
-      lines.Add( tempLines );
+        LineString tempLines = new LineString( tempList2 );
+        List<LineString> lines = new List<LineString>();
+        lines.Add( tempLines );
 
-      Polygon poly = new Polygon( tempList, lines );
-      data.Add( "PolyValue", poly );
+        Polygon poly = new Polygon( tempList, lines );
+        data.Add( "PolyValue", poly );
 
-      CreateColumns( GEOMETRY_NAME, "GeoValue" );
-      Thread.Sleep( 500 );
+        CreateColumns( GEOMETRY_NAME, "GeoValue" );
 
-      data.Add( "GeoValue", new Point().SetX( 10.2 ).SetY( 48.5 ) );
+        data.Add( "GeoValue", new Point().SetX( 10.2 ).SetY( 48.5 ) );
 
-      Backendless.Data.Of( "GeoData" ).Save( data );
+
+        Backendless.Data.Of( "GeoData" ).Save( data );
+      }
     }
 
     static String CreateToken()
@@ -93,7 +95,7 @@ namespace GeometryTestProject
       HttpRequestMessage request = new HttpRequestMessage( HttpMethod.Post, "https://develop.backendless.com/console/home/login" );
       request.Content = new StringContent( "{\"login\":\"nikita@themidnightcoders.com\",\"password\":\"Holailusoria1411\"}", Encoding.UTF8, "application/json" );
 
-      return client.SendAsync( request ).Result.Headers.GetValues( "auth-key" ).ToArray()[ 0 ];
+      return client.SendAsync( request ).GetAwaiter().GetResult().Headers.GetValues( "auth-key" ).ToArray()[ 0 ];
     }
 
     static void CreateColumns( String typeName, String columnName, bool TableIsCreated = true )
@@ -111,7 +113,7 @@ namespace GeometryTestProject
         requestMessage.Content = new StringContent( "{\"metaInfo\":{\"srsId\":4326},\"name\":\"" + columnName + "\"," +
                           "\"dataType\":\"" + typeName + "\",\"required\":false,\"unique\":false,\"indexed\":false}", Encoding.UTF8, "application/json" );
 
-      var url = client.SendAsync( requestMessage );
+      Task.WaitAll( client.SendAsync( requestMessage ) );
     }
 
     [TestMethod]
@@ -132,9 +134,11 @@ namespace GeometryTestProject
       Dictionary<String, Object> result = new Dictionary<String, Object>();
 
       foreach( Dictionary<String, Object> entry in pers )
-        if( entry.ContainsKey( "GeoDataName" ) )
+        if( entry.ContainsValue( (String) "Geo data name" ) )
+        {
           result = new Dictionary<string, object>( entry );
-        
+          break;
+        }
       Assert.AreEqual( result[ "P1" ], point, "Point WKT data are not equals" );
       Assert.AreEqual( result[ "GeoValue" ], geometry, "Geometry(Point) WKT data are not equals" );
       Assert.AreEqual( result[ "LineValue" ], line, "LineString WKT data are not equals" );
@@ -276,10 +280,12 @@ namespace GeometryTestProject
       Point point = new Point();
 
       foreach( Dictionary<String, Object> entry in result )
-        if( entry.ContainsKey( "GeoDataName" ) )
-          point = (Point) entry["P1"];
+        if( entry.ContainsValue( (String) "Geo data name" ) )
+        {
+          point = (Point) entry[ "P1" ];
+          break;
+        }
 
-      Thread.Sleep( 100 );
       Assert.AreEqual( point.AsWKT(), StrCoordinates, "Expected object Point VKT is not equal to the current object" );
     }
     [TestMethod]

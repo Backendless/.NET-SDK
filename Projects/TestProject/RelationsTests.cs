@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using BackendlessAPI.Async;
 
-namespace GeometryTestProject
+namespace TestProject
 {
   
   public class Area
@@ -23,7 +23,7 @@ namespace GeometryTestProject
   }
 
   [TestClass]
-  public class TestRelation
+  public class RelationsTests
   {
     [ClassInitialize]
     public static void TestRealtionSetupData( TestContext context )
