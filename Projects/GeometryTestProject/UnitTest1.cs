@@ -11,33 +11,84 @@ using System.Net.Http.Headers;
 using BackendlessAPI.Exception;
 using System.Text;
 using System.Net.Http.Formatting;
+using System.Threading;
 
 namespace GeometryTestProject
 {
   [TestClass]
   public class GeometryDataTypesTestClass
   {
-    public class GeoData
-    {
-      public Point P1{ get; set; }
-      public Point P2{ get; set; }
-      public Point pickupLocation{ get; set; }
-      public LineString LineValue{ get; set; }
-      public Polygon Poly{ get; set; }
-    }
 
-    static HttpClient client = new HttpClient();
+    static HttpClient client;
 
     [ClassInitialize]
-    public static async Task TestGeometrySetupData( TestContext context )
+    public static void TestGeometrySetupData( TestContext context )
     {
-      await CreateColumnsAsync();
+      const String POINT_NAME = "POINT";
+      const String LINESTRING_NAME = "LINESTRING";
+      const String POLYGON_NAME = "POLYGON";
+      const String GEOMETRY_NAME = "GEOMETRY";
+
       Dictionary<String, Object> data = new Dictionary<String, Object>();
       data.Add( "GeoDataName", "Geo data name" );
+      Dictionary<String, Object> deleteObject = Backendless.Data.Of( "GeoData" ).Save( data );
+      Backendless.Data.Of( "GeoData" ).Remove( deleteObject );
+
+      CreateColumns( POINT_NAME, "P1");
+      Thread.Sleep( 500 );
+
+      data.Add( "P1", new Point().SetX( 40.41 ).SetY( -3.706 ) );
+
+      CreateColumns( POINT_NAME, "pickupLocation" );
+      Thread.Sleep( 500 );
+
+      CreateColumns( LINESTRING_NAME, "LineValue" );
+      Thread.Sleep( 500 );
+
+      List<Point> list = new List<Point>();
+      list.Add( new Point().SetX( 30.1 ).SetY( 10.05 ) );
+      list.Add( new Point().SetX( 30.2 ).SetY( 10.04 ) );
+
+      LineString finalLine = new LineString( list );
+      data.Add( "LineValue", finalLine );
+
+      CreateColumns( POLYGON_NAME, "PolyValue" );
+      Thread.Sleep( 500 );
+
+      List<Point> tempList = new List<Point>();
+
+      tempList.Add( new Point().SetX( -77.05786152 ).SetY( 38.87261877 ) );
+      tempList.Add( new Point().SetX( -77.0546978 ).SetY( 38.87296123 ) );
+      tempList.Add( new Point().SetX( -77.05317431 ).SetY( 38.87061405 ) );
+      tempList.Add( new Point().SetX( -77.0555883 ).SetY( 38.86882611 ) );
+      tempList.Add( new Point().SetX( -77.05847435 ).SetY( 38.87002898 ) );
+      tempList.Add( new Point().SetX( -77.05786152 ).SetY( 38.87261877 ) );
+
+      List<Point> tempList2 = new List<Point>();
+
+      tempList2.Add( new Point().SetX( -77.05579215 ).SetY( 38.87026286 ) );
+      tempList2.Add( new Point().SetX( -77.05491238 ).SetY( 38.87087264 ) );
+      tempList2.Add( new Point().SetX( -77.05544882 ).SetY( 38.87170794 ) );
+      tempList2.Add( new Point().SetX( -77.05669337 ).SetY( 38.87156594 ) );
+      tempList2.Add( new Point().SetX( -77.05684357 ).SetY( 38.87072228 ) );
+      tempList2.Add( new Point().SetX( -77.05579215 ).SetY( 38.87026286 ) );
+
+      LineString tempLines = new LineString( tempList2 );
+      List<LineString> lines = new List<LineString>();
+      lines.Add( tempLines );
+
+      Polygon poly = new Polygon( tempList, lines );
+      data.Add( "PolyValue", poly );
+
+      CreateColumns( GEOMETRY_NAME, "GeoValue" );
+      Thread.Sleep( 500 );
+
+      data.Add( "GeoValue", new Point().SetX( 10.2 ).SetY( 48.5 ) );
+
       Backendless.Data.Of( "GeoData" ).Save( data );
     }
 
-    static async Task<String> CreateTokenAsync()
+    static String CreateToken()
     {
       HttpRequestMessage request = new HttpRequestMessage( HttpMethod.Post, "https://develop.backendless.com/console/home/login" );
       request.Content = new StringContent( "{\"login\":\"nikita@themidnightcoders.com\",\"password\":\"Holailusoria1411\"}", Encoding.UTF8, "application/json" );
@@ -45,29 +96,51 @@ namespace GeometryTestProject
       return client.SendAsync( request ).Result.Headers.GetValues( "auth-key" ).ToArray()[ 0 ];
     }
 
-    static async Task CreateColumnsAsync()
+    static void CreateColumns( String typeName, String columnName, bool TableIsCreated = true )
     {
-      
-      client.BaseAddress = new Uri( "http://develop.backendless.com" );
+      client = new HttpClient();
+      client.BaseAddress = new Uri( "https://develop.backendless.com" );
 
-      String token_Auth_Key = await CreateTokenAsync();
+      String token_Auth_Key = CreateToken();
 
       client.DefaultRequestHeaders.Add( "auth-key", token_Auth_Key );
 
 
-      HttpRequestMessage requestMessage = new HttpRequestMessage( HttpMethod.Post, "http://develop.backendless.com/B5D20616-5565-2674-FF73-C5CAC72BD200/console/data/tables/GeoData/columns" );
+      HttpRequestMessage requestMessage = new HttpRequestMessage( HttpMethod.Post, "https://develop.backendless.com/B5D20616-5565-2674-FF73-C5CAC72BD200/console/data/tables/GeoData/columns" );
 
-      requestMessage.Content = new StringContent( "{\"metaInfo\":{\"srsId\":4326},\"name\":\"\"," +
-                          "\"dataType\":\"POINT\",\"required\":false,\"unique\":false,\"indexed\":false}", Encoding.UTF8, "application/json" );
+        requestMessage.Content = new StringContent( "{\"metaInfo\":{\"srsId\":4326},\"name\":\"" + columnName + "\"," +
+                          "\"dataType\":\"" + typeName + "\",\"required\":false,\"unique\":false,\"indexed\":false}", Encoding.UTF8, "application/json" );
 
       var url = client.SendAsync( requestMessage );
-      for(int i = 0; i < 50; i ++ )
-      {
-
-      }
-      Console.ReadKey();
     }
 
+    [TestMethod]
+    public void PullAndComapreGeoObjects()
+    {
+      IList<Dictionary<String, Object>> pers = Backendless.Data.Of( "GeoData" ).Find();
+
+      WKTParser wkt = new WKTParser();
+
+      Point point = (Point) wkt.Read( "POINT (40.41 -3.706)" );
+      Geometry geometry = wkt.Read( "POINT (10.2 48.5)" );
+      LineString line = (LineString) wkt.Read( "LINESTRING (30.1 10.05, 30.2 10.04)" );
+      Polygon poly = (Polygon) wkt.Read( "POLYGON((-77.05786152 38.87261877,-77.0546978 38.87296123,-77.05317431 38.87061405," +
+      "-77.0555883 38.86882611,-77.05847435 38.87002898,-77.05786152 38.87261877),(-77.05579215 38.87026286," +
+      "-77.05491238 38.87087264,-77.05544882 38.87170794,-77.05669337 38.87156594,-77.05684357 38.87072228," +
+      "-77.05579215 38.87026286))" );
+
+      Dictionary<String, Object> result = new Dictionary<String, Object>();
+
+      foreach( Dictionary<String, Object> entry in pers )
+        if( entry.ContainsKey( "GeoDataName" ) )
+          result = new Dictionary<string, object>( entry );
+        
+      Assert.AreEqual( result[ "P1" ], point, "Point WKT data are not equals" );
+      Assert.AreEqual( result[ "GeoValue" ], geometry, "Geometry(Point) WKT data are not equals" );
+      Assert.AreEqual( result[ "LineValue" ], line, "LineString WKT data are not equals" );
+      Assert.AreEqual( result[ "PolyValue" ], poly, "Polygon WKT data are not equals" );
+        
+    }
 
     [TestMethod]
     public void TestMethodPoint()
@@ -198,10 +271,15 @@ namespace GeometryTestProject
     [TestMethod]
     public void TestReceiveGeo()
     {
-      Dictionary<string, object> result = Backendless.Data.Of( "GeoData" ).FindFirst();
+      IList<Dictionary<string, object>> result = Backendless.Data.Of( "GeoData" ).Find();
       String StrCoordinates = "POINT(40.41 -3.706)";
+      Point point = new Point();
 
-      Point point = (Point) result[ "P1" ];
+      foreach( Dictionary<String, Object> entry in result )
+        if( entry.ContainsKey( "GeoDataName" ) )
+          point = (Point) entry["P1"];
+
+      Thread.Sleep( 100 );
       Assert.AreEqual( point.AsWKT(), StrCoordinates, "Expected object Point VKT is not equal to the current object" );
     }
     [TestMethod]
@@ -213,7 +291,7 @@ namespace GeometryTestProject
 
       pers = Backendless.Data.Of( "GeoData" ).Save( pers );
       Dictionary<string, object> result = Backendless.Data.Of( "GeoData" ).FindById( (String) pers[ "objectId" ] );
-      Assert.AreEqual( (Point)result[ "pickUpLocation" ], new Point().SetX( 30.05 ).SetY( 10.1 ), "Saved Point object equal to received" );
+      Assert.AreEqual( (Point)result[ "pickupLocation" ], new Point().SetX( 30.05 ).SetY( 10.1 ), "Saved Point object equal to received" );
     }
     [TestMethod]
     public void TestLineStringSave()
@@ -263,8 +341,8 @@ namespace GeometryTestProject
       Polygon poly = new Polygon( tempList, lines );
       pers.Add( "PolyValue", poly );
 
-      pers = Backendless.Data.Of( "Person" ).Save( pers );
-      Dictionary<string, object> result = Backendless.Data.Of( "Person" ).FindById( (String) pers[ "objectId" ] );
+      pers = Backendless.Data.Of( "GeoData" ).Save( pers );
+      Dictionary<string, object> result = Backendless.Data.Of( "GeoData" ).FindById( (String) pers[ "objectId" ] );
       Assert.AreEqual( (Polygon) result[ "PolyValue" ], poly, "Saved Polygon object equal to received" );
     }
     [TestMethod]
@@ -279,8 +357,8 @@ namespace GeometryTestProject
 
       Assert.AreEqual( point.AsWKT(), StrCoordinates, "Point WKT data are not equals" );
 
-      pers.Add( "pickUpLocation", point );
-      Backendless.Data.Of( "person" ).Save( pers );
+      pers.Add( "pickupLocation", point );
+      Backendless.Data.Of( "GeoData" ).Save( pers );
     }
     [TestMethod]
     public void LineStringWKTEquals()
@@ -295,7 +373,7 @@ namespace GeometryTestProject
       Assert.AreEqual( line.AsWKT(), StrCoordinates, "LineString WKT data are not equals" );
 
       pers.Add( "LineValue", line );
-      Backendless.Data.Of( "Person" ).Save( pers );
+      Backendless.Data.Of( "GeoData" ).Save( pers );
     }
     [TestMethod]
     public void PolygonWKTEquals()
@@ -312,27 +390,7 @@ namespace GeometryTestProject
       Assert.AreEqual( poly.AsWKT(), StrCoordinates, "Polygon WKT data are not equals" );
 
       pers.Add( "PolyValue", poly );
-      Backendless.Data.Of( "Person" ).Save( pers );
-    }
-    [TestMethod]
-    public void PullAndComapreGeoObjects()
-    {
-      Dictionary<string, object> pers = Backendless.Data.Of( "GeoObject" ).FindFirst();
-
-      WKTParser wkt = new WKTParser();
-
-      Point point = (Point) wkt.Read( "POINT (40.41 -3.706)" );
-      Geometry geometry = wkt.Read( "POINT (10.2 48.5)" );
-      LineString line = (LineString) wkt.Read( "LINESTRING (30.1 10.05, 30.2 10.04)" );
-      Polygon poly = (Polygon) wkt.Read( "POLYGON((-77.05786152 38.87261877,-77.0546978 38.87296123,-77.05317431 38.87061405," +
-      "-77.0555883 38.86882611,-77.05847435 38.87002898,-77.05786152 38.87261877),(-77.05579215 38.87026286," +
-      "-77.05491238 38.87087264,-77.05544882 38.87170794,-77.05669337 38.87156594,-77.05684357 38.87072228," +
-      "-77.05579215 38.87026286))" );
-
-      Assert.AreEqual( pers[ "PointCol" ], point, "Point WKT data are not equals" );
-      Assert.AreEqual( pers[ "GeometryCol" ], geometry, "Geometry(Point) WKT data are not equals" );
-      Assert.AreEqual( pers[ "LineStringCol" ], line, "LineString WKT data are not equals" );
-      Assert.AreEqual( pers[ "PolygonCol" ], poly, "Polygon WKT data are not equals" );
+      Backendless.Data.Of( "GeoData" ).Save( pers );
     }
   }
 }
