@@ -26,12 +26,6 @@ namespace GeometryTestProject
       public Polygon Poly{ get; set; }
     }
 
-    public class LoginPayload
-    {
-      public String login { get; set; }
-      public String password { get; set;}
-    }
-
     static HttpClient client = new HttpClient();
 
     [ClassInitialize]
@@ -41,16 +35,12 @@ namespace GeometryTestProject
       Dictionary<String, Object> data = new Dictionary<String, Object>();
       data.Add( "GeoDataName", "Geo data name" );
       Backendless.Data.Of( "GeoData" ).Save( data );
-
-      data.Clear();
-
     }
 
     static async Task<String> CreateTokenAsync()
     {
-      HttpRequestMessage request = new HttpRequestMessage( HttpMethod.Post, "https://devtest.backendless.com/console/home/login" );
-      request.Content = new StringContent( "{\"login\":\"nikita@themidnightcoders.com\",\"password\":\"Holailusoria1411\"}",
-                                                                                   Encoding.UTF8, "application/json" );
+      HttpRequestMessage request = new HttpRequestMessage( HttpMethod.Post, "https://develop.backendless.com/console/home/login" );
+      request.Content = new StringContent( "{\"login\":\"nikita@themidnightcoders.com\",\"password\":\"Holailusoria1411\"}", Encoding.UTF8, "application/json" );
 
       return client.SendAsync( request ).Result.Headers.GetValues( "auth-key" ).ToArray()[ 0 ];
     }
@@ -58,18 +48,24 @@ namespace GeometryTestProject
     static async Task CreateColumnsAsync()
     {
       
-      client.BaseAddress = new Uri( "https://develop.backendless.com" );
-      client.DefaultRequestHeaders.Accept.Add( new MediaTypeWithQualityHeaderValue( "application/json" ) );
-      
+      client.BaseAddress = new Uri( "http://develop.backendless.com" );
+
       String token_Auth_Key = await CreateTokenAsync();
 
       client.DefaultRequestHeaders.Add( "auth-key", token_Auth_Key );
-      HttpRequestMessage requestMessage = new HttpRequestMessage( HttpMethod.Post, "https://develop.backendless.com/B5D20616-5565-2674-FF73-C5CAC72BD200/console/data/tables/GeoData/columns" );
-      
+
+
+      HttpRequestMessage requestMessage = new HttpRequestMessage( HttpMethod.Post, "http://develop.backendless.com/B5D20616-5565-2674-FF73-C5CAC72BD200/console/data/tables/GeoData/columns" );
+
       requestMessage.Content = new StringContent( "{\"metaInfo\":{\"srsId\":4326},\"name\":\"\"," +
-                          "\"dataType\":\"POINT\",\"required\":false,\"unique\":false,\"indexed\":false}",
-                                                                      Encoding.UTF8, "application/json" );
+                          "\"dataType\":\"POINT\",\"required\":false,\"unique\":false,\"indexed\":false}", Encoding.UTF8, "application/json" );
+
       var url = client.SendAsync( requestMessage );
+      for(int i = 0; i < 50; i ++ )
+      {
+
+      }
+      Console.ReadKey();
     }
 
 
