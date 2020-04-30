@@ -32,6 +32,9 @@ namespace TestProject
       {
         Backendless.Data.Describe( "Order" );
         Backendless.Data.Describe( "Area" );
+        Backendless.Data.Describe( "CountryLanguage" );
+        Backendless.Data.Describe( "Country" );
+        Backendless.Data.Describe( "Capital" );
       }
       catch
       {
@@ -77,6 +80,94 @@ namespace TestProject
         children = new Object[] { dataIdChildren_2 };
 
         Backendless.Data.Of( "Order" ).SetRelation( dataIdParent_2, "Related:Area:n", children );//Second relations
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        
+        ////////////Сreation of the table "CountryLanguage"////////////
+        
+        data.Clear();
+        data.Add( "Percentage", 30.2 );
+        dataIdParent_1.Clear();
+        dataIdParent_1 = Backendless.Data.Of( "CountryLanguage" ).Save( data );
+
+        data.Clear();
+        data.Add( "Percentage", 37.2 );
+        dataIdParent_2.Clear();
+        dataIdParent_2 = Backendless.Data.Of( "CountryLanguage" ).Save( data );
+
+        data.Clear();
+        data.Add( "Percentage", 30.5 );
+        Dictionary<String, Object> dataIdParent_3 = Backendless.Data.Of( "CountryLanguage" ).Save( data );
+
+        data.Clear();
+        data.Add( "Percentage", 27.7 );
+        Dictionary<String, Object> dataIdParent_4 = Backendless.Data.Of( "CountryLanguage" ).Save( data );
+        ///////////////////////////////////////////////////////////////////////////////////////////////////
+
+        ////////////Сreation of the table "Country"////////////
+        
+        data.Clear();
+        data.Add( "City", "Kyiv" );
+        dataIdChildren_1.Clear();
+        dataIdChildren_1 = Backendless.Data.Of( "Country" ).Save( data );
+
+        data.Clear();
+        data.Add( "City", "London" );
+        dataIdChildren_2.Clear();
+        dataIdChildren_2 = Backendless.Data.Of( "Country" ).Save( data );
+
+        data.Clear();
+        data.Add( "City", "Warsaw" );
+        Dictionary<String, Object> dataIdChildren_3 = Backendless.Data.Of( "Country" ).Save( data );
+
+        data.Clear();
+        data.Add( "City", "Rome" );
+        Dictionary<String, Object> dataIdChildren_4 = Backendless.Data.Of( "Country" ).Save( data );
+
+        children = new Object[] { dataIdChildren_1 };
+        Backendless.Data.Of( "CountryLanguage" ).SetRelation( dataIdParent_1, "Country:Country:1", children );
+
+        children = new Object[] { dataIdChildren_2 };
+        Backendless.Data.Of( "CountryLanguage" ).SetRelation( dataIdParent_2, "Country:Country:1", children );
+
+        children = new Object[] { dataIdChildren_3 };
+        Backendless.Data.Of( "CountryLanguage" ).SetRelation( dataIdParent_3, "Country:Country:1", children );
+
+        children = new Object[] { dataIdChildren_4 };
+        Backendless.Data.Of( "CountryLanguage" ).SetRelation( dataIdParent_4, "Country:Country:1", children );
+
+        ////////////Сreation of the table "Capital"////////////
+
+        data.Clear();
+        data.Add( "CCapital","Kyiv" );
+        Dictionary<String, Object> dIdC = Backendless.Data.Of( "Capital" ).Save( data );
+
+        children = new Object[] { dIdC };
+        Backendless.Data.Of( "Country" ).SetRelation( dataIdChildren_1, "Capital:Capital:1", children );
+
+        data.Clear();
+        data.Add( "CCapital", "London" );
+        dIdC.Clear();
+        dIdC = Backendless.Data.Of( "Capital" ).Save( data );
+
+        children = new Object[] { dIdC };
+        Backendless.Data.Of( "Country" ).SetRelation( dataIdChildren_2, "Capital:Capital:1", children );
+
+        data.Clear();
+        data.Add( "CCapital", "Warsaw" );
+        dIdC.Clear();
+        dIdC = Backendless.Data.Of( "Capital" ).Save( data );
+
+        children = new Object[] { dIdC };
+        Backendless.Data.Of( "Country" ).SetRelation( dataIdChildren_3, "Capital:Capital:1", children );
+
+        data.Clear();
+        data.Add( "CCapital", "Rome" );
+        dIdC.Clear();
+        dIdC = Backendless.Data.Of( "Capital" ).Save( data );
+
+        children = new Object[] { dIdC };
+        Backendless.Data.Of( "Country" ).SetRelation( dataIdChildren_4, "Capital:Capital:1", children );
+
       }
     }
 
@@ -182,7 +273,7 @@ namespace TestProject
       DataQueryBuilder qb = DataQueryBuilder.Create();
       qb.AddAllProperties();
       qb.SetRelationsDepth( 1 );
-      qb.SetRelated( new List<String> { "Country", "City" } );
+      qb.SetRelated( new List<String> { "Country", "Capital" } );
       IList<Dictionary<String, Object>> res = Backendless.Data.Of( "CountryLanguage" ).Find( qb );
 
       if(res[ 0 ].ContainsKey( "Country" ) )
