@@ -19,7 +19,7 @@ namespace TestProject
   public class GeometryDataTypesTestClass
   {
     static HttpClient client;
-
+    const String URL_BASE_ADRESS = "https://develop.backendless.com";
     [ClassInitialize]
     public static void TestGeometrySetupData( TestContext context )
     {
@@ -39,13 +39,13 @@ namespace TestProject
         Dictionary<String, Object> deleteObject = Backendless.Data.Of( "GeoData" ).Save( data );
         Backendless.Data.Of( "GeoData" ).Remove( deleteObject );
 
-        CreateColumns( POINT_NAME, "P1" );
+        CreateColumn( POINT_NAME, "P1" );
 
         data.Add( "P1", new Point().SetX( 40.41 ).SetY( -3.706 ) );
 
-        CreateColumns( POINT_NAME, "pickupLocation" );
+        CreateColumn( POINT_NAME, "pickupLocation" );
 
-        CreateColumns( LINESTRING_NAME, "LineValue" );
+        CreateColumn( LINESTRING_NAME, "LineValue" );
 
         List<Point> list = new List<Point>();
         list.Add( new Point().SetX( 30.1 ).SetY( 10.05 ) );
@@ -54,7 +54,7 @@ namespace TestProject
         LineString finalLine = new LineString( list );
         data.Add( "LineValue", finalLine );
 
-        CreateColumns( POLYGON_NAME, "PolyValue" );
+        CreateColumn( POLYGON_NAME, "PolyValue" );
 
         List<Point> tempList = new List<Point>();
 
@@ -81,7 +81,7 @@ namespace TestProject
         Polygon poly = new Polygon( tempList, lines );
         data.Add( "PolyValue", poly );
 
-        CreateColumns( GEOMETRY_NAME, "GeoValue" );
+        CreateColumn( GEOMETRY_NAME, "GeoValue" );
 
         data.Add( "GeoValue", new Point().SetX( 10.2 ).SetY( 48.5 ) );
 
@@ -90,7 +90,7 @@ namespace TestProject
       }
     }
 
-    static String CreateToken()
+    static String LoginAndGetToken()
     {
       HttpRequestMessage request = new HttpRequestMessage( HttpMethod.Post, "https://develop.backendless.com/console/home/login" );
       request.Content = new StringContent( "{\"login\":\"nikita@themidnightcoders.com\",\"password\":\"Holailusoria1411\"}", Encoding.UTF8, "application/json" );
@@ -98,17 +98,17 @@ namespace TestProject
       return client.SendAsync( request ).GetAwaiter().GetResult().Headers.GetValues( "auth-key" ).ToArray()[ 0 ];
     }
 
-    static void CreateColumns( String typeName, String columnName, bool TableIsCreated = true )
+    static void CreateColumn( String typeName, String columnName, bool TableIsCreated = true )
     {
       client = new HttpClient();
-      client.BaseAddress = new Uri( "https://develop.backendless.com" );
+      client.BaseAddress = new Uri( URL_BASE_ADRESS );
 
-      String token_Auth_Key = CreateToken();
+      String token_Auth_Key = LoginAndGetToken();
 
       client.DefaultRequestHeaders.Add( "auth-key", token_Auth_Key );
 
 
-      HttpRequestMessage requestMessage = new HttpRequestMessage( HttpMethod.Post, "https://develop.backendless.com/B5D20616-5565-2674-FF73-C5CAC72BD200/console/data/tables/GeoData/columns" );
+      HttpRequestMessage requestMessage = new HttpRequestMessage( HttpMethod.Post, "https://develop.backendless.com/"+TestInitialization.APP_API_KEY+"/console/data/tables/GeoData/columns" );
 
         requestMessage.Content = new StringContent( "{\"metaInfo\":{\"srsId\":4326},\"name\":\"" + columnName + "\"," +
                           "\"dataType\":\"" + typeName + "\",\"required\":false,\"unique\":false,\"indexed\":false}", Encoding.UTF8, "application/json" );
@@ -142,8 +142,7 @@ namespace TestProject
       Assert.AreEqual( result[ "P1" ], point, "Point WKT data are not equals" );
       Assert.AreEqual( result[ "GeoValue" ], geometry, "Geometry(Point) WKT data are not equals" );
       Assert.AreEqual( result[ "LineValue" ], line, "LineString WKT data are not equals" );
-      Assert.AreEqual( result[ "PolyValue" ], poly, "Polygon WKT data are not equals" );
-        
+      Assert.AreEqual( result[ "PolyValue" ], poly, "Polygon WKT data are not equals" );     
     }
 
     [TestMethod]
@@ -362,9 +361,6 @@ namespace TestProject
       Point point = (Point) wkt.Read( StrCoordinates );
 
       Assert.AreEqual( point.AsWKT(), StrCoordinates, "Point WKT data are not equals" );
-
-      pers.Add( "pickupLocation", point );
-      Backendless.Data.Of( "GeoData" ).Save( pers );
     }
     [TestMethod]
     public void LineStringWKTEquals()
@@ -377,9 +373,6 @@ namespace TestProject
       LineString line = (LineString) wkt.Read( StrCoordinates );
 
       Assert.AreEqual( line.AsWKT(), StrCoordinates, "LineString WKT data are not equals" );
-
-      pers.Add( "LineValue", line );
-      Backendless.Data.Of( "GeoData" ).Save( pers );
     }
     [TestMethod]
     public void PolygonWKTEquals()
@@ -394,9 +387,6 @@ namespace TestProject
 
       Polygon poly = ( Polygon )wkt.Read( StrCoordinates );
       Assert.AreEqual( poly.AsWKT(), StrCoordinates, "Polygon WKT data are not equals" );
-
-      pers.Add( "PolyValue", poly );
-      Backendless.Data.Of( "GeoData" ).Save( pers );
     }
   }
 }
