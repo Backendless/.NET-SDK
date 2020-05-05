@@ -273,7 +273,7 @@ namespace TestProject
       DataQueryBuilder qb = DataQueryBuilder.Create();
       qb.AddAllProperties();
       qb.SetRelationsDepth( 1 );
-      qb.SetRelated( new List<String> { "Country", "Capital" } );
+      qb.SetRelated( new List<String> { "Country" } );
       IList<Dictionary<String, Object>> res = Backendless.Data.Of( "CountryLanguage" ).Find( qb );
 
       if(res[ 0 ].ContainsKey( "Country" ) )

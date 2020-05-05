@@ -20,6 +20,9 @@ namespace TestProject
   {
     static HttpClient client;
     const String URL_BASE_ADRESS = "https://develop.backendless.com";
+    const String Login = "";
+    const String Password = "";
+
     [ClassInitialize]
     public static void TestGeometrySetupData( TestContext context )
     {
@@ -93,7 +96,7 @@ namespace TestProject
     static String LoginAndGetToken()
     {
       HttpRequestMessage request = new HttpRequestMessage( HttpMethod.Post, "https://develop.backendless.com/console/home/login" );
-      request.Content = new StringContent( "{\"login\":\"nikita@themidnightcoders.com\",\"password\":\"Holailusoria1411\"}", Encoding.UTF8, "application/json" );
+      request.Content = new StringContent( "{\"login\":\""+Login+"\",\"password\":\""+Password+"\"}", Encoding.UTF8, "application/json" );
 
       return client.SendAsync( request ).GetAwaiter().GetResult().Headers.GetValues( "auth-key" ).ToArray()[ 0 ];
     }
