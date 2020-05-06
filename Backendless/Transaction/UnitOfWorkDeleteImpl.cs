@@ -47,7 +47,7 @@ namespace BackendlessAPI.Transaction
       if( result == null )
         throw new ArgumentException( ExceptionMessage.NULL_OP_RESULT );
 
-      if( !OperationType.supportEntityDescriptionResultType.Contains( result.GetOperationType() ) )
+      if( !OperationTypeUtil.supportEntityDescriptionResultType.Contains( result.GetOperationType() ) )
         throw new ArgumentException( ExceptionMessage.REF_TYPE_NOT_SUPPORT );
 
       String operationResultId = opResultIdGenerator.GenerateOpResultId( OperationType.DELETE, result.GetTableName() );
@@ -119,8 +119,8 @@ namespace BackendlessAPI.Transaction
       if( result == null )
         throw new ArgumentException( ExceptionMessage.NULL_OP_RESULT );
 
-      if( !( OperationType.supportCollectionEntityDescriptionType.Contains( result.GetOperationType()) ||
-                                                          OperationType.supportListIdsResultType.Contains( result.GetOperationType())))
+      if( !( OperationTypeUtil.supportCollectionEntityDescriptionType.Contains( result.GetOperationType()) ||
+                                                          OperationTypeUtil.supportListIdsResultType.Contains( result.GetOperationType())))
         throw new ArgumentException( ExceptionMessage.REF_TYPE_NOT_SUPPORT );
 
       return BulkDelete( result.GetTableName(), null, result.MakeReference() );

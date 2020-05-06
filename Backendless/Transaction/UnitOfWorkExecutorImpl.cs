@@ -36,7 +36,7 @@ namespace BackendlessAPI.Transaction
 
     private UnitOfWorkResult Execute( AsyncCallback<UnitOfWorkResult> callback, bool isAsync )
     {
-      if( unitOfWork.Operations == null || unitOfWork.Operations.Count == 0 )
+      if( unitOfWork.operations == null || unitOfWork.operations.Count == 0 )
         throw new ArgumentException( ExceptionMessage.LIST_OPERATIONS_NULL );
 
       Object[] args = new Object[] { unitOfWork };

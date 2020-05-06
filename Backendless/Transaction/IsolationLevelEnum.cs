@@ -1,6 +1,6 @@
 ﻿namespace BackendlessAPI.Transaction
 {
-  public enum LevelEnum
+  public enum IsolationLevelEnum
   {
     READ_UNCOMMITTED = 1,
     READ_COMMITTED = 2,
@@ -8,7 +8,7 @@
     SERIALIZABLE = 8
   }
 
-  public class IsolationLevelEnum
+  public class LevelEnum
   {
     private int operationId;
     
@@ -17,7 +17,7 @@
       get => operationId;
     }
 
-    IsolationLevelEnum( LevelEnum operationId )
+    LevelEnum( IsolationLevelEnum operationId )
     {
       this.operationId = (int) operationId;
     }

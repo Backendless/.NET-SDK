@@ -97,9 +97,9 @@ namespace BackendlessAPI.Transaction
     {
       Dictionary<String, Object> referenceToObjectId;
 
-      if( OperationType.supportCollectionEntityDescriptionType.Contains( parentObject.GetOpResult().GetOperationType() ) )
+      if( OperationTypeUtil.supportCollectionEntityDescriptionType.Contains( parentObject.GetOpResult().GetOperationType() ) )
         referenceToObjectId = parentObject.ResolveTo( "objectId" ).MakeReference();
-      else if( OperationType.supportListIdsResultType.Contains( parentObject.GetOpResult().GetOperationType() ) )
+      else if( OperationTypeUtil.supportListIdsResultType.Contains( parentObject.GetOpResult().GetOperationType() ) )
         referenceToObjectId = parentObject.MakeReference();
       else
         throw new ArgumentException( ExceptionMessage.REF_TYPE_NOT_SUPPORT );
@@ -114,7 +114,7 @@ namespace BackendlessAPI.Transaction
         Dictionary<String, Object> entry = new Dictionary<String, Object>( map );
 
         if( entry[ kvp.Key ] is OpResult )
-          if( OperationType.supportIntResultType.Contains( ( (OpResult) kvp.Value ).GetOperationType() ) )
+          if( OperationTypeUtil.supportIntResultType.Contains( ( (OpResult) kvp.Value ).GetOperationType() ) )
             entry[ kvp.Key ] = ( (OpResult) kvp.Value ).MakeReference();
           else
             throw new ArgumentException( ExceptionMessage.OP_RESULT_FROM_THIS_OPERATION_NOT_SUPPORT_IN_THIS_PLACE );
@@ -161,7 +161,7 @@ namespace BackendlessAPI.Transaction
 
     private static Boolean CreateUpdatePropName( OpResultValueReference reference )
     {
-      return OperationType.supportEntityDescriptionResultType.Contains( reference.GetOpResult().GetOperationType() ) &&
+      return OperationTypeUtil.supportEntityDescriptionResultType.Contains( reference.GetOpResult().GetOperationType() ) &&
                                                                       reference.GetPropName() == null &&
                                                                       reference.GetResultIndex() != null;
     }

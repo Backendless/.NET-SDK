@@ -14,11 +14,14 @@ namespace GeometryTestProject
     public void TestCreate()
     {
       UnitOfWork unitOfWork = new UnitOfWork();
+
       Dictionary<String, Object> order = new Dictionary<String, Object>();
       order[ "name" ] = "Joe";
       order[ "age" ] = 23;
       OpResult opResult = unitOfWork.Create( "Order", order );
-      unitOfWork.Execute();
+
+      UnitOfWorkResult unitOfWorkRes = unitOfWork.Execute();
+      
     }
   }
 }

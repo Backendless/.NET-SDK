@@ -16,7 +16,7 @@ namespace BackendlessAPI.Transaction
     internal String GenerateOpResultId( OperationType operationType, String tableName )
     {
       String opResultIdGenerated;
-      String key = operationType.OperationName + tableName;
+      String key = OperationTypeUtil.GetOperationName( operationType ) + tableName;
 
       if( opResultIdMaps.ContainsKey( key ) )
       {

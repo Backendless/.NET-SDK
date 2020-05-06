@@ -16,8 +16,8 @@ namespace BackendlessAPI.Transaction
     internal static String RESULT_INDEX = "resultIndex";
     internal static String PROP_NAME = "propName";
 
-    private LevelEnum transactionIsolation = LevelEnum.REPEATABLE_READ;
-    private readonly List<Operation> operations = new List<Operation>();
+    internal IsolationLevelEnum transactionIsolation = IsolationLevelEnum.REPEATABLE_READ;
+    internal readonly LinkedList<Operation> operations = new LinkedList<Operation>();
     private readonly List<String> opResultIdStrings;
 
     private readonly UnitOfWorkExecutor unitOfWorkExecutor;
@@ -31,19 +31,7 @@ namespace BackendlessAPI.Transaction
       unitOfWorkCreate = new UnitOfWorkCreateImpl( operations, opResultIdGenerator, clazzes );
       unitOfWorkExecutor = new UnitOfWorkExecutorImpl( this, clazzes );
     }
-    [SetClientClassMemberName("isolationLevelEnum")]
-    public LevelEnum TransactionIsolation
-    {
-      get => transactionIsolation;
-      set => this.transactionIsolation = value;
-    }
     
-    [SetClientClassMemberName( "operations")]
-    public List<Operation> Operations
-    {
-      get => operations;
-    }
-
     public List<String> GetOpResultIdStrings()
     {
       return opResultIdStrings;

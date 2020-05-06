@@ -7,13 +7,13 @@ namespace BackendlessAPI.Transaction
 {
   class UnitOfWorkCreateImpl : UnitOfWorkCreate
   {
-    private List<Operation> operations;   
+    private LinkedList<Operation> operations;   
     private OpResultIdGenerator opResultIdGenerator;
     private Dictionary<String, Type> clazzes;
 
-    internal UnitOfWorkCreateImpl( List<Operation> operations, OpResultIdGenerator opResultIdGenerator, Dictionary<String, Type> clazzes )
+    internal UnitOfWorkCreateImpl( LinkedList<Operation> operations, OpResultIdGenerator opResultIdGenerator, Dictionary<String, Type> clazzes )
     {
-      this.operations = operations;
+      this.operations =  operations;
       this.opResultIdGenerator = opResultIdGenerator;
       this.clazzes = clazzes;
     }
@@ -35,7 +35,7 @@ namespace BackendlessAPI.Transaction
 
       String operationResultId = opResultIdGenerator.GenerateOpResultId( OperationType.CREATE, tableName );
       OperationCreate operationCreate = new OperationCreate( OperationType.CREATE, tableName, operationResultId, objectMap );
-      operations.Add( operationCreate );
+      operations.AddLast( operationCreate );
 
       return TransactionHelper.MakeOpResult( tableName, operationResultId, OperationType.CREATE );
     }
@@ -74,7 +74,7 @@ namespace BackendlessAPI.Transaction
         TransactionHelper.MakeReferenceToValueFromOpResult( objectMap );
         String operationResultId = opResultIdGenerator.GenerateOpResultId( OperationType.CREATE, tableName );
         OperationCreate operationCreateBulk = new OperationCreate( OperationType.CREATE, tableName, operationResultId, objectMap );
-        operations.Add( operationCreateBulk );
+        operations.AddLast( operationCreateBulk );
         if( iterator == 0)
           return TransactionHelper.MakeOpResult( tableName, operationResultId, OperationType.CREATE );
       }
