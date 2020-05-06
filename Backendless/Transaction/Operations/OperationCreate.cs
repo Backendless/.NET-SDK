@@ -6,8 +6,6 @@ namespace BackendlessAPI.Transaction.Operations
 {
   class OperationCreate : Operation
   {
-    private Object payload;
-
     public OperationCreate()
     {
     }
@@ -15,14 +13,10 @@ namespace BackendlessAPI.Transaction.Operations
     public OperationCreate( OperationType operationType, String table, String opResultId, Dictionary<String, Object> payload ) 
                                                                              : base( operationType, table, opResultId )
     {
-      this.payload = payload;
+      Payload = payload;
     }
 
     [SetClientClassMemberName("payload")]
-    public override Object Payload
-    {
-      get => payload;
-      set => payload = value;
-    }
+    public override Object Payload{ get; set; }
   }
 }
