@@ -9,7 +9,7 @@ using Weborb.Service;
 
 namespace BackendlessAPI.Transaction
 {
-  public class UnitOfWork// : IUnitOfWork
+  public class UnitOfWork : IUnitOfWork
   {
     public static String REFERENCE_MARKER = "___ref";
     public static String OP_RESULT_ID = "opResultId";
