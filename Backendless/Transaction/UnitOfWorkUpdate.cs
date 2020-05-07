@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BackendlessAPI.Transaction
 {
   interface UnitOfWorkUpdate
   {
-    OpResult Update<E>( E intance );
+    OpResult Update<E>( E instance );
 
     OpResult Update( String tableName, Dictionary<String, Object> objectMap );
 
@@ -16,7 +13,7 @@ namespace BackendlessAPI.Transaction
     OpResult Update( OpResult result, Dictionary<String, Object> changes );
 
     //OpResult from CREATE/UPDATE = identification object what will update ( get object id )
-    OpResult Update( Object result, String propertyName, Object propertyValue );
+    OpResult Update( OpResult result, String propertyName, Object propertyValue );
 
     //OpResultValueReference from FIND = identification object what will update ( get object id )
     //OpResultValueReference from CREATE_BULK = already an object identifier

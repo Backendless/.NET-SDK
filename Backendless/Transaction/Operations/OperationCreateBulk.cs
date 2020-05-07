@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using Weborb.Service;
 
 namespace BackendlessAPI.Transaction.Operations
 {
   class OperationCreateBulk : Operation
   {
-    private Object payload;
     public OperationCreateBulk()
     {
     }
@@ -13,13 +13,10 @@ namespace BackendlessAPI.Transaction.Operations
     public OperationCreateBulk( OperationType operationType, String table, String opResultId, List<Dictionary<String, Object>> payload )
                                                                                               : base( operationType, table, opResultId )
     {
-      this.payload = payload;
+      Payload = payload;
     }
 
-    public override Object Payload
-    {
-      get => payload;
-      set => payload = value;
-    }
+    [SetClientClassMemberName( "payload" )]
+    public override Object Payload { get; set; }
   }
 }

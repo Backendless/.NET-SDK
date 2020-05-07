@@ -9,13 +9,13 @@
     {
     }
 
-    internal OperationResult( OperationType operationType, T result )
+    public OperationResult( OperationType operationType, T result )
     {
       this.operationType = operationType;
       this.result = result;
     }
 
-    internal OperationType OperationType
+    public OperationType OperationType
     {
       get => operationType;
       set => operationType = value;

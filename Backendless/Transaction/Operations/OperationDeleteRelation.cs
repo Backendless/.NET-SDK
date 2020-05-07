@@ -1,12 +1,11 @@
 ﻿using System;
 using BackendlessAPI.Transaction.Payload;
+using Weborb.Service;
 
 namespace BackendlessAPI.Transaction.Operations
 {
   class OperationDeleteRelation : Operation
   {
-    private Object payload;
-
     public OperationDeleteRelation()
     {
     }
@@ -14,13 +13,10 @@ namespace BackendlessAPI.Transaction.Operations
     public OperationDeleteRelation( OperationType operationType, String table, String objectIds, Relation payload )
                                                                           : base( operationType, table, objectIds )
     {
-      this.payload = payload;
+      Payload = payload;
     }
 
-    public override Object Payload
-    {
-    get => payload;
-    set => payload = value;
-    }
+    [SetClientClassMemberName( "payload" )]
+    public override Object Payload { get; set; }
   }
 }

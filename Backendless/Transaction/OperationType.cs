@@ -22,6 +22,7 @@ namespace BackendlessAPI.Transaction
   public class OperationTypeUtil
   {
     private static String operationName;
+
     internal static String GetOperationName( OperationType opType )
     {
       operationName = opType.ToString().ToLower();

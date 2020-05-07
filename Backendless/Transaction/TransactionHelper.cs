@@ -16,7 +16,7 @@ namespace BackendlessAPI.Transaction
     private static String SOCIAL_ACCOUNT_COLUMN_NAME = "socialAccount";
     private static String USER_STATUS_COLUMN_NAME = "userStatus";
 
-    static void RemoveSystemField( Dictionary<String, Object> changes )
+    internal static void RemoveSystemField( Dictionary<String, Object> changes )
     {
       changes.Remove( LAST_LOGIN_COLUM_NAME );
       changes.Remove( PASSWORD_KEY );

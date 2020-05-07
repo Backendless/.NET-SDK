@@ -1,26 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using Weborb.Service;
 
 namespace BackendlessAPI.Transaction.Operations
 {
   class OperationUpdate : Operation
   {
-    private Object payload;
-
     public OperationUpdate()
     {
     }
 
     public OperationUpdate( OperationType operationType, String table, String opResultId, Dictionary<String, Object> payload )
-    : base( operationType, table, opResultId)
+                                                                                     : base( operationType, table, opResultId)
     {
-      this.payload = payload;
+      Payload = payload;
     }
 
-    public override Object Payload
-    {
-      get => payload;
-      set => payload = value;
-    }
+    [SetClientClassMemberName( "payload" )]
+    public override Object Payload { get; set; }
   }
 }

@@ -11,9 +11,9 @@ namespace BackendlessAPI.Transaction
 {
   class UnitOfWorkDeleteImpl : UnitOfWorkDelete
   {
-    private List<Operation> operations;
+    private LinkedList<Operation> operations;
     OpResultIdGenerator opResultIdGenerator;
-    internal UnitOfWorkDeleteImpl( List<Operation> operations, OpResultIdGenerator opResultIdGenerator )
+    internal UnitOfWorkDeleteImpl( LinkedList<Operation> operations, OpResultIdGenerator opResultIdGenerator )
     {
       this.operations = operations;
       this.opResultIdGenerator = opResultIdGenerator;
@@ -38,7 +38,7 @@ namespace BackendlessAPI.Transaction
       String operationResultId = opResultIdGenerator.GenerateOpResultId( OperationType.DELETE, tableName );
       OperationDelete operationDelete = new OperationDelete( OperationType.DELETE, tableName, operationResultId, objectId );
 
-      operations.Add( operationDelete );
+      operations.AddLast( operationDelete );
       return TransactionHelper.MakeOpResult( tableName, operationResultId, OperationType.DELETE );
     }
 
@@ -53,7 +53,7 @@ namespace BackendlessAPI.Transaction
       String operationResultId = opResultIdGenerator.GenerateOpResultId( OperationType.DELETE, result.GetTableName() );
       OperationDelete operationDelete = new OperationDelete( OperationType.DELETE, result.GetTableName(), operationResultId,
                                                               result.ResolveTo( "objectId" ).MakeReference() );
-      operations.Add( operationDelete );
+      operations.AddLast( operationDelete );
 
       return TransactionHelper.MakeOpResult( result.GetTableName(), operationResultId, OperationType.DELETE );
     }
@@ -71,7 +71,7 @@ namespace BackendlessAPI.Transaction
       String operationResultId = opResultIdGenerator.GenerateOpResultId( OperationType.DELETE, resultIndex.GetOpResult().GetTableName() );
       OperationDelete operationDelete = new OperationDelete( OperationType.DELETE, resultIndex.GetOpResult().GetTableName(),
                                                                                    operationResultId, referenceToObjectId );
-      operations.Add( operationDelete );
+      operations.AddLast( operationDelete );
 
       return TransactionHelper.MakeOpResult( resultIndex.GetOpResult().GetTableName(), operationResultId, OperationType.DELETE );
     }
@@ -132,7 +132,7 @@ namespace BackendlessAPI.Transaction
       DeleteBulkPayload deleteBulkPayload = new DeleteBulkPayload( whereClause, unconditional );
       OperationDeleteBulk operationDeleteBulk = new OperationDeleteBulk( OperationType.DELETE_BULK, tableName, operationResultId,
                                                                                             deleteBulkPayload );
-      operations.Add( operationDeleteBulk );
+      operations.AddLast( operationDeleteBulk );
 
       return TransactionHelper.MakeOpResult( tableName, operationResultId, OperationType.DELETE_BULK );
     }

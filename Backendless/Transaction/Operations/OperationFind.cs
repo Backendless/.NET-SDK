@@ -1,11 +1,10 @@
 ﻿using System;
+using Weborb.Service;
 
 namespace BackendlessAPI.Transaction.Operations
 {
   class OperationFind : Operation
   {
-    private Object payload;
-
     public OperationFind()
     {
     }
@@ -13,13 +12,10 @@ namespace BackendlessAPI.Transaction.Operations
     public OperationFind( OperationType operationType, String table, String opResultId, Object payload )
                                                         // : base( operationType, table, opResultId ) 
     {
-      this.payload = payload;
+      Payload = payload;
     }
 
-    public override Object Payload
-    {
-      get => payload;
-      set => payload = value;
-    }
+    [SetClientClassMemberName( "payload" )]
+    public override Object Payload { get; set; }
   }
 }
