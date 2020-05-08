@@ -306,8 +306,12 @@
     <Compile Include="..\..\Backendless\Transaction\UnitOfWorkUpdate.cs" />
     <Compile Include="..\..\Backendless\Transaction\UnitOfWorkUpdateImpl.cs" />
     <Compile Include="..\..\Backendless\Transaction\UnitOfWorkResult.cs" />
+    <Compile Include="..\..\Backendless\Transaction\UnitOfWorkAddRelation.cs" />
+    <Compile Include="..\..\Backendless\Transaction\UnitOfWorkAddRelationImpl.cs" />
     <Compile Include="..\..\Backendless\Transaction\OperationType.cs" />
     <Compile Include="..\..\Backendless\Transaction\OperationResult.cs" />
+    <Compile Include="..\..\Backendless\Transaction\RelationOperation.cs" />
+    <Compile Include="..\..\Backendless\Transaction\RelationOperationImpl.cs" />
     <Compile Include="..\..\Backendless\Transaction\IsolationLevelEnum.cs" />
     <Compile Include="..\..\Backendless\Transaction\TransactionOperationError.cs" />
     <Compile Include="..\..\Backendless\Transaction\TransactionHelper.cs" />

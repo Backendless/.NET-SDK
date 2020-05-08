@@ -74,6 +74,24 @@ namespace BackendlessAPI.Transaction
 
       return (String) maybeObjectId;
     }
+    
+    internal static List<String> GetObjectIdsFromListInstaces<E>( E[] children )
+    {
+      if( children[ 0 ] is Dictionary<String, Object> )
+        throw new ArgumentException( ExceptionMessage.RELATION_USE_LIST_OF_MAPS );
+
+      else if( !( children[ 0 ].GetType().IsArray ) )
+      {
+        List<String> objectIds = new List<String>();
+
+        foreach( E entry in children )
+          objectIds.Add( ConvertObjectMapToObjectId( ConvertInstanceToMap( children ) ) );
+
+        return objectIds;
+      }
+      else
+        throw new ArgumentException( ExceptionMessage.LIST_NOT_INSTANCES );
+    }
 
     static Object ConvertObjectMapToObjectIdOrLeaveReference( Dictionary<String, Object> objectMap )
     {
@@ -184,6 +202,5 @@ namespace BackendlessAPI.Transaction
             reference.GetPropName() != null &&
             reference.GetResultIndex() != null;
     }
-
   }
 }
