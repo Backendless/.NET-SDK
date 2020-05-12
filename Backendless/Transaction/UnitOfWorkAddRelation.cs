@@ -12,7 +12,7 @@ namespace BackendlessAPI.Transaction
     OpResult AddToRelation( String parentTable, Dictionary<String, Object> parentObject, String columnName, String[] childrenObjectIds );
 
     //Dictionary + array of custom classes
-    OpResult AddToRelation<E>( String parentTable, Dictionary<String, Object> parentObject, String columnName, E[] childrenInstance );
+    OpResult AddToRelation<E>( String parentTable, Dictionary<String, Object> parentObject, String columnName, List<E> childrenInstance );
 
     //Dicionary + List of Dictionaries
     OpResult AddToRelation( String parentTable, Dictionary<String, Object> parentObject, String columnName, List<Dictionary<String, Object>> childrenMaps );
@@ -28,7 +28,7 @@ namespace BackendlessAPI.Transaction
     OpResult AddToRelation( String parentTable, String parentObjectId, String columnName, String[] childrenObjectIds );
 
     //String + array of custom classes
-    OpResult AddToRelation<E>( String parentTable, String parentObjectId, String columnName, E[] childrenInstances );
+    OpResult AddToRelation<E>( String parentTable, String parentObjectId, String columnName, List<E> childrenInstances );
 
     //String + List of hashmaps
     OpResult AddToRelation( String parentTable, String parentObjectId, String columnName, List<Dictionary<String, Object>> childrenMaps );
@@ -43,7 +43,7 @@ namespace BackendlessAPI.Transaction
     OpResult AddToRelation<E>( E parentObject, String columnName, String[] childrenObjectIds );
 
     //Custom class + array of custom classes
-    OpResult AddToRelation<E,U>( E parentObject, String columnName, U[] childrenInstances );
+    OpResult AddToRelation<E,U>( E parentObject, String columnName, List<U> childrenInstances );
 
     //Custom class + List of Dictionaries
     OpResult AddToRelation<E>( E parentObject, String columnName, List<Dictionary<String, Object>> childrenMaps );
@@ -58,7 +58,7 @@ namespace BackendlessAPI.Transaction
     OpResult addToRelation( OpResult parentObject, String columnName, String[] childrenObjectIds );
 
     //OpResult=CREATE/UPDATE(getObjectId) + array of custom classes
-    OpResult AddToRelation<E>( OpResult parentObject, String columnName, E[] childrenInstances );
+    OpResult AddToRelation<E>( OpResult parentObject, String columnName, List<E> childrenInstances );
 
     // OpResult=CREATE/UPDATE(getObjectId) + List of Dictionaries
     OpResult AddToRelation( OpResult parentObject, String columnName, List<Dictionary<String, Object>> childrenMaps );
@@ -73,7 +73,7 @@ namespace BackendlessAPI.Transaction
     OpResult AddToRelation( OpResultValueReference parentObject, String columnName, String[] childrenObjectIds );
 
     //OpResultValueReference=CREATE_BULK/FIND(getObjectId)+ array of custom classes
-    OpResult AddToRelation<E>( OpResultValueReference parentObject, String columnName, E[] childrenInstances );
+    OpResult AddToRelation<E>( OpResultValueReference parentObject, String columnName, List<E> childrenInstances );
 
     //OpResultValueReference=CREATE_BULK/FIND(getObjectId) + List of hashmaps
     OpResult AddToRelation( OpResultValueReference parentObject, String columnName, List<Dictionary<String, Object>> childrenMaps );

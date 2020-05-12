@@ -10,7 +10,7 @@ namespace BackendlessAPI.Transaction.Operations
     }
 
     public OperationFind( OperationType operationType, String table, String opResultId, Object payload )
-                                                        // : base( operationType, table, opResultId ) 
+                                                             : base( operationType, table, opResultId ) 
     {
       Payload = payload;
     }

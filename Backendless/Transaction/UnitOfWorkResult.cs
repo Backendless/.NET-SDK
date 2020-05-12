@@ -1,46 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
+using Weborb.Service;
 
 namespace BackendlessAPI.Transaction
 {
   public class UnitOfWorkResult
   {
-    private bool success;
-    private TransactionOperationError error;
-    private Dictionary<String, Object> results;
-
     public UnitOfWorkResult()
     {
     }
 
     public UnitOfWorkResult( bool success, TransactionOperationError error )
     {
-      this.success = success;
-      this.error = error;
+      Success = success;
+      Error = error;
     }
 
-    public bool Success
-    {
-      get => success;
-      set => success = value;
-    }
+    [SetClientClassMemberName("success")]
+    public bool Success { get; set; }
 
-    public TransactionOperationError Error
-    {
-      get => error;
-      set => error = value;
-    }
+    [SetClientClassMemberName( "error" )]
+    public TransactionOperationError Error { get; set; }
 
-    public Dictionary<String, Object> Results
-    {
-      get => results;
-      set => results = value;
-    }
+    [SetClientClassMemberName( "results" )]
+    public Dictionary<String, Object> Results { get; set; }
 
     public override string ToString()
     {
-      String error = this.error != null ? this.error.ToString() : "error=null";
-      return "UnitOfWorkResult{success=" + success + ", " + error + ", results=" + results + "}";
+      String error = Error != null ? Error.ToString() : "error=null";
+      return "UnitOfWorkResult{success=" + Success + ", " + error + ", results=" + Results + "}";
     }
   }
 }

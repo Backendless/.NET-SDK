@@ -1,12 +1,12 @@
 ﻿using System;
 using BackendlessAPI.Transaction.Operations;
+using Weborb.Service;
 
 namespace BackendlessAPI.Transaction
 {
   public class TransactionOperationError
   {
     private Operation operation;
-    private String message;
 
     public TransactionOperationError()
     {
@@ -15,14 +15,11 @@ namespace BackendlessAPI.Transaction
     public TransactionOperationError( Operation operation, String message )
     {
       this.operation = operation;
-      this.message = message;
+      Message = message;
     }
 
-    public String Message
-    {
-      get => message;
-      set => message = value;
-    }
+    [SetClientClassMemberName( "message" )]
+    public String Message { get; set; }
 
     public Operation GetOperation()
     {
@@ -35,7 +32,7 @@ namespace BackendlessAPI.Transaction
 
     public override string ToString()
     {
-      return "TransactionOperationError{operation=" + operation + ", message=" + message + "}";
+      return "TransactionOperationError{operation=" + operation + ", message=" + Message + "}";
     }
   }
 }

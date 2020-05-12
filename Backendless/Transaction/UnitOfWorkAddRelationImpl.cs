@@ -8,129 +8,135 @@ namespace BackendlessAPI.Transaction
 {
   class UnitOfWorkAddRelationImpl : UnitOfWorkAddRelation
   {
-    public OpResult AddToRelation( string parentTable, Dictionary<string, object> parentObject, string columnName, string[] childrenObjectIds )
+    private RelationOperation relationOperation;
+
+    internal UnitOfWorkAddRelationImpl( RelationOperation relationOperation )
     {
-      throw new NotImplementedException();
+      this.relationOperation = relationOperation;
+    }
+    public OpResult AddToRelation( String parentTable, Dictionary<String, Object> parentObject, String columnName, String[] childrenObjectIds )
+    {
+      return relationOperation.AddOperation( OperationType.ADD_RELATION, parentTable, parentObject, columnName, childrenObjectIds );
     }
 
-    public OpResult AddToRelation<E>( string parentTable, Dictionary<string, object> parentObject, string columnName, E[] childrenInstance )
+    public OpResult AddToRelation<E>( string parentTable, Dictionary<string, object> parentObject, string columnName, List<E> childrenInstance )
     {
-      throw new NotImplementedException();
+      return relationOperation.AddOperation( OperationType.ADD_RELATION, parentTable, parentObject, columnName, childrenInstance );
     }
 
     public OpResult AddToRelation( string parentTable, Dictionary<string, object> parentObject, string columnName, List<Dictionary<string, object>> childrenMaps )
     {
-      throw new NotImplementedException();
+      return relationOperation.AddOperation( OperationType.ADD_RELATION, parentTable, parentObject, columnName, childrenMaps );
     }
 
     public OpResult AddToRelation( string parentTable, Dictionary<string, object> parentObject, string columnName, OpResult children )
     {
-      throw new NotImplementedException();
+      return relationOperation.AddOperation( OperationType.ADD_RELATION, parentTable, parentObject, columnName, children );
     }
 
     public OpResult AddToRelation( string parentTable, Dictionary<string, object> parentObject, string columnName, string whereClauseForChildren )
     {
-      throw new NotImplementedException();
+      return relationOperation.AddOperation( OperationType.ADD_RELATION, parentTable, parentObject, columnName, whereClauseForChildren );
     }
 
     public OpResult AddToRelation( string parentTable, string parentObjectId, string columnName, string[] childrenObjectIds )
     {
-      throw new NotImplementedException();
+      return relationOperation.AddOperation( OperationType.ADD_RELATION, parentTable, parentObjectId, columnName, childrenObjectIds );
     }
 
-    public OpResult AddToRelation<E>( string parentTable, string parentObjectId, string columnName, E[] childrenInstances )
+    public OpResult AddToRelation<E>( string parentTable, string parentObjectId, string columnName, List<E> childrenInstances )
     {
-      throw new NotImplementedException();
+      return relationOperation.AddOperation( OperationType.ADD_RELATION, parentTable, parentObjectId, columnName, childrenInstances );
     }
 
     public OpResult AddToRelation( string parentTable, string parentObjectId, string columnName, List<Dictionary<string, object>> childrenMaps )
     {
-      throw new NotImplementedException();
+      return relationOperation.AddOperation( OperationType.ADD_RELATION, parentTable, parentObjectId, columnName, childrenMaps );
     }
 
     public OpResult AddToRelation( string parentTable, string parentObjectId, string columnName, OpResult children )
     {
-      throw new NotImplementedException();
+      return relationOperation.AddOperation( OperationType.ADD_RELATION, parentTable, parentObjectId, columnName, children );
     }
 
     public OpResult AddToRelation( string parentTable, string parentObjectId, string columnName, string whereClauseForChildren )
     {
-      throw new NotImplementedException();
+      return relationOperation.AddOperation( OperationType.ADD_RELATION, parentTable, parentObjectId, columnName, whereClauseForChildren );
     }
 
     public OpResult AddToRelation<E>( E parentObject, string columnName, string[] childrenObjectIds )
     {
-      throw new NotImplementedException();
+      return relationOperation.AddOperation( OperationType.ADD_RELATION, parentObject, columnName, childrenObjectIds );
     }
 
-    public OpResult AddToRelation<E, U>( E parentObject, string columnName, U[] childrenInstances )
+    public OpResult AddToRelation<E, U>( E parentObject, string columnName, List<U> childrenInstances )
     {
-      throw new NotImplementedException();
+      return relationOperation.AddOperation( OperationType.ADD_RELATION, parentObject, columnName, childrenInstances );
     }
 
     public OpResult AddToRelation<E>( E parentObject, string columnName, List<Dictionary<string, object>> childrenMaps )
     {
-      throw new NotImplementedException();
+      return relationOperation.AddOperation( OperationType.ADD_RELATION, parentObject, columnName, childrenMaps );
     }
 
     public OpResult AddToRelation<E>( E parentObject, string columnName, OpResult children )
     {
-      throw new NotImplementedException();
+      return relationOperation.AddOperation( OperationType.ADD_RELATION, parentObject, columnName, children );
     }
 
     public OpResult AddToRelation<E>( E parentObject, string columnName, string whereClauseForChildren )
     {
-      throw new NotImplementedException();
+      return relationOperation.AddOperation( OperationType.ADD_RELATION, parentObject, columnName, whereClauseForChildren );
     }
 
     public OpResult addToRelation( OpResult parentObject, string columnName, string[] childrenObjectIds )
     {
-      throw new NotImplementedException();
+      return relationOperation.AddOperation( OperationType.ADD_RELATION, parentObject, columnName, childrenObjectIds );
     }
 
-    public OpResult AddToRelation<E>( OpResult parentObject, string columnName, E[] childrenInstances )
+    public OpResult AddToRelation<E>( OpResult parentObject, string columnName, List<E> childrenInstances )
     {
-      throw new NotImplementedException();
+      return relationOperation.AddOperation( OperationType.ADD_RELATION, parentObject, columnName, childrenInstances );
     }
 
     public OpResult AddToRelation( OpResult parentObject, string columnName, List<Dictionary<string, object>> childrenMaps )
     {
-      throw new NotImplementedException();
+      return relationOperation.AddOperation( OperationType.ADD_RELATION, parentObject, columnName, childrenMaps );
     }
 
     public OpResult AddToRelation( OpResult parentObject, string columnName, OpResult children )
     {
-      throw new NotImplementedException();
+      return relationOperation.AddOperation( OperationType.ADD_RELATION, parentObject, columnName, children );
     }
 
     public OpResult AddToRelation( OpResult parentObject, string columnName, string whereClauseForChildren )
     {
-      throw new NotImplementedException();
+      return relationOperation.AddOperation( OperationType.ADD_RELATION, parentObject, columnName, whereClauseForChildren );
     }
 
     public OpResult AddToRelation( OpResultValueReference parentObject, string columnName, string[] childrenObjectIds )
     {
-      throw new NotImplementedException();
+      return relationOperation.AddOperation( OperationType.ADD_RELATION, parentObject, columnName, childrenObjectIds );
     }
 
-    public OpResult AddToRelation<E>( OpResultValueReference parentObject, string columnName, E[] childrenInstances )
+    public OpResult AddToRelation<E>( OpResultValueReference parentObject, string columnName, List<E> childrenInstances )
     {
-      throw new NotImplementedException();
+      return relationOperation.AddOperation( OperationType.ADD_RELATION, parentObject, columnName, childrenInstances );
     }
 
     public OpResult AddToRelation( OpResultValueReference parentObject, string columnName, List<Dictionary<string, object>> childrenMaps )
     {
-      throw new NotImplementedException();
+      return relationOperation.AddOperation( OperationType.ADD_RELATION, parentObject, columnName, childrenMaps );
     }
 
     public OpResult AddToRelation( OpResultValueReference parentObject, string columnName, OpResult children )
     {
-      throw new NotImplementedException();
+      return relationOperation.AddOperation( OperationType.ADD_RELATION, parentObject, columnName, children );
     }
 
     public OpResult AddToRelation( OpResultValueReference parentObject, string columnName, string whereClauseForChildren )
     {
-      throw new NotImplementedException();
+      return relationOperation.AddOperation( OperationType.ADD_RELATION, parentObject, columnName, whereClauseForChildren );
     }
   }
 }

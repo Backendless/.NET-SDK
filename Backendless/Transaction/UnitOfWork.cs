@@ -3,10 +3,6 @@ using BackendlessAPI.Persistence;
 using BackendlessAPI.Transaction.Operations;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Weborb.Service;
 
 namespace BackendlessAPI.Transaction
 {
@@ -25,6 +21,8 @@ namespace BackendlessAPI.Transaction
     private UnitOfWorkDelete unitOfWorkDelete;
     private UnitOfWorkUpdate unitOfWorkUpdate;
     private UnitOfWorkFind unitOfWorkFind;
+    private UnitOfWorkAddRelation unitOfWorkAddRelation;
+    private UnitOfWorkSetRelation unitOfWorkSetRelation;
     private UnitOfWorkExecutor unitOfWorkExecutor;
 
     public UnitOfWork()
@@ -36,6 +34,9 @@ namespace BackendlessAPI.Transaction
       unitOfWorkDelete = new UnitOfWorkDeleteImpl( operations, opResultIdGenerator );
       unitOfWorkUpdate = new UnitOfWorkUpdateImpl( operations, opResultIdGenerator, clazzes );
       unitOfWorkFind = new UnitOfWorkFindImpl( operations, opResultIdGenerator );
+      RelationOperation relationOperation = new RelationOperationImpl( operations, opResultIdGenerator );
+      unitOfWorkAddRelation = new UnitOfWorkAddRelationImpl( relationOperation );
+      unitOfWorkSetRelation = new UnitOfWorkSetRelationImpl( relationOperation );
       unitOfWorkExecutor = new UnitOfWorkExecutorImpl( this, clazzes );
     }
 
@@ -172,6 +173,231 @@ namespace BackendlessAPI.Transaction
     public OpResult Find( String tableName, DataQueryBuilder queryBuilder )
     {
       return unitOfWorkFind.Find( tableName, queryBuilder );
+    }
+
+    public OpResult AddToRelation( string parentTable, Dictionary<string, object> parentObject, string columnName, string[] childrenObjectIds )
+    {
+      return unitOfWorkAddRelation.AddToRelation( parentTable, parentObject, columnName, childrenObjectIds );
+    }
+
+    public OpResult AddToRelation<E>( string parentTable, Dictionary<string, object> parentObject, string columnName, List<E> childrenInstance )
+    {
+      return unitOfWorkAddRelation.AddToRelation( parentTable, parentObject, columnName, childrenInstance);
+    }
+
+    public OpResult AddToRelation( string parentTable, Dictionary<string, object> parentObject, string columnName, List<Dictionary<string, object>> childrenMaps )
+    {
+      return unitOfWorkAddRelation.AddToRelation( parentTable, parentObject, columnName, childrenMaps );
+    }
+
+    public OpResult AddToRelation( string parentTable, Dictionary<string, object> parentObject, string columnName, OpResult children )
+    {
+      return unitOfWorkAddRelation.AddToRelation( parentTable, parentObject, columnName, children );
+    }
+
+    public OpResult AddToRelation( string parentTable, Dictionary<string, object> parentObject, string columnName, string whereClauseForChildren )
+    {
+      return unitOfWorkAddRelation.AddToRelation( parentTable, parentObject, columnName, whereClauseForChildren );
+    }
+
+    public OpResult AddToRelation( string parentTable, string parentObjectId, string columnName, string[] childrenObjectIds )
+    {
+      return unitOfWorkAddRelation.AddToRelation( parentTable, parentObjectId, columnName, childrenObjectIds );
+    }
+
+    public OpResult AddToRelation<E>( string parentTable, string parentObjectId, string columnName, List<E> childrenInstances )
+    {
+      return unitOfWorkAddRelation.AddToRelation( parentTable, parentObjectId, columnName, childrenInstances );
+    }
+
+    public OpResult AddToRelation( string parentTable, string parentObjectId, string columnName, List<Dictionary<string, object>> childrenMaps )
+    {
+      return unitOfWorkAddRelation.AddToRelation( parentTable, parentObjectId, columnName, childrenMaps );
+    }
+
+    public OpResult AddToRelation( string parentTable, string parentObjectId, string columnName, OpResult children )
+    {
+      return unitOfWorkAddRelation.AddToRelation( parentTable, parentObjectId, columnName, children );
+    }
+
+    public OpResult AddToRelation( string parentTable, string parentObjectId, string columnName, string whereClauseForChildren )
+    {
+      return unitOfWorkAddRelation.AddToRelation( parentTable, parentObjectId, columnName, whereClauseForChildren );
+    }
+
+    public OpResult AddToRelation<E>( E parentObject, string columnName, string[] childrenObjectIds )
+    {
+      return unitOfWorkAddRelation.AddToRelation( parentObject, columnName, childrenObjectIds );
+    }
+
+    public OpResult AddToRelation<E, U>( E parentObject, string columnName, List<U> childrenInstances )
+    {
+      return unitOfWorkAddRelation.AddToRelation( parentObject, columnName, childrenInstances );
+    }
+
+    public OpResult AddToRelation<E>( E parentObject, string columnName, List<Dictionary<string, object>> childrenMaps )
+    {
+      return unitOfWorkAddRelation.AddToRelation( parentObject, columnName, childrenMaps );
+    }
+
+    public OpResult AddToRelation<E>( E parentObject, string columnName, OpResult children )
+    {
+      return unitOfWorkAddRelation.AddToRelation( parentObject, columnName, children );
+    }
+
+    public OpResult AddToRelation<E>( E parentObject, string columnName, string whereClauseForChildren )
+    {
+      return unitOfWorkAddRelation.AddToRelation( parentObject, columnName, whereClauseForChildren );
+    }
+
+    public OpResult addToRelation( OpResult parentObject, string columnName, string[] childrenObjectIds )
+    {
+      return unitOfWorkAddRelation.AddToRelation( parentObject, columnName, childrenObjectIds );
+    }
+
+    public OpResult AddToRelation<E>( OpResult parentObject, string columnName, List<E> childrenInstances )
+    {
+      return unitOfWorkAddRelation.AddToRelation( parentObject, columnName, childrenInstances );
+    }
+
+    public OpResult AddToRelation( OpResult parentObject, string columnName, List<Dictionary<string, object>> childrenMaps )
+    {
+      return unitOfWorkAddRelation.AddToRelation( parentObject, columnName, childrenMaps );
+    }
+
+    public OpResult AddToRelation( OpResult parentObject, string columnName, OpResult children )
+    {
+      return unitOfWorkAddRelation.AddToRelation( parentObject, columnName, children );
+    }
+
+    public OpResult AddToRelation( OpResult parentObject, string columnName, string whereClauseForChildren )
+    {
+      return unitOfWorkAddRelation.AddToRelation( parentObject, columnName, whereClauseForChildren );
+    }
+
+    public OpResult AddToRelation( OpResultValueReference parentObject, string columnName, string[] childrenObjectIds )
+    {
+      return unitOfWorkAddRelation.AddToRelation( parentObject, columnName, childrenObjectIds );
+    }
+
+    public OpResult AddToRelation<E>( OpResultValueReference parentObject, string columnName, List<E> childrenInstances )
+    {
+      return unitOfWorkAddRelation.AddToRelation( parentObject, columnName, childrenInstances );
+    }
+
+    public OpResult AddToRelation( OpResultValueReference parentObject, string columnName, List<Dictionary<string, object>> childrenMaps )
+    {
+      return unitOfWorkAddRelation.AddToRelation( parentObject, columnName, childrenMaps );
+    }
+
+    public OpResult AddToRelation( OpResultValueReference parentObject, string columnName, OpResult children )
+    {
+        return unitOfWorkAddRelation.AddToRelation( parentObject, columnName, children);
+    }
+
+    public OpResult AddToRelation( OpResultValueReference parentObject, string columnName, string whereClauseForChildren )
+    {
+      return unitOfWorkAddRelation.AddToRelation( parentObject, columnName, whereClauseForChildren );
+    }
+
+    public OpResult SetRelation( string parentTable, Dictionary<string, object> parentObject, string columnName, string[] childrenObjectIds )
+    {
+      return unitOfWorkSetRelation.SetRelation( parentTable, parentObject, columnName, childrenObjectIds );
+    }
+
+    public OpResult SetRelation<E>( string parentTable, Dictionary<string, object> parentObject, string columnName, List<E> childrenInstances )
+    {
+      return unitOfWorkSetRelation.SetRelation( parentTable, parentObject, columnName, childrenInstances );
+    }
+
+    public OpResult SetRelation( string parentTable, Dictionary<string, object> parentObject, string columnName, OpResult children )
+    {
+      return unitOfWorkSetRelation.SetRelation( parentTable, parentObject, columnName, children );
+    }
+
+    public OpResult SetRelation( string parentTable, Dictionary<string, object> parentObject, string columnName, string whereClauseForChildren )
+    {
+      return unitOfWorkSetRelation.SetRelation( parentTable, parentObject, columnName, whereClauseForChildren);
+    }
+
+    public OpResult SetRelation( string parentTable, string parentObjectId, string columnName, string[] childrenObjectIds )
+    {
+      return unitOfWorkSetRelation.SetRelation( parentTable, parentObjectId, columnName, childrenObjectIds );
+    }
+
+    public OpResult SetRelation<E>( string parentTable, string parentObjectId, string columnName, List<E> childrenInstances )
+    {
+      return unitOfWorkSetRelation.SetRelation( parentTable, parentObjectId, columnName, childrenInstances );
+    }
+
+    public OpResult SetRelation( string parentTable, string parentObjectId, string columnName, OpResult children )
+    {
+      return unitOfWorkSetRelation.SetRelation( parentTable, parentObjectId, columnName, children );
+    }
+
+    public OpResult SetRelation( string parentTable, string parentObjectId, string columnName, string whereClauseForChildren )
+    {
+      return unitOfWorkSetRelation.SetRelation( parentTable, parentObjectId, columnName, whereClauseForChildren);
+    }
+
+    public OpResult SetRelation<E>( E parentObject, string columnName, string[] childrenObjectIds )
+    {
+      return unitOfWorkSetRelation.SetRelation( parentObject, columnName, childrenObjectIds );
+    }
+
+    public OpResult SetRelation<E, U>( E parentObject, string columnName, List<U> childrenInstances )
+    {
+      return unitOfWorkSetRelation.SetRelation( parentObject, columnName, childrenInstances );
+    }
+
+    public OpResult SetRelation<E>( E parentObject, string columnName, OpResult children )
+    {
+      return unitOfWorkSetRelation.SetRelation( parentObject, columnName, children );
+    }
+
+    public OpResult SetRelation<E>( E parentObject, string columnName, string whereClauseForChildren )
+    {
+      return unitOfWorkSetRelation.SetRelation( parentObject, columnName, whereClauseForChildren );
+    }
+
+    public OpResult SetRelation( OpResult parentObject, string columnName, string[] childrenObjectIds )
+    {
+      return unitOfWorkSetRelation.SetRelation( parentObject, columnName, childrenObjectIds );
+    }
+
+    public OpResult SetRelation<E>( OpResult parentObject, string columnName, List<E> childrenInstances )
+    {
+      return unitOfWorkSetRelation.SetRelation( parentObject, columnName, childrenInstances);
+    }
+
+    public OpResult SetRelation( OpResult parentObject, string columnName, OpResult children )
+    {
+      return unitOfWorkSetRelation.SetRelation( parentObject, columnName, children );
+    }
+
+    public OpResult SetRelation( OpResult parentObject, string columnName, string whereClauseForChildren )
+    {
+      return unitOfWorkSetRelation.SetRelation( parentObject, columnName, whereClauseForChildren );
+    }
+
+    public OpResult SetRelation( OpResultValueReference parentObject, string columnName, string[] childrenObjectIds )
+    {
+      return unitOfWorkSetRelation.SetRelation( parentObject, columnName, childrenObjectIds );
+    }
+
+    public OpResult SetRelation<E>( OpResultValueReference parentObject, string columnName, List<E> childrenInstances )
+    {
+      return unitOfWorkSetRelation.SetRelation( parentObject, columnName, childrenInstances );
+    }
+
+    public OpResult SetRelation( OpResultValueReference parentObject, string columnName, OpResult children )
+    {
+      return unitOfWorkSetRelation.SetRelation( parentObject, columnName, children );
+    }
+
+    public OpResult SetRelation( OpResultValueReference parentObject, string columnName, string whereClauseForChildren )
+    {
+      return unitOfWorkSetRelation.SetRelation( parentObject, columnName, whereClauseForChildren );
     }
   }
 }

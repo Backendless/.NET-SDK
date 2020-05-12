@@ -18,8 +18,8 @@ namespace BackendlessAPI.Transaction
       this.opResultIdGenerator = opResultIdGenerator;
     }
 
-    public OpResult AddOperation( OperationType operationType, string parentTable,
-                               Dictionary<string, object> parentObject, string columnName, string[] childrenObjectIds )
+    public OpResult AddOperation( OperationType operationType, String parentTable,
+                               Dictionary<String, Object> parentObject, String columnName, String[] childrenObjectIds )
     {
       String parentObjectId = TransactionHelper.ConvertObjectMapToObjectId( parentObject );
 
@@ -29,32 +29,26 @@ namespace BackendlessAPI.Transaction
       return AddOperation( operationType, parentTable, parentObjectId, columnName, null, childrenObjectIds );
     }
 
-    public OpResult AddOperation<E>( OperationType operationType, string parentTable, Dictionary<string, object> parentObject,
-                                                                                    string columnName, String[] childrenInstances ) where E : class
+    public OpResult AddOperation<E>( OperationType operationType, String parentTable, Dictionary<String, Object> parentObject,
+                                                                                    String columnName, List<E> childrenInstances )
     {
-      if( childrenInstances == null || childrenInstances.Length == 0 )
+      if( childrenInstances == null || childrenInstances.Count == 0 )
         throw new ArgumentException( ExceptionMessage.NULL_BULK );
-
-      if( childrenInstances[ 0 ] is String )
-      {
-        String[] childrenObjectIds = (String[]) childrenInstances;
-        return AddOperation( operationType, parentTable, parentObject, columnName, childrenObjectIds );
-      }
 
       String parentObjectIds = TransactionHelper.ConvertObjectMapToObjectId( parentObject );
 
       return AddOperation( operationType, parentTable, parentObject, columnName, childrenInstances );
     }
 
-    public OpResult AddOperation( OperationType operationType, string parentTable, Dictionary<string, object> parentObject,
-                                                          string columnName, List<Dictionary<string, object>> childrenMaps )
+    public OpResult AddOperation( OperationType operationType, String parentTable, Dictionary<String, Object> parentObject,
+                                                          String columnName, List<Dictionary<String, Object>> childrenMaps )
     {
       String parentObjectId = TransactionHelper.ConvertObjectMapToObjectId( parentObject );
       return AddOperation( operationType, parentTable, parentObjectId, columnName, childrenMaps );
     }
 
-    public OpResult AddOperation( OperationType operationType, string parentTable, Dictionary<string, object> parentObject,
-                                                                              string columnName, OpResult children )
+    public OpResult AddOperation( OperationType operationType, String parentTable, Dictionary<String, Object> parentObject,
+                                                                              String columnName, OpResult children )
     {
       String parentObjectId = TransactionHelper.ConvertObjectMapToObjectId( parentObject );
       return AddOperation( operationType, parentTable, parentObjectId, columnName, children );
@@ -77,16 +71,10 @@ namespace BackendlessAPI.Transaction
     }
 
     public OpResult AddOperation<E>( OperationType operationType, string parentTable, string parentObjectId,
-                                                                   string columnName, String[] childrenInstances )
+                                                                   string columnName, List<E> childrenInstances )
     {
-      if( childrenInstances == null || childrenInstances.Length == 0 )
+      if( childrenInstances == null || childrenInstances.Count == 0 )
         throw new ArgumentException( ExceptionMessage.NULL_BULK );
-
-      if( childrenInstances[0] is String )
-      {
-        String[] childrenObjectIds = (String[]) childrenInstances;
-        return AddOperation( operationType, parentTable, parentObjectId, columnName, childrenObjectIds );
-      }
 
       List<String> childrenIds = GetChildrenFromArrayInstances( childrenInstances );
 
@@ -114,8 +102,8 @@ namespace BackendlessAPI.Transaction
       return AddOperation( operationType, parentTable, parentObjectId, columnName, whereClauseForChildren, null );
     }
 
-    public OpResult AddOperation<E>( OperationType operationType, E parentObject, string columnName, 
-                                                                        string[] childrenObjectIds )
+    public OpResult AddOperation<E>( OperationType operationType, E parentObject, String columnName, 
+                                                                        String[] childrenObjectIds )
     {
       String parentObjectId = GetParentObjectIdFromInstance( parentObject );
       String parentTable = parentObject.GetType().Name;
@@ -126,16 +114,10 @@ namespace BackendlessAPI.Transaction
       return AddOperation( operationType, parentTable, parentObjectId, columnName, null, childrenObjectIds );
     }
 
-    public OpResult AddOperation<E, U>( OperationType operationType, E parentObject, string columnName, String[] childrenInstances )
+    public OpResult AddOperation<E, U>( OperationType operationType, E parentObject, string columnName, List<U> childrenInstances )
     {
-      if( childrenInstances == null || childrenInstances.Length == 0 )
+      if( childrenInstances == null || childrenInstances.Count == 0 )
         throw new ArgumentException( ExceptionMessage.NULL_BULK );
-
-      if( childrenInstances[0] is String)
-      {
-        String[] childrenObjectIds = (String[]) childrenInstances;
-        return AddOperation( operationType, parentObject, columnName, childrenObjectIds );
-      }
 
       String parentObjectId = GetParentObjectIdFromInstance( parentObject );
       String parentTable = parentObject.GetType().Name;
@@ -186,17 +168,11 @@ namespace BackendlessAPI.Transaction
                            columnName, null, childrenObjectIds );
     }
 
-    public OpResult AddOperation<E>( OperationType operationType, OpResult parentObject, string columnName,
-                                                                                    String[] childrenInstances )
+    public OpResult AddOperation<E>( OperationType operationType, OpResult parentObject, String columnName,
+                                                                                    List<E> childrenInstances )
     {
-      if( childrenInstances == null || childrenInstances.Length == 0 )
+      if( childrenInstances == null || childrenInstances.Count == 0 )
         throw new ArgumentException( ExceptionMessage.NULL_BULK );
-
-      if( childrenInstances[ 0 ] is String )
-      {
-        String[] childrenObjectIds = (String[]) childrenInstances;
-        return AddOperation( operationType, parentObject, columnName, childrenObjectIds );
-      }
 
       CheckOpResultForParent( parentObject );
 
@@ -252,16 +228,10 @@ namespace BackendlessAPI.Transaction
     }
 
     public OpResult AddOperation<E>( OperationType operationType, OpResultValueReference parentObject, string columnName,
-                                                                                           String[] childrenInstances )
+                                                                                           List<E> childrenInstances )
     {
-      if( childrenInstances == null || childrenInstances.Length == 0 )
+      if( childrenInstances == null || childrenInstances.Count == 0 )
         throw new ArgumentException( ExceptionMessage.NULL_BULK );
-
-      if( childrenInstances[ 0 ] is String )
-      {
-        String[] childrenObjectIds = (String[]) childrenInstances;
-        return AddOperation( operationType, parentObject, columnName, childrenObjectIds );
-      }
 
       Dictionary<String, Object> referenceToObjectId = GetReferenceToParentFromOpResultValue( parentObject );
 
@@ -386,12 +356,12 @@ namespace BackendlessAPI.Transaction
       return TransactionHelper.ConvertMapsToObjectIds( childrenMaps );
     }
 
-    private List<String> GetChildrenFromArrayInstances<E>( E[] children )
+    private List<String> GetChildrenFromArrayInstances<E>( List<E> children )
     {
-      if( children == null || children.Length == 0 )
+      if( children == null || children.Count == 0 )
         throw new ArgumentException( ExceptionMessage.NULL_BULK );
 
-      return TransactionHelper.GetObjectIdsFromListInstaces( children );
+      return TransactionHelper.GetObjectIdsFromListInstaces( children.ToArray() );
     }
   }
 }

@@ -17,6 +17,8 @@ using BackendlessAPI.Counters;
 using BackendlessAPI.Logging;
 using BackendlessAPI.Geo;
 using BackendlessAPI.Persistence;
+using BackendlessAPI.Transaction;
+using BackendlessAPI.Transaction.Operations;
 
 #if WITHRT
 using BackendlessAPI.RT;
@@ -56,11 +58,23 @@ namespace BackendlessAPI
       Types.AddClientClassMapping( "flex.messaging.messages.CommandMessage", typeof( CommandMessage ) );
       Types.AddClientClassMapping( "flex.messaging.messages.ErrorMessage", typeof( ErrMessage ) );
       Types.AddClientClassMapping( "flex.messaging.io.ArrayCollection", typeof( ObjectProxy ) );
-      Types.AddClientClassMapping( "com.backendless.persistence.GeometryDTO", typeof( GeometryDTO ));
-      Types.AddClientClassMapping( "com.backendless.persistence.Point", typeof( Point ));
-      Types.AddClientClassMapping( "com.backendless.persistence.LineString", typeof( LineString ));
-      Types.AddClientClassMapping( "com.backendless.persistence.Polygon", typeof( Polygon ));
-      
+      Types.AddClientClassMapping( "com.backendless.persistence.GeometryDTO", typeof( GeometryDTO ) );
+      Types.AddClientClassMapping( "com.backendless.persistence.Point", typeof( Point ) );
+      Types.AddClientClassMapping( "com.backendless.persistence.LineString", typeof( LineString ) );
+      Types.AddClientClassMapping( "com.backendless.persistence.Polygon", typeof( Polygon ) );
+      Types.AddClientClassMapping( "com.backendless.transaction.UnitOfWork", typeof( UnitOfWork ) );
+      Types.AddClientClassMapping( "com.backendless.transaction.operations.Operation", typeof( Operation) );
+      Types.AddClientClassMapping( "com.backendless.transaction.operations.OperationCreate", typeof( OperationCreate ) );
+      Types.AddClientClassMapping( "com.backendless.transaction.operations.OperationCreateBulk", typeof( OperationCreateBulk ) );
+      Types.AddClientClassMapping( "com.backendless.transaction.operations.OperationDelete", typeof( OperationDelete ) );
+      Types.AddClientClassMapping( "com.backendless.transaction.operations.OperationDeleteBulk", typeof( OperationDeleteBulk ) );
+      Types.AddClientClassMapping( "com.backendless.transaction.operations.OperationUpdate", typeof( OperationUpdate ) );
+      Types.AddClientClassMapping( "com.backendless.transaction.operations.OperationUpdateBulk", typeof( OperationUpdateBulk ) );
+      Types.AddClientClassMapping( "com.backendless.transaction.operations.OperationFind", typeof( OperationFind ) );
+      Types.AddClientClassMapping( "com.backendless.transaction.operations.OperationAddRelation", typeof( OperationAddRelation ) );
+      Types.AddClientClassMapping( "com.backendless.transaction.operations.OperationSetRelation", typeof( OperationSetRelation ) );
+      Types.AddClientClassMapping( "com.backendless.transaction.operations.OperationDeleteRelation", typeof( OperationDeleteRelation ) );
+                                              
       ORBConfig.GetInstance()
                .getObjectFactories()
                .AddArgumentObjectFactory( "Weborb.V3Types.BodyHolder", new BodyHolderFactory() );

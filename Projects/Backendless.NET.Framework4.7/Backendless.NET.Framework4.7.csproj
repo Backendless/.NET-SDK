@@ -302,12 +302,13 @@
     <Compile Include="..\..\Backendless\Transaction\UnitOfWorkExecutorImpl.cs" />
     <Compile Include="..\..\Backendless\Transaction\UnitOfWorkFind.cs" />
     <Compile Include="..\..\Backendless\Transaction\UnitOfWorkFindImpl.cs" />
-    <Compile Include="..\..\Backendless\Transaction\UnitOfWorkSetRelation.cs" />
     <Compile Include="..\..\Backendless\Transaction\UnitOfWorkUpdate.cs" />
     <Compile Include="..\..\Backendless\Transaction\UnitOfWorkUpdateImpl.cs" />
     <Compile Include="..\..\Backendless\Transaction\UnitOfWorkResult.cs" />
     <Compile Include="..\..\Backendless\Transaction\UnitOfWorkAddRelation.cs" />
     <Compile Include="..\..\Backendless\Transaction\UnitOfWorkAddRelationImpl.cs" />
+    <Compile Include="..\..\Backendless\Transaction\UnitOfWorkSetRelation.cs" />
+    <Compile Include="..\..\Backendless\Transaction\UnitOfWorkSetRelationImpl.cs" />
     <Compile Include="..\..\Backendless\Transaction\OperationType.cs" />
     <Compile Include="..\..\Backendless\Transaction\OperationResult.cs" />
     <Compile Include="..\..\Backendless\Transaction\RelationOperation.cs" />

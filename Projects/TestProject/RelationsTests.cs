@@ -3,8 +3,6 @@ using BackendlessAPI;
 using BackendlessAPI.Persistence;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using BackendlessAPI.Async;
 
 namespace TestProject
 {

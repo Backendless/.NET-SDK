@@ -13,7 +13,7 @@ namespace BackendlessAPI.Transaction
 
     //Dictionary + List<Dictionary>
     //Dictionary + List of custom classes
-    OpResult SetRelation<E>( String parentTable, Dictionary<String, Object> parentObject, String columnName, List<E> children );
+    OpResult SetRelation<E>( String parentTable, Dictionary<String, Object> parentObject, String columnName, List<E> childrenInstance );
 
     //Dictionary + OpResult = CREATE_BULK
     OpResult SetRelation( String parentTable, Dictionary<String, Object> parentObject, String columnName, OpResult children );
@@ -27,7 +27,7 @@ namespace BackendlessAPI.Transaction
 
     //String + List of Dictionary
     //String + List of custom classes
-    OpResult SetRelation<E>( String parentTable, String parentObjectId, String columnName, List<E> children );
+    OpResult SetRelation<E>( String parentTable, String parentObjectId, String columnName, List<E> childrenInstances );
 
     //String + OpResult = CREATE_BULK
     OpResult SetRelation( String parentTable, String parentObjectId, String columnName, OpResult children );
@@ -40,10 +40,10 @@ namespace BackendlessAPI.Transaction
 
     //Custom class + List<Dictionary>
     // Custom class + List of custom classes
-    OpResult SetRelation<E, U>( E parentObject, String columnName, List<U> children );
+    OpResult SetRelation<E, U>( E parentObject, String columnName, List<U> childrenInstances );
 
     //Custom class + OpResult = CREATE_BULK
-    OpResult setRelation<E>( E parentObject, String columnName, OpResult children );
+    OpResult SetRelation<E>( E parentObject, String columnName, OpResult children );
 
     //Custom class + whereClause
     OpResult SetRelation<E>( E parentObject, String columnName, String whereClauseForChildren );
@@ -53,7 +53,7 @@ namespace BackendlessAPI.Transaction
 
     //OpResult = CREATE/UPDATE( getObjectId ) + List<Dictionary>
     //OpResult = CREATE/UPDATE( getObjectId ) + List of custom classes
-    OpResult SetRelation<E>( OpResult parentObject, String columnName, List<E> children );
+    OpResult SetRelation<E>( OpResult parentObject, String columnName, List<E> childrenInstances );
 
     //OpResult = CREATE/UPDATE( getObjectId ) + OpResult = CREATE_BULK
     OpResult SetRelation( OpResult parentObject, String columnName, OpResult children );
@@ -66,7 +66,7 @@ namespace BackendlessAPI.Transaction
 
     //OpResult = CREATE_BULK( resultIndex) + List<Dictionary>
     //OpResult = CREATE_BULK( resultIndex ) + List of custom classes
-    OpResult SetRelation<E>( OpResultValueReference parentObject, String columnName, List<E> children );
+    OpResult SetRelation<E>( OpResultValueReference parentObject, String columnName, List<E> childrenInstances );
 
     //OpResult = CREATE_BULK( resultIndex ) + OpResult = CREATE_BULK
     OpResult SetRelation( OpResultValueReference parentObject, String columnName, OpResult children );

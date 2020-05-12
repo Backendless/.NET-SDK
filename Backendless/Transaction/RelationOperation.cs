@@ -14,7 +14,7 @@ namespace BackendlessAPI.Transaction
 
     //Dictionary + array of custom classes
     OpResult AddOperation<E>( OperationType operationType, String parentTable,
-                             Dictionary<String, Object> parentObject, String columnName, String[] childrenInstances ) where E : class;
+                             Dictionary<String, Object> parentObject, String columnName, List<E> childrenInstances );
 
     //Dictionary + List of hashmaps
     OpResult AddOperation( OperationType operationType, String parentTable,
@@ -34,7 +34,7 @@ namespace BackendlessAPI.Transaction
 
     //String + array of custom classes
     OpResult AddOperation<E>( OperationType operationType, String parentTable, String parentObjectId,
-                             String columnName, String[] childrenInstances );
+                             String columnName, List<E> childrenInstances );
 
     //String + List of hashmaps
     OpResult AddOperation( OperationType operationType, String parentTable, String parentObjectId,
@@ -52,7 +52,7 @@ namespace BackendlessAPI.Transaction
     OpResult AddOperation<E>( OperationType operationType, E parentObject, String columnName, String[] childrenObjectIds );
 
     //Custom class + array of custom classes
-    OpResult AddOperation<E, U>( OperationType operationType, E parentObject, String columnName, String[] childrenInstances );
+    OpResult AddOperation<E, U>( OperationType operationType, E parentObject, String columnName, List<U> childrenInstances );
 
     //Custom class + List of hashmaps
     OpResult AddOperation<E>( OperationType operationType, E parentObject, String columnName, List<Dictionary<String, Object>> childrenMaps );
@@ -68,7 +68,7 @@ namespace BackendlessAPI.Transaction
     OpResult AddOperation( OperationType operationType, OpResult parentObject, String columnName, String[] childrenObjectIds );
 
     //OpResult=CREATE/UPDATE(getObjectId) + array of custom classes
-    OpResult AddOperation<E>( OperationType operationType, OpResult parentObject, String columnName, String[] childrenInstances );
+    OpResult AddOperation<E>( OperationType operationType, OpResult parentObject, String columnName, List<E> childrenInstances );
 
     //OpResult=CREATE/UPDATE(getObjectId) + List of hashmaps
     OpResult AddOperation( OperationType operationType, OpResult parentObject,
@@ -88,7 +88,7 @@ namespace BackendlessAPI.Transaction
 
     //OpResultValueReference=CREATE_BULK/FIND(getObjectId)+ array of custom classes
     OpResult AddOperation<E>( OperationType operationType, OpResultValueReference parentObject,
-                             String columnName, String[] childrenInstances );
+                             String columnName, List<E> childrenInstances );
 
     //OpResultValueReference=CREATE_BULK/FIND(getObjectId) + List of hashmaps
     OpResult AddOperation( OperationType operationType, OpResultValueReference parentObject,
