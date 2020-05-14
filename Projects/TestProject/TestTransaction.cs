@@ -65,5 +65,79 @@ namespace TestProject
 
       unitOfWork.Execute();
     }
+
+    [TestMethod]
+    public void TestCreateMultipleObjects()
+    {
+      UnitOfWork unitOfWork = new UnitOfWork();
+
+      List<Dictionary<String, Object>> people = new List<Dictionary<String, Object>>();
+
+      Dictionary<String, Object> person1 = new Dictionary<String, Object>();
+      person1["name"] = "Mary";
+      person1["age"]  = 32;
+
+      Dictionary<String, Object> person2 = new Dictionary<String, Object>();
+      person2["name"] = "Bob";
+      person2["age"] = 22;
+
+      people.Add( person1 );
+      people.Add( person2 );
+
+      unitOfWork.BulkCreate( "Person", people );
+
+      unitOfWork.Execute();
+    }
+
+    [TestMethod]
+    public void TestUpdateMultipleObjects()
+    {
+      UnitOfWork unitOfWork = new UnitOfWork();
+
+      List<String> objectForChanges = new List<String>();
+
+      objectForChanges.Add( "5596648F-1489-CAC5-FFAF-A1B037F7B500" );
+      objectForChanges.Add( "D7FCBC10-F8A3-56A7-FF30-33FDCB404C00" );
+
+      Dictionary<String, Object> changes = new Dictionary<String, Object>();
+      changes[ "name" ] = "ChangedNEXT";
+
+      unitOfWork.BulkUpdate( "Person", objectForChanges, changes );
+
+      unitOfWork.Execute();
+    }
+
+    [TestMethod]
+    public void TestDeleteMultipleObjects()
+    {
+      UnitOfWork unitOfWork = new UnitOfWork();
+
+      List<String> objectsToDelete = new List<String>();
+
+      objectsToDelete.Add( "5596648F-1489-CAC5-FFAF-A1B037F7B500" );
+      objectsToDelete.Add( "D7FCBC10-F8A3-56A7-FF30-33FDCB404C00" );
+
+      unitOfWork.BulkDelete( "Person", objectsToDelete.ToArray() );
+
+      unitOfWork.Execute();
+    }
+
+    [TestMethod]
+    public void TestAddRelation()
+    {
+      
+    }
+
+    [TestMethod]
+    public void TestSetRelation()
+    {
+      
+    }
+
+    [TestMethod]
+    public void TestDeleteRelation()
+    {
+      
+    }
   }
 }

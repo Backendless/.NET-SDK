@@ -1,39 +1,31 @@
 ﻿using System;
+using Weborb.Service;
 
 namespace BackendlessAPI.Transaction.Payload
 {
   public class Selector
   {
-    private String conditional;
-    private Object unconditional;
-
     public Selector()
     {
     }
 
     public Selector( String conditional, Object unconditional )
     {
-      this.conditional = conditional;
-      this.unconditional = unconditional;
+      Conditional = conditional;
+      Unconditional = unconditional;
     }
 
-    public String Conditional
-    {
-      get => conditional;
-      set => conditional = value;
-    }
+    [SetClientClassMemberName("conditional")]
+    public String Conditional { get; set; }
 
-    public Object Unconditional
-    {
-      get => unconditional;
-      set => unconditional = value;
-    }
+    [SetClientClassMemberName("unconditional")]
+    public Object Unconditional { get; set; }
 
     public override string ToString()
     {
       return "Selector{" +
-             "conditional='" + conditional + '\'' +
-             ", unconditional=" + unconditional +
+             "conditional='" + Conditional + '\'' +
+             ", unconditional=" + Unconditional +
              '}';
     }
   }

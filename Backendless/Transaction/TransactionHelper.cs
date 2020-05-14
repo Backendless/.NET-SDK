@@ -11,14 +11,14 @@ namespace BackendlessAPI.Transaction
 {
   class TransactionHelper
   {
-    private static String LAST_LOGIN_COLUM_NAME = "lastLogin";
+    private static String LAST_LOGIN_COLUMN_NAME = "lastLogin";
     private static String PASSWORD_KEY = "password";
     private static String SOCIAL_ACCOUNT_COLUMN_NAME = "socialAccount";
     private static String USER_STATUS_COLUMN_NAME = "userStatus";
 
     internal static void RemoveSystemField( Dictionary<String, Object> changes )
     {
-      changes.Remove( LAST_LOGIN_COLUM_NAME );
+      changes.Remove( LAST_LOGIN_COLUMN_NAME );
       changes.Remove( PASSWORD_KEY );
       changes.Remove( SOCIAL_ACCOUNT_COLUMN_NAME );
       changes.Remove( USER_STATUS_COLUMN_NAME );

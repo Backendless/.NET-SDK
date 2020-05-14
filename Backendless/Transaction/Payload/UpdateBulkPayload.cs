@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using Weborb.Service;
 
 namespace BackendlessAPI.Transaction.Payload
 {
   class UpdateBulkPayload : Selector
   {
-    private Dictionary<String, Object> changes;
-
     public UpdateBulkPayload() : base()
     {
     }
@@ -14,13 +13,13 @@ namespace BackendlessAPI.Transaction.Payload
     public UpdateBulkPayload(String conditional, Object unconditional, Dictionary<String, Object> changes )
                                                                        : base( conditional, unconditional )
     {
-      this.changes = changes;
+      Changes = changes;
     }
 
-    public Dictionary<String, Object> Changes
-    {
-      get => changes;
-      set => changes = value;
-    }
+    [SetClientClassMemberName("changes")]
+    public Dictionary<String, Object> Changes { get; set; }
+
+    [SetClientClassMemberName("query")]
+    public Object Query{ get; set; }
   }
 }

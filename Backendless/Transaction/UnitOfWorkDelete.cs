@@ -8,7 +8,7 @@ namespace BackendlessAPI.Transaction
 {
   interface UnitOfWorkDelete
   {
-    OpResult Delete<E>( E instance ) where E : class;
+    OpResult Delete<E>( E instance );
 
     OpResult Delete( String tableName, Dictionary<String, Object> objectMap );
 
@@ -18,7 +18,7 @@ namespace BackendlessAPI.Transaction
 
     OpResult Delete( OpResultValueReference resultIndex );
 
-    OpResult BulkDelete<E>( List<E> instances ) where E : class;
+    OpResult BulkDelete<E>( List<E> instances );
 
     OpResult BulkDelete( String tableName, String[] objectIdValues );
 

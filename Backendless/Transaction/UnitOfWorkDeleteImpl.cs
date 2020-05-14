@@ -19,7 +19,7 @@ namespace BackendlessAPI.Transaction
       this.opResultIdGenerator = opResultIdGenerator;
     }
 
-    public OpResult Delete<E>( E instance ) where E : class
+    public OpResult Delete<E>( E instance )
     {
       Dictionary<String, Object> entityMap = TransactionHelper.ConvertInstanceToMap( instance );
       String tableName = instance.GetType().Name;
@@ -76,7 +76,7 @@ namespace BackendlessAPI.Transaction
       return TransactionHelper.MakeOpResult( resultIndex.GetOpResult().GetTableName(), operationResultId, OperationType.DELETE );
     }
 
-    public OpResult BulkDelete<E>( List<E> instances ) where E : class
+    public OpResult BulkDelete<E>( List<E> instances )
     {
       List<Dictionary<String, Object>> serializedEntities = new List<Dictionary<string, object>>();
 

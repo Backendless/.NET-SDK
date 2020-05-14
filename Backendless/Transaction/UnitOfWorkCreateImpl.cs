@@ -18,7 +18,7 @@ namespace BackendlessAPI.Transaction
       this.clazzes = clazzes;
     }
 
-    public OpResult Create<E>( E instance ) where E : class
+    public OpResult Create<E>( E instance )
     {
       Dictionary<String, Object> entityMap = TransactionHelper.ConvertInstanceToMap<E>( instance );
       String tableName = instance.GetType().Name;
@@ -40,7 +40,7 @@ namespace BackendlessAPI.Transaction
       return TransactionHelper.MakeOpResult( tableName, operationResultId, OperationType.CREATE );
     }
 
-    public OpResult BulkCreate<E>( List<E> instances ) where E : class
+    public OpResult BulkCreate<E>( List<E> instances )
     {
       List<Dictionary<String, Object>> serializedEntities = new List<Dictionary<string, object>>();
       int iterator = 0;
@@ -60,26 +60,19 @@ namespace BackendlessAPI.Transaction
       if( arrayOfObjectMaps == null )
         throw new ArgumentException( ExceptionMessage.NULL_BULK );
 
-      foreach( Dictionary<String, Object> mapObject in arrayOfObjectMaps )
+      
+        foreach( Dictionary<String, Object> mapObject in arrayOfObjectMaps )
         if( mapObject != null )
           TransactionHelper.MakeReferenceToValueFromOpResult( mapObject );
         else
           throw new ArgumentException( ExceptionMessage.NULL_MAP );
 
-      int iterator = arrayOfObjectMaps.Count - 1;
-
-      foreach( Dictionary<String, Object> objectMap in arrayOfObjectMaps )
-      {
-        iterator--;
-        TransactionHelper.MakeReferenceToValueFromOpResult( objectMap );
-        String operationResultId = opResultIdGenerator.GenerateOpResultId( OperationType.CREATE, tableName );
-        OperationCreate operationCreateBulk = new OperationCreate( OperationType.CREATE, tableName, operationResultId, objectMap );
+        String operationResultId = opResultIdGenerator.GenerateOpResultId( OperationType.CREATE_BULK, tableName );
+        OperationCreateBulk operationCreateBulk = new OperationCreateBulk( OperationType.CREATE_BULK, tableName, operationResultId, arrayOfObjectMaps );
+        
         operations.AddLast( operationCreateBulk );
-        if( iterator == 0)
-          return TransactionHelper.MakeOpResult( tableName, operationResultId, OperationType.CREATE );
-      }
 
-      throw new System.Exception( "Error" );
+        return TransactionHelper.MakeOpResult( tableName, operationResultId, OperationType.CREATE_BULK );
     }
   }
 }
