@@ -55,7 +55,7 @@ namespace BackendlessAPI.Transaction
     OpResult AddToRelation<E>( E parentObject, String columnName, String whereClauseForChildren );
 
     //OpResult=CREATE/UPDATE(getObjectId) + array of objectIds
-    OpResult addToRelation( OpResult parentObject, String columnName, String[] childrenObjectIds );
+    OpResult AddToRelation( OpResult parentObject, String columnName, String[] childrenObjectIds );
 
     //OpResult=CREATE/UPDATE(getObjectId) + array of custom classes
     OpResult AddToRelation<E>( OpResult parentObject, String columnName, List<E> childrenInstances );

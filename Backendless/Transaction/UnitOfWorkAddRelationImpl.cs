@@ -89,7 +89,7 @@ namespace BackendlessAPI.Transaction
       return relationOperation.AddOperation( OperationType.ADD_RELATION, parentObject, columnName, whereClauseForChildren );
     }
 
-    public OpResult addToRelation( OpResult parentObject, string columnName, string[] childrenObjectIds )
+    public OpResult AddToRelation( OpResult parentObject, string columnName, string[] childrenObjectIds )
     {
       return relationOperation.AddOperation( OperationType.ADD_RELATION, parentObject, columnName, childrenObjectIds );
     }

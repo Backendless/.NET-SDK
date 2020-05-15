@@ -4,22 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Weborb.Service;
 
 namespace BackendlessAPI.Transaction.Payload
 {
   public class Relation : Selector
   {
-    private Object parentObject;
-    private String relationColumn;
-
-    //helpers
-    [JsonIgnore]
-    private List<String> objectIds;
-    [JsonIgnore]
-    private String relationTableName;
-    [JsonIgnore]
-    private bool columnUnique;
-
     public Relation() : base()
     {
     }
@@ -27,48 +17,36 @@ namespace BackendlessAPI.Transaction.Payload
     public Relation( String conditional, Object unconditional, Object parentObject, String relationColumn,
                      List<String> objectIds, String relationTableName, bool columnUnique ) : base( conditional, unconditional )
     {
-      this.parentObject = parentObject;
-      this.relationColumn = relationColumn;
-      this.objectIds = objectIds;
-      this.relationTableName = relationTableName;
-      this.columnUnique = columnUnique;
+      ParentObject = parentObject;
+      RelationColumn = relationColumn;
+      ObjectIds = objectIds;
+      RelationTableName = relationTableName;
+      ColumnUnique = columnUnique;
     }
 
-    public Object ParentObject
-    {
-      get => parentObject;
-      set => parentObject = value;
-    }
+    [SetClientClassMemberName("parentObject")]
+    public Object ParentObject { get; set; }
 
-    public String RelationColumn
-    {
-      get => relationColumn;
-      set => relationColumn = value;
-    }
+    [SetClientClassMemberName("relationColumn")]
+    public String RelationColumn{ get; set; }
 
-    public List<String> ObjectIds
-    {
-      get => objectIds;
-      set => objectIds = value;
-    }
+    [JsonIgnore]
+    [SetClientClassMemberName("objectIds")]
+    public List<String> ObjectIds { get; set; }
 
-    public String RelationTableName
-    {
-      get => relationTableName;
-      set => relationTableName = value;
-    }
+    [JsonIgnore]
+    [SetClientClassMemberName("relationTableName")]
+    public String RelationTableName { get; set; }
 
-    public bool ColumnUnique
-    {
-      get => columnUnique;
-      set => columnUnique = value;
-    }
+    [JsonIgnore]
+    [SetClientClassMemberName("columnUnique")]
+    public bool ColumnUnique { get; set; }
 
     public override string ToString()
     {
       return "Relation{" +
-            "parentObject=" + parentObject + '\'' +
-            ", relationColumn='" + relationColumn + '\'' +
+            "parentObject=" + ParentObject + '\'' +
+            ", relationColumn='" + RelationColumn + '\'' +
             ", conditional='" + Conditional + '\'' +
             ", unconditional=" + Unconditional +
             '}';

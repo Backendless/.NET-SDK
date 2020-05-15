@@ -1,12 +1,11 @@
 ﻿using BackendlessAPI.Transaction.Payload;
 using System;
+using Weborb.Service;
 
 namespace BackendlessAPI.Transaction.Operations
 {
   class OperationAddRelation : Operation
-  {
-    private Object payload;
-    
+  {    
     public OperationAddRelation()
     {
     }
@@ -14,13 +13,10 @@ namespace BackendlessAPI.Transaction.Operations
     public OperationAddRelation( OperationType operationType, String table, String opResultId, Relation payload )
                                                                        : base( operationType, table, opResultId )
     {
-      this.payload = payload;
+      Payload = payload;
     }
 
-    public override Object Payload
-    {
-      get => payload;
-      set => payload = value;
-    }
+    [SetClientClassMemberName("payload")]
+    public override Object Payload { get; set; }
   }
 }

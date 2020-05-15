@@ -125,19 +125,49 @@ namespace TestProject
     [TestMethod]
     public void TestAddRelation()
     {
-      
+      UnitOfWork unitOfWork = new UnitOfWork();
+
+      String[] giftId = { "ECC44968-2639-A89A-FF70-5007DBAE4100" };
+
+      String parentObjectId = "41483F08-2C22-69A3-FFDD-208F3BA5E200";
+      String parentTableName = "Person";
+      String relationColumnName = "Surname";
+
+      unitOfWork.AddToRelation( parentTableName, parentObjectId, relationColumnName, giftId );
+
+      unitOfWork.Execute();
     }
 
     [TestMethod]
     public void TestSetRelation()
     {
-      
+      UnitOfWork unitOfWork = new UnitOfWork();
+
+      String[] giftId = { "980D0AC3-C63F-4AA5-FFDA-B2B65ED8CD00" };
+
+      String parentObjectId = "41483F08-2C22-69A3-FFDD-208F3BA5E200";
+      String parentTableName = "Person";
+      String relationColumnName = "Surname";
+
+      unitOfWork.SetRelation( parentTableName, parentObjectId, relationColumnName, giftId );
+
+      unitOfWork.Execute();
     }
 
     [TestMethod]
     public void TestDeleteRelation()
     {
-      
+      UnitOfWork unitOfWork = new UnitOfWork();
+
+      String[] giftId = { "980D0AC3-C63F-4AA5-FFDA-B2B65ED8CD00" };
+
+      String parentObjectId = "41483F08-2C22-69A3-FFDD-208F3BA5E200";
+      String parentTableName = "Person";
+      String relationColumnName = "Surname";
+
+      unitOfWork.DeleteRelation( parentTableName, parentObjectId, relationColumnName, giftId );
+
+      unitOfWork.Execute();
     }
   }
 }
