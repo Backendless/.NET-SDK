@@ -63,7 +63,7 @@ namespace BackendlessAPI.Transaction
       if( result == null )
         throw new ArgumentException( ExceptionMessage.NULL_OP_RESULT );
 
-      if( result.GetResultIndex() == null || result.GetPropName() == null )
+      if( result.GetResultIndex() == null || result.GetPropName() != null )
         throw new ArgumentException( ExceptionMessage.OP_RESULT_INDEX_YES_PROP_NAME_NOT );
 
       if( OperationTypeUtil.supportCollectionEntityDescriptionType.Contains( result.GetOpResult().GetOperationType() ) )

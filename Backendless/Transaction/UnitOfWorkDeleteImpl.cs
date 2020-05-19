@@ -63,7 +63,7 @@ namespace BackendlessAPI.Transaction
       if( resultIndex == null )
         throw new ArgumentException( ExceptionMessage.NULL_OP_RESULT_VALUE_REFERENCE );
 
-      if( resultIndex.GetResultIndex() == null || resultIndex.GetPropName() == null )
+      if( resultIndex.GetResultIndex() == null || resultIndex.GetPropName() != null )
         throw new ArgumentException( ExceptionMessage.OP_RESULT_INDEX_YES_PROP_NAME_NOT );
 
       Dictionary<String, Object> referenceToObjectId = TransactionHelper.ConvertCreateBulkOrFindResultIndexToObjectId( resultIndex );
@@ -80,7 +80,7 @@ namespace BackendlessAPI.Transaction
     {
       List<Dictionary<String, Object>> serializedEntities = new List<Dictionary<string, object>>();
 
-      for( int i = 0; i < serializedEntities.Count; i++ )
+      for( int i = 0; i < instances.Count; i++ )
         serializedEntities.Add( new Dictionary<String, Object>( TransactionHelper.ConvertInstanceToMap<E>( instances[ i ] ) ) );
 
       String tableName = instances[0].GetType().Name;

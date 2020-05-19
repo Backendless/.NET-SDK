@@ -48,12 +48,10 @@ namespace BackendlessAPI.Transaction
         throw new ArgumentException( ExceptionMessage.NULL_INSTANCE );
 
       Dictionary<String, Object> entity = new Dictionary<String, Object>();
+      Type fieldsType = typeof( E );
+      FieldInfo[] fields = fieldsType.GetFields( BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance );
 
-      foreach( FieldInfo field in instance.GetType().GetFields( BindingFlags.Public ) )
-      {
-        entity[ field.Name ] = field.GetValue( instance );
-      }
-      foreach( FieldInfo field in instance.GetType().GetFields( BindingFlags.NonPublic ) )
+      foreach( FieldInfo field in fields )
       {
         entity[ field.Name ] = field.GetValue( instance );
       }
@@ -85,7 +83,7 @@ namespace BackendlessAPI.Transaction
         List<String> objectIds = new List<String>();
 
         foreach( E entry in children )
-          objectIds.Add( ConvertObjectMapToObjectId( ConvertInstanceToMap( children ) ) );
+          objectIds.Add( ConvertObjectMapToObjectId( ConvertInstanceToMap( entry ) ) );
 
         return objectIds;
       }
