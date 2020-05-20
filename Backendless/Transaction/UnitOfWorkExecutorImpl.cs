@@ -3,10 +3,6 @@ using BackendlessAPI.Exception;
 using System;
 using System.Collections.Generic;
 using BackendlessAPI.Async;
-using Weborb;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Weborb.Types;
 
 namespace BackendlessAPI.Transaction
