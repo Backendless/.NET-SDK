@@ -134,7 +134,7 @@ namespace BackendlessAPI.Transaction
         {
           OpResultValueReference reference = (OpResultValueReference) kvp.Value;
 
-          if( IsCreatedUpdatedPropName( reference ) || CreateBulkResultIndex( reference ) || IsFoundPropNameResultIndex( reference ) )
+          if( IsCreatedUpdatedPropName( reference ) || IsCreatedBulkResultIndex( reference ) || IsFoundPropNameResultIndex( reference ) )
             entry[ kvp.Key ] = reference.MakeReference();
           else
             throw new ArgumentException( ExceptionMessage.OP_RESULT_FROM_THIS_OPERATION_NOT_SUPPORT_IN_THIS_PLACE );      
@@ -142,7 +142,7 @@ namespace BackendlessAPI.Transaction
       }
     }
 
-    public static void MakeReferenceToObjecIdtFromOpResult( List<Object> listObjectIds )
+    internal static void MakeReferenceToObjectIdFromOpResult( List<Object> listObjectIds )
     {
       IEnumerator<Object> iterator = listObjectIds.GetEnumerator();
 
@@ -157,7 +157,7 @@ namespace BackendlessAPI.Transaction
         {
           OpResultValueReference reference = (OpResultValueReference) temp;
 
-          if( CreateUpdateObjectId( reference ) || CreateBulkResultIndex( reference ) || IsFoundPropNameResultIndex( reference ) )
+          if( IsCreatedUpdatedObjectId( reference ) || IsCreatedBulkResultIndex( reference ) || IsFoundPropNameResultIndex( reference ) )
             temp = reference.MakeReference();
           else
             throw new ArgumentException( ExceptionMessage.OP_RESULT_FROM_THIS_OPERATION_NOT_SUPPORT_IN_THIS_PLACE );
@@ -165,7 +165,7 @@ namespace BackendlessAPI.Transaction
       }
     }
 
-    private static Boolean CreateUpdateObjectId( OpResultValueReference reference )
+    private static Boolean IsCreatedUpdatedObjectId( OpResultValueReference reference )
     {
       return IsCreatedUpdatedPropName( reference ) && reference.GetPropName().Equals( "objectId" );
     }
@@ -177,7 +177,7 @@ namespace BackendlessAPI.Transaction
                                                                       reference.GetResultIndex() != null;
     }
 
-    private static Boolean CreateBulkResultIndex( OpResultValueReference reference )
+    private static Boolean IsCreatedBulkResultIndex( OpResultValueReference reference )
     {
       return OperationType.CREATE_BULK.Equals( reference.GetOpResult().GetOperationType() ) &&
             reference.GetPropName() == null &&

@@ -53,6 +53,7 @@ namespace BackendlessAPI.Transaction
       }
 
       String tableName = instances[ 0 ].GetType().Name;
+
       return BulkCreate( tableName, serializedEntities );
     }
 
