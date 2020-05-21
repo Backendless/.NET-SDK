@@ -106,18 +106,18 @@
     public const string NULL_MAP = "Entity dictionary cannot be null";
     public const string NULL_OBJECT_ID_IN_OBJECT_MAP = "Object dictionary must contain string objectId and objectId cannot be null";
     public const string NULL_OBJECT_ID_IN_INSTANCE = "Instance must contain objectId and objectId can not be null";
-    public const string NULL_BULK = "Array of obejcts/dictionaries cannot be null";
-    public const string REF_TYPE_NOT_SUPPORT = "This operation result not supported in this operation";
-    public const string OP_RESULT_ID_ALREADY_PRESENT = "This opResultId already present. OpResultId must be unique";
-    public const string OP_RESULT_FROM_THIS_OPERATION_NOT_SUPPORT_IN_THIS_PLACE = "OpResult/OpResultValueReference from this operation in this place not supported";
+    public const string NULL_BULK = "Array of objects/dictionaries cannot be null";
+    public const string REF_TYPE_NOT_SUPPORT = "This operation result is not supported in this operation";
+    public const string OP_RESULT_ID_ALREADY_PRESENT = "This opResultId is already present. OpResultId must be unique";
+    public const string OP_RESULT_FROM_THIS_OPERATION_NOT_SUPPORT_IN_THIS_PLACE = "OpResult/OpResultValueReference from this operation in this place is not supported";
     public const string NULL_INSTANCE = "Entity class cannot be null";
     public const string LIST_OPERATIONS_NULL = "List of operations in unitOfWork can not be null or empty";
     public const string LIST_NOT_INSTANCES = "Array can be only of instances";
     public const string NULL_OP_RESULT = "OpResult cannot be null";
     public const string NULL_OP_RESULT_VALUE_REFERENCE = "OpResultValueReference cannot be null";
-    public const string OP_RESULT_INDEX_YES_PROP_NAME_NOT = "This operation result in this operation must resolved only to resultIndex";
+    public const string OP_RESULT_INDEX_YES_PROP_NAME_NOT = "This operation result in this operation must resolve only to resultIndex";
     public const string NULL_PARENT_TABLE_NAME = "Parent table name can not be null or empty";
     public const string NULL_RELATION_COLUMN_NAME = "Relation column name can not be null or empty";
-    public const string RELATION_USE_LIST_OF_MAPS = "Unable to execute the relation operation. Use the relation method which accepts list of Maps child objects";
+    public const string RELATION_USE_LIST_OF_MAPS = "Unable to execute the relation operation. Use the relation method which accepts a list of Map child objects";
   }
 }

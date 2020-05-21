@@ -23,6 +23,7 @@ namespace BackendlessAPI.Transaction
       Dictionary<String, Object> entityMap = TransactionHelper.ConvertInstanceToMap<E>( instance );
       String tableName = instance.GetType().Name;
       clazzes[ "tableName" ] = instance.GetType();
+
       return Create( tableName, entityMap );
     }
 

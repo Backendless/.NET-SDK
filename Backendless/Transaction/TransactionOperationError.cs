@@ -6,33 +6,24 @@ namespace BackendlessAPI.Transaction
 {
   public class TransactionOperationError
   {
-    private Operation operation;
-
     public TransactionOperationError()
     {
     }
 
     public TransactionOperationError( Operation operation, String message )
     {
-      this.operation = operation;
+      Operation = operation;
       Message = message;
     }
 
     [SetClientClassMemberName( "message" )]
     public String Message { get; set; }
 
-    public Operation GetOperation()
-    {
-      return operation;
-    }
-    public void SetOperation( Operation operation )
-    {
-      this.operation = operation;
-    }
+    public Operation Operation{ get; set; }
 
     public override string ToString()
     {
-      return "TransactionOperationError{operation=" + operation + ", message=" + Message + "}";
+      return "TransactionOperationError{operation=" + Operation + ", message=" + Message + "}";
     }
   }
 }

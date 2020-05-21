@@ -25,7 +25,6 @@ namespace BackendlessAPI.Transaction
     private UnitOfWorkSetRelation unitOfWorkSetRelation;
     private UnitOfWorkDeleteRelation unitOfWorkDeleteRelation;
     private UnitOfWorkExecutor unitOfWorkExecutor;
-
     public UnitOfWork()
     {
       Dictionary<String, Type> clazzes = new Dictionary<String, Type>();

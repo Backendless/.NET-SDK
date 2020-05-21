@@ -36,6 +36,7 @@ namespace BackendlessAPI.Transaction
         throw new ArgumentException( ExceptionMessage.LIST_OPERATIONS_NULL );
 
       Object[] args = new Object[] { unitOfWork };
+
       foreach( KeyValuePair<String, Type> entry in clazzes )
         Types.AddClientClassMapping( entry.Key, entry.Value );
 

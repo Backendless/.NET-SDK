@@ -48,10 +48,8 @@ namespace BackendlessAPI.Transaction
       FieldInfo[] fields = fieldsType.GetFields( BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance );
 
       foreach( FieldInfo field in fields )
-      {
         entity[ field.Name ] = field.GetValue( instance );
-      }
-
+      
       return entity;
     }
 
@@ -99,6 +97,7 @@ namespace BackendlessAPI.Transaction
       }
 
       Object maybeObjectId = objectMap[ "objectId" ];
+
       if( !( maybeObjectId is String ) )
         throw new ArgumentException( ExceptionMessage.NULL_OBJECT_ID_IN_OBJECT_MAP );
 
@@ -135,7 +134,7 @@ namespace BackendlessAPI.Transaction
         {
           OpResultValueReference reference = (OpResultValueReference) kvp.Value;
 
-          if( CreateUpdatePropName( reference ) || CreateBulkResultIndex( reference ) || FindPropNameResultIndex( reference ) )
+          if( IsCreatedUpdatedPropName( reference ) || CreateBulkResultIndex( reference ) || IsFoundPropNameResultIndex( reference ) )
             entry[ kvp.Key ] = reference.MakeReference();
           else
             throw new ArgumentException( ExceptionMessage.OP_RESULT_FROM_THIS_OPERATION_NOT_SUPPORT_IN_THIS_PLACE );      
@@ -158,7 +157,7 @@ namespace BackendlessAPI.Transaction
         {
           OpResultValueReference reference = (OpResultValueReference) temp;
 
-          if( CreateUpdateObjectId( reference ) || CreateBulkResultIndex( reference ) || FindPropNameResultIndex( reference ) )
+          if( CreateUpdateObjectId( reference ) || CreateBulkResultIndex( reference ) || IsFoundPropNameResultIndex( reference ) )
             temp = reference.MakeReference();
           else
             throw new ArgumentException( ExceptionMessage.OP_RESULT_FROM_THIS_OPERATION_NOT_SUPPORT_IN_THIS_PLACE );
@@ -168,10 +167,10 @@ namespace BackendlessAPI.Transaction
 
     private static Boolean CreateUpdateObjectId( OpResultValueReference reference )
     {
-      return CreateUpdatePropName( reference ) && reference.GetPropName().Equals( "objectId" );
+      return IsCreatedUpdatedPropName( reference ) && reference.GetPropName().Equals( "objectId" );
     }
 
-    private static Boolean CreateUpdatePropName( OpResultValueReference reference )
+    private static Boolean IsCreatedUpdatedPropName( OpResultValueReference reference )
     {
       return OperationTypeUtil.supportEntityDescriptionResultType.Contains( reference.GetOpResult().GetOperationType() ) &&
                                                                       reference.GetPropName() == null &&
@@ -185,12 +184,12 @@ namespace BackendlessAPI.Transaction
             reference.GetResultIndex() != null;
     }
 
-    private static Boolean FindResultIndexObjectId( OpResultValueReference reference )
+    private static Boolean IsFoundResultIndexObjectId( OpResultValueReference reference )
     {
-      return FindPropNameResultIndex( reference ) && reference.GetPropName().Equals( "objectId" );
+      return IsFoundPropNameResultIndex( reference ) && reference.GetPropName().Equals( "objectId" );
     }
 
-    private static Boolean FindPropNameResultIndex( OpResultValueReference reference )
+    private static Boolean IsFoundPropNameResultIndex( OpResultValueReference reference )
     {
       return OperationType.FIND.Equals( reference.GetOpResult().GetOperationType() ) &&
             reference.GetPropName() != null &&
