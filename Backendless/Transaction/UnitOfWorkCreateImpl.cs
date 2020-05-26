@@ -43,7 +43,11 @@ namespace BackendlessAPI.Transaction
 
     public OpResult BulkCreate<E>( List<E> instances )
     {
-      List<Dictionary<String, Object>> serializedEntities = new List<Dictionary<string, object>>();
+      if( instances == null )
+        throw new ArgumentException( ExceptionMessage.NULL_INSTANCE );
+
+      String tableName = instances[ 0 ].GetType().Name;
+      List<Dictionary<String, Object>> serializedEntities = new List<Dictionary<String, Object>>();
       int iterator = 0;
 
       while( instances.Count != iterator )
@@ -52,9 +56,11 @@ namespace BackendlessAPI.Transaction
         iterator++;
       }
 
-      String tableName = instances[ 0 ].GetType().Name;
+      String operationResultId = opResultIdGenerator.GenerateOpResultId( OperationType.CREATE_BULK, tableName );
+      OperationCreateBulk operationCreateBulk = new OperationCreateBulk( OperationType.CREATE_BULK, tableName, operationResultId, serializedEntities );
+      operations.AddLast( operationCreateBulk );
 
-      return BulkCreate( tableName, serializedEntities );
+      return TransactionHelper.MakeOpResult( tableName, operationResultId, OperationType.CREATE_BULK );
     }
 
     public OpResult BulkCreate( String tableName, List<Dictionary<String, Object>> arrayOfObjectMaps )
