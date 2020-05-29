@@ -69,18 +69,18 @@ namespace BackendlessAPI.Transaction
         throw new ArgumentException( ExceptionMessage.NULL_BULK );
 
       
-        foreach( Dictionary<String, Object> mapObject in arrayOfObjectMaps )
+      foreach( Dictionary<String, Object> mapObject in arrayOfObjectMaps )
         if( mapObject != null )
           TransactionHelper.MakeReferenceToValueFromOpResult( mapObject );
         else
           throw new ArgumentException( ExceptionMessage.NULL_MAP );
 
-        String operationResultId = opResultIdGenerator.GenerateOpResultId( OperationType.CREATE_BULK, tableName );
-        OperationCreateBulk operationCreateBulk = new OperationCreateBulk( OperationType.CREATE_BULK, tableName, operationResultId, arrayOfObjectMaps );
+      String operationResultId = opResultIdGenerator.GenerateOpResultId( OperationType.CREATE_BULK, tableName );
+      OperationCreateBulk operationCreateBulk = new OperationCreateBulk( OperationType.CREATE_BULK, tableName, operationResultId, arrayOfObjectMaps );
         
-        operations.AddLast( operationCreateBulk );
+      operations.AddLast( operationCreateBulk );
 
-        return TransactionHelper.MakeOpResult( tableName, operationResultId, OperationType.CREATE_BULK );
+      return TransactionHelper.MakeOpResult( tableName, operationResultId, OperationType.CREATE_BULK );
     }
   }
 }

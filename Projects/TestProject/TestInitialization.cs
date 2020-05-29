@@ -11,13 +11,13 @@ namespace TestProject
   public class TestInitialization
   {
 #if DEV_TEST
-      private const String APP_API_KEY = "F8F82BF0-414F-36CB-FFE1-303FA538ED00";
-      private const String DOTNET_API_KEY = "AB320716-358B-4BBF-AF9D-4F4B98F03363";
-      private const String BKNDLSS_URL = "http://apitest.backendless.com";
+      internal const String APP_API_KEY = "CF7398E8-7F3D-64F9-FF3B-FB3CE8893200";
+      internal const String DOTNET_API_KEY = "9808682C-32C2-EC87-FFF5-CAB709BE2400";
+      internal const String BKNDLSS_URL = "http://apitest.backendless.com";
 #else
-      public const String APP_API_KEY = "C624ABB6-8F31-8FBD-FFFA-6EABD753F900";
-      private const String DOTNET_API_KEY = "868227AE-2485-4D14-A1E5-AA8F3619CEC0";
-      private const String BKNDLSS_URL = "http://api.backendless.com";
+      internal const String APP_API_KEY = "C624ABB6-8F31-8FBD-FFFA-6EABD753F900";
+      internal const String DOTNET_API_KEY = "868227AE-2485-4D14-A1E5-AA8F3619CEC0";
+      internal const String BKNDLSS_URL = "http://api.backendless.com";
 #endif
 
     [AssemblyInitialize]

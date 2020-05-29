@@ -13,7 +13,7 @@ namespace TestProject
     public string AreaA { get; set; }
     public bool Categories{ get; set; }
   }
-  public class Order
+  public class Orders
   {
     public List<Area> Related{ get; set; }
     public string name{ get; set; }
@@ -28,7 +28,7 @@ namespace TestProject
     {
       try
       {
-        Backendless.Data.Describe( "Order" );
+        Backendless.Data.Describe( "Orders" );
         Backendless.Data.Describe( "Area" );
         Backendless.Data.Describe( "CountryLanguage" );
         Backendless.Data.Describe( "Country" );
@@ -36,19 +36,19 @@ namespace TestProject
       }
       catch
       {
-        ////////////Сreation of the parent table "Order"////////////
+        ////////////Сreation of the parent table "Orders"////////////
 
         Dictionary<String, Object> data = new Dictionary<String, Object>();
         data.Add( "age", 10 );
         data.Add( "name", "Nikita" );
 
-        Dictionary<String, Object> dataIdParent_1 = Backendless.Data.Of( "Order" ).Save( data );//First object in the "Order" table
+        Dictionary<String, Object> dataIdParent_1 = Backendless.Data.Of( "Orders" ).Save( data );//First object in the "Order" table
         /////////////////////////////////////////////////////////////////////////////////////////
         data.Clear();
         data.Add( "age", 5 );
         data.Add( "name", "Tommy" );
 
-        Dictionary<String, Object> dataIdParent_2 = Backendless.Data.Of( "Order" ).Save( data );//Second object in the "Order" table
+        Dictionary<String, Object> dataIdParent_2 = Backendless.Data.Of( "Orders" ).Save( data );//Second object in the "Order" table
         /////////////////////////////////////////////////////////////////////////////////////////
 
         ////////////Creation of the children table "Area"////////////
@@ -68,16 +68,16 @@ namespace TestProject
         Dictionary<String, Object> dataIdChildren_2 = Backendless.Data.Of( "Area" ).Save( data );//Second object in the "Area" table
         //////////////////////////////////////////////////////////////////////////////////////////
 
-        ///Сreating a connection between the objects "Order" and "Area"///
+        ///Сreating a connection between the objects "Orders" and "Area"///
 
         Object[] children = new Object[] { dataIdChildren_1 };
 
-        Backendless.Data.Of( "Order" ).SetRelation( dataIdParent_1, "Related:Area:n", children );//First relation
+        Backendless.Data.Of( "Orders" ).SetRelation( dataIdParent_1, "Related:Area:n", children );//First relation
         //////////////////////////////////////////////////////////////////////////////////////////
 
         children = new Object[] { dataIdChildren_2 };
 
-        Backendless.Data.Of( "Order" ).SetRelation( dataIdParent_2, "Related:Area:n", children );//Second relations
+        Backendless.Data.Of( "Orders" ).SetRelation( dataIdParent_2, "Related:Area:n", children );//Second relations
         ///////////////////////////////////////////////////////////////////////////////////////////
         
         ////////////Сreation of the table "CountryLanguage"////////////
@@ -175,7 +175,7 @@ namespace TestProject
       DataQueryBuilder qb = DataQueryBuilder.Create();
       qb.AddAllProperties();
       qb.SetRelated( new List<String>() { "Related" } );
-      IList<Dictionary<String, Object>> res = Backendless.Data.Of( "Order" ).Find( qb );
+      IList<Dictionary<String, Object>> res = Backendless.Data.Of( "Orders" ).Find( qb );
 
       Assert.IsTrue( res[ 0 ].ContainsKey( "Related" ) );
       Assert.IsTrue( res[ 1 ].ContainsKey( "Related" ) );
@@ -188,7 +188,7 @@ namespace TestProject
       qb.AddAllProperties();
       qb.SetRelationsDepth( 0 );
       qb.SetRelated( new List<String> { "Related" } );
-      IList<Dictionary<String, Object>> res = Backendless.Data.Of( "Order" ).Find( qb );
+      IList<Dictionary<String, Object>> res = Backendless.Data.Of( "Orders" ).Find( qb );
 
       Assert.IsFalse( !res[ 0 ].ContainsKey( "Related" ) );
       Assert.IsFalse( !res[ 1 ].ContainsKey( "Related" ) );
@@ -201,7 +201,7 @@ namespace TestProject
       qb.AddAllProperties();
       qb.SetRelationsPageSize( 1 );
       qb.SetRelated( new List<String> { "Related" } );
-      IList<Dictionary<String, Object>> res = Backendless.Data.Of( "Order" ).Find( qb );
+      IList<Dictionary<String, Object>> res = Backendless.Data.Of( "Orders" ).Find( qb );
       Object[] rel = (Object[]) res[ 0 ][ "Related" ];
 
       Assert.IsTrue( rel.Length == 1 );
@@ -214,7 +214,7 @@ namespace TestProject
       qb.AddAllProperties();
       qb.SetRelationsPageSize( 0 );
       qb.SetRelated( new List<String> { "Related" } );
-      IList<Dictionary<String, Object>> res = Backendless.Data.Of( "Order" ).Find( qb );
+      IList<Dictionary<String, Object>> res = Backendless.Data.Of( "Orders" ).Find( qb );
       Object[] rel = (Object[]) res[ 0 ][ "Related" ];
 
       Assert.IsTrue( rel.Length == 0 );
@@ -226,7 +226,7 @@ namespace TestProject
       DataQueryBuilder qb = DataQueryBuilder.Create();
       qb.AddAllProperties();
       qb.SetRelated( new List<String> { "Related" } );
-      IList<Order> res = Backendless.Data.Of<Order>().Find( qb );
+      IList<Orders> res = Backendless.Data.Of<Orders>().Find( qb );
 
       Assert.IsTrue( res[0].Related.Count == 1 );
     }
@@ -238,7 +238,7 @@ namespace TestProject
       qb.AddAllProperties();
       qb.SetRelated( new List<String> { "Related" } );
       qb.SetSortBy( new List<String> { "age" } );
-      IList<Dictionary<String, Object>> res = Backendless.Data.Of( "Order" ).Find( qb );
+      IList<Dictionary<String, Object>> res = Backendless.Data.Of( "Orders" ).Find( qb );
 
       Assert.IsTrue( (Double) res[ 0 ][ "age" ] < (Double) res[ 1 ][ "age" ] );
     }
@@ -249,7 +249,7 @@ namespace TestProject
       DataQueryBuilder qb = DataQueryBuilder.Create();
       qb.AddAllProperties();
       qb.SetWhereClause( "name='Joe'" );
-      IList<Dictionary<String, Object>> res = Backendless.Data.Of( "Order" ).Find( qb );
+      IList<Dictionary<String, Object>> res = Backendless.Data.Of( "Orders" ).Find( qb );
       Assert.IsTrue( res.Count == 0 );
     }
 
