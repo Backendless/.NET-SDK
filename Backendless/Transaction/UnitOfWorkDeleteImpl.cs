@@ -18,10 +18,10 @@ namespace BackendlessAPI.Transaction
 
     public OpResult Delete<E>( E instance )
     {
-      Dictionary<String, Object> entityMap = TransactionHelper.ConvertInstanceToMap( instance );
       String tableName = instance.GetType().Name;
+      String objectId = (String) TransactionHelper.ConvertInstanceToObjectIdOrLeaveReference<E>( instance );
 
-      return Delete( tableName, entityMap );
+      return Delete( tableName, objectId );
     }
 
     public OpResult Delete( String tableName, Dictionary<String, Object> objectMap )
@@ -75,13 +75,16 @@ namespace BackendlessAPI.Transaction
 
     public OpResult BulkDelete<E>( List<E> instances )
     {
-      List<Dictionary<String, Object>> serializedEntities = new List<Dictionary<string, object>>();
-
-      for( int i = 0; i < instances.Count; i++ )
-        serializedEntities.Add( new Dictionary<String, Object>( TransactionHelper.ConvertInstanceToMap<E>( instances[ i ] ) ) );
+      if( instances == null )
+        throw new ArgumentException( ExceptionMessage.NULL_BULK );
 
       String tableName = instances[0].GetType().Name;
-      return BulkDelete( tableName, serializedEntities );
+      List<Object> objectIds = new List<Object>();
+
+      foreach( E inst in instances )
+        objectIds.Add( TransactionHelper.ConvertInstanceToObjectIdOrLeaveReference<E>( inst ) );
+
+      return BulkDelete( tableName, null, objectIds );
     }
 
     public OpResult BulkDelete( String tableName, List<Dictionary<String, Object>> arrayOfObjects )
@@ -92,6 +95,7 @@ namespace BackendlessAPI.Transaction
       List<Object> objectIds = TransactionHelper.ConvertMapsToObjectIds( arrayOfObjects );
 
       return BulkDelete( tableName, null, objectIds );
+
 
     }
 
