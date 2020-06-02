@@ -26,7 +26,7 @@ namespace BackendlessAPI.Transaction.Operations
     public String OpResultId { get; set; }
     
     [SetClientClassMemberName("payload")]
-    public abstract Object Payload{ get; set; } 
+    public virtual Object Payload{ get; set; } 
 
     public override string ToString()
     {

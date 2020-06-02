@@ -1,30 +1,25 @@
-﻿namespace BackendlessAPI.Transaction
-{
-  public class OperationResult<T>
-  {
-    private OperationType operationType;
-    private T result;
+﻿using System.Collections.Generic;
+using Weborb.Service;
 
+namespace BackendlessAPI.Transaction
+{
+  public class OperationResult
+  {
     public OperationResult()
     {
     }
 
-    public OperationResult( OperationType operationType, T result )
+    public OperationResult( OperationType operationType, object result )
     {
-      this.operationType = operationType;
-      this.result = result;
+      OperationType = operationType;
+      Result = result;
     }
 
-    public OperationType OperationType
-    {
-      get => operationType;
-      set => operationType = value;
-    }
+    [SetClientClassMemberName("operationType")]
+    public OperationType OperationType { get; set; }
 
-    public T Result
-    {
-      get => result;
-      set => result = value;
-    }
+    [SetClientClassMemberName("result")]
+    public object Result { get; set; }
+    
   }
 }

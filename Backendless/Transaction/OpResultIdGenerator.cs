@@ -20,7 +20,7 @@ namespace BackendlessAPI.Transaction
 
       if( opResultIdMaps.ContainsKey( key ) )
       {
-        int count = opResultIdMaps[ key ];
+        Int32 count = opResultIdMaps[ key ];
         opResultIdMaps[ key ] = ++count;
         opResultIdGenerated = key + count;
       }

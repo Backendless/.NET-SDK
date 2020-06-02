@@ -7,7 +7,7 @@ namespace TestProject
   public class Person
   {
     private String name;
-    private int age;
+    private Int32? age;
     private String objectId;
 
     public String GetObjectId()
@@ -30,12 +30,12 @@ namespace TestProject
       this.name = name;
     }
 
-    public int GetAge()
+    public Int32? GetAge()
     {
       return age;
     }
 
-    public void SetAge( int age )
+    public void SetAge( Int32? age )
     {
       this.age = age;
     }

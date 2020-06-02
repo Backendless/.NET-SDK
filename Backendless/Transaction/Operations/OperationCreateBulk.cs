@@ -17,6 +17,6 @@ namespace BackendlessAPI.Transaction.Operations
     }
 
     [SetClientClassMemberName( "payload" )]
-    public override Object Payload { get; set; }
+    public new List<Dictionary<String, Object>> Payload { get; set; }
   }
 }

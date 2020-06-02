@@ -18,6 +18,6 @@ namespace BackendlessAPI.Transaction.Operations
     }
 
     [SetClientClassMemberName( "payload" )]
-    public override Object Payload { get; set; }
+    public new DeleteBulkPayload Payload { get; set; }
   }
 }
