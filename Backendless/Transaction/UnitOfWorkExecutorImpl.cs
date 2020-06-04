@@ -9,7 +9,7 @@ namespace BackendlessAPI.Transaction
 {
   class UnitOfWorkExecutorImpl : UnitOfWorkExecutor
   {
-    private static String TRANSACTION_MANAGER_SERVER_ALIAS = "com.backendless.services.transaction.TransactionService";
+    private static String TRANSACTION_MANAGER_SERVER_ALIAS = "com.backendless.transaction.TransactionService";
 
     private UnitOfWork unitOfWork;
     private Dictionary<String, Type> clazzes;

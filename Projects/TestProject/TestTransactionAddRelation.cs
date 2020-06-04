@@ -12,76 +12,228 @@ namespace TestProject
   [TestClass]
   public class TestTransactionAddRelation
   {
-    [TestMethod]
-    public void TestAddRelationDictionary()
+    [TestCleanup]
+    public void TearDown()
     {
-      UnitOfWork unitOfWork = new UnitOfWork();
-
-      String[] giftId = { (String) Backendless.Data.Of( "Order" ).FindFirst()[ "objectId" ] };
-
-      String parentObjectId = (String) Backendless.Data.Of( "Person" ).FindById( "8B329DB4-46DB-03A1-FF1A-6828DF619400" )[ "objectId" ];
-      String parentTableName = "Person";
-      String relationColumnName = "Surname";
-
-      unitOfWork.AddToRelation( parentTableName, parentObjectId, relationColumnName, giftId );
-
-      UnitOfWorkResult result = unitOfWork.Execute();
-      Assert.IsTrue( ( (Dictionary<Object, Object>) result.Results[ "addToRelationPerson1" ] ).Count == 2 );
+      Backendless.Data.Of( "Person" ).Remove( "age = '22'" );
+      Backendless.Data.Of( "Order" ).Remove( "LastName = 'Smith'" );
     }
 
     [TestMethod]
-    public void TestAddRelationClass()
+    public void TestAddRelation_Class()
     {
-      UnitOfWork unitOfWork = new UnitOfWork();
+      List<Person> listPerson = new List<Person>();
+      Person personObj = new Person();
+      personObj.age = 22;
+      personObj.name = "Eva";
+      listPerson.Add( personObj );
 
-      List<Order> gifts = new List<Order>();
+      IList<String> parentObjIds = Backendless.Data.Of<Person>().Create( listPerson );
+      listPerson.Clear();
+      personObj.objectId = parentObjIds[ 0 ];
 
-      Order order = new Order();
-      order.SetObjectId( (String) Backendless.Data.Of( "Order" ).FindFirst()[ "objectId" ] );
+      List<Order> listOrder = new List<Order>();
+      Order orderObj = new Order();
+      orderObj.LastName = "Smith";
+      listOrder.Add( orderObj );
 
-      gifts.Add( order );
-
-      Person person = new Person();
-      person.SetObjectId( (String) Backendless.Data.Of( "Person" ).FindById( "28237548-69DC-A0FD-FFBD-81D043E97D00" )[ "objectId" ] );
+      IList<String> childObjIds = Backendless.Data.Of<Order>().Create( listOrder );
+      listOrder.Clear();
+      orderObj.objectId = childObjIds[ 0 ];
+      listOrder.Add( orderObj );
 
       String relationColumn = "Surname";
-      unitOfWork.AddToRelation( person, relationColumn, gifts );
 
-      UnitOfWorkResult result = unitOfWork.Execute();
-      Assert.IsTrue( ( (Dictionary<Object, Object>) result.Results[ "addToRelationPerson1" ] ).Count == 2 );
+      UnitOfWork uow = new UnitOfWork();
+      uow.AddToRelation( personObj, relationColumn, listOrder );
+      UnitOfWorkResult uowResult = uow.Execute();
+
+      Assert.IsTrue( uowResult.Success );
+      Assert.IsNotNull( uowResult.Results );
+
+      DataQueryBuilder dqb = DataQueryBuilder.Create().SetRelationsDepth( 10 );
+      dqb.SetRelationsPageSize( 10 );
+
+      IList<Person> listCheckPersonObj = Backendless.Data.Of<Person>().Find( dqb );
+      Assert.IsTrue( listCheckPersonObj.Count == 1 );
+      Assert.IsTrue( listCheckPersonObj[ 0 ].Surname != null );
     }
 
     [TestMethod]
-    public void TestAddRelationOpResult()
+    public void TestAddRelation_Dictionary()
     {
-      UnitOfWork unitOfWork = new UnitOfWork();
+      List<Person> listPerson = new List<Person>();
+      Person personObj = new Person();
+      personObj.age = 22;
+      personObj.name = "Eva";
+      listPerson.Add( personObj );
+
+      IList<String> parentObjIds = Backendless.Data.Of<Person>().Create( listPerson );
+      listPerson.Clear();
+      personObj.objectId = parentObjIds[ 0 ];
+
+      List<Order> listOrder = new List<Order>();
+      Order orderObj = new Order();
+      orderObj.LastName = "Smith";
+      listOrder.Add( orderObj );
+      List<Dictionary<String, Object>> listChildObjMap = new List<Dictionary<String, Object>>();
+      Dictionary<String, Object> childObjMap = new Dictionary<String, Object>();
+      childObjMap[ "LastName" ] = "Smith";
+      listChildObjMap.Add( childObjMap );
+
+      IList<String> childObjIds = Backendless.Data.Of( "Order" ).Create( listChildObjMap );
+      listChildObjMap.Clear();
+      childObjMap[ "objectId" ] = childObjIds[ 0 ];
+      listChildObjMap.Add( childObjMap );
+
+      String relationColumn = "Surname";
+
+      UnitOfWork uow = new UnitOfWork();
+      uow.AddToRelation( personObj.GetType().Name, personObj.objectId, relationColumn, listChildObjMap );
+      UnitOfWorkResult uowResult = uow.Execute();
+
+      Assert.IsTrue( uowResult.Success );
+      Assert.IsNotNull( uowResult.Results );
+
+      DataQueryBuilder dqb = DataQueryBuilder.Create();
+      dqb.SetRelationsPageSize( 10 );
+      dqb.SetRelationsDepth( 10 );
+      IList<Person> listCheckPersonObj = Backendless.Data.Of<Person>().Find( dqb );
+
+      Assert.IsTrue( listCheckPersonObj.Count == 1 );
+      Assert.IsTrue( listCheckPersonObj[0].Surname != null );
+    }
+
+    [TestMethod]
+    public void TestAddRelation_OpResult()
+    {
+      List<Person> listPerson = new List<Person>();
+      Person personObj = new Person();
+      personObj.age = 22;
+      personObj.name = "Eva";
+      listPerson.Add( personObj );
+
+      IList<String> parentObjIds = Backendless.Data.Of<Person>().Create( listPerson );
+      listPerson.Clear();
+      personObj.objectId = parentObjIds[ 0 ];
+
+      List<Order> listOrder = new List<Order>();
+      Order orderObj = new Order();
+      orderObj.LastName = "Smith";
+      listOrder.Add( orderObj );
+      List<Dictionary<String, Object>> listChildObjMap = new List<Dictionary<String, Object>>();
+      Dictionary<String, Object> childObjMap = new Dictionary<String, Object>();
+      childObjMap[ "LastName" ] = "Smith";
+      listChildObjMap.Add( childObjMap );
+
+      IList<String> childObjIds = Backendless.Data.Of( "Order" ).Create( listChildObjMap );
+      listChildObjMap.Clear();
+      childObjMap[ "objectId" ] = childObjIds[ 0 ];
+      listChildObjMap.Add( childObjMap );
+
+      UnitOfWork uow = new UnitOfWork();
 
       DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
-      queryBuilder.SetWhereClause( "LastName in ('Snow')" );
+      queryBuilder.SetWhereClause( "LastName in ('Smith')" );
 
-      OpResult gifts = unitOfWork.Find( "Order", queryBuilder );
-      String personObjectId = (String) Backendless.Data.Of( "Person" ).FindById( "93957B42-9B1A-1CCE-FFAD-ADE44D459A00" )[ "objectId" ];
-      String parentTable = "Person";
+      OpResult gifts = uow.Find( "Order", queryBuilder );
       String relationColumn = "Surname";
 
-      unitOfWork.AddToRelation( parentTable, personObjectId, relationColumn, gifts );
-      UnitOfWorkResult result = unitOfWork.Execute();
-      Assert.IsTrue( ( (Dictionary<Object, Object>) result.Results[ "addToRelationPerson1" ] ).Count == 2 );
+      uow.AddToRelation( personObj.GetType().Name, personObj.objectId, relationColumn, gifts );
+      UnitOfWorkResult uowResult = uow.Execute();
+
+      Assert.IsTrue( uowResult.Success );
+      Assert.IsNotNull( uowResult.Results );
+
+      DataQueryBuilder dqb = DataQueryBuilder.Create();
+      dqb.SetRelationsPageSize( 10 );
+      dqb.SetRelationsDepth( 10 );
+      IList<Person> listCheckPersonObj = Backendless.Data.Of<Person>().Find( dqb );
+
+      Assert.IsTrue( listCheckPersonObj.Count == 1 );
+      Assert.IsTrue( listCheckPersonObj[ 0 ].Surname != null );
     }
 
     [TestMethod]
-    public void TestAddRelationWithId()
+    public void TestAddRelation_WithId()
     {
-      UnitOfWork unitOfWork = new UnitOfWork();
+      List<Person> listPerson = new List<Person>();
+      Person personObj = new Person();
+      personObj.age = 22;
+      personObj.name = "Eva";
+      listPerson.Add( personObj );
 
-      String[] objToRel = { (String) Backendless.Data.Of( "Order" ).FindFirst()["objectId"] };
-      String personObjId = (String) Backendless.Data.Of( "Person" ).FindById( "BE23F5DA-7431-F64B-FF8B-B6176463C400" )[ "objectId" ];
-      String parentTable = "Person";
+      IList<String> parentObjIds = Backendless.Data.Of<Person>().Create( listPerson );
+      listPerson.Clear();
+      personObj.objectId = parentObjIds[ 0 ];
+
+      List<Order> listOrder = new List<Order>();
+      Order orderObj = new Order();
+      orderObj.LastName = "Smith";
+      listOrder.Add( orderObj );
+      List<Dictionary<String, Object>> listChildObjMap = new List<Dictionary<String, Object>>();
+      Dictionary<String, Object> childObjMap = new Dictionary<String, Object>();
+      childObjMap[ "LastName" ] = "Smith";
+      listChildObjMap.Add( childObjMap );
+
+      IList<String> childObjIds = Backendless.Data.Of( "Order" ).Create( listChildObjMap );
+      listChildObjMap.Clear();
+      childObjMap[ "objectId" ] = childObjIds[ 0 ];
+      listChildObjMap.Add( childObjMap );
+
       String relationColumn = "Surname";
 
-      unitOfWork.AddToRelation( parentTable, personObjId, relationColumn, objToRel );
-      UnitOfWorkResult result = unitOfWork.Execute();
-      Assert.IsTrue( ( (Dictionary<Object, Object>) result.Results[ "addToRelationPerson1" ] ).Count == 2 );
+      UnitOfWork uow = new UnitOfWork();
+      uow.AddToRelation( personObj.GetType().Name, personObj.objectId, relationColumn, new String[] { (String) childObjMap[ "objectId" ] } );
+      UnitOfWorkResult uowResult = uow.Execute();
+
+      Assert.IsTrue( uowResult.Success );
+      Assert.IsNotNull( uowResult.Results );
+
+      DataQueryBuilder dqb = DataQueryBuilder.Create();
+      dqb.SetRelationsPageSize( 10 );
+      dqb.SetRelationsDepth( 10 );
+      IList<Person> listCheckPersonObj = Backendless.Data.Of<Person>().Find( dqb );
+
+      Assert.IsTrue( listCheckPersonObj.Count == 1 );
+      Assert.IsTrue( listCheckPersonObj[ 0 ].Surname != null );
+    }
+
+    [TestMethod]
+    public void TestAddToRelation_CheckError()
+    {
+      List<Person> listPerson = new List<Person>();
+      Person personObj = new Person();
+      personObj.age = 22;
+      personObj.name = "Eva";
+      listPerson.Add( personObj );
+
+      IList<String> parentObjIds = Backendless.Data.Of<Person>().Create( listPerson );
+      listPerson.Clear();
+      personObj.objectId = parentObjIds[ 0 ];
+
+      List<Order> listOrder = new List<Order>();
+      Order orderObj = new Order();
+      orderObj.LastName = "Smith";
+      listOrder.Add( orderObj );
+      List<Dictionary<String, Object>> listChildObjMap = new List<Dictionary<String, Object>>();
+      Dictionary<String, Object> childObjMap = new Dictionary<String, Object>();
+      childObjMap[ "LastName" ] = "Smith";
+      listChildObjMap.Add( childObjMap );
+
+      IList<String> childObjIds = Backendless.Data.Of( "Order" ).Create( listChildObjMap );
+      listChildObjMap.Clear();
+      childObjMap[ "objectId" ] = childObjIds[ 0 ];
+      listChildObjMap.Add( childObjMap );
+
+      String relationColumn = "Surname";
+
+      UnitOfWork uow = new UnitOfWork();
+      uow.AddToRelation( "Wrong name", personObj.objectId, relationColumn, new String[] { (String) childObjMap[ "objectId" ] } );
+      UnitOfWorkResult uowResult = uow.Execute();
+
+      Assert.IsFalse( uowResult.Success );
+      Assert.IsNull( uowResult.Results );
     }
   }
 }

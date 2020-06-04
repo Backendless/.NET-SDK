@@ -63,17 +63,17 @@ namespace BackendlessAPI
       Types.AddClientClassMapping( "com.backendless.persistence.LineString", typeof( LineString ) );
       Types.AddClientClassMapping( "com.backendless.persistence.Polygon", typeof( Polygon ) );
       Types.AddClientClassMapping( "com.backendless.transaction.UnitOfWork", typeof( UnitOfWork ) );
-      Types.AddClientClassMapping( "com.backendless.transaction.operations.Operation", typeof( Operation) );
-      Types.AddClientClassMapping( "com.backendless.transaction.operations.OperationCreate", typeof( OperationCreate ) );
-      Types.AddClientClassMapping( "com.backendless.transaction.operations.OperationCreateBulk", typeof( OperationCreateBulk ) );
-      Types.AddClientClassMapping( "com.backendless.transaction.operations.OperationDelete", typeof( OperationDelete ) );
-      Types.AddClientClassMapping( "com.backendless.transaction.operations.OperationDeleteBulk", typeof( OperationDeleteBulk ) );
-      Types.AddClientClassMapping( "com.backendless.transaction.operations.OperationUpdate", typeof( OperationUpdate ) );
-      Types.AddClientClassMapping( "com.backendless.transaction.operations.OperationUpdateBulk", typeof( OperationUpdateBulk ) );
-      Types.AddClientClassMapping( "com.backendless.transaction.operations.OperationFind", typeof( OperationFind ) );
-      Types.AddClientClassMapping( "com.backendless.transaction.operations.OperationAddRelation", typeof( OperationAddRelation ) );
-      Types.AddClientClassMapping( "com.backendless.transaction.operations.OperationSetRelation", typeof( OperationSetRelation ) );
-      Types.AddClientClassMapping( "com.backendless.transaction.operations.OperationDeleteRelation", typeof( OperationDeleteRelation ) );
+      Types.AddClientClassMapping( "com.backendless.transaction.Operation", typeof( Operation) );
+      Types.AddClientClassMapping( "com.backendless.transaction.OperationCreate", typeof( OperationCreate ) );
+      Types.AddClientClassMapping( "com.backendless.transaction.OperationCreateBulk", typeof( OperationCreateBulk ) );
+      Types.AddClientClassMapping( "com.backendless.transaction.OperationDelete", typeof( OperationDelete ) );
+      Types.AddClientClassMapping( "com.backendless.transaction.OperationDeleteBulk", typeof( OperationDeleteBulk ) );
+      Types.AddClientClassMapping( "com.backendless.transaction.OperationUpdate", typeof( OperationUpdate ) );
+      Types.AddClientClassMapping( "com.backendless.transaction.OperationUpdateBulk", typeof( OperationUpdateBulk ) );
+      Types.AddClientClassMapping( "com.backendless.transaction.OperationFind", typeof( OperationFind ) );
+      Types.AddClientClassMapping( "com.backendless.transaction.OperationAddRelation", typeof( OperationAddRelation ) );
+      Types.AddClientClassMapping( "com.backendless.transaction.OperationSetRelation", typeof( OperationSetRelation ) );
+      Types.AddClientClassMapping( "com.backendless.transaction.OperationDeleteRelation", typeof( OperationDeleteRelation ) );
                                               
       ORBConfig.GetInstance()
                .getObjectFactories()

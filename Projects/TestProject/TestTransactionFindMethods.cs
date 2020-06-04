@@ -4,10 +4,6 @@ using BackendlessAPI.Persistence;
 using System;
 using System.Collections.Generic;
 using BackendlessAPI.Transaction;
-using BackendlessAPI.Service;
-using Weborb.Writer;
-using BackendlessAPI.Async;
-using BackendlessAPI.Exception;
 
 namespace TestProject
 {
@@ -15,21 +11,46 @@ namespace TestProject
   public class TestTransactionFindMethods
   {
     [TestMethod]
-    public void TestFindSingleObjectDictionary()
+    public void TestFind_AllObjects()
     {
-      UnitOfWork unitOfWork = new UnitOfWork();
-      DataQueryBuilder dQB = DataQueryBuilder.Create();
+      List<Person> listPerson = new List<Person>();
+      Person personCreated1 = new Person();
+      personCreated1.age = 17;
+      personCreated1.name = "Alexandra";
 
-      dQB.SetPageSize( 1 );
+      Person personCreated2 = new Person();
+      personCreated2.age = 24;
+      personCreated2.name = "Joe";
 
-      OpResult findObjectResult = unitOfWork.Find( "Person", dQB );
+      listPerson.Add( personCreated1 );
+      listPerson.Add( personCreated2 );
+      IList<String> objectIds = Backendless.Data.Of<Person>().Create( listPerson );
 
-      OpResultValueReference gg = findObjectResult.ResolveTo( 0 );
+      UnitOfWork uow = new UnitOfWork();
+      OpResult opResultCreateBulkPerson = uow.BulkCreate( listPerson );
+      OpResult opResultFindPerson = uow.Find( "Person", DataQueryBuilder.Create() );
 
+      UnitOfWorkResult uowResult = uow.Execute();
 
-      UnitOfWorkResult result = unitOfWork.Execute();
+      Assert.IsTrue( uowResult.Success );
+      Dictionary<String, OperationResult> results = uowResult.Results;
+      Assert.IsTrue( 2 == results.Count );
 
-      Assert.IsTrue( ((Dictionary<Object, Object>) result.Results["findPerson1"]).Count == 2 );
+      Dictionary<Object, Object>[] resultFind = (Dictionary<Object, Object>[])results[ opResultFindPerson.GetOpResultId() ].Result;
+      Assert.IsTrue( 4 == resultFind.Length );
+
+      Backendless.Data.Of( "Person" ).Remove( "age > '15'" );
+    }
+
+    [TestMethod]
+    public void TestFind_CheckError()
+    {
+      UnitOfWork uow = new UnitOfWork();
+      uow.Find( "Wrong table name", DataQueryBuilder.Create() );
+      UnitOfWorkResult uowResult = uow.Execute();
+
+      Assert.IsFalse( uowResult.Success );
+      Assert.IsNull( uowResult.Results );
     }
   }
 }

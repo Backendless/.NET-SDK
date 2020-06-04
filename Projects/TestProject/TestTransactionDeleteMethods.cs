@@ -5,6 +5,9 @@ using System;
 using System.Collections.Generic;
 using BackendlessAPI.Transaction;
 using Weborb.Writer;
+using System.Linq;
+using System.Reflection.PortableExecutable;
+using System.Globalization;
 
 namespace TestProject
 {
@@ -12,138 +15,124 @@ namespace TestProject
   public class TestTransactionDeleteMethods
   {
     [TestMethod]
-    public void TestDeleteSingleObjectDictionary()
+    public void TestDeleteSingleObject_Class()
     {
-      UnitOfWork unitOfWork = new UnitOfWork();
-      Dictionary<String, Object> pers = new Dictionary<String, Object>();
+      List<Person> listPerson = new List<Person>();
+      Person personCreated = new Person();
+      personCreated.age = 30;
+      personCreated.name = "Alexandra";
+      listPerson.Add( personCreated );
+      IList<String> objectIds = Backendless.Data.Of<Person>().Create( listPerson );
+      personCreated.objectId = objectIds[ 0 ];
 
-      pers[ "objectId" ] = (String) Backendless.Data.Of( "Person" ).FindFirst()[ "objectId" ];
+      UnitOfWork uow = new UnitOfWork();
+      uow.Delete( personCreated );
+      UnitOfWorkResult uowResult = uow.Execute();
 
-      unitOfWork.Delete( "Person", pers );
+      Assert.IsTrue( uowResult.Success );
+      Assert.IsNotNull( uowResult.Results );
 
-      UnitOfWorkResult result = unitOfWork.Execute();
-      Assert.IsTrue( ( (Dictionary<Object, Object>) result.Results[ "deletePerson1" ] ).Count == 2 );
-    }
+      IList<Person> listCheckPerson = Backendless.Data.Of<Person>().Find();
 
-
-    [TestMethod]
-    public void TestDeleteMultipleObjectsDictionary()
-    {
-      UnitOfWork unitOfWork = new UnitOfWork();
-
-      List<String> objectsToDelete = new List<String>();
-
-      objectsToDelete.Add( (String) Backendless.Data.Of( "Person" ).FindFirst()[ "objectId" ] );
-      objectsToDelete.Add( (String) Backendless.Data.Of( "Person" ).FindLast()[ "objectId" ] );
-
-      unitOfWork.BulkDelete( "Person", objectsToDelete.ToArray() );
-
-      UnitOfWorkResult result = unitOfWork.Execute();
-      Assert.IsTrue( ( (Dictionary<Object, Object>) result.Results[ "deleteBulkPerson1" ] ).Count == 2 );
+      Assert.IsTrue( listCheckPerson.Count == 0 );
     }
 
     [TestMethod]
-    public void TestDeleteSingleObjectClass()
+    public void TestDeleteSingleObject_Dictionary()
     {
-      UnitOfWork unitOfWork = new UnitOfWork();
+      IList<Dictionary<String, Object>> objectMap = new List<Dictionary<String, Object>>();
+      Dictionary<String, Object> defaultObject = new Dictionary<String, Object>();
+      defaultObject[ "name" ] = "Joe";
+      defaultObject[ "age" ] = 28;
+      objectMap.Add( defaultObject );
+      String objectId = Backendless.Data.Of( "Person" ).Create( objectMap )[ 0 ];
+      
+      UnitOfWork uow = new UnitOfWork();
+      uow.Delete( "Person", objectId );
+      UnitOfWorkResult uowResult = uow.Execute();
 
-      Person person = new Person();
-      person.SetObjectId( (String) Backendless.Data.Of( "Person" ).FindFirst()[ "objectId" ] );
+      Assert.IsTrue( uowResult.Success );
+      Assert.IsNotNull( uowResult.Results );
 
-      unitOfWork.Delete( person );
-      UnitOfWorkResult result = unitOfWork.Execute();
-      Assert.IsTrue( ( (Dictionary<Object, Object>) result.Results[ "deletePerson1" ] ).Count == 2 );
+      IList<Dictionary<String, Object>> personMaps = Backendless.Data.Of( "Person" ).Find();
+
+      Assert.IsTrue( personMaps.Count == 0 );
     }
 
     [TestMethod]
-    public void TestDeleteMultipleObjectsClass()
+    public void TestDeleteSingleObject_OpResult()
     {
-      UnitOfWork unitOfWork = new UnitOfWork();
+      List<Person> personList = new List<Person>();
+      Person personObject = new Person();
+      personObject.name = "Bob";
+      personObject.age = 23;
+      personList.Add( personObject );
+      String objectId = Backendless.Data.Of<Person>().Create( personList )[ 0 ];
 
-      List<Person> peopleId = new List<Person>();
-
-      Person person1 = new Person();
-      person1.SetObjectId( (String) Backendless.Data.Of( "Person" ).FindFirst()[ "objectId" ] );
-
-      Person person2 = new Person();
-      person2.SetObjectId( (String) Backendless.Data.Of( "Person" ).FindLast()[ "objectId" ] );
-
-      peopleId.Add( person1 );
-      peopleId.Add( person2 );
-
-      unitOfWork.BulkDelete( peopleId );
-
-      UnitOfWorkResult result = unitOfWork.Execute();
-      Assert.IsTrue( ( (Dictionary<Object, Object>) result.Results[ "deleteBulkPerson1" ] ).Count == 2 );
-    }
-
-    [TestMethod]
-    public void TestDeleteSingleObjectOpResult()
-    {
-      UnitOfWork unitOfWork = new UnitOfWork();
+      UnitOfWork uow = new UnitOfWork();
 
       DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
       queryBuilder.SetWhereClause( "age = '23'" );
 
-      OpResult opResult = unitOfWork.Find( "Person", queryBuilder );
+      OpResult opResult = uow.Find( "Person", queryBuilder );
       OpResultValueReference firstInvalid = opResult.ResolveTo( 0 );
 
-      unitOfWork.Delete( firstInvalid );
+      uow.Delete( firstInvalid );
 
-      UnitOfWorkResult result = unitOfWork.Execute();
-      Assert.IsTrue( ( (Dictionary<Object, Object>) result.Results[ "deletePerson1" ] ).Count == 2 );
+      UnitOfWorkResult uowResult = uow.Execute();
+
+      Assert.IsTrue( uowResult.Success );
+      Assert.IsNotNull( uowResult.Results );
+
+      IList<Person> listCheckPerson = Backendless.Data.Of<Person>().Find();
+      Assert.IsTrue( listCheckPerson.Count == 0 );
     }
 
     [TestMethod]
-    public void TestDeleteMultipleObjectsOpResult()
+    public void TestDeleteSingleObject_WithId()
     {
-      UnitOfWork unitOfWork = new UnitOfWork();
+      List<Person> personList = new List<Person>();
+      Person defaultPersonObject = new Person();
+      defaultPersonObject.age = 20;
+      defaultPersonObject.name = "John";
+      personList.Add( defaultPersonObject );
+      Backendless.Data.Of<Person>().Create( personList );
 
-      DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
-      queryBuilder.SetWhereClause( "age = '12'" );
+      UnitOfWork uow = new UnitOfWork();
+      uow.Delete( "Person", (String) Backendless.Data.Of( "Person" ).FindFirst()[ "objectId" ] );
 
-      OpResult invalidName = unitOfWork.Find( "Person", queryBuilder );
+      UnitOfWorkResult uowResult = uow.Execute();
 
-      unitOfWork.BulkDelete( invalidName );
+      Assert.IsTrue( uowResult.Success );
+      Assert.IsNotNull( uowResult.Results );
 
-      UnitOfWorkResult result = unitOfWork.Execute();
-      Assert.IsTrue( ( (Dictionary<Object, Object>) result.Results[ "deleteBulkPerson1" ] ).Count == 2 );
+      IList<Person> listCheckPerson = Backendless.Data.Of<Person>().Find();
+      Assert.IsTrue( listCheckPerson.Count == 0 );
     }
 
     [TestMethod]
-    public void TestDeleteSingleObjectWithId()
+    public void TestDeleteSingleObject_CheckError()
     {
-      UnitOfWork unitOfWork = new UnitOfWork();
+      UnitOfWork uow = new UnitOfWork();
+      uow.Delete( "Wrong table name", "Empty objectId" );
+      UnitOfWorkResult uowResult = uow.Execute();
 
-      unitOfWork.Delete( "Person", (String) Backendless.Data.Of( "Person" ).FindFirst()[ "objectId" ] );
-
-      UnitOfWorkResult result = unitOfWork.Execute();
-      Assert.IsTrue( ( (Dictionary<Object, Object>) result.Results[ "deletePerson1" ] ).Count == 2 );
+      Assert.IsFalse( uowResult.Success );
+      Assert.IsNull( uowResult.Results );
     }
 
     [TestMethod]
-    public void TestDeteleMultipleObjectsWithId()
+    public void TestDeleteBulkObjects_CheckError()
     {
-      UnitOfWork unitOfWork = new UnitOfWork();
-      List<String> objIdToDel = new List<String>();
-      objIdToDel.Add( (String) Backendless.Data.Of( "Person" ).FindFirst()[ "objectId" ] );
-      objIdToDel.Add( (String) Backendless.Data.Of( "Person" ).FindLast()[ "objectId" ] );
+      UnitOfWork uow = new UnitOfWork();
+      List<String> emptyObjectId = new List<String>();
+      emptyObjectId.Add( "empty objectId" );
+      uow.BulkDelete( "Wrong table name", emptyObjectId.ToArray() );
 
-      unitOfWork.BulkDelete( "Person", objIdToDel.ToArray() );
+      UnitOfWorkResult uowResult = uow.Execute();
 
-      UnitOfWorkResult result = unitOfWork.Execute();
-      Assert.IsTrue( ( (Dictionary<Object, Object>) result.Results[ "deleteBulkPerson1" ] ).Count == 2 );
-    }
-
-    [TestMethod]
-    public void TestDeleteMultipleObjectsQuery()
-    {
-      UnitOfWork unitOfWork = new UnitOfWork();
-
-      unitOfWork.BulkDelete( "Person", "age = '100500'" );
-
-      UnitOfWorkResult result = unitOfWork.Execute();
-      Assert.IsTrue( ( (Dictionary<Object, Object>) result.Results[ "deleteBulkPerson1" ] ).Count == 2 );
+      Assert.IsFalse( uowResult.Success );
+      Assert.IsNull( uowResult.Results );
     }
   }
 }

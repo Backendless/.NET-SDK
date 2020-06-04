@@ -114,12 +114,12 @@ namespace BackendlessAPI.Transaction
 
     public OpResult DeleteRelation( String parentTable, Dictionary<String, Object> parentObject, String columnName, List<Dictionary<String, Object>> childrenMaps )
     {
-      return relationOperation.AddOperation( OperationType.DELETE_RELATION, parentObject, columnName, childrenMaps );
+      return relationOperation.AddOperation( OperationType.DELETE_RELATION, parentTable, parentObject, columnName, childrenMaps );
     }
 
     public OpResult DeleteRelation( String parentTable, String parentObjectId, String columnName, List<Dictionary<String, Object>> childrenMaps )
     {
-      return relationOperation.AddOperation( OperationType.DELETE_RELATION, parentObjectId, columnName, childrenMaps );
+      return relationOperation.AddOperation( OperationType.DELETE_RELATION, parentTable, parentObjectId, columnName, childrenMaps );
     }
 
     public OpResult DeleteRelation<E>( E parentObject, String columnName, List<Dictionary<String, Object>> childrenMaps )

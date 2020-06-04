@@ -1,6 +1,7 @@
 ﻿using BackendlessAPI.Exception;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace BackendlessAPI.Transaction
@@ -37,7 +38,7 @@ namespace BackendlessAPI.Transaction
 
       return objectIds;
     }
-    
+
     internal static Dictionary<String, Object> ConvertInstanceToMap<E>( E instance )
     {
       if( instance == null )
@@ -49,7 +50,7 @@ namespace BackendlessAPI.Transaction
 
       foreach( FieldInfo field in fields )
         entity[ field.Name ] = field.GetValue( instance );
-      
+
       return entity;
     }
 
