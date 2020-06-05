@@ -46,6 +46,16 @@ namespace BackendlessAPI.Transaction
       return opResultIdStrings;
     }
 
+    public IsolationLevelEnum GetTransactionIsolation()
+    {
+      return transactionIsolation;
+    }
+    
+    public void SetTransactionIsolation(  IsolationLevelEnum transactionIsolation )
+    {
+      this.transactionIsolation = transactionIsolation;
+    }
+
     public UnitOfWorkResult Execute()
     {
       return unitOfWorkExecutor.Execute();

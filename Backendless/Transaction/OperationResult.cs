@@ -19,7 +19,6 @@ namespace BackendlessAPI.Transaction
     public OperationType OperationType { get; set; }
 
     [SetClientClassMemberName("result")]
-    public object Result { get; set; }
-    
+    public object Result { get; set; }   
   }
 }
