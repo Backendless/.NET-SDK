@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace BackendlessAPI.Transaction
 {
-  class RelationOperationImpl : RelationOperation
+  class RelationOperationImpl
   {
     private LinkedList<Operation> operations;
     private OpResultIdGenerator opResultIdGenerator;

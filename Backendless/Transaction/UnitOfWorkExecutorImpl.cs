@@ -7,7 +7,7 @@ using Weborb.Types;
 
 namespace BackendlessAPI.Transaction
 {
-  class UnitOfWorkExecutorImpl : UnitOfWorkExecutor
+  class UnitOfWorkExecutorImpl
   {
     private static String TRANSACTION_MANAGER_SERVER_ALIAS = "com.backendless.transaction.TransactionService";
 

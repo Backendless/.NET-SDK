@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace BackendlessAPI.Transaction
 {
-  class UnitOfWorkAddRelationImpl : UnitOfWorkAddRelation
+  class UnitOfWorkAddRelationImpl
   {
-    private RelationOperation relationOperation;
+    private RelationOperationImpl relationOperation;
 
-    internal UnitOfWorkAddRelationImpl( RelationOperation relationOperation )
+    internal UnitOfWorkAddRelationImpl( RelationOperationImpl relationOperation )
     {
       this.relationOperation = relationOperation;
     }

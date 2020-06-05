@@ -66,7 +66,7 @@ namespace BackendlessAPI.Transaction
     {
       if( arrayOfObjectMaps == null )
         throw new ArgumentException( ExceptionMessage.NULL_BULK );
-  
+
       foreach( Dictionary<String, Object> mapObject in arrayOfObjectMaps )
         if( mapObject != null )
           TransactionHelper.MakeReferenceToValueFromOpResult( mapObject );

@@ -21,10 +21,10 @@ namespace BackendlessAPI.Transaction
     private UnitOfWorkDelete unitOfWorkDelete;
     private UnitOfWorkUpdate unitOfWorkUpdate;
     private UnitOfWorkFind unitOfWorkFind;
-    private UnitOfWorkAddRelation unitOfWorkAddRelation;
-    private UnitOfWorkSetRelation unitOfWorkSetRelation;
-    private UnitOfWorkDeleteRelation unitOfWorkDeleteRelation;
-    private UnitOfWorkExecutor unitOfWorkExecutor;
+    private UnitOfWorkAddRelationImpl unitOfWorkAddRelation;
+    private UnitOfWorkSetRelationImpl unitOfWorkSetRelation;
+    private UnitOfWorkDeleteRelationImpl unitOfWorkDeleteRelation;
+    private UnitOfWorkExecutorImpl unitOfWorkExecutor;
     public UnitOfWork()
     {
       Dictionary<String, Type> clazzes = new Dictionary<String, Type>();
@@ -34,7 +34,7 @@ namespace BackendlessAPI.Transaction
       unitOfWorkDelete = new UnitOfWorkDeleteImpl( operations, opResultIdGenerator );
       unitOfWorkUpdate = new UnitOfWorkUpdateImpl( operations, opResultIdGenerator, clazzes );
       unitOfWorkFind = new UnitOfWorkFindImpl( operations, opResultIdGenerator );
-      RelationOperation relationOperation = new RelationOperationImpl( operations, opResultIdGenerator );
+      RelationOperationImpl relationOperation = new RelationOperationImpl( operations, opResultIdGenerator );
       unitOfWorkAddRelation = new UnitOfWorkAddRelationImpl( relationOperation );
       unitOfWorkSetRelation = new UnitOfWorkSetRelationImpl( relationOperation );
       unitOfWorkDeleteRelation = new UnitOfWorkDeleteRelationImpl( relationOperation );
