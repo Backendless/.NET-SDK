@@ -21,7 +21,7 @@ namespace BackendlessAPI.Transaction.Payload
     [SetClientClassMemberName("unconditional")]
     public Object Unconditional { get; set; }
 
-    public override string ToString()
+    public override String ToString()
     {
       return "Selector{" +
              "conditional='" + Conditional + '\'' +

@@ -10,13 +10,13 @@ namespace TestProject
   public class Area
   {
     public int UserId{ get; set; }
-    public string AreaA { get; set; }
+    public String AreaA { get; set; }
     public bool Categories{ get; set; }
   }
   public class Orders
   {
     public List<Area> Related{ get; set; }
-    public string name{ get; set; }
+    public String name{ get; set; }
     public int age { get; set; }
   }
 

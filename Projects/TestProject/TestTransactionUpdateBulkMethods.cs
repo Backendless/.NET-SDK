@@ -4,7 +4,6 @@ using BackendlessAPI.Persistence;
 using System;
 using System.Collections.Generic;
 using BackendlessAPI.Transaction;
-using Weborb.Writer;
 
 namespace TestProject
 {
@@ -110,7 +109,7 @@ namespace TestProject
     [TestMethod]
     public void TestUpdateBulkObjects_Dictionary()
     {
-      Dictionary<string, Object> objData_First = new Dictionary<String, Object>();
+      Dictionary<String, Object> objData_First = new Dictionary<String, Object>();
       Dictionary<String, Object> objData_Second = new Dictionary<String, Object>();
       List<Dictionary<String, Object>> listPerson = new List<Dictionary<String, Object>>();
 

@@ -22,14 +22,12 @@ namespace BackendlessAPI.Transaction
     public OpResult Update<E>( E instance )
     {
       Dictionary<String, Object> entityMap = TransactionHelper.ConvertInstanceToMap( instance );
-
       String tableName = instance.GetType().Name;
-
       clazzes[ "tableName" ] = instance.GetType();
 
       return Update( tableName, entityMap );
     }
-    public OpResult Update( OpResult result, string propertyName, object propertyValue )
+    public OpResult Update( OpResult result, String propertyName, Object propertyValue )
     {
       Dictionary<String, Object> changes = new Dictionary<String, Object>();
       changes[ propertyName ] = propertyValue;
@@ -37,7 +35,7 @@ namespace BackendlessAPI.Transaction
       return Update( result, changes );
     }
 
-    public OpResult Update( OpResult result, Dictionary<string, object> changes )
+    public OpResult Update( OpResult result, Dictionary<String, Object> changes )
     {
       if( result == null )
         throw new ArgumentException( ExceptionMessage.NULL_OP_RESULT );
@@ -50,7 +48,7 @@ namespace BackendlessAPI.Transaction
       return Update( result.GetTableName(), changes );
     }
 
-    public OpResult Update( OpResultValueReference result, string propertyName, object propertyValue )
+    public OpResult Update( OpResultValueReference result, String propertyName, Object propertyValue )
     {
       Dictionary<String, Object> changes = new Dictionary<String, Object>();
       changes[ propertyName ] = propertyValue;
@@ -58,7 +56,7 @@ namespace BackendlessAPI.Transaction
       return Update( result, changes );
     }
 
-    public OpResult Update( OpResultValueReference result, Dictionary<string, object> changes )
+    public OpResult Update( OpResultValueReference result, Dictionary<String, Object> changes )
     {
       if( result == null )
         throw new ArgumentException( ExceptionMessage.NULL_OP_RESULT );
@@ -76,27 +74,25 @@ namespace BackendlessAPI.Transaction
       return Update( result.GetOpResult().GetTableName(), changes );
     }
 
-    public OpResult Update( string tableName, Dictionary<string, object> objectMap )
+    public OpResult Update( String tableName, Dictionary<String, Object> objectMap )
     {
       if( objectMap == null )
         throw new ArgumentException( ExceptionMessage.NULL_MAP );
 
       TransactionHelper.MakeReferenceToValueFromOpResult( objectMap );
-
       String operationResultId = opResultIdGenerator.GenerateOpResultId( OperationType.UPDATE, tableName );
       OperationUpdate operationUpdate = new OperationUpdate( OperationType.UPDATE, tableName, operationResultId, objectMap );
-
       operations.AddLast( operationUpdate );
 
       return TransactionHelper.MakeOpResult( tableName, operationResultId, OperationType.UPDATE );
     }
 
-    public OpResult BulkUpdate( string tableName, string whereClause, Dictionary<string, object> changes )
+    public OpResult BulkUpdate( String tableName, String whereClause, Dictionary<String, Object> changes )
     {
       return BulkUpdate( tableName, whereClause, null, changes );
     }
 
-    public OpResult BulkUpdate( string tableName, List<string> objectsForChanges, Dictionary<string, object> changes )
+    public OpResult BulkUpdate( String tableName, List<String> objectsForChanges, Dictionary<String, Object> changes )
     {
       if( objectsForChanges == null )
         throw new ArgumentException( ExceptionMessage.NULL_BULK );
@@ -104,7 +100,7 @@ namespace BackendlessAPI.Transaction
       return BulkUpdate( tableName, null, objectsForChanges, changes );
     }
 
-    public OpResult BulkUpdate( OpResult objectIdsForChanges, Dictionary<string, object> changes )
+    public OpResult BulkUpdate( OpResult objectIdsForChanges, Dictionary<String, Object> changes )
     {
       if( objectIdsForChanges == null )
         throw new ArgumentException( ExceptionMessage.NULL_OP_RESULT );
@@ -122,14 +118,11 @@ namespace BackendlessAPI.Transaction
         throw new ArgumentException( ExceptionMessage.NULL_MAP );
 
       TransactionHelper.RemoveSystemField( changes );
-
       TransactionHelper.MakeReferenceToValueFromOpResult( changes );
-
       String operationResultId = opResultIdGenerator.GenerateOpResultId( OperationType.UPDATE_BULK, tableName );
       UpdateBulkPayload updateBulkPayload = new UpdateBulkPayload( whereClause, objectsForChanges, changes );
       OperationUpdateBulk operationUpdateBulk = new OperationUpdateBulk( OperationType.UPDATE_BULK, tableName,
-                                                                                 operationResultId, updateBulkPayload );
-
+                                                                       operationResultId, updateBulkPayload );
       operations.AddLast( operationUpdateBulk );
 
       return TransactionHelper.MakeOpResult( tableName, operationResultId, OperationType.UPDATE_BULK );

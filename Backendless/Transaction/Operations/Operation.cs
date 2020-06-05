@@ -28,7 +28,7 @@ namespace BackendlessAPI.Transaction.Operations
     [SetClientClassMemberName("payload")]
     public virtual Object Payload{ get; set; } 
 
-    public override string ToString()
+    public override String ToString()
     {
       return "Operation{operationType=" + OperationType + ", table=" + Table + ", opResultId=" + OpResultId + ", payload=" + Payload + "}";
     }

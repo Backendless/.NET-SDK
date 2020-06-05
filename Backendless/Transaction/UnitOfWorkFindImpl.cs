@@ -16,7 +16,7 @@ namespace BackendlessAPI.Transaction
       this.opResultIdGenerator = opResultIdGenerator;
     }
 
-    public OpResult Find( string tableName, DataQueryBuilder queryBuilder )
+    public OpResult Find( String tableName, DataQueryBuilder queryBuilder )
     {
       BackendlessDataQuery query = queryBuilder.Build();
 

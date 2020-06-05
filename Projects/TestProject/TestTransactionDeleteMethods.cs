@@ -4,10 +4,6 @@ using BackendlessAPI.Persistence;
 using System;
 using System.Collections.Generic;
 using BackendlessAPI.Transaction;
-using Weborb.Writer;
-using System.Linq;
-using System.Reflection.PortableExecutable;
-using System.Globalization;
 
 namespace TestProject
 {

@@ -29,7 +29,7 @@ namespace BackendlessAPI
   public static class Backendless
   {
     public static long BACKENDLESSLOG = Weborb.Util.Logging.Log.getCode( "BACKENDLESS LOG" );
-    public static string URL = "https://api.backendless.com";
+    public static String URL = "https://api.backendless.com";
 
     public static PersistenceService Persistence;
     public static PersistenceService Data;
@@ -45,9 +45,9 @@ namespace BackendlessAPI
     #if WITHRT
     public static IRTService RT;
     #endif
-    public static string AppId { get; private set; }
+    public static String AppId { get; private set; }
 
-    public static string APIKey { get; private set; }
+    public static String APIKey { get; private set; }
 
     static Backendless()
     {
@@ -81,12 +81,12 @@ namespace BackendlessAPI
       Types.AddAbstractTypeMapping( typeof( IDictionary ), typeof( Dictionary<object, object> ) );
     }
 
-    public static void InitApp( string applicationId, string apiKey )
+    public static void InitApp( String applicationId, String apiKey )
     {
-      if( string.IsNullOrEmpty( applicationId ) )
+      if( String.IsNullOrEmpty( applicationId ) )
         throw new ArgumentNullException( ExceptionMessage.NULL_APPLICATION_ID );
 
-      if( string.IsNullOrEmpty( apiKey ) )
+      if( String.IsNullOrEmpty( apiKey ) )
         throw new ArgumentNullException( ExceptionMessage.NULL_SECRET_KEY );
 
       Log.addLogger( Log.DEFAULTLOGGER, new ConsoleLogger() );

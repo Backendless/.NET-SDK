@@ -17,12 +17,12 @@ namespace BackendlessAPI.Data
 {
   class DictionaryDrivenDataStore : IDataStore<Dictionary<String, Object>>
   {
-    private const string PERSISTENCE_MANAGER_SERVER_ALIAS = "com.backendless.services.persistence.PersistenceService";
-    //private EventHandlerFactory<Dictionary<string, object>> eventHandlerFactory = new EventHandlerFactory<Dictionary<string, object>>();
+    private const String PERSISTENCE_MANAGER_SERVER_ALIAS = "com.backendless.services.persistence.PersistenceService";
+    //private EventHandlerFactory<Dictionary<String, object>> eventHandlerFactory = new EventHandlerFactory<Dictionary<String, object>>();
 
-    private readonly string tableName;
+    private readonly String tableName;
 
-    public DictionaryDrivenDataStore( string tableName )
+    public DictionaryDrivenDataStore( String tableName )
     {
       this.tableName = tableName;
     #if WITHRT
@@ -32,9 +32,9 @@ namespace BackendlessAPI.Data
     
   #region RT
   #if WITHRT
-    private readonly IEventHandler<Dictionary<string, object>> eventHandler;
+    private readonly IEventHandler<Dictionary<String, object>> eventHandler;
     
-    public IEventHandler<Dictionary<string, object>> RT()
+    public IEventHandler<Dictionary<String, object>> RT()
     {
       return this.eventHandler;
     }
@@ -43,31 +43,31 @@ namespace BackendlessAPI.Data
     
   #region Bulk Update
 
-    public int Update( string whereClause, Dictionary<string, object> changes )
+    public int Update( String whereClause, Dictionary<String, object> changes )
     {
       return Update( whereClause, changes, null, false );
     }
     
   #if !(NET_35 || NET_40)
-    public async Task<int> UpdateAsync( string whereClause, Dictionary<string, object> changes )
+    public async Task<int> UpdateAsync( String whereClause, Dictionary<String, object> changes )
     {
       return await Task.Run( () => Update( whereClause, changes ) ).ConfigureAwait( false );
     }
   #endif
 
-    public void Update( string whereClause, Dictionary<string, object> changes, AsyncCallback<int> callback )
+    public void Update( String whereClause, Dictionary<String, object> changes, AsyncCallback<int> callback )
     {
       Update( whereClause, changes, callback, true );
     }
 
-    private int Update( string whereClause, Dictionary<string, object> changes, AsyncCallback<int> callback,
+    private int Update( String whereClause, Dictionary<String, object> changes, AsyncCallback<int> callback,
                         bool async )
     {
       if( whereClause == null || whereClause.Trim().Length == 0 )
-        throw new ArgumentNullException( string.Format( ExceptionMessage.NULL_OR_EMPTY_TEMPLATE, "Where clause" ) );
+        throw new ArgumentNullException( String.Format( ExceptionMessage.NULL_OR_EMPTY_TEMPLATE, "Where clause" ) );
 
       if( changes == null || changes.Count == 0 )
-        throw new ArgumentNullException( string.Format( ExceptionMessage.NULL_OR_EMPTY_TEMPLATE,
+        throw new ArgumentNullException( String.Format( ExceptionMessage.NULL_OR_EMPTY_TEMPLATE,
                                                         "Object with changes" ) );
 
       object[] args = { tableName, whereClause, changes };
@@ -85,34 +85,34 @@ namespace BackendlessAPI.Data
 
   #region Bulk Create
 
-    public IList<string> Create( IList<Dictionary<string, object>> objects )
+    public IList<String> Create( IList<Dictionary<String, object>> objects )
     {
       if( objects == null )
         throw new ArgumentNullException( String.Format( ExceptionMessage.NULL_OR_EMPTY_TEMPLATE,
                                                         "Object collection" ) );
 
       if( objects.Count == 0 )
-        return new List<string>();
+        return new List<String>();
 
       object[] args = new object[] { tableName, objects };
-      return Invoker.InvokeSync<IList<string>>( PERSISTENCE_MANAGER_SERVER_ALIAS, "createBulk", args );
+      return Invoker.InvokeSync<IList<String>>( PERSISTENCE_MANAGER_SERVER_ALIAS, "createBulk", args );
     }
     
   #if !(NET_35 || NET_40)
-    public async Task<IList<string>> CreateAsync( IList<Dictionary<string, object>> objects )
+    public async Task<IList<String>> CreateAsync( IList<Dictionary<String, object>> objects )
     {
       return await Task.Run( () => Create( objects ) ).ConfigureAwait( false );
     }
   #endif
 
-    public void Create( IList<Dictionary<string, object>> objects, AsyncCallback<IList<string>> callback )
+    public void Create( IList<Dictionary<String, object>> objects, AsyncCallback<IList<String>> callback )
     {
       if( objects == null )
         throw new ArgumentNullException( String.Format( ExceptionMessage.NULL_OR_EMPTY_TEMPLATE,
                                                         "Object collection" ) );
 
       if( objects.Count == 0 )
-        callback.ResponseHandler( new List<string>() );
+        callback.ResponseHandler( new List<String>() );
 
       object[] args = new object[] { tableName, objects };
       Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "createBulk", args, callback );
@@ -122,24 +122,24 @@ namespace BackendlessAPI.Data
 
   #region Bulk Delete
 
-    public int Remove( string whereClause )
+    public int Remove( String whereClause )
     {
       return Remove( whereClause, null, false );
     }
     
   #if !(NET_35 || NET_40)
-    public async Task<int> RemoveAsync( string whereClause )
+    public async Task<int> RemoveAsync( String whereClause )
     {
       return await Task.Run( () => Remove( whereClause ) ).ConfigureAwait( false );
     }
   #endif
 
-    public void Remove( string whereClause, AsyncCallback<int> callback )
+    public void Remove( String whereClause, AsyncCallback<int> callback )
     {
       Remove( whereClause, callback, true );
     }
 
-    private int Remove( string whereClause, AsyncCallback<int> callback, bool async )
+    private int Remove( String whereClause, AsyncCallback<int> callback, bool async )
     {
       if( whereClause == null || whereClause.Trim().Length == 0 )
         throw new ArgumentNullException( String.Format( ExceptionMessage.NULL_OR_EMPTY_TEMPLATE, "Where clause" ) );
@@ -159,7 +159,7 @@ namespace BackendlessAPI.Data
 
   #region Save
 
-    public Dictionary<string, object> Save( Dictionary<string, object> entity )
+    public Dictionary<String, object> Save( Dictionary<String, object> entity )
     {
       if( entity == null )
         throw new ArgumentNullException( ExceptionMessage.NULL_ENTITY );
@@ -169,13 +169,13 @@ namespace BackendlessAPI.Data
     }
     
   #if !(NET_35 || NET_40)
-    public async Task<Dictionary<string, object>> SaveAsync( Dictionary<string, object> entity )
+    public async Task<Dictionary<String, object>> SaveAsync( Dictionary<String, object> entity )
     {
       return await Task.Run( () => Save( entity ) ).ConfigureAwait( false );
     }
   #endif
 
-    public void Save( Dictionary<string, object> entity, AsyncCallback<Dictionary<string, object>> callback )
+    public void Save( Dictionary<String, object> entity, AsyncCallback<Dictionary<String, object>> callback )
     {
       if( entity == null )
         throw new ArgumentNullException( ExceptionMessage.NULL_ENTITY );
@@ -188,7 +188,7 @@ namespace BackendlessAPI.Data
 
   #region Remove
 
-    public long Remove( Dictionary<string, object> entity )
+    public long Remove( Dictionary<String, object> entity )
     {
       if( entity == null )
         throw new ArgumentNullException( ExceptionMessage.NULL_ENTITY );
@@ -198,13 +198,13 @@ namespace BackendlessAPI.Data
     }
     
   #if !(NET_35 || NET_40)
-    public async Task<long> RemoveAsync( Dictionary<string, object> entity )
+    public async Task<long> RemoveAsync( Dictionary<String, object> entity )
     {
       return await Task.Run( () => Remove( entity ) ).ConfigureAwait( false );
     }
   #endif
 
-    public void Remove( Dictionary<string, object> entity, AsyncCallback<long> responder )
+    public void Remove( Dictionary<String, object> entity, AsyncCallback<long> responder )
     {
       if( entity == null )
         throw new ArgumentNullException( ExceptionMessage.NULL_ENTITY );
@@ -217,12 +217,12 @@ namespace BackendlessAPI.Data
 
   #region First
 
-    public Dictionary<string, object> FindFirst()
+    public Dictionary<String, object> FindFirst()
     {
       return FindFirst( DataQueryBuilder.Create() );
     }
 
-    public Dictionary<string, object> FindFirst( DataQueryBuilder queryBuilder )
+    public Dictionary<String, object> FindFirst( DataQueryBuilder queryBuilder )
     {
       List<String> relations = queryBuilder.GetRelated();
 
@@ -231,27 +231,27 @@ namespace BackendlessAPI.Data
 
       int relationsDepth = queryBuilder.GetRelationsDepth();
       Object[] args = new Object[] { tableName, relations, relationsDepth };
-      return Invoker.InvokeSync<Dictionary<string, object>>( PERSISTENCE_MANAGER_SERVER_ALIAS, "first", args );
+      return Invoker.InvokeSync<Dictionary<String, object>>( PERSISTENCE_MANAGER_SERVER_ALIAS, "first", args );
     }
     
   #if !(NET_35 || NET_40)
-    public async Task<Dictionary<string, object>> FindFirstAsync()
+    public async Task<Dictionary<String, object>> FindFirstAsync()
     {
       return await Task.Run( () => FindFirst() ).ConfigureAwait( false );
     }
     
-    public async Task<Dictionary<string, object>> FindFirstAsync( DataQueryBuilder queryBuilder )
+    public async Task<Dictionary<String, object>> FindFirstAsync( DataQueryBuilder queryBuilder )
     {
       return await Task.Run( () => FindFirst( queryBuilder ) ).ConfigureAwait( false );
     } 
   #endif
 
-    public void FindFirst( AsyncCallback<Dictionary<string, object>> responder )
+    public void FindFirst( AsyncCallback<Dictionary<String, object>> responder )
     {
       FindFirst( DataQueryBuilder.Create(), responder );
     }
 
-    public void FindFirst( DataQueryBuilder queryBuilder, AsyncCallback<Dictionary<string, object>> responder )
+    public void FindFirst( DataQueryBuilder queryBuilder, AsyncCallback<Dictionary<String, object>> responder )
     {
       List<String> relations = queryBuilder.GetRelated();
 
@@ -267,12 +267,12 @@ namespace BackendlessAPI.Data
 
   #region Last
 
-    public Dictionary<string, object> FindLast()
+    public Dictionary<String, object> FindLast()
     {
       return FindLast( DataQueryBuilder.Create() );
     }
 
-    public Dictionary<string, object> FindLast( DataQueryBuilder queryBuilder )
+    public Dictionary<String, object> FindLast( DataQueryBuilder queryBuilder )
     {
       List<String> relations = queryBuilder.GetRelated();
 
@@ -281,27 +281,27 @@ namespace BackendlessAPI.Data
 
       int relationsDepth = queryBuilder.GetRelationsDepth();
       Object[] args = new Object[] { tableName, relations, relationsDepth };
-      return Invoker.InvokeSync<Dictionary<string, object>>( PERSISTENCE_MANAGER_SERVER_ALIAS, "last", args );
+      return Invoker.InvokeSync<Dictionary<String, object>>( PERSISTENCE_MANAGER_SERVER_ALIAS, "last", args );
     }
     
   #if !(NET_35 || NET_40)
-    public async Task<Dictionary<string, object>> FindLastAsync()
+    public async Task<Dictionary<String, object>> FindLastAsync()
     {
       return await Task.Run( () => FindLast() ).ConfigureAwait( false );
     }
     
-    public async Task<Dictionary<string, object>> FindLastAsync( DataQueryBuilder queryBuilder )
+    public async Task<Dictionary<String, object>> FindLastAsync( DataQueryBuilder queryBuilder )
     {
       return await Task.Run( () => FindLast( queryBuilder ) ).ConfigureAwait( false );
     } 
   #endif
 
-    public void FindLast( AsyncCallback<Dictionary<string, object>> responder )
+    public void FindLast( AsyncCallback<Dictionary<String, object>> responder )
     {
       FindLast( DataQueryBuilder.Create(), responder );
     }
 
-    public void FindLast( DataQueryBuilder queryBuilder, AsyncCallback<Dictionary<string, object>> responder )
+    public void FindLast( DataQueryBuilder queryBuilder, AsyncCallback<Dictionary<String, object>> responder )
     {
       List<String> relations = queryBuilder.GetRelated();
 
@@ -317,12 +317,12 @@ namespace BackendlessAPI.Data
 
   #region Find
 
-    public IList<Dictionary<string, object>> Find()
+    public IList<Dictionary<String, object>> Find()
     {
       return Find( (DataQueryBuilder) null );
     }
 
-    public IList<Dictionary<string, object>> Find( DataQueryBuilder dataQueryBuilder )
+    public IList<Dictionary<String, object>> Find( DataQueryBuilder dataQueryBuilder )
     {
       if( dataQueryBuilder == null )
         dataQueryBuilder = DataQueryBuilder.Create();
@@ -331,29 +331,29 @@ namespace BackendlessAPI.Data
       PersistenceService.CheckPageSizeAndOffset( dataQuery );
       
       object[] args = { tableName, dataQuery };
-      return Invoker.InvokeSync<IList<Dictionary<string, object>>>( PERSISTENCE_MANAGER_SERVER_ALIAS, "find", args );
+      return Invoker.InvokeSync<IList<Dictionary<String, object>>>( PERSISTENCE_MANAGER_SERVER_ALIAS, "find", args );
     }
     
   #if !(NET_35 || NET_40)
-    public async Task<IList<Dictionary<string, object>>> FindAsync()
+    public async Task<IList<Dictionary<String, object>>> FindAsync()
     {
       return await Task.Run( () => Find() ).ConfigureAwait( false );
     }
     
-    public async Task<IList<Dictionary<string, object>>> FindAsync( DataQueryBuilder queryBuilder )
+    public async Task<IList<Dictionary<String, object>>> FindAsync( DataQueryBuilder queryBuilder )
     {
       return await Task.Run( () => Find( queryBuilder ) ).ConfigureAwait( false );
     } 
   #endif
 
-    public void Find( AsyncCallback<IList<Dictionary<string, object>>> responder )
+    public void Find( AsyncCallback<IList<Dictionary<String, object>>> responder )
     {
       Find( (DataQueryBuilder) null, responder );
     }
 
-    public void Find( DataQueryBuilder dataQueryBuilder, AsyncCallback<IList<Dictionary<string, object>>> callback )
+    public void Find( DataQueryBuilder dataQueryBuilder, AsyncCallback<IList<Dictionary<String, object>>> callback )
     {
-      var responder = new AsyncCallback<IList<Dictionary<string, object>>>(
+      var responder = new AsyncCallback<IList<Dictionary<String, object>>>(
                                                                            r =>
                                                                            {
                                                                              if( callback != null )
@@ -380,22 +380,22 @@ namespace BackendlessAPI.Data
 
   #region Find By Id
 
-    public Dictionary<string, object> FindById( string id )
+    public Dictionary<String, object> FindById( String id )
     {
       return FindById( id, 0 );
     }
 
-    public Dictionary<string, object> FindById( string id, int relationsDepth )
+    public Dictionary<String, object> FindById( String id, int relationsDepth )
     {
       return FindById( id, null, relationsDepth );
     }
 
-    public Dictionary<string, object> FindById( string id, IList<string> relations )
+    public Dictionary<String, object> FindById( String id, IList<String> relations )
     {
       return FindById( id, relations, 0 );
     }
 
-    public Dictionary<string, object> FindById( string id, IList<string> relations, int relationsDepth )
+    public Dictionary<String, object> FindById( String id, IList<String> relations, int relationsDepth )
     {
       if( id == null )
         throw new ArgumentNullException( ExceptionMessage.NULL_ID );
@@ -404,25 +404,25 @@ namespace BackendlessAPI.Data
         relations = new List<String>();
 
       object[] args = { tableName, id, relations, relationsDepth };
-      return Invoker.InvokeSync<Dictionary<string, object>>( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById", args );
+      return Invoker.InvokeSync<Dictionary<String, object>>( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById", args );
     }
 
-    public Dictionary<string, object> FindById( Dictionary<string, object> entity )
+    public Dictionary<String, object> FindById( Dictionary<String, object> entity )
     {
       return FindById( entity, null, 0 );
     }
 
-    public Dictionary<string, object> FindById( Dictionary<string, object> entity, int relationsDepth )
+    public Dictionary<String, object> FindById( Dictionary<String, object> entity, int relationsDepth )
     {
       return FindById( entity, null, relationsDepth );
     }
 
-    public Dictionary<string, object> FindById( Dictionary<string, object> entity, IList<string> relations )
+    public Dictionary<String, object> FindById( Dictionary<String, object> entity, IList<String> relations )
     {
       return FindById( entity, relations, 0 );
     }
 
-    public Dictionary<string, object> FindById( Dictionary<string, object> entity, IList<string> relations,
+    public Dictionary<String, object> FindById( Dictionary<String, object> entity, IList<String> relations,
                                                 int relationsDepth )
     {
       if( entity == null )
@@ -432,70 +432,70 @@ namespace BackendlessAPI.Data
         relations = new List<String>();
 
       object[] args = { tableName, entity, relations, relationsDepth };
-      return Invoker.InvokeSync<Dictionary<string, object>>( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById", args );
+      return Invoker.InvokeSync<Dictionary<String, object>>( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById", args );
     }
     
   #if !(NET_35 || NET_40)
-    public async Task<Dictionary<string, object>> FindByIdAsync( string id )
+    public async Task<Dictionary<String, object>> FindByIdAsync( String id )
     {
       return await Task.Run( () => FindById( id ) ).ConfigureAwait( false );
     }
     
-    public async Task<Dictionary<string, object>> FindByIdAsync( string id, int relationsDepth )
+    public async Task<Dictionary<String, object>> FindByIdAsync( String id, int relationsDepth )
     {
       return await Task.Run( () => FindById( id, relationsDepth ) ).ConfigureAwait( false );
     }
     
-    public async Task<Dictionary<string, object>> FindByIdAsync( string id, IList<string> relations )
+    public async Task<Dictionary<String, object>> FindByIdAsync( String id, IList<String> relations )
     {
       return await Task.Run( () => FindById( id, relations ) ).ConfigureAwait( false );
     }
 
-    public async Task<Dictionary<string, object>> FindByIdAsync( string id, IList<string> relations,
+    public async Task<Dictionary<String, object>> FindByIdAsync( String id, IList<String> relations,
                                                                  int relationsDepth )
     {
       return await Task.Run( () => FindById( id, relations, relationsDepth ) ).ConfigureAwait( false );
     }
     
-    public async Task<Dictionary<string, object>> FindByIdAsync( Dictionary<string, object> entity )
+    public async Task<Dictionary<String, object>> FindByIdAsync( Dictionary<String, object> entity )
     {
       return await Task.Run( () => FindById( entity ) ).ConfigureAwait( false );
     }
     
-    public async Task<Dictionary<string, object>> FindByIdAsync( Dictionary<string, object> entity, int relationsDepth )
+    public async Task<Dictionary<String, object>> FindByIdAsync( Dictionary<String, object> entity, int relationsDepth )
     {
       return await Task.Run( () => FindById( entity, relationsDepth ) ).ConfigureAwait( false );
     }
     
-    public async Task<Dictionary<string, object>> FindByIdAsync( Dictionary<string, object> entity, IList<string> relations )
+    public async Task<Dictionary<String, object>> FindByIdAsync( Dictionary<String, object> entity, IList<String> relations )
     {
       return await Task.Run( () => FindById( entity, relations ) ).ConfigureAwait( false );
     }
 
-    public async Task<Dictionary<string, object>> FindByIdAsync( Dictionary<string, object> entity, IList<string> relations,
+    public async Task<Dictionary<String, object>> FindByIdAsync( Dictionary<String, object> entity, IList<String> relations,
                                                                  int relationsDepth )
     {
       return await Task.Run( () => FindById( entity, relations, relationsDepth ) ).ConfigureAwait( false );
     }
   #endif
 
-    public void FindById( string id, AsyncCallback<Dictionary<string, object>> responder )
+    public void FindById( String id, AsyncCallback<Dictionary<String, object>> responder )
     {
       FindById( id, null, 0, responder );
     }
 
-    public void FindById( string id, int relationsDepth, AsyncCallback<Dictionary<string, object>> responder )
+    public void FindById( String id, int relationsDepth, AsyncCallback<Dictionary<String, object>> responder )
     {
       FindById( id, null, relationsDepth, responder );
     }
 
-    public void FindById( string id, IList<string> relations, AsyncCallback<Dictionary<string, object>> responder )
+    public void FindById( String id, IList<String> relations, AsyncCallback<Dictionary<String, object>> responder )
     {
       FindById( id, relations, 0, responder );
     }
 
-    public void FindById( string id, IList<string> relations, int relationsDepth,
-                          AsyncCallback<Dictionary<string, object>> responder )
+    public void FindById( String id, IList<String> relations, int relationsDepth,
+                          AsyncCallback<Dictionary<String, object>> responder )
     {
       if( id == null )
         throw new ArgumentNullException( ExceptionMessage.NULL_ID );
@@ -507,25 +507,25 @@ namespace BackendlessAPI.Data
       Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById", args, responder );
     }
 
-    public void FindById( Dictionary<string, object> entity, AsyncCallback<Dictionary<string, object>> responder )
+    public void FindById( Dictionary<String, object> entity, AsyncCallback<Dictionary<String, object>> responder )
     {
       FindById( entity, null, 0, responder );
     }
 
-    public void FindById( Dictionary<string, object> entity, int relationsDepth,
-                          AsyncCallback<Dictionary<string, object>> responder )
+    public void FindById( Dictionary<String, object> entity, int relationsDepth,
+                          AsyncCallback<Dictionary<String, object>> responder )
     {
       FindById( entity, null, relationsDepth, responder );
     }
 
-    public void FindById( Dictionary<string, object> entity, IList<string> relations,
-                          AsyncCallback<Dictionary<string, object>> responder )
+    public void FindById( Dictionary<String, object> entity, IList<String> relations,
+                          AsyncCallback<Dictionary<String, object>> responder )
     {
       FindById( entity, relations, 0, responder );
     }
 
-    public void FindById( Dictionary<string, object> entity, IList<string> relations, int relationsDepth,
-                          AsyncCallback<Dictionary<string, object>> responder )
+    public void FindById( Dictionary<String, object> entity, IList<String> relations, int relationsDepth,
+                          AsyncCallback<Dictionary<String, object>> responder )
     {
       if( entity == null )
         throw new ArgumentNullException( ExceptionMessage.NULL_ENTITY );
@@ -541,19 +541,19 @@ namespace BackendlessAPI.Data
 
   #region Load Relations
 
-    public IList<M> LoadRelations<M>( string objectId, LoadRelationsQueryBuilder<M> queryBuilder )
+    public IList<M> LoadRelations<M>( String objectId, LoadRelationsQueryBuilder<M> queryBuilder )
     {
       return Backendless.Persistence.LoadRelations<M>( tableName, objectId, queryBuilder );
     }
     
   #if !(NET_35 || NET_40)
-    public async Task<IList<M>> LoadRelationsAsync<M>( string objectId, LoadRelationsQueryBuilder<M> queryBuilder )
+    public async Task<IList<M>> LoadRelationsAsync<M>( String objectId, LoadRelationsQueryBuilder<M> queryBuilder )
     {
       return await Task.Run( () => LoadRelations( objectId, queryBuilder ) ).ConfigureAwait( false );
     }
   #endif
 
-    public void LoadRelations<M>( string objectId, LoadRelationsQueryBuilder<M> queryBuilder,
+    public void LoadRelations<M>( String objectId, LoadRelationsQueryBuilder<M> queryBuilder,
                                   AsyncCallback<IList<M>> responder )
     {
       Backendless.Persistence.LoadRelations<M>( tableName, objectId, queryBuilder, responder );
@@ -604,114 +604,114 @@ namespace BackendlessAPI.Data
 
   #region ADD RELATION
 
-    public void AddRelation( Dictionary<string, object> parent, string columnName, object[] children )
+    public void AddRelation( Dictionary<String, object> parent, String columnName, object[] children )
     {
-      Backendless.Data.AddRelation<Dictionary<string, object>>( tableName, parent, columnName, children );
+      Backendless.Data.AddRelation<Dictionary<String, object>>( tableName, parent, columnName, children );
     }
 
-    public int AddRelation( Dictionary<string, object> parent, string columnName, string whereClause )
+    public int AddRelation( Dictionary<String, object> parent, String columnName, String whereClause )
     {
-      return Backendless.Data.AddRelation<Dictionary<string, object>>( tableName, parent, columnName, whereClause );
+      return Backendless.Data.AddRelation<Dictionary<String, object>>( tableName, parent, columnName, whereClause );
     }
     
   #if !(NET_35 || NET_40)
-    public async Task AddRelationAsync( Dictionary<string, object> parent, string columnName, object[] children )
+    public async Task AddRelationAsync( Dictionary<String, object> parent, String columnName, object[] children )
     {
       await Task.Run( () => AddRelation( parent, columnName, children) ).ConfigureAwait( false );
     }
     
-    public async Task<int> AddRelationAsync( Dictionary<string, object> parent, string columnName, string whereClause )
+    public async Task<int> AddRelationAsync( Dictionary<String, object> parent, String columnName, String whereClause )
     {
       return await Task.Run( () => AddRelation( parent, columnName, whereClause ) ).ConfigureAwait( false );
     }
   #endif
 
-    public void AddRelation( Dictionary<string, object> parent, string columnName, string whereClause,
+    public void AddRelation( Dictionary<String, object> parent, String columnName, String whereClause,
                              AsyncCallback<int> callback )
     {
-      Backendless.Data.AddRelation<Dictionary<string, object>>( tableName, parent, columnName, whereClause, callback );
+      Backendless.Data.AddRelation<Dictionary<String, object>>( tableName, parent, columnName, whereClause, callback );
     }
     
-    public void AddRelation( Dictionary<string, object> parent, string columnName, object[] children,
+    public void AddRelation( Dictionary<String, object> parent, String columnName, object[] children,
                              AsyncCallback<int> callback )
     {
-      Backendless.Data.AddRelation<Dictionary<string, object>>( tableName, parent, columnName, children, callback );
+      Backendless.Data.AddRelation<Dictionary<String, object>>( tableName, parent, columnName, children, callback );
     }
   #endregion
 
   #region SET RELATION
 
-    public int SetRelation( Dictionary<string, object> parent, string columnName, object[] children )
+    public int SetRelation( Dictionary<String, object> parent, String columnName, object[] children )
     {
-      return Backendless.Data.SetRelation<Dictionary<string, object>>( tableName, parent, columnName, children );
+      return Backendless.Data.SetRelation<Dictionary<String, object>>( tableName, parent, columnName, children );
     }
 
-    public int SetRelation( Dictionary<string, object> parent, string columnName, string whereClause )
+    public int SetRelation( Dictionary<String, object> parent, String columnName, String whereClause )
     {
-      return Backendless.Data.SetRelation<Dictionary<string, object>>( tableName, parent, columnName, whereClause );
+      return Backendless.Data.SetRelation<Dictionary<String, object>>( tableName, parent, columnName, whereClause );
     }
     
   #if !(NET_35 || NET_40)
-    public async Task<int> SetRelationAsync( Dictionary<string, object> parent, string columnName, object[] children )
+    public async Task<int> SetRelationAsync( Dictionary<String, object> parent, String columnName, object[] children )
     {
       return await Task.Run( () => SetRelation( parent, columnName, children) ).ConfigureAwait( false );
     }
     
-    public async Task<int> SetRelationAsync( Dictionary<string, object> parent, string columnName, string whereClause )
+    public async Task<int> SetRelationAsync( Dictionary<String, object> parent, String columnName, String whereClause )
     {
       return await Task.Run( () => SetRelation( parent, columnName, whereClause ) ).ConfigureAwait( false );
     }
   #endif
 
-    public void SetRelation( Dictionary<string, object> parent, string columnName, string whereClause,
+    public void SetRelation( Dictionary<String, object> parent, String columnName, String whereClause,
                              AsyncCallback<int> callback )
     {
-      Backendless.Data.SetRelation<Dictionary<string, object>>( tableName, parent, columnName, whereClause, callback );
+      Backendless.Data.SetRelation<Dictionary<String, object>>( tableName, parent, columnName, whereClause, callback );
     }
     
-    public void SetRelation( Dictionary<string, object> parent, string columnName, object[] children,
+    public void SetRelation( Dictionary<String, object> parent, String columnName, object[] children,
                              AsyncCallback<int> callback )
     {
-      Backendless.Data.SetRelation<Dictionary<string, object>>( tableName, parent, columnName, children, callback );
+      Backendless.Data.SetRelation<Dictionary<String, object>>( tableName, parent, columnName, children, callback );
     }
 
   #endregion
 
   #region DELETE RELATION
 
-    public int DeleteRelation( Dictionary<string, object> parent, string columnName, object[] children )
+    public int DeleteRelation( Dictionary<String, object> parent, String columnName, object[] children )
     {
-      return Backendless.Data.DeleteRelation<Dictionary<string, object>>( tableName, parent, columnName, children );
+      return Backendless.Data.DeleteRelation<Dictionary<String, object>>( tableName, parent, columnName, children );
     }
     
-    public int DeleteRelation( Dictionary<string, object> parent, string columnName, string whereClause )
+    public int DeleteRelation( Dictionary<String, object> parent, String columnName, String whereClause )
     {
-      return Backendless.Data.DeleteRelation<Dictionary<string, object>>( tableName, parent, columnName, whereClause );
+      return Backendless.Data.DeleteRelation<Dictionary<String, object>>( tableName, parent, columnName, whereClause );
     }
 
   #if !(NET_35 || NET_40)
-    public async Task<int> DeleteRelationAsync( Dictionary<string, object> parent, string columnName, object[] children )
+    public async Task<int> DeleteRelationAsync( Dictionary<String, object> parent, String columnName, object[] children )
     {
       return await Task.Run( () => DeleteRelation( parent, columnName, children) ).ConfigureAwait( false );
     }
     
-    public async Task<int> DeleteRelationAsync( Dictionary<string, object> parent, string columnName, string whereClause )
+    public async Task<int> DeleteRelationAsync( Dictionary<String, object> parent, String columnName, String whereClause )
     {
       return await Task.Run( () => DeleteRelation( parent, columnName, whereClause ) ).ConfigureAwait( false );
     }
   #endif
 
-    public void DeleteRelation( Dictionary<string, object> parent, string columnName, string whereClause,
+    public void DeleteRelation( Dictionary<String, object> parent, String columnName, String whereClause,
                                 AsyncCallback<int> callback )
     {
-      Backendless.Data.DeleteRelation<Dictionary<string, object>>( tableName, parent, columnName, whereClause,
+      Backendless.Data.DeleteRelation<Dictionary<String, object>>( tableName, parent, columnName, whereClause,
                                                                    callback );
     }
     
-    public void DeleteRelation( Dictionary<string, object> parent, string columnName, object[] children,
+    public void DeleteRelation( Dictionary<String, object> parent, String columnName, object[] children,
                                 AsyncCallback<int> callback )
     {
-      Backendless.Data.DeleteRelation<Dictionary<string, object>>( tableName, parent, columnName, children, callback );
+      Backendless.Data.DeleteRelation<Dictionary<String, object>>( tableName, parent, columnName, children, callback );
     }
 
   #endregion

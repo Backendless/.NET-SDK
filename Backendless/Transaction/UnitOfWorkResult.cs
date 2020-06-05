@@ -10,21 +10,21 @@ namespace BackendlessAPI.Transaction
     {
     }
 
-    public UnitOfWorkResult( bool success, TransactionOperationError error )
+    public UnitOfWorkResult( Boolean success, TransactionOperationError error )
     {
       Success = success;
       Error = error;
     }
 
     [SetClientClassMemberName("success")]
-    public bool Success { get; set; }
+    public Boolean Success { get; set; }
 
     [SetClientClassMemberName( "error" )]
     public TransactionOperationError Error { get; set; }
 
     [SetClientClassMemberName( "results" )]
     public Dictionary<String, OperationResult> Results { get; set; }
-    public override string ToString()
+    public override String ToString()
     {
       String error = Error != null ? Error.ToString() : "error=null";
       return "UnitOfWorkResult{success=" + Success + ", " + error + ", results=" + Results + "}";

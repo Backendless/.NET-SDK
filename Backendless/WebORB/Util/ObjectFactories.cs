@@ -41,7 +41,7 @@ namespace Weborb.Util
 
                 foreach( FileInfo file in files )
                 {
-                    string assemblyName = file.Name.Substring( 0, file.Name.ToLower().IndexOf( ".dll" ) );
+                    String assemblyName = file.Name.Substring( 0, file.Name.ToLower().IndexOf( ".dll" ) );
 
                     if( Log.isLogging( LoggingConstants.DEBUG ) )
                         Log.log( LoggingConstants.DEBUG, "loading assembly " + assemblyName );
@@ -71,13 +71,13 @@ namespace Weborb.Util
         }
 #endif
 
-		public static object CreateServiceObject( string className )
+		public static object CreateServiceObject( String className )
 		{
             //return ThreadContext.getORBConfig().getObjectFactories()._CreateServiceObject( className );
             return ORBConfig.GetInstance().getObjectFactories()._CreateServiceObject( className );
 		}
 
-        public object _CreateServiceObject( string className )
+        public object _CreateServiceObject( String className )
         {
             IServiceObjectFactory factory;
             serviceObjectFactories.TryGetValue( className, out factory );
@@ -158,7 +158,7 @@ namespace Weborb.Util
             return ORBConfig.GetInstance().getObjectFactories()._CreateArgumentObject( type, argument );
         }
 
-        public static object CreateArgumentObject( string typeName, IAdaptingType argument )
+        public static object CreateArgumentObject( String typeName, IAdaptingType argument )
         {
             Type type = TypeLoader.LoadType( typeName );
             return ORBConfig.GetInstance().getObjectFactories()._CreateArgumentObject( type, argument );
@@ -197,80 +197,80 @@ namespace Weborb.Util
             return objectFactory.createObject( argument );
 		}
 
-		public void AddServiceObjectFactory( string typeName, IServiceObjectFactory objectFactory )
+		public void AddServiceObjectFactory( String typeName, IServiceObjectFactory objectFactory )
 		{
 			serviceObjectFactories[ typeName ] = objectFactory;
 		}
 
-		public void AddArgumentObjectFactory( string typeName, IArgumentObjectFactory objectFactory )
+		public void AddArgumentObjectFactory( String typeName, IArgumentObjectFactory objectFactory )
 		{
 			argumentObjectFactories[ typeName ] = objectFactory;
 		}
 
-        public static string[] GetMappedServiceClasses()
+        public static String[] GetMappedServiceClasses()
         {
             //return ThreadContext.getORBConfig().getObjectFactories()._GetMappedServiceClasses();
             return ORBConfig.GetInstance().getObjectFactories()._GetMappedServiceClasses();
         }
 
-		public string[] _GetMappedServiceClasses()
+		public String[] _GetMappedServiceClasses()
 		{
             List<String> serviceTypes = new List<String>();
 
-			foreach( string typeName in serviceObjectFactories.Keys )
+			foreach( String typeName in serviceObjectFactories.Keys )
 				serviceTypes.Add( typeName );
 
 			return serviceTypes.ToArray();
 		}
 
-        public static IServiceObjectFactory GetServiceObjectFactory( string serviceTypeName )
+        public static IServiceObjectFactory GetServiceObjectFactory( String serviceTypeName )
         {
             //return ThreadContext.getORBConfig().getObjectFactories()._GetServiceObjectFactory( serviceTypeName );
             return ORBConfig.GetInstance().getObjectFactories()._GetServiceObjectFactory( serviceTypeName );
         }
 
-		public IServiceObjectFactory _GetServiceObjectFactory( string serviceTypeName )
+		public IServiceObjectFactory _GetServiceObjectFactory( String serviceTypeName )
 		{
             IServiceObjectFactory factory;
             serviceObjectFactories.TryGetValue( serviceTypeName, out factory );
             return factory;
 		}
 
-		public void RemoveServiceFactoryFor( string serviceTypeName )
+		public void RemoveServiceFactoryFor( String serviceTypeName )
 		{
 			serviceObjectFactories.Remove( serviceTypeName );
 		}
 
-        public static string[] GetMappedArgumentClasses()
+        public static String[] GetMappedArgumentClasses()
         {
             //return ThreadContext.getORBConfig().getObjectFactories()._GetMappedArgumentClasses();
             return ORBConfig.GetInstance().getObjectFactories()._GetMappedArgumentClasses();
         }
 
-		public string[] _GetMappedArgumentClasses()
+		public String[] _GetMappedArgumentClasses()
 		{
             List<String> argumentTypes = new List<String>();
 
-			foreach( string typeName in argumentObjectFactories.Keys )
+			foreach( String typeName in argumentObjectFactories.Keys )
 				argumentTypes.Add( typeName );
 
 			return argumentTypes.ToArray();
 		}
 
-        public static IArgumentObjectFactory GetArgumentObjectFactory( string argumentTypeName )
+        public static IArgumentObjectFactory GetArgumentObjectFactory( String argumentTypeName )
         {
             //return ThreadContext.getORBConfig().getObjectFactories()._GetArgumentObjectFactory( argumentTypeName );
             return ORBConfig.GetInstance().getObjectFactories()._GetArgumentObjectFactory( argumentTypeName );
         }
 
-		public IArgumentObjectFactory _GetArgumentObjectFactory( string argumentTypeName )
+		public IArgumentObjectFactory _GetArgumentObjectFactory( String argumentTypeName )
 		{
 			IArgumentObjectFactory factory;
             argumentObjectFactories.TryGetValue( argumentTypeName, out factory );
             return factory;
 		}
 
-		public void RemoveArgumentFactoryFor( string argumentTypeName )
+		public void RemoveArgumentFactoryFor( String argumentTypeName )
 		{
 			argumentObjectFactories.Remove( argumentTypeName );
 		}

@@ -194,7 +194,7 @@ namespace TestProject
       Assert.IsTrue( objectBefore_DeleteRelation[ 0 ][ "Surname" ] != null );
 
       UnitOfWork unitOfWork = new UnitOfWork();
-      unitOfWork.DeleteRelation( personObject.GetType().Name, personObject.objectId, relationColumn, new string[] { orderObject.objectId } );
+      unitOfWork.DeleteRelation( personObject.GetType().Name, personObject.objectId, relationColumn, new String[] { orderObject.objectId } );
       UnitOfWorkResult uowResult = unitOfWork.Execute();
 
       Assert.IsTrue( uowResult.Success );

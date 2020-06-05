@@ -34,8 +34,8 @@ namespace BackendlessAPI.Transaction
     {
       String operationResultId = opResultIdGenerator.GenerateOpResultId( OperationType.DELETE, tableName );
       OperationDelete operationDelete = new OperationDelete( OperationType.DELETE, tableName, operationResultId, objectId );
-
       operations.AddLast( operationDelete );
+
       return TransactionHelper.MakeOpResult( tableName, operationResultId, OperationType.DELETE );
     }
 
@@ -49,7 +49,7 @@ namespace BackendlessAPI.Transaction
 
       String operationResultId = opResultIdGenerator.GenerateOpResultId( OperationType.DELETE, result.GetTableName() );
       OperationDelete operationDelete = new OperationDelete( OperationType.DELETE, result.GetTableName(), operationResultId,
-                                                              result.ResolveTo( "objectId" ).MakeReference() );
+                                                                           result.ResolveTo( "objectId" ).MakeReference() );
       operations.AddLast( operationDelete );
 
       return TransactionHelper.MakeOpResult( result.GetTableName(), operationResultId, OperationType.DELETE );
@@ -64,7 +64,6 @@ namespace BackendlessAPI.Transaction
         throw new ArgumentException( ExceptionMessage.OP_RESULT_INDEX_YES_PROP_NAME_NOT );
 
       Dictionary<String, Object> referenceToObjectId = TransactionHelper.ConvertCreateBulkOrFindResultIndexToObjectId( resultIndex );
-
       String operationResultId = opResultIdGenerator.GenerateOpResultId( OperationType.DELETE, resultIndex.GetOpResult().GetTableName() );
       OperationDelete operationDelete = new OperationDelete( OperationType.DELETE, resultIndex.GetOpResult().GetTableName(),
                                                                                    operationResultId, referenceToObjectId );
@@ -95,8 +94,6 @@ namespace BackendlessAPI.Transaction
       List<Object> objectIds = TransactionHelper.ConvertMapsToObjectIds( arrayOfObjects );
 
       return BulkDelete( tableName, null, objectIds );
-
-
     }
 
     public OpResult BulkDelete( String tableName, String[] objectIdValues )
@@ -132,7 +129,7 @@ namespace BackendlessAPI.Transaction
       String operationResultId = opResultIdGenerator.GenerateOpResultId( OperationType.DELETE_BULK, tableName );
       DeleteBulkPayload deleteBulkPayload = new DeleteBulkPayload( whereClause, unconditional );
       OperationDeleteBulk operationDeleteBulk = new OperationDeleteBulk( OperationType.DELETE_BULK, tableName, operationResultId,
-                                                                                            deleteBulkPayload );
+                                                                                                             deleteBulkPayload );
       operations.AddLast( operationDeleteBulk );
 
       return TransactionHelper.MakeOpResult( tableName, operationResultId, OperationType.DELETE_BULK );
