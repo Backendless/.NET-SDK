@@ -35,7 +35,7 @@ namespace TestProject
 
       IList<Person> personList = Backendless.Data.Of<Person>().Find( DataQueryBuilder.Create() );
       Dictionary<String, OperationResult> result = uowResult.Results;
-      OperationResult operationResult = result[ createPersonsObj.GetOpResultId() ];
+      OperationResult operationResult = result[ createPersonsObj.OpResultId ];
       String[] transactionsObjID = (String[]) operationResult.Result;
 
       int iteratorI = 0;
@@ -82,7 +82,7 @@ namespace TestProject
 
       IList<Person> personList = Backendless.Data.Of<Person>().Find( DataQueryBuilder.Create() );
       Dictionary<String, OperationResult> result = uowResult.Results;
-      OperationResult operationResult = result[ createPersonObjects.GetOpResultId() ];
+      OperationResult operationResult = result[ createPersonObjects.OpResultId ];
       String[] transactionsObjID = (String[]) operationResult.Result;
 
       Assert.IsTrue( transactionsObjID[ 0 ] == personList[ 0 ].objectId || transactionsObjID[ 0 ] == personList[ 1 ].objectId );

@@ -21,22 +21,26 @@ namespace BackendlessAPI.Transaction
 
   public class OperationTypeUtil
   {
-    private static String operationName;
+    internal static String OperationName
+    {
+      get;
+      private set;
+    }
 
     internal static String GetOperationName( OperationType opType )
     {
-      operationName = opType.ToString().ToLower();
+      OperationName = opType.ToString().ToLower();
 
-      if( operationName.Contains( "_b" ) )
-        return operationName.Replace( "_b", "B" );
+      if( OperationName.Contains( "_b" ) )
+        return OperationName.Replace( "_b", "B" );
 
-      else if( operationName.Contains( "d_r" ) )
-        return operationName.Replace( "d_r", "dToR" );
+      else if( OperationName.Contains( "d_r" ) )
+        return OperationName.Replace( "d_r", "dToR" );
 
-      else if( operationName.Contains( "_r" ) )
-        return operationName.Replace( "_r", "R" );
+      else if( OperationName.Contains( "_r" ) )
+        return OperationName.Replace( "_r", "R" );
 
-      return operationName;
+      return OperationName;
     }
 
     internal static ReadOnlyCollection<OperationType> supportCollectionEntityDescriptionType = new ReadOnlyCollection<OperationType>

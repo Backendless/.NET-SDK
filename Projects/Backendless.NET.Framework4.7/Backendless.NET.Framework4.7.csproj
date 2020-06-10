@@ -291,17 +291,12 @@
     <Compile Include="..\..\Backendless\Transaction\OpResult.cs" />
     <Compile Include="..\..\Backendless\Transaction\OpResultIdGenerator.cs" />
     <Compile Include="..\..\Backendless\Transaction\OpResultValueReference.cs" />
-    <Compile Include="..\..\Backendless\Transaction\IUnitOfWork.cs" />
     <Compile Include="..\..\Backendless\Transaction\UnitOfWork.cs" />
-    <Compile Include="..\..\Backendless\Transaction\UnitOfWorkCreate.cs" />
     <Compile Include="..\..\Backendless\Transaction\UnitOfWorkCreateImpl.cs" />
-    <Compile Include="..\..\Backendless\Transaction\UnitOfWorkDelete.cs" />
     <Compile Include="..\..\Backendless\Transaction\UnitOfWorkDeleteImpl.cs" />
     <Compile Include="..\..\Backendless\Transaction\UnitOfWorkDeleteRelationImpl.cs" />
     <Compile Include="..\..\Backendless\Transaction\UnitOfWorkExecutorImpl.cs" />
-    <Compile Include="..\..\Backendless\Transaction\UnitOfWorkFind.cs" />
     <Compile Include="..\..\Backendless\Transaction\UnitOfWorkFindImpl.cs" />
-    <Compile Include="..\..\Backendless\Transaction\UnitOfWorkUpdate.cs" />
     <Compile Include="..\..\Backendless\Transaction\UnitOfWorkUpdateImpl.cs" />
     <Compile Include="..\..\Backendless\Transaction\UnitOfWorkResult.cs" />
     <Compile Include="..\..\Backendless\Transaction\UnitOfWorkAddRelationImpl.cs" />

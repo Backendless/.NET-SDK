@@ -1,64 +1,67 @@
 ﻿using System;
 using System.Collections.Generic;
+using Weborb.Service;
 
 namespace BackendlessAPI.Transaction
 {
   public class OpResultValueReference
   {
-    private OpResult opResult;
-    private Int32? resultIndex;
-    private String propName;
-
     public OpResultValueReference( OpResult opResult, Int32? resultIndex, String propName )
     {
-      this.opResult = opResult;
-      this.resultIndex = resultIndex;
-      this.propName = propName;
+      OpResult = opResult;
+      ResultIndex = resultIndex;
+      PropName = propName;
     }
 
     public OpResultValueReference( OpResult opResult, Int32? resultIndex )
     {
-      this.opResult = opResult;
-      this.resultIndex = resultIndex;
-      propName = null;
+      OpResult = opResult;
+      ResultIndex = resultIndex;
+      PropName = null;
     }
 
     public OpResultValueReference( OpResult opResult, String propName )
     {
-      this.opResult = opResult;
-      resultIndex = null;
-      this.propName = propName;
+      OpResult = opResult;
+      ResultIndex = null;
+      PropName = propName;
     }
 
-    public OpResult GetOpResult()
+    [SetClientClassMemberName("opResult")]
+    public OpResult OpResult
     {
-      return opResult;
+      get;
+      private set;
     }
 
-    public Int32? GetResultIndex()
+    [SetClientClassMemberName( "resultIndex" )]
+    public Int32? ResultIndex
     {
-      return resultIndex;
+      get;
+      private set;
     }
 
-    public String GetPropName()
+    [SetClientClassMemberName( "propName" )]
+    public String PropName
     {
-      return propName;
+      get;
+      private set;
     }
 
     public OpResultValueReference ResolveTo( String propName )
     {
-      return new OpResultValueReference( opResult, resultIndex, propName );
+      return new OpResultValueReference( OpResult, ResultIndex, propName );
     }
 
     internal Dictionary<String, Object> MakeReference()
     {
-      Dictionary<String, Object> referenceMap = opResult.MakeReference();
+      Dictionary<String, Object> referenceMap = OpResult.MakeReference();
 
-      if( resultIndex != null )
-        referenceMap[ UnitOfWork.RESULT_INDEX ] = resultIndex;
+      if( ResultIndex != null )
+        referenceMap[ UnitOfWork.RESULT_INDEX ] = ResultIndex;
 
-      if( propName != null )
-        referenceMap[ UnitOfWork.PROP_NAME ] = propName;
+      if( PropName != null )
+        referenceMap[ UnitOfWork.PROP_NAME ] = PropName;
 
       return referenceMap;
     }

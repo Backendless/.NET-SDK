@@ -49,7 +49,7 @@ namespace TestProject
       Assert.IsNotNull( uowResult.Results );
 
       Dictionary<String, OperationResult> result = uowResult.Results;
-      OperationResult operationResult = result[ updatePerson.GetOpResultId() ];
+      OperationResult operationResult = result[ updatePerson.OpResultId ];
       Double transactionResult = (Double) operationResult.Result;
 
       IList<Person> personList = Backendless.Data.Of<Person>().Find( DataQueryBuilder.Create() );
@@ -92,7 +92,7 @@ namespace TestProject
       Assert.IsNotNull( uowResult.Results );
 
       Dictionary<String, OperationResult> result = uowResult.Results;
-      OperationResult operationResult = result[ updatePerson.GetOpResultId() ];
+      OperationResult operationResult = result[ updatePerson.OpResultId ];
       Double transactionResult = (Double) operationResult.Result;
 
       IList<Person> personList = Backendless.Data.Of<Person>().Find( DataQueryBuilder.Create() );
@@ -130,7 +130,7 @@ namespace TestProject
       Assert.IsNotNull( uowResult.Results );
 
       Dictionary<String, OperationResult> result = uowResult.Results;
-      OperationResult operationResult = result[ updatePersonsObj.GetOpResultId() ];
+      OperationResult operationResult = result[ updatePersonsObj.OpResultId ];
       Double transactionResult = (Double) operationResult.Result;
       IList<Person> personList = Backendless.Data.Of<Person>().Find( DataQueryBuilder.Create() );
 

@@ -160,7 +160,7 @@ namespace BackendlessAPI.Transaction
       if( childrenObjectIds == null || childrenObjectIds.Length == 0 )
         throw new ArgumentException( ExceptionMessage.NULL_BULK );
 
-      return AddOperation( operationType, parentObject.GetTableName(),
+      return AddOperation( operationType, parentObject.TableName,
                            parentObject.ResolveTo( "objectId" ).MakeReference(),
                            columnName, null, childrenObjectIds );
     }
@@ -174,7 +174,7 @@ namespace BackendlessAPI.Transaction
       CheckOpResultForParent( parentObject );
       List<String> childrenIds = GetChildrenFromArrayInstances( childrenInstances );
 
-      return AddOperation( operationType, parentObject.GetTableName(),
+      return AddOperation( operationType, parentObject.TableName,
                            parentObject.ResolveTo( "objectId" ).MakeReference(),
                            columnName, null, childrenIds );
     }
@@ -185,7 +185,7 @@ namespace BackendlessAPI.Transaction
       CheckOpResultForParent( parentObject );
       List<Object> childrenIds = GetChildrenFromListMap( childrenMaps );
 
-      return AddOperation( operationType, parentObject.GetTableName(),
+      return AddOperation( operationType, parentObject.TableName,
                            parentObject.ResolveTo( "objectId" ).MakeReference(),
                            columnName, null, childrenIds );
     }
@@ -195,7 +195,7 @@ namespace BackendlessAPI.Transaction
       CheckOpResultForParent( parentObject );
       CheckOpResultForChildren( children );
 
-      return AddOperation( operationType, parentObject.GetTableName(),
+      return AddOperation( operationType, parentObject.TableName,
                            parentObject.ResolveTo( "objectId" ).MakeReference(),
                            columnName, null, children.MakeReference() );
     }
@@ -205,7 +205,7 @@ namespace BackendlessAPI.Transaction
     {
       CheckOpResultForParent( parentObject );
 
-      return AddOperation( operationType, parentObject.GetTableName(),
+      return AddOperation( operationType, parentObject.TableName,
                            parentObject.ResolveTo( "objectId" ).MakeReference(),
                            columnName, whereClauseForChildren, null );
     }
@@ -217,7 +217,7 @@ namespace BackendlessAPI.Transaction
       if( childrenObjectIds == null || childrenObjectIds.Length == 0 )
         throw new ArgumentException( ExceptionMessage.NULL_BULK );
 
-      return AddOperation( operationType, parentObject.GetOpResult().GetTableName(), referenceToObjectId, columnName,
+      return AddOperation( operationType, parentObject.OpResult.TableName, referenceToObjectId, columnName,
                            null, childrenObjectIds );
     }
 
@@ -230,7 +230,7 @@ namespace BackendlessAPI.Transaction
       Dictionary<String, Object> referenceToObjectId = GetReferenceToParentFromOpResultValue( parentObject );
       List<String> childrenIds = GetChildrenFromArrayInstances( childrenInstances );
 
-      return AddOperation( operationType, parentObject.GetOpResult().GetTableName(), referenceToObjectId, columnName,
+      return AddOperation( operationType, parentObject.OpResult.TableName, referenceToObjectId, columnName,
                            null, childrenIds );
     }
 
@@ -240,7 +240,7 @@ namespace BackendlessAPI.Transaction
       Dictionary<String, Object> referenceToObjectId = GetReferenceToParentFromOpResultValue( parentObject );
       List<Object> childrenIds = GetChildrenFromListMap( childrenMaps );
 
-      return AddOperation( operationType, parentObject.GetOpResult().GetTableName(), referenceToObjectId, columnName,
+      return AddOperation( operationType, parentObject.OpResult.TableName, referenceToObjectId, columnName,
                            null, childrenIds );
     }
 
@@ -249,7 +249,7 @@ namespace BackendlessAPI.Transaction
       Dictionary<String, Object> referenceToObjectId = GetReferenceToParentFromOpResultValue( parentObject );
       CheckOpResultForChildren( children );
 
-      return AddOperation( operationType, parentObject.GetOpResult().GetTableName(), referenceToObjectId, columnName,
+      return AddOperation( operationType, parentObject.OpResult.TableName, referenceToObjectId, columnName,
                            null, children.MakeReference() );
     }
 
@@ -257,7 +257,7 @@ namespace BackendlessAPI.Transaction
     {
       Dictionary<String, Object> referenceToObjectId = GetReferenceToParentFromOpResultValue( parentObject );
 
-      return AddOperation( operationType, parentObject.GetOpResult().GetTableName(), referenceToObjectId, columnName,
+      return AddOperation( operationType, parentObject.OpResult.TableName, referenceToObjectId, columnName,
                            whereClauseForChildren, null );
     }
 
@@ -301,7 +301,7 @@ namespace BackendlessAPI.Transaction
       if( parentObject == null )
         throw new ArgumentException( ExceptionMessage.NULL_ENTITY );
 
-      if( !OperationTypeUtil.supportCollectionEntityDescriptionType.Contains( parentObject.GetOperationType() ) )
+      if( !OperationTypeUtil.supportCollectionEntityDescriptionType.Contains( parentObject.OperationType ) )
         throw new ArgumentException( ExceptionMessage.REF_TYPE_NOT_SUPPORT );
     }
 
@@ -310,7 +310,7 @@ namespace BackendlessAPI.Transaction
       if( parentObject == null )
         throw new ArgumentException( ExceptionMessage.NULL_ENTITY );
 
-      String parentObjectId = TransactionHelper.ConvertObjectMapToObjectId( TransactionHelper.ConvertInstanceToMap( parentObject ) );
+      String parentObjectId = TransactionHelper.GetObjectIdFromInstance( parentObject );
 
       if( parentObjectId == null )
         throw new ArgumentException( ExceptionMessage.NULL_OBJECT_ID_IN_INSTANCE );
@@ -323,7 +323,7 @@ namespace BackendlessAPI.Transaction
       if( parentObject == null )
         throw new ArgumentException( ExceptionMessage.NULL_OP_RESULT_VALUE_REFERENCE );
 
-      if( parentObject.GetResultIndex() == null || parentObject.GetPropName() == null )
+      if( parentObject.ResultIndex == null || parentObject.PropName == null )
         throw new ArgumentException( ExceptionMessage.OP_RESULT_INDEX_YES_PROP_NAME_NOT );
 
       return TransactionHelper.ConvertCreateBulkOrFindResultIndexToObjectId( parentObject );
@@ -334,8 +334,8 @@ namespace BackendlessAPI.Transaction
       if( children == null )
         throw new ArgumentException( ExceptionMessage.NULL_OP_RESULT );
 
-      if( !( OperationTypeUtil.supportCollectionEntityDescriptionType.Contains( children.GetOperationType() ) ||
-            OperationTypeUtil.supportListIdsResultType.Contains( children.GetOperationType() ) ) )
+      if( !( OperationTypeUtil.supportCollectionEntityDescriptionType.Contains( children.OperationType ) ||
+            OperationTypeUtil.supportListIdsResultType.Contains( children.OperationType ) ) )
         throw new ArgumentException( ExceptionMessage.REF_TYPE_NOT_SUPPORT );
     }
 

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace BackendlessAPI.Transaction
 {
-  class UnitOfWorkCreateImpl : UnitOfWorkCreate
+  class UnitOfWorkCreateImpl
   {
     private LinkedList<Operation> operations;   
     private OpResultIdGenerator opResultIdGenerator;
@@ -23,7 +23,6 @@ namespace BackendlessAPI.Transaction
       Dictionary<String, Object> entityMap = TransactionHelper.ConvertInstanceToMap<E>( instance );
       String tableName = instance.GetType().Name;
       clazzes[ "tableName" ] = instance.GetType();
-
       return Create( tableName, entityMap );
     }
 
@@ -36,7 +35,6 @@ namespace BackendlessAPI.Transaction
       String operationResultId = opResultIdGenerator.GenerateOpResultId( OperationType.CREATE, tableName );
       OperationCreate operationCreate = new OperationCreate( OperationType.CREATE, tableName, operationResultId, objectMap );
       operations.AddLast( operationCreate );
-
       return TransactionHelper.MakeOpResult( tableName, operationResultId, OperationType.CREATE );
     }
 
@@ -58,7 +56,6 @@ namespace BackendlessAPI.Transaction
       String operationResultId = opResultIdGenerator.GenerateOpResultId( OperationType.CREATE_BULK, tableName );
       OperationCreateBulk operationCreateBulk = new OperationCreateBulk( OperationType.CREATE_BULK, tableName, operationResultId, serializedEntities );
       operations.AddLast( operationCreateBulk );
-
       return TransactionHelper.MakeOpResult( tableName, operationResultId, OperationType.CREATE_BULK );
     }
 
@@ -76,7 +73,6 @@ namespace BackendlessAPI.Transaction
       String operationResultId = opResultIdGenerator.GenerateOpResultId( OperationType.CREATE_BULK, tableName );
       OperationCreateBulk operationCreateBulk = new OperationCreateBulk( OperationType.CREATE_BULK, tableName, operationResultId, arrayOfObjectMaps );      
       operations.AddLast( operationCreateBulk );
-
       return TransactionHelper.MakeOpResult( tableName, operationResultId, OperationType.CREATE_BULK );
     }
   }

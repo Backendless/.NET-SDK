@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace BackendlessAPI.Transaction
 {
-  public class UnitOfWork : IUnitOfWork
+  public class UnitOfWork
   {
     public static String REFERENCE_MARKER = "___ref";
     public static String OP_RESULT_ID = "opResultId";
@@ -17,10 +17,10 @@ namespace BackendlessAPI.Transaction
     public readonly LinkedList<Operation> operations = new LinkedList<Operation>();
     private readonly List<String> opResultIdStrings;
 
-    private UnitOfWorkCreate unitOfWorkCreate;
-    private UnitOfWorkDelete unitOfWorkDelete;
-    private UnitOfWorkUpdate unitOfWorkUpdate;
-    private UnitOfWorkFind unitOfWorkFind;
+    private UnitOfWorkCreateImpl unitOfWorkCreate;
+    private UnitOfWorkDeleteImpl unitOfWorkDelete;
+    private UnitOfWorkUpdateImpl unitOfWorkUpdate;
+    private UnitOfWorkFindImpl unitOfWorkFind;
     private UnitOfWorkAddRelationImpl unitOfWorkAddRelation;
     private UnitOfWorkSetRelationImpl unitOfWorkSetRelation;
     private UnitOfWorkDeleteRelationImpl unitOfWorkDeleteRelation;

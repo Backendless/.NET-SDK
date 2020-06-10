@@ -26,7 +26,7 @@ namespace TestProject
       Assert.IsNotNull( unitOfWorkRes.Results );
 
       Dictionary<String, OperationResult> result = unitOfWorkRes.Results;
-      OperationResult operationResult = result[ createPersonResult.GetOpResultId() ];
+      OperationResult operationResult = result[ createPersonResult.OpResultId ];
 
       Dictionary<Object, Object> transactionResult = (Dictionary<Object, Object>) operationResult.Result;
 

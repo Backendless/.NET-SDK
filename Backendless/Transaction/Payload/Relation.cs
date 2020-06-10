@@ -27,15 +27,12 @@ namespace BackendlessAPI.Transaction.Payload
     [SetClientClassMemberName("relationColumn")]
     public String RelationColumn{ get; set; }
 
-    [JsonIgnore]
     [SetClientClassMemberName("objectIds")]
     public List<String> ObjectIds { get; set; }
 
-    [JsonIgnore]
     [SetClientClassMemberName("relationTableName")]
     public String RelationTableName { get; set; }
 
-    [JsonIgnore]
     [SetClientClassMemberName("columnUnique")]
     public bool ColumnUnique { get; set; }
 

@@ -5,7 +5,7 @@ using BackendlessAPI.Transaction.Operations;
 
 namespace BackendlessAPI.Transaction
 {
-  class UnitOfWorkFindImpl : UnitOfWorkFind
+  class UnitOfWorkFindImpl
   {
     private LinkedList<Operation> operations;
     private OpResultIdGenerator opResultIdGenerator;

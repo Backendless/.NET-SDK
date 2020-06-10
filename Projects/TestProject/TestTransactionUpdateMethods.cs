@@ -32,7 +32,7 @@ namespace TestProject
       Assert.IsNotNull( uowResult.Results );
 
       Dictionary<String, OperationResult> result = uowResult.Results;
-      OperationResult operationResult = result[ updatePerson.GetOpResultId() ];
+      OperationResult operationResult = result[ updatePerson.OpResultId ];
       Dictionary<Object, Object> transactionResult = (Dictionary<Object, Object>) operationResult.Result;
 
       Assert.IsNull( transactionResult[ "name" ] );
@@ -61,7 +61,7 @@ namespace TestProject
       Assert.IsNotNull( uowResult.Results );
 
       Dictionary<String, OperationResult> result = uowResult.Results;
-      OperationResult operationResult = result[ updatePerson.GetOpResultId() ];
+      OperationResult operationResult = result[ updatePerson.OpResultId ];
       Dictionary<Object, Object> transactionResult = (Dictionary<Object, Object>) operationResult.Result;
 
       Assert.IsTrue( (String) transactionResult[ "name" ] == "Tommy" );
@@ -105,7 +105,7 @@ namespace TestProject
       Assert.IsNotNull( uowResult.Results );
 
       Dictionary<String, OperationResult> result = uowResult.Results;
-      OperationResult operationResult = result[ updatePerson.GetOpResultId() ];
+      OperationResult operationResult = result[ updatePerson.OpResultId ];
       Dictionary<Object, Object> transactionResult = (Dictionary<Object, Object>) operationResult.Result;
 
       Assert.IsTrue( (Int32) transactionResult[ "age" ] == 100500 );

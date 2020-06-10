@@ -6,7 +6,7 @@ using BackendlessAPI.Transaction.Payload;
 
 namespace BackendlessAPI.Transaction
 {
-  class UnitOfWorkUpdateImpl : UnitOfWorkUpdate
+  class UnitOfWorkUpdateImpl
   {
     private LinkedList<Operation> operations;
     private OpResultIdGenerator opResultIdGenerator;
@@ -40,12 +40,12 @@ namespace BackendlessAPI.Transaction
       if( result == null )
         throw new ArgumentException( ExceptionMessage.NULL_OP_RESULT );
 
-      if( !OperationTypeUtil.supportEntityDescriptionResultType.Contains( result.GetOperationType() ) )
+      if( !OperationTypeUtil.supportEntityDescriptionResultType.Contains( result.OperationType ) )
         throw new ArgumentException( ExceptionMessage.REF_TYPE_NOT_SUPPORT );
 
       changes[ "objectId" ] = result.ResolveTo( "objectId" ).MakeReference();
 
-      return Update( result.GetTableName(), changes );
+      return Update( result.TableName, changes );
     }
 
     public OpResult Update( OpResultValueReference result, String propertyName, Object propertyValue )
@@ -61,17 +61,17 @@ namespace BackendlessAPI.Transaction
       if( result == null )
         throw new ArgumentException( ExceptionMessage.NULL_OP_RESULT );
 
-      if( result.GetResultIndex() == null || result.GetPropName() != null )
+      if( result.ResultIndex == null || result.PropName != null )
         throw new ArgumentException( ExceptionMessage.OP_RESULT_INDEX_YES_PROP_NAME_NOT );
 
-      if( OperationTypeUtil.supportCollectionEntityDescriptionType.Contains( result.GetOpResult().GetOperationType() ) )
+      if( OperationTypeUtil.supportCollectionEntityDescriptionType.Contains( result.OpResult.OperationType ) )
         changes[ "objectId" ] = result.ResolveTo( "objectId" ).MakeReference();
-      else if( OperationTypeUtil.supportListIdsResultType.Contains( result.GetOpResult().GetOperationType() ) )
+      else if( OperationTypeUtil.supportListIdsResultType.Contains( result.OpResult.OperationType ) )
         changes[ "objectId" ] = result.MakeReference();
       else
         throw new ArgumentException( ExceptionMessage.REF_TYPE_NOT_SUPPORT );
 
-      return Update( result.GetOpResult().GetTableName(), changes );
+      return Update( result.OpResult.TableName, changes );
     }
 
     public OpResult Update( String tableName, Dictionary<String, Object> objectMap )
@@ -105,11 +105,11 @@ namespace BackendlessAPI.Transaction
       if( objectIdsForChanges == null )
         throw new ArgumentException( ExceptionMessage.NULL_OP_RESULT );
 
-      if( !( OperationTypeUtil.supportCollectionEntityDescriptionType.Contains( objectIdsForChanges.GetOperationType() ) ||
-                          OperationTypeUtil.supportListIdsResultType.Contains( objectIdsForChanges.GetOperationType() ) ) )
+      if( !( OperationTypeUtil.supportCollectionEntityDescriptionType.Contains( objectIdsForChanges.OperationType ) ||
+                          OperationTypeUtil.supportListIdsResultType.Contains( objectIdsForChanges.OperationType ) ) )
         throw new ArgumentException( ExceptionMessage.REF_TYPE_NOT_SUPPORT );
 
-      return BulkUpdate( objectIdsForChanges.GetTableName(), null, objectIdsForChanges.MakeReference(), changes );
+      return BulkUpdate( objectIdsForChanges.TableName, null, objectIdsForChanges.MakeReference(), changes );
     }
 
     private OpResult BulkUpdate( String tableName, String whereClause, Object objectsForChanges, Dictionary<String, Object> changes )

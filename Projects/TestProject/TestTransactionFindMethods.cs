@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using BackendlessAPI.Transaction;
 using BackendlessAPI.Async;
+using System.Linq;
 
 namespace TestProject
 {
@@ -37,7 +38,7 @@ namespace TestProject
       Dictionary<String, OperationResult> results = uowResult.Results;
       Assert.IsTrue( 2 == results.Count );
 
-      Dictionary<Object, Object>[] resultFind = (Dictionary<Object, Object>[]) results[ opResultFindPerson.GetOpResultId() ].Result;
+      Dictionary<Object, Object>[] resultFind = (Dictionary<Object, Object>[]) results[ opResultFindPerson.OpResultId ].Result;
       Assert.IsTrue( 4 == resultFind.Length );
 
       Backendless.Data.Of( "Person" ).Remove( "age > '15'" );
