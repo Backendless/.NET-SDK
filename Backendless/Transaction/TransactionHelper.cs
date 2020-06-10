@@ -92,27 +92,12 @@ namespace BackendlessAPI.Transaction
         List<String> objectIds = new List<String>();
 
         foreach( E entry in instances )
-          objectIds.Add( ConvertObjectMapToObjectId( ConvertInstanceToMap( entry ) ) );
+          objectIds.Add( GetObjectIdFromInstance( entry ) );
 
         return objectIds;
       }
       else
         throw new ArgumentException( ExceptionMessage.LIST_NOT_INSTANCES );
-    }
-
-    static internal Object ConvertInstanceToObjectIdOrLeaveReference<E>( E instance )
-    {
-      if( instance == null )
-        throw new ArgumentException( ExceptionMessage.NULL_INSTANCE );
-
-      Type fieldsType = typeof( E );
-      FieldInfo[] fields = fieldsType.GetFields( BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance );
-
-      foreach( FieldInfo field in fields )
-        if( field.Name == "objectId" )
-          return field.GetValue( instance );
-
-      throw new ArgumentException( ExceptionMessage.NULL_OBJECT_ID_IN_INSTANCE );
     }
 
     static Object ConvertObjectMapToObjectIdOrLeaveReference( Dictionary<String, Object> objectMap )

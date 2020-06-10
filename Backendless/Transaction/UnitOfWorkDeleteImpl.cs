@@ -19,7 +19,7 @@ namespace BackendlessAPI.Transaction
     public OpResult Delete<E>( E instance )
     {
       String tableName = instance.GetType().Name;
-      String objectId = (String) TransactionHelper.ConvertInstanceToObjectIdOrLeaveReference<E>( instance );
+      String objectId = (String) TransactionHelper.GetObjectIdFromInstance( instance );
       return Delete( tableName, objectId );
     }
 
@@ -77,7 +77,7 @@ namespace BackendlessAPI.Transaction
       List<Object> objectIds = new List<Object>();
 
       foreach( E inst in instances )
-        objectIds.Add( TransactionHelper.ConvertInstanceToObjectIdOrLeaveReference<E>( inst ) );
+        objectIds.Add( TransactionHelper.GetObjectIdFromInstance( inst ) );
 
       return BulkDelete( tableName, null, objectIds );
     }
