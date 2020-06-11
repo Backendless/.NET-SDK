@@ -63,7 +63,7 @@ namespace BackendlessAPI.Transaction
 
     public void Execute( AsyncCallback<UnitOfWorkResult> callback )
     {
-      unitOfWorkExecutor.Equals( callback );
+      unitOfWorkExecutor.Execute( callback );
     }
 
     public OpResult Create<E>( E instance ) 
