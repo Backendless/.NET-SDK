@@ -339,7 +339,7 @@ namespace BackendlessAPI.Service
       }
       catch( System.Exception ex )
       {
-        if( callback == null )
+        if( callback != null )
           callback.ErrorHandler.Invoke( new BackendlessFault( ex.Message ) );
 
         else
