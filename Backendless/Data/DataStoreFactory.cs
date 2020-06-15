@@ -291,7 +291,34 @@ namespace BackendlessAPI.Data
       {
         return await Task.Run( () => FindById( id, relations, relationsDepth ) ).ConfigureAwait( false );
       }
+
+      public async Task<T> FindByIdAsync( String id, DataQueryBuilder queryBuilder )
+      {
+        return await Task.Run( () => FindById( id, queryBuilder ) ).ConfigureAwait( false );
+      }
+      public async Task<T> FindByIdAsync( T entity, DataQueryBuilder queryBuilder )
+      {
+        return await Task.Run( () => FindById( entity, queryBuilder ) ).ConfigureAwait( false );
+      }
     #endif
+      public T FindById( String id, DataQueryBuilder queryBuilder )
+      {
+        return Backendless.Persistence.FindByIdViaDataQueryBuilder<T>( id, queryBuilder );
+      }
+      public T FindById( T entity, DataQueryBuilder queryBuilder )
+      {
+        return Backendless.Persistence.FindByPrimaryKey( entity, queryBuilder );
+      }
+
+      public void FindById( T entity, DataQueryBuilder queryBuilder, AsyncCallback<T> callback)
+      {
+        Backendless.Persistence.FindByPrimaryKey( entity, queryBuilder, callback );
+      }
+
+      public void FindById( String id, DataQueryBuilder queryBuilder, AsyncCallback<T> callback )
+      {
+        Backendless.Persistence.FindByIdViaDataQueryBuilder( id, queryBuilder, callback );
+      }
 
       public void FindById( string id, AsyncCallback<T> responder )
       {
