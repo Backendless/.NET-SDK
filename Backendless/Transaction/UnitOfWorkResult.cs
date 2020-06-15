@@ -24,6 +24,7 @@ namespace BackendlessAPI.Transaction
 
     [SetClientClassMemberName( "results" )]
     public Dictionary<String, OperationResult> Results { get; set; }
+
     public override String ToString()
     {
       String error = Error != null ? Error.ToString() : "error=null";

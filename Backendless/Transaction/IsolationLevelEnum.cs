@@ -1,4 +1,6 @@
-﻿namespace BackendlessAPI.Transaction
+﻿using Weborb.Service;
+
+namespace BackendlessAPI.Transaction
 {
   public enum IsolationLevelEnum
   {
@@ -10,16 +12,16 @@
 
   public class LevelEnum
   {
-    private int operationId;
-    
-    public int OperationId
-    {
-      get => operationId;
-    }
-
     LevelEnum( IsolationLevelEnum operationId )
     {
-      this.operationId = (int) operationId;
+      OperationId = (int) operationId;
+    }
+
+    [SetClientClassMemberName( "operationId" )]
+    public int OperationId
+    {
+      get;
+      private set;
     }
   }
 }
