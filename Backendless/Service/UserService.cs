@@ -320,10 +320,17 @@ namespace BackendlessAPI.Service
                                   new object[] { identity, roleName } );
     }
 
+#if !( NET_35 || NET_40 )
+    public async Task ResendEmailConfirmationAsync( String email )
+    {
+      await Task.Run( () => ResendEmailConfirmation( email ) ).ConfigureAwait( false );
+    }
+#endif
+
     public void ResendEmailConfirmation( String email )
     {
       if( email == null )
-        throw new ArgumentException( ExceptionMessage.NULL_TEMPLATE, email );
+        throw new ArgumentException( ExceptionMessage.NULL_EMAIL );
 
       Invoker.InvokeSync<Object>( USER_MANAGER_SERVER_ALIAS, "resendEmailConfirmation", new Object[] { email } );
     }
@@ -333,7 +340,7 @@ namespace BackendlessAPI.Service
       try
       {
         if( email == null )
-          throw new ArgumentException( ExceptionMessage.NULL_TEMPLATE, email );
+          throw new ArgumentException( ExceptionMessage.NULL_EMAIL );
 
         Invoker.InvokeAsync( USER_MANAGER_SERVER_ALIAS, "resendEmailConfirmation", new Object[] { email }, callback );
       }
