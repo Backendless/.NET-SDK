@@ -357,6 +357,26 @@ namespace BackendlessAPI.Data
       return FindById( id, 0 );
     }
 
+    public Dictionary<string, object> FindById( string id, DataQueryBuilder queryBuilder )
+    {
+      return Invoker.InvokeSync<Dictionary<string, object>>( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById", new Object[] { tableName, id, queryBuilder.Build() } );
+    }
+
+    public Dictionary<string, object> FindById( Dictionary<string, object> entity, DataQueryBuilder queryBuilder )
+    {
+      return Invoker.InvokeSync<Dictionary<string, object>>( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById", new Object[] { tableName, entity, queryBuilder.Build() } );
+    }
+
+    public void FindById( string id, DataQueryBuilder queryBuilder, AsyncCallback<Dictionary<string, object>> callback )
+    {
+      Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById", new Object[] { tableName, id, queryBuilder.Build() }, callback );
+    }
+
+    public void FindById( Dictionary<string, object> entity, DataQueryBuilder queryBuilder, AsyncCallback<Dictionary<string, object>> callback )
+    {
+      Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById", new Object[] { tableName, entity, queryBuilder.Build() }, callback );
+    }
+
     public Dictionary<string, object> FindById( string id, int? relationsDepth )
     {
       return FindById( id, null, relationsDepth );
@@ -399,6 +419,16 @@ namespace BackendlessAPI.Data
       return await Task.Run( () => FindById( id ) ).ConfigureAwait( false );
     }
     
+    public async Task<Dictionary<string, object>> FindByIdAsync( string id, DataQueryBuilder queryBuilder )
+    {
+      return await Task.Run( () => FindById( id, queryBuilder ) ).ConfigureAwait( false );
+    }
+
+    public async Task<Dictionary<string, object>> FindByIdAsync( Dictionary<string, object> entity, DataQueryBuilder queryBuilder )
+    {
+      return await Task.Run( () => FindById( entity, queryBuilder ) ).ConfigureAwait( false );
+    }
+
     public async Task<Dictionary<string, object>> FindByIdAsync( string id, int? relationsDepth )
     {
       return await Task.Run( () => FindById( id, relationsDepth ) ).ConfigureAwait( false );

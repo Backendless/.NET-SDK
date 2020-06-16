@@ -270,22 +270,22 @@ namespace BackendlessAPI.Service
 
     internal void FindById<T>( T entity, AsyncCallback<T> responder )
     {
-      FindById<T>( entity, null, 0, responder );
+      FindById( entity, null, 0, responder );
     }
 
     internal void FindById<T>( T entity, int? relationsDepth, AsyncCallback<T> responder )
     {
-      FindById<T>( entity, null, relationsDepth, responder );
+      FindById( entity, null, relationsDepth, responder );
     }
 
     internal void FindById<T>( T entity, IList<string> relations, AsyncCallback<T> responder )
     {
-      FindById<T>( entity, relations, 0, responder );
+      FindById( entity, relations, 0, responder );
     }
 
     internal void FindById<T>( T entity, IList<string> relations, int? relationsDepth, AsyncCallback<T> responder )
     {
-      Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById", CreateArgs<T>( entity, relations, relationsDepth ), true, responder );
+      Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById", CreateArgs( entity, relations, relationsDepth ), true, responder );
     }
 
     internal T FindByPrimaryKey<T>( T entity, DataQueryBuilder queryBuilder )

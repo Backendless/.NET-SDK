@@ -105,6 +105,8 @@ namespace BackendlessAPI.Data
   #region FIND BY ID
 
     T FindById( string id );
+    T FindById( string id, DataQueryBuilder queryBuilder );
+    T FindById( T entity, DataQueryBuilder queryBuilder );
     T FindById( string id, int? relationsDepth );
     T FindById( string id, IList<string> relations );
     T FindById( string id, IList<string> relations, int? relationsDepth );
@@ -114,6 +116,8 @@ namespace BackendlessAPI.Data
     T FindById( T entity, IList<string> relations, int? relationsDepth );
   #if !(NET_35 || NET_40)
     Task<T> FindByIdAsync( string id );
+    Task<T> FindByIdAsync( string id, DataQueryBuilder queryBuilder );
+    Task<T> FindByIdAsync( T entity, DataQueryBuilder queryBuilder );
     Task<T> FindByIdAsync( string id, int? relationsDepth );
     Task<T> FindByIdAsync( string id, IList<string> relations );
     Task<T> FindByIdAsync( string id, IList<string> relations, int? relationsDepth );
@@ -123,6 +127,8 @@ namespace BackendlessAPI.Data
     Task<T> FindByIdAsync( T entity, IList<string> relations, int? relationsDepth );
   #endif
     void FindById( string id, AsyncCallback<T> responder );
+    void FindById( string id, DataQueryBuilder queryBuilder, AsyncCallback<T> responder );
+    void FindById( T entity, DataQueryBuilder queryBuilder, AsyncCallback<T> responder );
     void FindById( string id, int? relationsDepth, AsyncCallback<T> responder );
     void FindById( string id, IList<string> relations, AsyncCallback<T> responder );
     void FindById( string id, IList<string> relations, int? relationsDepth, AsyncCallback<T> responder );

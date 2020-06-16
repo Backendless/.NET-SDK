@@ -296,23 +296,10 @@ namespace BackendlessAPI.Data
       {
         return await Task.Run( () => FindById( id, queryBuilder ) ).ConfigureAwait( false );
       }
-      public async Task<T> FindByIdAsync( T entity, DataQueryBuilder queryBuilder )
-      {
-        return await Task.Run( () => FindById( entity, queryBuilder ) ).ConfigureAwait( false );
-      }
     #endif
       public T FindById( String id, DataQueryBuilder queryBuilder )
       {
         return Backendless.Persistence.FindByIdViaDataQueryBuilder<T>( id, queryBuilder );
-      }
-      public T FindById( T entity, DataQueryBuilder queryBuilder )
-      {
-        return Backendless.Persistence.FindByPrimaryKey( entity, queryBuilder );
-      }
-
-      public void FindById( T entity, DataQueryBuilder queryBuilder, AsyncCallback<T> callback)
-      {
-        Backendless.Persistence.FindByPrimaryKey( entity, queryBuilder, callback );
       }
 
       public void FindById( String id, DataQueryBuilder queryBuilder, AsyncCallback<T> callback )
@@ -349,6 +336,16 @@ namespace BackendlessAPI.Data
         return Backendless.Persistence.FindById<T>( entity );
       }
 
+      public void FindById( T entity, DataQueryBuilder queryBuilder, AsyncCallback<T> callback )
+      {
+        Backendless.Persistence.FindByPrimaryKey( entity, queryBuilder, callback );
+      }
+
+      public T FindById( T entity, DataQueryBuilder queryBuilder )
+      {
+        return Backendless.Persistence.FindByPrimaryKey( entity, queryBuilder );
+      }
+
       public T FindById( T entity, int? relationsDepth )
       {
         return Backendless.Persistence.FindById<T>( entity, relationsDepth );
@@ -368,6 +365,11 @@ namespace BackendlessAPI.Data
       public async Task<T> FindByIdAsync( T entity )
       {
         return await Task.Run( () => FindById( entity ) ).ConfigureAwait( false );
+      }
+
+      public async Task<T> FindByIdAsync( T entity, DataQueryBuilder queryBuilder )
+      {
+        return await Task.Run( () => FindById( entity, queryBuilder ) ).ConfigureAwait( false );
       }
 
       public async Task<T> FindByIdAsync( T entity, int? relationsDepth )
