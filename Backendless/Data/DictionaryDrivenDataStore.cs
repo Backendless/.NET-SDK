@@ -224,7 +224,7 @@ namespace BackendlessAPI.Data
 
     public Dictionary<string, object> FindFirst( DataQueryBuilder queryBuilder )
     {
-      return Invoker.InvokeSync<Dictionary<String, Object>>( PERSISTENCE_MANAGER_SERVER_ALIAS, "first", CreateArgs( queryBuilder ) );
+      return Invoker.InvokeSync<Dictionary<String, Object>>( PERSISTENCE_MANAGER_SERVER_ALIAS, "first", new Object[] { tableName, queryBuilder.Build() } );
     }
     
   #if !(NET_35 || NET_40)
@@ -246,7 +246,7 @@ namespace BackendlessAPI.Data
 
     public void FindFirst( DataQueryBuilder queryBuilder, AsyncCallback<Dictionary<string, object>> responder )
     {
-      Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "first", CreateArgs( queryBuilder ), responder );
+      Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "first", new Object[] { tableName, queryBuilder.Build() }, responder );
     }
 
   #endregion

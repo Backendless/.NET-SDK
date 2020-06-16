@@ -405,7 +405,7 @@ namespace BackendlessAPI.Service
 
     public T First<T>( DataQueryBuilder queryBuilder )
     {
-      return Invoker.InvokeSync<T>( PERSISTENCE_MANAGER_SERVER_ALIAS, "first", CreateArgs<T>( queryBuilder ), true );
+      return Invoker.InvokeSync<T>( PERSISTENCE_MANAGER_SERVER_ALIAS, "first", new Object[] { queryBuilder.Build() }, true );
     }
 
     public void First<T>( AsyncCallback<T> callback )
@@ -415,7 +415,7 @@ namespace BackendlessAPI.Service
 
     public void First<T>( DataQueryBuilder queryBuilder, AsyncCallback<T> callback )
     {
-      Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "first", CreateArgs<T>( queryBuilder ), true, callback );
+      Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "first", new Object[] { queryBuilder.Build() }, true, callback );
     }
     #endregion 
     #region Last
