@@ -8,6 +8,7 @@
     public const string ILLEGAL_ARGUMENT_EXCEPTION = "IllegalArgumentException";
     public const string SERVER_ERROR = "Server returned an error.";
     public const string CLIENT_ERROR = "Internal client exception.";
+    public const string NULL_EMAIL = "Email cannot be null or empty";
 
     public const string WRONG_MANIFEST = "Wrong dependencies at the manifest";
     public const string NOT_INITIALIZED = "Backendless application was not initialized";
