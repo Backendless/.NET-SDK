@@ -4,6 +4,7 @@
   {
     public const string NULL_OR_EMPTY_TEMPLATE = "{0} cannot be null or empty";
     public const string NULL_TEMPLATE = "{0} cannot be null";
+    public const string NULL_EMAIL_ENVELOPE = "EmailEnvelope can not be null.";
     public const string NUL_WEBBROWSER = "WebBrowser cannot be null";
     public const string ILLEGAL_ARGUMENT_EXCEPTION = "IllegalArgumentException";
     public const string SERVER_ERROR = "Server returned an error.";
