@@ -636,6 +636,9 @@ namespace BackendlessAPI.Service
       if( string.IsNullOrEmpty( templateName ) )
         throw new ArgumentNullException( ExceptionMessage.NULL_EMPTY_TEMPLATE_NAME );
 
+      if( envelope == null )
+        throw new ArgumentException( ExceptionMessage.NULL_EMAIL_ENVELOPE );
+
       return Invoker.InvokeSync<MessageStatus>( EMAIL_TEMPLATE_SENDER_SERVER_ALIAS, "sendEmails",
                                                 new Object[] { templateName, envelope, templateValues } );
     }
@@ -648,6 +651,9 @@ namespace BackendlessAPI.Service
     {
       if( string.IsNullOrEmpty( templateName ) )
         throw new ArgumentNullException( ExceptionMessage.NULL_EMPTY_TEMPLATE_NAME );
+
+      if( envelope == null )
+        throw new ArgumentException( ExceptionMessage.NULL_EMAIL_ENVELOPE );
 
       Invoker.InvokeAsync( EMAIL_TEMPLATE_SENDER_SERVER_ALIAS, "sendEmails",
                            new Object[] { templateName, envelope, templateValues }, responder );
