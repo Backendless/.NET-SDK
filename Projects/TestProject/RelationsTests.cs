@@ -3,6 +3,8 @@ using BackendlessAPI;
 using BackendlessAPI.Persistence;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using BackendlessAPI.Async;
 
 namespace TestProject
 {
@@ -13,6 +15,7 @@ namespace TestProject
     public string AreaA { get; set; }
     public bool Categories{ get; set; }
   }
+
   public class Orders
   {
     public List<Area> Related{ get; set; }
@@ -37,7 +40,6 @@ namespace TestProject
       catch
       {
         ////////////Сreation of the parent table "Orders"////////////
-
         Dictionary<String, Object> data = new Dictionary<String, Object>();
         data.Add( "age", 10 );
         data.Add( "name", "Nikita" );
@@ -47,7 +49,7 @@ namespace TestProject
         data.Clear();
         data.Add( "age", 5 );
         data.Add( "name", "Tommy" );
-
+        
         Dictionary<String, Object> dataIdParent_2 = Backendless.Data.Of( "Orders" ).Save( data );//Second object in the "Order" table
         /////////////////////////////////////////////////////////////////////////////////////////
 
@@ -188,6 +190,7 @@ namespace TestProject
       qb.AddAllProperties();
       qb.SetRelationsDepth( 0 );
       qb.SetRelated( new List<String> { "Related" } );
+
       IList<Dictionary<String, Object>> res = Backendless.Data.Of( "Orders" ).Find( qb );
 
       Assert.IsFalse( !res[ 0 ].ContainsKey( "Related" ) );
@@ -202,6 +205,7 @@ namespace TestProject
       qb.SetRelationsPageSize( 1 );
       qb.SetRelated( new List<String> { "Related" } );
       IList<Dictionary<String, Object>> res = Backendless.Data.Of( "Orders" ).Find( qb );
+      
       Object[] rel = (Object[]) res[ 0 ][ "Related" ];
 
       Assert.IsTrue( rel.Length == 1 );
@@ -250,6 +254,7 @@ namespace TestProject
       qb.AddAllProperties();
       qb.SetWhereClause( "name='Joe'" );
       IList<Dictionary<String, Object>> res = Backendless.Data.Of( "Orders" ).Find( qb );
+      
       Assert.IsTrue( res.Count == 0 );
     }
 

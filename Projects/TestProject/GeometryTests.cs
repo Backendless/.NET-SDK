@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using System.Text;
 
+
 namespace TestProject
 {
   [TestClass]
@@ -294,13 +295,13 @@ namespace TestProject
 
       pers = Backendless.Data.Of( "GeoData" ).Save( pers );
       Dictionary<String, object> result = Backendless.Data.Of( "GeoData" ).FindById( (String) pers[ "objectId" ] );
+
       Assert.AreEqual( (Point)result[ "pickupLocation" ], new Point().SetX( 30.05 ).SetY( 10.1 ), "Saved Point object equal to received" );
     }
     [TestMethod]
     public void TestLineStringSave()
     {
       Dictionary<String, object> pers = new Dictionary<String, object>();
-
       List<Point> list = new List<Point>();
       list.Add( new Point().SetX( 5.0 ).SetY( 10.2 ) );
       list.Add( new Point().SetX( 3.05 ).SetY( 8.6 ) );
@@ -311,13 +312,13 @@ namespace TestProject
 
       pers = Backendless.Data.Of( "GeoData" ).Save( pers );
       Dictionary<String, object> result = Backendless.Data.Of( "GeoData" ).FindById( (String)pers[ "objectId" ] );
+
       Assert.AreEqual( (LineString)result[ "LineValue" ], finalLine, "Saved LineString object equal to received" );
     }
     [TestMethod]
     public void TestPolygonSave()
     {
       Dictionary<String, object> pers = new Dictionary<String, object>();
-
       List<Point> tempList = new List<Point>();
 
       tempList.Add( new Point().SetX( -77.05786152 ).SetY( 38.87261877 ) );
@@ -346,6 +347,7 @@ namespace TestProject
 
       pers = Backendless.Data.Of( "GeoData" ).Save( pers );
       Dictionary<String, object> result = Backendless.Data.Of( "GeoData" ).FindById( (String) pers[ "objectId" ] );
+
       Assert.AreEqual( (Polygon) result[ "PolyValue" ], poly, "Saved Polygon object equal to received" );
     }
     [TestMethod]

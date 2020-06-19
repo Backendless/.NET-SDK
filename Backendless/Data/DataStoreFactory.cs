@@ -256,7 +256,7 @@ namespace BackendlessAPI.Data
         return Backendless.Persistence.FindById<T>( id, null );
       }
 
-      public T FindById( string id, int relationsDepth )
+      public T FindById( string id, int? relationsDepth )
       {
         return Backendless.Persistence.FindById<T>( id, null, relationsDepth );
       }
@@ -266,7 +266,7 @@ namespace BackendlessAPI.Data
         return Backendless.Persistence.FindById<T>( id, relations );
       }
 
-      public T FindById( string id, IList<string> relations, int relationsDepth )
+      public T FindById( string id, IList<string> relations, int? relationsDepth )
       {
         return Backendless.Persistence.FindById<T>( id, relations, relationsDepth );
       }
@@ -277,7 +277,7 @@ namespace BackendlessAPI.Data
         return await Task.Run( () => FindById( id ) ).ConfigureAwait( false );
       }
 
-      public async Task<T> FindByIdAsync( string id, int relationsDepth )
+      public async Task<T> FindByIdAsync( string id, int? relationsDepth )
       {
         return await Task.Run( () => FindById( id, relationsDepth ) ).ConfigureAwait( false );
       }
@@ -287,7 +287,7 @@ namespace BackendlessAPI.Data
         return await Task.Run( () => FindById( id, relations ) ).ConfigureAwait( false );
       }
 
-      public async Task<T> FindByIdAsync( string id, IList<string> relations, int relationsDepth )
+      public async Task<T> FindByIdAsync( string id, IList<string> relations, int? relationsDepth )
       {
         return await Task.Run( () => FindById( id, relations, relationsDepth ) ).ConfigureAwait( false );
       }
@@ -298,7 +298,7 @@ namespace BackendlessAPI.Data
         Backendless.Persistence.FindById( id, null, responder );
       }
 
-      public void FindById( string id, int relationsDepth, AsyncCallback<T> responder )
+      public void FindById( string id, int? relationsDepth, AsyncCallback<T> responder )
       {
         Backendless.Persistence.FindById( id, null, relationsDepth, responder );
       }
@@ -308,7 +308,7 @@ namespace BackendlessAPI.Data
         Backendless.Persistence.FindById( id, relations, responder );
       }
 
-      public void FindById( string id, IList<string> relations, int relationsDepth, AsyncCallback<T> responder )
+      public void FindById( string id, IList<string> relations, int? relationsDepth, AsyncCallback<T> responder )
       {
         Backendless.Persistence.FindById( id, relations, relationsDepth, responder );
       }
@@ -322,7 +322,7 @@ namespace BackendlessAPI.Data
         return Backendless.Persistence.FindById<T>( entity );
       }
 
-      public T FindById( T entity, int relationsDepth )
+      public T FindById( T entity, int? relationsDepth )
       {
         return Backendless.Persistence.FindById<T>( entity, relationsDepth );
       }
@@ -332,7 +332,7 @@ namespace BackendlessAPI.Data
         return Backendless.Persistence.FindById<T>( entity, relations );
       }
 
-      public T FindById( T entity, IList<string> relations, int relationsDepth )
+      public T FindById( T entity, IList<string> relations, int? relationsDepth )
       {
         return Backendless.Persistence.FindById<T>( entity, relations, relationsDepth );
       }
@@ -343,7 +343,7 @@ namespace BackendlessAPI.Data
         return await Task.Run( () => FindById( entity ) ).ConfigureAwait( false );
       }
 
-      public async Task<T> FindByIdAsync( T entity, int relationsDepth )
+      public async Task<T> FindByIdAsync( T entity, int? relationsDepth )
       {
         return await Task.Run( () => FindById( entity, relationsDepth ) ).ConfigureAwait( false );
       }
@@ -353,7 +353,7 @@ namespace BackendlessAPI.Data
         return await Task.Run( () => FindById( entity, relations ) ).ConfigureAwait( false );
       }
 
-      public async Task<T> FindByIdAsync( T entity, IList<string> relations, int relationsDepth )
+      public async Task<T> FindByIdAsync( T entity, IList<string> relations, int? relationsDepth )
       {
         return await Task.Run( () => FindById( entity, relations, relationsDepth ) ).ConfigureAwait( false );
       }
@@ -364,7 +364,7 @@ namespace BackendlessAPI.Data
         Backendless.Persistence.FindById<T>( entity, responder );
       }
 
-      public void FindById( T entity, int relationsDepth, AsyncCallback<T> responder )
+      public void FindById( T entity, int? relationsDepth, AsyncCallback<T> responder )
       {
         Backendless.Persistence.FindById<T>( entity, relationsDepth, responder );
       }
@@ -374,7 +374,7 @@ namespace BackendlessAPI.Data
         Backendless.Persistence.FindById<T>( entity, relations, responder );
       }
 
-      public void FindById( T entity, IList<string> relations, int relationsDepth, AsyncCallback<T> responder )
+      public void FindById( T entity, IList<string> relations, int? relationsDepth, AsyncCallback<T> responder )
       {
         Backendless.Persistence.FindById<T>( entity, relations, relationsDepth, responder );
       }

@@ -232,17 +232,9 @@ namespace BackendlessAPI.Service
       return FindById<T>( id, relations, 0 );
     }
 
-    internal T FindById<T>( String id, IList<String> relations, int relationsDepth )
+    internal T FindById<T>( string id, IList<string> relations, int? relationsDepth )
     {
-      if( id == null )
-        throw new ArgumentNullException( ExceptionMessage.NULL_ID );
-
-      if( relations == null )
-        relations = new List<String>();
-
-      AddWeborbPropertyMapping<T>();
-      return Invoker.InvokeSync<T>( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById",
-                                    new Object[] { GetTypeName( typeof( T ) ), id, relations, relationsDepth }, true );
+      return Invoker.InvokeSync<T>( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById", CreateArgs<T>( id, relations, relationsDepth ), true );
     }
 
     internal void FindById<T>( String id, IList<String> relations, AsyncCallback<T> callback )
@@ -250,17 +242,9 @@ namespace BackendlessAPI.Service
       FindById<T>( id, relations, 0, callback );
     }
 
-    internal void FindById<T>( String id, IList<String> relations, int relationsDepth, AsyncCallback<T> callback )
+    internal void FindById<T>( string id, IList<string> relations, int? relationsDepth, AsyncCallback<T> callback )
     {
-      if( id == null )
-        throw new ArgumentNullException( ExceptionMessage.NULL_ID );
-
-      if( relations == null )
-        relations = new List<String>();
-
-      AddWeborbPropertyMapping<T>();
-      Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById",
-                           new Object[] { GetTypeName( typeof( T ) ), id, relations, relationsDepth }, true, callback );
+      Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById", CreateArgs<T>( id, relations, relationsDepth ), true, callback );
     }
     #endregion
     #region FindById with Object
@@ -269,7 +253,7 @@ namespace BackendlessAPI.Service
       return FindById<T>( entity, null, 0 );
     }
 
-    internal T FindById<T>( T entity, int relationsDepth )
+    internal T FindById<T>( T entity, int? relationsDepth )
     {
       return FindById<T>( entity, null, relationsDepth );
     }
@@ -279,17 +263,9 @@ namespace BackendlessAPI.Service
       return FindById<T>( entity, relations, 0 );
     }
 
-    internal T FindById<T>( T entity, IList<String> relations, int relationsDepth )
+    internal T FindById<T>( T entity, IList<string> relations, int? relationsDepth )
     {
-      if( entity == null )
-        throw new ArgumentNullException( ExceptionMessage.NULL_ENTITY );
-
-      if( relations == null )
-        relations = new List<String>();
-
-      AddWeborbPropertyMapping<T>();
-      return Invoker.InvokeSync<T>( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById",
-                           new Object[] { GetTypeName( typeof( T ) ), entity, relations, relationsDepth }, true );
+      return Invoker.InvokeSync<T>( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById", CreateArgs<T>( entity, relations, relationsDepth ), true );
     }
 
     internal void FindById<T>( T entity, AsyncCallback<T> responder )
@@ -297,7 +273,7 @@ namespace BackendlessAPI.Service
       FindById<T>( entity, null, 0, responder );
     }
 
-    internal void FindById<T>( T entity, int relationsDepth, AsyncCallback<T> responder )
+    internal void FindById<T>( T entity, int? relationsDepth, AsyncCallback<T> responder )
     {
       FindById<T>( entity, null, relationsDepth, responder );
     }
@@ -307,17 +283,9 @@ namespace BackendlessAPI.Service
       FindById<T>( entity, relations, 0, responder );
     }
 
-    internal void FindById<T>( T entity, IList<String> relations, int relationsDepth, AsyncCallback<T> responder )
+    internal void FindById<T>( T entity, IList<string> relations, int? relationsDepth, AsyncCallback<T> responder )
     {
-      if( entity == null )
-        throw new ArgumentNullException( ExceptionMessage.NULL_ENTITY );
-
-      if( relations == null )
-        relations = new List<String>();
-
-      AddWeborbPropertyMapping<T>();
-      Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById",
-                           new Object[] { GetTypeName( typeof( T ) ), entity, relations, relationsDepth }, true, responder );
+      Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById", CreateArgs<T>( entity, relations, relationsDepth ), true, responder );
     }
     #endregion
     #region LoadRelations
@@ -437,17 +405,7 @@ namespace BackendlessAPI.Service
 
     public T First<T>( DataQueryBuilder queryBuilder )
     {
-      List<String> relations = queryBuilder.GetRelated();
-
-      if( relations == null )
-        relations = new List<String>();
-
-      int relationsDepth = queryBuilder.GetRelationsDepth();
-
-      AddWeborbPropertyMapping<T>();
-      return Invoker.InvokeSync<T>( PERSISTENCE_MANAGER_SERVER_ALIAS, "first",
-                                    new Object[] { GetTypeName( typeof( T ) ), relations, relationsDepth },
-                                    true );
+      return Invoker.InvokeSync<T>( PERSISTENCE_MANAGER_SERVER_ALIAS, "first", CreateArgs<T>( queryBuilder ), true );
     }
 
     public void First<T>( AsyncCallback<T> callback )
@@ -457,18 +415,7 @@ namespace BackendlessAPI.Service
 
     public void First<T>( DataQueryBuilder queryBuilder, AsyncCallback<T> callback )
     {
-      List<String> relations = queryBuilder.GetRelated();
-
-      if( relations == null )
-        relations = new List<String>();
-
-      int relationsDepth = queryBuilder.GetRelationsDepth();
-
-      AddWeborbPropertyMapping<T>();
-      Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "first",
-                           new Object[] { GetTypeName( typeof( T ) ), relations, relationsDepth }, 
-                           true,
-                           callback );
+      Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "first", CreateArgs<T>( queryBuilder ), true, callback );
     }
     #endregion 
     #region Last
@@ -479,17 +426,7 @@ namespace BackendlessAPI.Service
 
     public T Last<T>( DataQueryBuilder queryBuilder )
     {
-      List<String> relations = queryBuilder.GetRelated();
-
-      if( relations == null )
-        relations = new List<String>();
-
-      int relationsDepth = queryBuilder.GetRelationsDepth();
-
-      AddWeborbPropertyMapping<T>();
-      return Invoker.InvokeSync<T>( PERSISTENCE_MANAGER_SERVER_ALIAS, "last",
-                                    new Object[] { GetTypeName( typeof( T ) ), relations, relationsDepth },
-                                    true );
+      return Invoker.InvokeSync<T>( PERSISTENCE_MANAGER_SERVER_ALIAS, "last", CreateArgs<T>( queryBuilder ), true );
     }
 
     public void Last<T>( AsyncCallback<T> callback )
@@ -499,18 +436,7 @@ namespace BackendlessAPI.Service
 
     public void Last<T>( DataQueryBuilder queryBuilder, AsyncCallback<T> callback )
     {
-      List<String> relations = queryBuilder.GetRelated();
-
-      if( relations == null )
-        relations = new List<String>();
-
-      int relationsDepth = queryBuilder.GetRelationsDepth();
-
-      AddWeborbPropertyMapping<T>();
-      Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "last",
-                           new Object[] { GetTypeName( typeof( T ) ), relations, relationsDepth }, 
-                           true,
-                           callback );
+      Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "last", CreateArgs<T>( queryBuilder ), true, callback );
     }
     #endregion
     #region Get Object Count
@@ -955,5 +881,47 @@ namespace BackendlessAPI.Service
           return type.Name;
       }
     }
+
+    #region CREATE_ARGS  
+    public Object[] CreateArgs<T>( DataQueryBuilder qb )
+    {
+      return SubArgsCreator<T>( qb.GetRelated(), qb.GetRelationsDepth(), null );
+    }
+
+    public Object[] CreateArgs<T>( String id, IList<String> relations, int? relationsDepth )
+    {
+      if( id == null )
+        throw new ArgumentNullException( ExceptionMessage.NULL_ID );
+
+      return SubArgsCreator<T>( relations, relationsDepth, id );
+    }
+
+    public Object[] CreateArgs<T>( T entity, IList<String> relations, int? relationsDepth )
+    {
+      if( entity == null )
+        throw new ArgumentNullException( ExceptionMessage.NULL_ENTITY );
+
+      return SubArgsCreator<T>( relations, relationsDepth, entity );
+    }
+
+    private Object[] SubArgsCreator<T>( IList<String> relations, int? Depth, Object obj )
+    {
+      if( relations == null )
+        relations = new List<String>();
+
+      AddWeborbPropertyMapping<T>();
+      List<Object> args = new List<Object> { GetTypeName( typeof( T ) ) };
+
+      if( obj != null )
+        args.Add( obj );
+
+      args.Add( relations );
+
+      if( Depth != null )
+        args.Add( Depth );
+
+      return args.ToArray();
+    }
+    #endregion
   }
 }

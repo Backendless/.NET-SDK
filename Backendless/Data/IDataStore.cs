@@ -105,31 +105,31 @@ namespace BackendlessAPI.Data
   #region FIND BY ID
 
     T FindById( string id );
-    T FindById( string id, int relationsDepth );
+    T FindById( string id, int? relationsDepth );
     T FindById( string id, IList<string> relations );
-    T FindById( string id, IList<string> relations, int relationsDepth );
+    T FindById( string id, IList<string> relations, int? relationsDepth );
     T FindById( T entity );
-    T FindById( T entity, int relationsDepth );
+    T FindById( T entity, int? relationsDepth );
     T FindById( T entity, IList<string> relations );
-    T FindById( T entity, IList<string> relations, int relationsDepth );
+    T FindById( T entity, IList<string> relations, int? relationsDepth );
   #if !(NET_35 || NET_40)
     Task<T> FindByIdAsync( string id );
-    Task<T> FindByIdAsync( string id, int relationsDepth );
+    Task<T> FindByIdAsync( string id, int? relationsDepth );
     Task<T> FindByIdAsync( string id, IList<string> relations );
-    Task<T> FindByIdAsync( string id, IList<string> relations, int relationsDepth );
+    Task<T> FindByIdAsync( string id, IList<string> relations, int? relationsDepth );
     Task<T> FindByIdAsync( T entity );
-    Task<T> FindByIdAsync( T entity, int relationsDepth );
+    Task<T> FindByIdAsync( T entity, int? relationsDepth );
     Task<T> FindByIdAsync( T entity, IList<string> relations );
-    Task<T> FindByIdAsync( T entity, IList<string> relations, int relationsDepth );
+    Task<T> FindByIdAsync( T entity, IList<string> relations, int? relationsDepth );
   #endif
     void FindById( string id, AsyncCallback<T> responder );
-    void FindById( string id, int relationsDepth, AsyncCallback<T> responder );
+    void FindById( string id, int? relationsDepth, AsyncCallback<T> responder );
     void FindById( string id, IList<string> relations, AsyncCallback<T> responder );
-    void FindById( string id, IList<string> relations, int relationsDepth, AsyncCallback<T> responder );
+    void FindById( string id, IList<string> relations, int? relationsDepth, AsyncCallback<T> responder );
     void FindById( T entity, AsyncCallback<T> responder );
-    void FindById( T entity, int relationsDepth, AsyncCallback<T> responder );
+    void FindById( T entity, int? relationsDepth, AsyncCallback<T> responder );
     void FindById( T entity, IList<string> relations, AsyncCallback<T> responder );
-    void FindById( T entity, IList<string> relations, int relationsDepth, AsyncCallback<T> responder );
+    void FindById( T entity, IList<string> relations, int? relationsDepth, AsyncCallback<T> responder );
 
   #endregion
 

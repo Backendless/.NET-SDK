@@ -4,22 +4,24 @@ namespace BackendlessAPI.Exception
 {
   public class ExceptionMessage
   {
-    public const String NULL_OR_EMPTY_TEMPLATE = "{0} cannot be null or empty";
-    public const String NULL_TEMPLATE = "{0} cannot be null";
-    public const String NUL_WEBBROWSER = "WebBrowser cannot be null";
-    public const String ILLEGAL_ARGUMENT_EXCEPTION = "IllegalArgumentException";
-    public const String SERVER_ERROR = "Server returned an error.";
-    public const String CLIENT_ERROR = "Internal client exception.";
+    public const string NULL_OR_EMPTY_TEMPLATE = "{0} cannot be null or empty";
+    public const string NULL_TEMPLATE = "{0} cannot be null";
+    public const string NULL_EMAIL_ENVELOPE = "EmailEnvelope can not be null.";
+    public const string NUL_WEBBROWSER = "WebBrowser cannot be null";
+    public const string ILLEGAL_ARGUMENT_EXCEPTION = "IllegalArgumentException";
+    public const string SERVER_ERROR = "Server returned an error.";
+    public const string CLIENT_ERROR = "Internal client exception.";
+    public const string NULL_EMAIL = "Email cannot be null or empty";
 
-    public const String WRONG_MANIFEST = "Wrong dependencies at the manifest";
-    public const String NOT_INITIALIZED = "Backendless application was not initialized";
+    public const string WRONG_MANIFEST = "Wrong dependencies at the manifest";
+    public const string NOT_INITIALIZED = "Backendless application was not initialized";
 
-    public const String NULL_USER = "User cannot be null or empty.";
-    public const String NULL_ROLE_NAME = "Role cannot be null or empty";
-    public const String NULL_PASSWORD = "User password cannot be null or empty.";
-    public const String NULL_LOGIN = "User login cannot be null or empty.";
+    public const string NULL_USER = "User cannot be null or empty.";
+    public const string NULL_ROLE_NAME = "Role cannot be null or empty";
+    public const string NULL_PASSWORD = "User password cannot be null or empty.";
+    public const string NULL_LOGIN = "User login cannot be null or empty.";
 
-    public const String NULL_CONTEXT =
+    public const string NULL_CONTEXT =
         "Context cannot be null. Use Backendless.initApp( String applicationId, String secretKey ) for proper initialization.";
 
     public const String NULL_CATEGORY_NAME = "Category name cannot be null or empty.";
