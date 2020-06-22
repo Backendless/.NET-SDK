@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 #if !(NET_35 || NET_40)
 using System.Threading.Tasks;
 #endif
@@ -15,31 +16,31 @@ namespace BackendlessAPI.Data
   {
   #region BULK CREATE
 
-    IList<string> Create( IList<T> objects );
+    IList<String> Create( IList<T> objects );
   #if !(NET_35 || NET_40)
-    Task<IList<string>> CreateAsync( IList<T> objects );
+    Task<IList<String>> CreateAsync( IList<T> objects );
   #endif
-    void Create( IList<T> objects, AsyncCallback<IList<string>> responder );
+    void Create( IList<T> objects, AsyncCallback<IList<String>> responder );
 
   #endregion
 
   #region BULK UPDATE
 
-    int Update( string whereClause, Dictionary<string, object> changes );
+    Int32 Update( String whereClause, Dictionary<String, Object> changes );
   #if !(NET_35 || NET_40)
-    Task<int> UpdateAsync( string whereClause, Dictionary<string, object> changes );
+    Task<Int32> UpdateAsync( String whereClause, Dictionary<String, Object> changes );
   #endif
-    void Update( string whereClause, Dictionary<string, object> changes, AsyncCallback<int> callback );
+    void Update( String whereClause, Dictionary<String, Object> changes, AsyncCallback<Int32> callback );
 
   #endregion
 
   #region BULK DELETE
 
-    int Remove( string whereClause );
+    Int32 Remove( String whereClause );
   #if !(NET_35 || NET_40)
-    Task<int> RemoveAsync( string whereClause );
+    Task<Int32> RemoveAsync( String whereClause );
   #endif
-    void Remove( string whereClause, AsyncCallback<int> callback );
+    void Remove( String whereClause, AsyncCallback<Int32> callback );
 
   #endregion
 
@@ -104,95 +105,101 @@ namespace BackendlessAPI.Data
 
   #region FIND BY ID
 
-    T FindById( string id );
-    T FindById( string id, int? relationsDepth );
-    T FindById( string id, IList<string> relations );
-    T FindById( string id, IList<string> relations, int? relationsDepth );
+    T FindById( String id );
+    T FindById( String id, DataQueryBuilder queryBuilder );
+    T FindById( T entity, DataQueryBuilder queryBuilder );
+    T FindById( String id, Int32? relationsDepth );
+    T FindById( String id, IList<String> relations );
+    T FindById( String id, IList<String> relations, Int32? relationsDepth );
     T FindById( T entity );
-    T FindById( T entity, int? relationsDepth );
-    T FindById( T entity, IList<string> relations );
-    T FindById( T entity, IList<string> relations, int? relationsDepth );
+    T FindById( T entity, Int32? relationsDepth );
+    T FindById( T entity, IList<String> relations );
+    T FindById( T entity, IList<String> relations, Int32? relationsDepth );
   #if !(NET_35 || NET_40)
-    Task<T> FindByIdAsync( string id );
-    Task<T> FindByIdAsync( string id, int? relationsDepth );
-    Task<T> FindByIdAsync( string id, IList<string> relations );
-    Task<T> FindByIdAsync( string id, IList<string> relations, int? relationsDepth );
+    Task<T> FindByIdAsync( String id );
+    Task<T> FindByIdAsync( String id, DataQueryBuilder queryBuilder );
+    Task<T> FindByIdAsync( T entity, DataQueryBuilder queryBuilder );
+    Task<T> FindByIdAsync( String id, Int32? relationsDepth );
+    Task<T> FindByIdAsync( String id, IList<String> relations );
+    Task<T> FindByIdAsync( String id, IList<String> relations, Int32? relationsDepth );
     Task<T> FindByIdAsync( T entity );
-    Task<T> FindByIdAsync( T entity, int? relationsDepth );
-    Task<T> FindByIdAsync( T entity, IList<string> relations );
-    Task<T> FindByIdAsync( T entity, IList<string> relations, int? relationsDepth );
+    Task<T> FindByIdAsync( T entity, Int32? relationsDepth );
+    Task<T> FindByIdAsync( T entity, IList<String> relations );
+    Task<T> FindByIdAsync( T entity, IList<String> relations, Int32? relationsDepth );
   #endif
-    void FindById( string id, AsyncCallback<T> responder );
-    void FindById( string id, int? relationsDepth, AsyncCallback<T> responder );
-    void FindById( string id, IList<string> relations, AsyncCallback<T> responder );
-    void FindById( string id, IList<string> relations, int? relationsDepth, AsyncCallback<T> responder );
+    void FindById( String id, AsyncCallback<T> responder );
+    void FindById( String id, DataQueryBuilder queryBuilder, AsyncCallback<T> responder );
+    void FindById( T entity, DataQueryBuilder queryBuilder, AsyncCallback<T> responder );
+    void FindById( String id, Int32? relationsDepth, AsyncCallback<T> responder );
+    void FindById( String id, IList<String> relations, AsyncCallback<T> responder );
+    void FindById( String id, IList<String> relations, Int32? relationsDepth, AsyncCallback<T> responder );
     void FindById( T entity, AsyncCallback<T> responder );
-    void FindById( T entity, int? relationsDepth, AsyncCallback<T> responder );
-    void FindById( T entity, IList<string> relations, AsyncCallback<T> responder );
-    void FindById( T entity, IList<string> relations, int? relationsDepth, AsyncCallback<T> responder );
+    void FindById( T entity, Int32? relationsDepth, AsyncCallback<T> responder );
+    void FindById( T entity, IList<String> relations, AsyncCallback<T> responder );
+    void FindById( T entity, IList<String> relations, Int32? relationsDepth, AsyncCallback<T> responder );
 
   #endregion
 
   #region LOAD RELATIONS
 
-    IList<M> LoadRelations<M>( string objectId, LoadRelationsQueryBuilder<M> queryBuilder );
+    IList<M> LoadRelations<M>( String objectId, LoadRelationsQueryBuilder<M> queryBuilder );
   #if !(NET_35 || NET_40)
-    Task<IList<M>> LoadRelationsAsync<M>( string objectId, LoadRelationsQueryBuilder<M> queryBuilder );
+    Task<IList<M>> LoadRelationsAsync<M>( String objectId, LoadRelationsQueryBuilder<M> queryBuilder );
   #endif
-    void LoadRelations<M>( string objectId, LoadRelationsQueryBuilder<M> queryBuilder,
+    void LoadRelations<M>( String objectId, LoadRelationsQueryBuilder<M> queryBuilder,
                            AsyncCallback<IList<M>> responder );
 
   #endregion
 
   #region GET OBJECT COUNT
 
-    int GetObjectCount();
-    int GetObjectCount( DataQueryBuilder dataQueryBuilder );
+    Int32 GetObjectCount();
+    Int32 GetObjectCount( DataQueryBuilder dataQueryBuilder );
   #if !(NET_35 || NET_40)
-    Task<int> GetObjectCountAsync();
-    Task<int> GetObjectCountAsync( DataQueryBuilder dataQueryBuilder );
+    Task<Int32> GetObjectCountAsync();
+    Task<Int32> GetObjectCountAsync( DataQueryBuilder dataQueryBuilder );
   #endif
-    void GetObjectCount( AsyncCallback<int> responder );
-    void GetObjectCount( DataQueryBuilder dataQueryBuilder, AsyncCallback<int> responder );
+    void GetObjectCount( AsyncCallback<Int32> responder );
+    void GetObjectCount( DataQueryBuilder dataQueryBuilder, AsyncCallback<Int32> responder );
 
   #endregion
 
   #region ADD RELATION
 
-    void AddRelation( T parent, string columnName, object[] children );
-    int AddRelation( T parent, string columnName, string whereClause );
+    void AddRelation( T parent, String columnName, Object[] children );
+    Int32 AddRelation( T parent, String columnName, String whereClause );
   #if !(NET_35 || NET_40)
-    Task AddRelationAsync( T parent, string columnName, object[] children );
-    Task<int> AddRelationAsync( T parent, string columnName, string whereClause );
+    Task AddRelationAsync( T parent, String columnName, Object[] children );
+    Task<Int32> AddRelationAsync( T parent, String columnName, String whereClause );
   #endif
-    void AddRelation( T parent, string columnName, string whereClause, AsyncCallback<int> callback );
-    void AddRelation( T parent, string columnName, object[] children, AsyncCallback<int> callback );
+    void AddRelation( T parent, String columnName, String whereClause, AsyncCallback<Int32> callback );
+    void AddRelation( T parent, String columnName, Object[] children, AsyncCallback<Int32> callback );
 
   #endregion
 
   #region SET RELATION
 
-    int SetRelation( T parent, string columnName, object[] children );
-    int SetRelation( T parent, string columnName, string whereClause );
+    Int32 SetRelation( T parent, String columnName, Object[] children );
+    Int32 SetRelation( T parent, String columnName, String whereClause );
   #if !(NET_35 || NET_40)
-    Task<int> SetRelationAsync( T parent, string columnName, object[] children );
-    Task<int> SetRelationAsync( T parent, string columnName, string whereClause );
+    Task<Int32> SetRelationAsync( T parent, String columnName, Object[] children );
+    Task<Int32> SetRelationAsync( T parent, String columnName, String whereClause );
   #endif
-    void SetRelation( T parent, string columnName, object[] children, AsyncCallback<int> callback );
-    void SetRelation( T parent, string columnName, string whereClause, AsyncCallback<int> callback );
+    void SetRelation( T parent, String columnName, Object[] children, AsyncCallback<Int32> callback );
+    void SetRelation( T parent, String columnName, String whereClause, AsyncCallback<Int32> callback );
 
   #endregion
 
   #region DELETE RELATION
 
-    int DeleteRelation( T parent, string columnName, object[] children );
-    int DeleteRelation( T parent, string columnName, string whereClause );
+    Int32 DeleteRelation( T parent, String columnName, Object[] children );
+    Int32 DeleteRelation( T parent, String columnName, String whereClause );
   #if !(NET_35 || NET_40)
-    Task<int> DeleteRelationAsync( T parent, string columnName, object[] children );
-    Task<int> DeleteRelationAsync( T parent, string columnName, string whereClause );
+    Task<Int32> DeleteRelationAsync( T parent, String columnName, Object[] children );
+    Task<Int32> DeleteRelationAsync( T parent, String columnName, String whereClause );
   #endif
-    void DeleteRelation( T parent, string columnName, object[] children, AsyncCallback<int> callback );
-    void DeleteRelation( T parent, string columnName, string whereClause, AsyncCallback<int> callback );
+    void DeleteRelation( T parent, String columnName, Object[] children, AsyncCallback<Int32> callback );
+    void DeleteRelation( T parent, String columnName, String whereClause, AsyncCallback<Int32> callback );
 
   #endregion
 

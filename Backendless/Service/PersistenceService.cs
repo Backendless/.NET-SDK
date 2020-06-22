@@ -16,15 +16,15 @@ namespace BackendlessAPI.Service
 {
   public class PersistenceService
   {
-    private const string PERSISTENCE_MANAGER_SERVER_ALIAS = "com.backendless.services.persistence.PersistenceService";
-    private const string DEFAULT_OBJECT_ID_PROPERTY_NAME_JAVA_STYLE = "objectId";
-    private const string DEFAULT_CREATED_FIELD_NAME_JAVA_STYLE = "created";
-    private const string DEFAULT_UPDATED_FIELD_NAME_JAVA_STYLE = "updated";
-    private const string DEFAULT_OBJECT_ID_PROPERTY_NAME_DOTNET_STYLE = "ObjectId";
-    private const string DEFAULT_CREATED_FIELD_NAME_DOTNET_STYLE = "Created";
-    private const string DEFAULT_UPDATED_FIELD_NAME_DOTNET_STYLE = "Updated";
-    private static readonly Dictionary<String, DictionaryDrivenDataStore> dataStores = new Dictionary<string, DictionaryDrivenDataStore>();
-    public const string LOAD_ALL_RELATIONS = "*";
+    private const String PERSISTENCE_MANAGER_SERVER_ALIAS = "com.backendless.services.persistence.PersistenceService";
+    private const String DEFAULT_OBJECT_ID_PROPERTY_NAME_JAVA_STYLE = "objectId";
+    private const String DEFAULT_CREATED_FIELD_NAME_JAVA_STYLE = "created";
+    private const String DEFAULT_UPDATED_FIELD_NAME_JAVA_STYLE = "updated";
+    private const String DEFAULT_OBJECT_ID_PROPERTY_NAME_DOTNET_STYLE = "ObjectId";
+    private const String DEFAULT_CREATED_FIELD_NAME_DOTNET_STYLE = "Created";
+    private const String DEFAULT_UPDATED_FIELD_NAME_DOTNET_STYLE = "Updated";
+    private static readonly Dictionary<String, DictionaryDrivenDataStore> dataStores = new Dictionary<String, DictionaryDrivenDataStore>();
+    public const String LOAD_ALL_RELATIONS = "*";
 
     public readonly DataPermission Permissions = new DataPermission();
 
@@ -35,31 +35,31 @@ namespace BackendlessAPI.Service
       Types.AddClientClassMapping( "com.backendless.services.persistence.QueryOptions", typeof( QueryOptions ) );
     }
     #region Bulk Create
-    internal IList<string> Create<T>( IList<T> objects )
+    internal IList<String> Create<T>( IList<T> objects )
     {
       AddWeborbPropertyMapping<T>();
-      return Invoker.InvokeSync<IList<string>>( PERSISTENCE_MANAGER_SERVER_ALIAS, "createBulk",
-                     new object[] { GetTypeName( typeof( T ) ), objects }, false );
+      return Invoker.InvokeSync<IList<String>>( PERSISTENCE_MANAGER_SERVER_ALIAS, "createBulk",
+                     new Object[] { GetTypeName( typeof( T ) ), objects }, false );
     }
 
-    internal void Create<T>( IList<T> objects, AsyncCallback<IList<string>> callback )
+    internal void Create<T>( IList<T> objects, AsyncCallback<IList<String>> callback )
     {
       AddWeborbPropertyMapping<T>();
       Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "createBulk",
-                     new object[] { GetTypeName( typeof( T ) ), objects }, false, callback );
+                     new Object[] { GetTypeName( typeof( T ) ), objects }, false, callback );
     }
     #endregion
     #region Bulk Update
-    internal int Update( string tableName, string whereClause, Dictionary<string, object> changes )
+    internal int Update( String tableName, String whereClause, Dictionary<String, Object> changes )
     {
       return Update( tableName, whereClause, changes, null, false );
     }
 
-    internal void Update( string tableName, string whereClause, Dictionary<string, object> changes, AsyncCallback<int> callback )
+    internal void Update( String tableName, String whereClause, Dictionary<String, Object> changes, AsyncCallback<int> callback )
     {
       Update( tableName, whereClause, changes, callback, true );
     }
-    private int Update( string tableName, string whereClause, Dictionary<string, object> changes, AsyncCallback<int> callback, bool async )
+    private int Update( String tableName, String whereClause, Dictionary<String, Object> changes, AsyncCallback<int> callback, bool async )
     {
       if( whereClause == null || whereClause.Trim().Length == 0 )
         throw new ArgumentNullException( String.Format( ExceptionMessage.NULL_OR_EMPTY_TEMPLATE, "Where clause" ) );
@@ -67,7 +67,7 @@ namespace BackendlessAPI.Service
       if( changes == null || changes.Count == 0 )
         throw new ArgumentNullException( String.Format( ExceptionMessage.NULL_OR_EMPTY_TEMPLATE, "Object with changes" ) );
 
-      object[] args = new object[] { tableName, whereClause, changes };
+      Object[] args = new Object[] { tableName, whereClause, changes };
 
       if( async )
         Invoker.InvokeAsync<int>( PERSISTENCE_MANAGER_SERVER_ALIAS, "updateBulk", args, callback );
@@ -79,21 +79,21 @@ namespace BackendlessAPI.Service
     }
     #endregion
     #region Bulk Delete
-    internal int Remove( string tableName, string whereClause )
+    internal int Remove( String tableName, String whereClause )
     {
       return Remove( tableName, whereClause, null, false );
     }
 
-    internal void Remove( string tableName, string whereClause, AsyncCallback<int> callback )
+    internal void Remove( String tableName, String whereClause, AsyncCallback<int> callback )
     {
       Remove( tableName, whereClause, callback, true );
     }
-    private int Remove( string tableName, string whereClause, AsyncCallback<int> callback, bool async )
+    private int Remove( String tableName, String whereClause, AsyncCallback<int> callback, bool async )
     {
       if( whereClause == null || whereClause.Trim().Length == 0 )
         throw new ArgumentNullException( String.Format( ExceptionMessage.NULL_OR_EMPTY_TEMPLATE, "Where clause" ) );
 
-      object[] args = new object[] { tableName, whereClause };
+      Object[] args = new Object[] { tableName, whereClause };
 
       if( async )
         Invoker.InvokeAsync<int>( PERSISTENCE_MANAGER_SERVER_ALIAS, "removeBulk", args, callback );
@@ -113,15 +113,15 @@ namespace BackendlessAPI.Service
       CheckEntityStructure<T>();
 
       //return GetEntityId( entity ) == null ? Create( entity ) : Update( entity );
-      string operation = "save";
-      string objectId = GetEntityId( entity );
+      String operation = "save";
+      String objectId = GetEntityId( entity );
 
       if( objectId == null )
         operation = "create";
 
       AddWeborbPropertyMapping<T>();
       return Invoker.InvokeSync<T>( PERSISTENCE_MANAGER_SERVER_ALIAS, operation,
-                                    new object[] { GetTypeName( typeof( T ) ), entity }, true );
+                                    new Object[] { GetTypeName( typeof( T ) ), entity }, true );
     }
 
     public void Save<T>( T entity, AsyncCallback<T> callback )
@@ -136,15 +136,15 @@ namespace BackendlessAPI.Service
       else
         Update( entity, callback );*/
 
-      string operation = "save";
-      string objectId = GetEntityId( entity );
+      String operation = "save";
+      String objectId = GetEntityId( entity );
 
       if( objectId == null )
         operation = "create";
 
       AddWeborbPropertyMapping<T>();
       Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, operation,
-                           new object[] { GetTypeName( typeof( T ) ), entity }, true, callback );
+                           new Object[] { GetTypeName( typeof( T ) ), entity }, true, callback );
     }
     #endregion
     #region Create
@@ -155,14 +155,14 @@ namespace BackendlessAPI.Service
 
       AddWeborbPropertyMapping<T>();
       return Invoker.InvokeSync<T>( PERSISTENCE_MANAGER_SERVER_ALIAS, "create",
-                                    new object[] { GetTypeName( typeof( T ) ), entity }, true );
+                                    new Object[] { GetTypeName( typeof( T ) ), entity }, true );
     }
 
     internal void Create<T>( T entity, AsyncCallback<T> callback )
     {
       AddWeborbPropertyMapping<T>();
       Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "create",
-                           new object[] {GetTypeName( typeof( T ) ), entity}, true, callback );
+                           new Object[] {GetTypeName( typeof( T ) ), entity}, true, callback );
     }
     #endregion
     #region Update
@@ -206,9 +206,9 @@ namespace BackendlessAPI.Service
     }
     #endregion 
     #region Remove by objectId
-    internal long Remove<T>( string objectId )
+    internal long Remove<T>( String objectId )
     {
-      if( string.IsNullOrEmpty( objectId ) )
+      if( String.IsNullOrEmpty( objectId ) )
         throw new ArgumentNullException( ExceptionMessage.NULL_ID );
 
       AddWeborbPropertyMapping<T>();
@@ -216,9 +216,9 @@ namespace BackendlessAPI.Service
                                        new Object[] { GetTypeName( typeof( T ) ), objectId } );
     }
 
-    internal void Remove<T>( string objectId, AsyncCallback<long> callback )
+    internal void Remove<T>( String objectId, AsyncCallback<long> callback )
     {
-      if( string.IsNullOrEmpty( objectId ) )
+      if( String.IsNullOrEmpty( objectId ) )
         throw new ArgumentNullException( ExceptionMessage.NULL_ID );
 
       AddWeborbPropertyMapping<T>();
@@ -227,22 +227,22 @@ namespace BackendlessAPI.Service
     }
     #endregion 
     #region FindById with Id
-    internal T FindById<T>( string id, IList<string> relations )
+    internal T FindById<T>( String id, IList<String> relations )
     {
       return FindById<T>( id, relations, 0 );
     }
 
-    internal T FindById<T>( string id, IList<string> relations, int? relationsDepth )
+    internal T FindById<T>( String id, IList<String> relations, int? relationsDepth )
     {
       return Invoker.InvokeSync<T>( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById", CreateArgs<T>( id, relations, relationsDepth ), true );
     }
 
-    internal void FindById<T>( string id, IList<string> relations, AsyncCallback<T> callback )
+    internal void FindById<T>( String id, IList<String> relations, AsyncCallback<T> callback )
     {
       FindById<T>( id, relations, 0, callback );
     }
 
-    internal void FindById<T>( string id, IList<string> relations, int? relationsDepth, AsyncCallback<T> callback )
+    internal void FindById<T>( String id, IList<String> relations, int? relationsDepth, AsyncCallback<T> callback )
     {
       Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById", CreateArgs<T>( id, relations, relationsDepth ), true, callback );
     }
@@ -258,51 +258,103 @@ namespace BackendlessAPI.Service
       return FindById<T>( entity, null, relationsDepth );
     }
 
-    internal T FindById<T>( T entity, IList<string> relations )
+    internal T FindById<T>( T entity, IList<String> relations )
     {
       return FindById<T>( entity, relations, 0 );
     }
 
-    internal T FindById<T>( T entity, IList<string> relations, int? relationsDepth )
+    internal T FindById<T>( T entity, IList<String> relations, int? relationsDepth )
     {
       return Invoker.InvokeSync<T>( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById", CreateArgs<T>( entity, relations, relationsDepth ), true );
     }
 
     internal void FindById<T>( T entity, AsyncCallback<T> responder )
     {
-      FindById<T>( entity, null, 0, responder );
+      FindById( entity, null, 0, responder );
     }
 
     internal void FindById<T>( T entity, int? relationsDepth, AsyncCallback<T> responder )
     {
-      FindById<T>( entity, null, relationsDepth, responder );
+      FindById( entity, null, relationsDepth, responder );
     }
 
-    internal void FindById<T>( T entity, IList<string> relations, AsyncCallback<T> responder )
+    internal void FindById<T>( T entity, IList<String> relations, AsyncCallback<T> responder )
     {
-      FindById<T>( entity, relations, 0, responder );
+      FindById( entity, relations, 0, responder );
     }
 
-    internal void FindById<T>( T entity, IList<string> relations, int? relationsDepth, AsyncCallback<T> responder )
+    internal void FindById<T>( T entity, IList<String> relations, int? relationsDepth, AsyncCallback<T> responder )
     {
-      Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById", CreateArgs<T>( entity, relations, relationsDepth ), true, responder );
+      Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById", CreateArgs( entity, relations, relationsDepth ), true, responder );
     }
+
+    internal T FindByPrimaryKey<T>( T entity, DataQueryBuilder queryBuilder )
+    {
+      if( entity == null )
+        throw new ArgumentException( ExceptionMessage.NULL_ENTITY );
+
+      if( queryBuilder == null )
+        queryBuilder = DataQueryBuilder.Create();
+
+      BackendlessDataQuery dataQuery = queryBuilder.Build();
+      AddWeborbPropertyMapping<T>();
+      return Invoker.InvokeSync<T>( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById",
+                                                                        new Object[] { entity, dataQuery }, true );      
+    }
+
+    internal T FindByIdViaDataQueryBuilder<T>( String id, DataQueryBuilder queryBuilder )
+    {
+      if( id == null )
+        throw new ArgumentException( ExceptionMessage.NULL_ID );
+
+      if( queryBuilder == null )
+        queryBuilder = DataQueryBuilder.Create();
+
+      return Invoker.InvokeSync<T>( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById", new Object[] { id, queryBuilder }, true );
+    }
+
+    internal void FindByPrimaryKey<T>( T entity, DataQueryBuilder queryBuilder, AsyncCallback<T> callback )
+    {
+        if( entity == null )
+          throw new ArgumentException( ExceptionMessage.NULL_ENTITY );
+
+        if( queryBuilder == null )
+          queryBuilder = DataQueryBuilder.Create();
+
+        BackendlessDataQuery dataQuery = queryBuilder.Build();
+        AddWeborbPropertyMapping<T>();
+        Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById", new Object[] { entity, queryBuilder }, true, callback );
+    }
+
+    internal void FindByIdViaDataQueryBuilder<T>( String id, DataQueryBuilder queryBuilder, AsyncCallback<T> callback )
+    {
+      if( id == null )
+        throw new ArgumentException( ExceptionMessage.NULL_ID );
+
+      if( queryBuilder == null )
+        queryBuilder = DataQueryBuilder.Create();
+
+      BackendlessDataQuery dataQuery = queryBuilder.Build();
+      AddWeborbPropertyMapping<T>();
+      Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById", new Object[] { id, dataQuery }, true, callback );
+    }
+
     #endregion
     #region LoadRelations
 
-    internal IList<T> LoadRelations<T>( string parentType, string objectId, LoadRelationsQueryBuilder<T> queryBuilder )
+    internal IList<T> LoadRelations<T>( String parentType, String objectId, LoadRelationsQueryBuilder<T> queryBuilder )
     {
       return LoadRelationsImpl( parentType, objectId, queryBuilder, null );
     }
 
-    internal void LoadRelations<T>( string parentType, string objectId, LoadRelationsQueryBuilder<T> queryBuilder, AsyncCallback<IList<T>> responder )
+    internal void LoadRelations<T>( String parentType, String objectId, LoadRelationsQueryBuilder<T> queryBuilder, AsyncCallback<IList<T>> responder )
     {
       LoadRelationsImpl( parentType, objectId, queryBuilder, responder );
     }
 
-    private IList<T> LoadRelationsImpl<T>( string parentType, string objectId, LoadRelationsQueryBuilder<T> queryBuilder, AsyncCallback<IList<T>> responder )
+    private IList<T> LoadRelationsImpl<T>( String parentType, String objectId, LoadRelationsQueryBuilder<T> queryBuilder, AsyncCallback<IList<T>> responder )
     {
-      if( string.IsNullOrEmpty( objectId ) )
+      if( String.IsNullOrEmpty( objectId ) )
       {
         if( responder != null )
           responder.ErrorHandler( new BackendlessFault( ExceptionMessage.NULL_ID ) );
@@ -340,18 +392,18 @@ namespace BackendlessAPI.Service
     }
     #endregion
     #region Describe
-    public List<ObjectProperty> Describe( string className )
+    public List<ObjectProperty> Describe( String className )
     {
-      if( string.IsNullOrEmpty( className ) )
+      if( String.IsNullOrEmpty( className ) )
         throw new ArgumentNullException( ExceptionMessage.NULL_ENTITY_NAME );
 
       return Invoker.InvokeSync<List<ObjectProperty>>( PERSISTENCE_MANAGER_SERVER_ALIAS, "describe",
                                                        new Object[] {className} );
     }
 
-    public void Describe( string className, AsyncCallback< List < ObjectProperty > > callback )
+    public void Describe( String className, AsyncCallback< List < ObjectProperty > > callback )
     {
-      if( string.IsNullOrEmpty( className ) )
+      if( String.IsNullOrEmpty( className ) )
         throw new ArgumentNullException( ExceptionMessage.NULL_ENTITY_NAME );
 
       Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "describe",
@@ -368,7 +420,7 @@ namespace BackendlessAPI.Service
       BackendlessDataQuery dataQuery = dataQueryBuilder.Build();
       AddWeborbPropertyMapping<T>();
       var result = Invoker.InvokeSync<IList<T>>( PERSISTENCE_MANAGER_SERVER_ALIAS, "find",
-                                                                 new object[] { GetTypeName( typeof( T ) ), dataQuery}, true );
+                                                                 new Object[] { GetTypeName( typeof( T ) ), dataQuery}, true );
       return (IList<T>) result;
     }
 
@@ -392,7 +444,7 @@ namespace BackendlessAPI.Service
       BackendlessDataQuery dataQuery = dataQueryBuilder.Build();
       AddWeborbPropertyMapping<T>();
       Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "find",
-                           new object[] {GetTypeName( typeof( T ) ), dataQuery},
+                           new Object[] {GetTypeName( typeof( T ) ), dataQuery},
                            true,
                            responder );
     }
@@ -443,14 +495,14 @@ namespace BackendlessAPI.Service
     public int GetObjectCount<T>()
     {
       return Invoker.InvokeSync<int>( PERSISTENCE_MANAGER_SERVER_ALIAS, "count",
-                                                                 new object[] { GetTypeName( typeof( T ) ) }, true );
+                                                                 new Object[] { GetTypeName( typeof( T ) ) }, true );
     }
 
     public int GetObjectCount<T>( DataQueryBuilder dataQueryBuilder )
     {
       BackendlessDataQuery dataQuery = dataQueryBuilder.Build();
       return Invoker.InvokeSync<int>( PERSISTENCE_MANAGER_SERVER_ALIAS, "count",
-                                                                 new object[] { GetTypeName( typeof( T ) ), dataQuery }, true );
+                                                                 new Object[] { GetTypeName( typeof( T ) ), dataQuery }, true );
     }
     public void GetObjectCount<T>( AsyncCallback<int> callback )
     {
@@ -466,7 +518,7 @@ namespace BackendlessAPI.Service
           throw new BackendlessException( f );
       } );
       Invoker.InvokeAsync<int>( PERSISTENCE_MANAGER_SERVER_ALIAS, "count",
-                                                                 new object[] { GetTypeName( typeof( T ) ) }, true, responder );
+                                                                 new Object[] { GetTypeName( typeof( T ) ) }, true, responder );
     }
 
     public void GetObjectCount<T>( DataQueryBuilder dataQueryBuilder, AsyncCallback<int> callback )
@@ -484,7 +536,7 @@ namespace BackendlessAPI.Service
       } );
       BackendlessDataQuery dataQuery = dataQueryBuilder.Build();
       Invoker.InvokeAsync<int>( PERSISTENCE_MANAGER_SERVER_ALIAS, "count",
-                                                                 new object[] { GetTypeName( typeof( T ) ), dataQuery }, true, responder );
+                                                                 new Object[] { GetTypeName( typeof( T ) ), dataQuery }, true, responder );
     }
     #endregion
     #region VIEWS
@@ -519,39 +571,39 @@ namespace BackendlessAPI.Service
     }
     #endregion
     #region ADD RELATION
-    public void AddRelation<T>( string parentTableName, T parent, string columnName, object[] children )
+    public void AddRelation<T>( String parentTableName, T parent, String columnName, Object[] children )
     {
       AddRelation<T>( parentTableName, parent, columnName, children, null );
     }
 
-    public void AddRelation<T>( string parentTableName, T parent, string columnName, object[] children, AsyncCallback<int> callback )
+    public void AddRelation<T>( String parentTableName, T parent, String columnName, Object[] children, AsyncCallback<int> callback )
     {
-      string parentObjectId = GetEntityId<T>( parent );
+      String parentObjectId = GetEntityId<T>( parent );
 
-      IList<string> childObjectIds = new List<string>();
-      foreach( object child in children )
+      IList<String> childObjectIds = new List<String>();
+      foreach( Object child in children )
       {
-        string childObjectId = GetEntityId<object>( child );
+        String childObjectId = GetEntityId<Object>( child );
         childObjectIds.Add( childObjectId );
       }
 
-      object[] args = new object[] { parentTableName, columnName, parentObjectId, childObjectIds };
+      Object[] args = new Object[] { parentTableName, columnName, parentObjectId, childObjectIds };
 
       if( callback != null )
         Invoker.InvokeAsync<int>( PERSISTENCE_MANAGER_SERVER_ALIAS, "addRelation", args, true, callback );
       else 
-        Invoker.InvokeSync<object>( PERSISTENCE_MANAGER_SERVER_ALIAS, "addRelation", args, true );
+        Invoker.InvokeSync<Object>( PERSISTENCE_MANAGER_SERVER_ALIAS, "addRelation", args, true );
     }
 
-    public int AddRelation<T>( string parentTableName, T parent, string columnName, string whereClause )
+    public int AddRelation<T>( String parentTableName, T parent, String columnName, String whereClause )
     {
       return AddRelation<T>( parentTableName, parent, columnName, whereClause, null );
     }
 
-    public int AddRelation<T>( string parentTableName, T parent, string columnName, string whereClause, AsyncCallback<int> callback )
+    public int AddRelation<T>( String parentTableName, T parent, String columnName, String whereClause, AsyncCallback<int> callback )
     {
-      string parentObjectId = GetEntityId<T>( parent );
-      object[] args = new object[] { parentTableName, columnName, parentObjectId, whereClause };
+      String parentObjectId = GetEntityId<T>( parent );
+      Object[] args = new Object[] { parentTableName, columnName, parentObjectId, whereClause };
 
       if( callback != null )
         Invoker.InvokeAsync<int>( PERSISTENCE_MANAGER_SERVER_ALIAS, "addRelation", args, true, callback );
@@ -563,23 +615,23 @@ namespace BackendlessAPI.Service
     }
     #endregion
     #region SET RELATION
-    public int SetRelation<T>( string parentTableName, T parent, string columnName, object[] children )
+    public int SetRelation<T>( String parentTableName, T parent, String columnName, Object[] children )
     {
       return SetRelation<T>( parentTableName, parent, columnName, children, null );
     }
 
-    public int SetRelation<T>( string parentTableName, T parent, string columnName, object[] children, AsyncCallback<int> callback )
+    public int SetRelation<T>( String parentTableName, T parent, String columnName, Object[] children, AsyncCallback<int> callback )
     {
-      string parentObjectId = GetEntityId<T>( parent );
+      String parentObjectId = GetEntityId<T>( parent );
 
-      IList<string> childObjectIds = new List<string>();
-      foreach( object child in children )
+      IList<String> childObjectIds = new List<String>();
+      foreach( Object child in children )
       {
-        string childObjectId = GetEntityId<object>( child );
+        String childObjectId = GetEntityId<Object>( child );
         childObjectIds.Add( childObjectId );
       }
 
-      object[] args = new object[] { parentTableName, columnName, parentObjectId, childObjectIds };
+      Object[] args = new Object[] { parentTableName, columnName, parentObjectId, childObjectIds };
 
       if( callback != null )
         Invoker.InvokeAsync<int>( PERSISTENCE_MANAGER_SERVER_ALIAS, "setRelation", args, true, callback );
@@ -590,15 +642,15 @@ namespace BackendlessAPI.Service
       return 0;
     }
 
-    public int SetRelation<T>( string parentTableName, T parent, string columnName, string whereClause )
+    public int SetRelation<T>( String parentTableName, T parent, String columnName, String whereClause )
     {
       return SetRelation<T>( parentTableName, parent, columnName, whereClause, null );
     }
 
-    public int SetRelation<T>( string parentTableName, T parent, string columnName, string whereClause, AsyncCallback<int> callback )
+    public int SetRelation<T>( String parentTableName, T parent, String columnName, String whereClause, AsyncCallback<int> callback )
     {
-      string parentObjectId = GetEntityId<T>( parent );
-      object[] args = new object[] { parentTableName, columnName, parentObjectId, whereClause };
+      String parentObjectId = GetEntityId<T>( parent );
+      Object[] args = new Object[] { parentTableName, columnName, parentObjectId, whereClause };
 
       if( callback != null )
         Invoker.InvokeAsync<int>( PERSISTENCE_MANAGER_SERVER_ALIAS, "setRelation", args, true, callback );
@@ -611,25 +663,25 @@ namespace BackendlessAPI.Service
 
     #endregion
     #region DELETE RELATION
-    public int DeleteRelation<T>( string parentTableName, T parent, string columnName, object[] children )
+    public int DeleteRelation<T>( String parentTableName, T parent, String columnName, Object[] children )
     {
       return DeleteRelation<T>( parentTableName, parent, columnName, children );
     }
 
-    public void DeleteRelation<T>( string parentTableName, T parent, string columnName, object[] children, AsyncCallback<int> callback )
+    public void DeleteRelation<T>( String parentTableName, T parent, String columnName, Object[] children, AsyncCallback<int> callback )
     {
-      string parentObjectId = GetEntityId<T>( parent );
+      String parentObjectId = GetEntityId<T>( parent );
 
-      IList<string> childObjectIds = new List<string>();
-      foreach( object child in children )
+      IList<String> childObjectIds = new List<String>();
+      foreach( Object child in children )
       {
-        if( child.GetType().Equals( typeof( string ) ) )
-          childObjectIds.Add( (string) child );
+        if( child.GetType().Equals( typeof( String ) ) )
+          childObjectIds.Add( (String) child );
         else
-          childObjectIds.Add( GetEntityId<object>( child ) );
+          childObjectIds.Add( GetEntityId<Object>( child ) );
       }
 
-      object[] args = new object[] { parentTableName, columnName, parentObjectId, childObjectIds };
+      Object[] args = new Object[] { parentTableName, columnName, parentObjectId, childObjectIds };
 
       if( callback != null )
         Invoker.InvokeAsync<int>( PERSISTENCE_MANAGER_SERVER_ALIAS, "deleteRelation", args, true, callback );
@@ -637,15 +689,15 @@ namespace BackendlessAPI.Service
         Invoker.InvokeSync<int>( PERSISTENCE_MANAGER_SERVER_ALIAS, "deleteRelation", args, true );
     }
 
-    public int DeleteRelation<T>( string parentTableName, T parent, string columnName, string whereClause )
+    public int DeleteRelation<T>( String parentTableName, T parent, String columnName, String whereClause )
     {
       return DeleteRelation<T>( parentTableName, parent, columnName, whereClause, null );
     }
 
-    public int DeleteRelation<T>( string parentTableName, T parent, string columnName, string whereClause, AsyncCallback<int> callback )
+    public int DeleteRelation<T>( String parentTableName, T parent, String columnName, String whereClause, AsyncCallback<int> callback )
     {
-      string parentObjectId = GetEntityId<T>( parent );
-      object[] args = new object[] { parentTableName, columnName, parentObjectId, whereClause };
+      String parentObjectId = GetEntityId<T>( parent );
+      Object[] args = new Object[] { parentTableName, columnName, parentObjectId, whereClause };
 
       if( callback != null )
         Invoker.InvokeAsync<int>( PERSISTENCE_MANAGER_SERVER_ALIAS, "deleteRelation", args, true, callback );
@@ -674,18 +726,18 @@ namespace BackendlessAPI.Service
       return dataStores[ tableName ];
     }
 
-    public void MapTableToType( string tableName, Type type )
+    public void MapTableToType( String tableName, Type type )
     {
       Weborb.Types.Types.AddClientClassMapping( tableName, type );
     }
 
-    public static string GetEntityId<T>( T entity )
+    public static String GetEntityId<T>( T entity )
     {
-      if( entity is Dictionary<string,object> )
+      if( entity is Dictionary<String,Object> )
       {
-        object untypedDictionary = entity;
-        Dictionary<string, object> dictionary = (Dictionary<string, object>) untypedDictionary;
-        return (string) dictionary[ DEFAULT_OBJECT_ID_PROPERTY_NAME_JAVA_STYLE ];
+        Object untypedDictionary = entity;
+        Dictionary<String, Object> dictionary = (Dictionary<String, Object>) untypedDictionary;
+        return (String) dictionary[ DEFAULT_OBJECT_ID_PROPERTY_NAME_JAVA_STYLE ];
       }
 
       try
@@ -694,7 +746,7 @@ namespace BackendlessAPI.Service
 
         if( entityType == typeof( BackendlessUser ) )
         {
-          object entityObject = entity;
+          Object entityObject = entity;
           return ( (BackendlessUser) entityObject ).ObjectId;
         }
 
@@ -704,7 +756,7 @@ namespace BackendlessAPI.Service
           objectIdProp = entityType.GetProperty( DEFAULT_OBJECT_ID_PROPERTY_NAME_JAVA_STYLE );
 
         if( objectIdProp != null )
-          return objectIdProp.GetValue( entity, null ) as string;
+          return objectIdProp.GetValue( entity, null ) as String;
 
         FieldInfo objectIdField = entityType.GetField( DEFAULT_OBJECT_ID_PROPERTY_NAME_JAVA_STYLE );
 
@@ -712,12 +764,12 @@ namespace BackendlessAPI.Service
           objectIdField = entityType.GetField( DEFAULT_OBJECT_ID_PROPERTY_NAME_DOTNET_STYLE );
 
         if( objectIdField != null )
-          return objectIdField.GetValue( entity ) as string;
+          return objectIdField.GetValue( entity ) as String;
 
-        IDictionary<string, object> underflow = UnderflowStore.GetObjectUnderflow( entity );
+        IDictionary<String, Object> underflow = UnderflowStore.GetObjectUnderflow( entity );
 
         if( underflow != null && underflow.ContainsKey( DEFAULT_OBJECT_ID_PROPERTY_NAME_JAVA_STYLE ) )
-          return (string) underflow[ DEFAULT_OBJECT_ID_PROPERTY_NAME_JAVA_STYLE ];
+          return (String) underflow[ DEFAULT_OBJECT_ID_PROPERTY_NAME_JAVA_STYLE ];
       }
       catch( System.Exception )
       {
@@ -765,7 +817,7 @@ namespace BackendlessAPI.Service
           objectIdType = objectIdField.FieldType;
       }
 
-      if( objectIdType != null && objectIdType != typeof( string ) )
+      if( objectIdType != null && objectIdType != typeof( String ) )
         throw new ArgumentException( ExceptionMessage.ENTITY_WRONG_OBJECT_ID_FIELD_TYPE );
 
       // CREATED FIELD/PROPERTY
@@ -831,7 +883,7 @@ namespace BackendlessAPI.Service
         {
           case DEFAULT_OBJECT_ID_PROPERTY_NAME_DOTNET_STYLE:
             if(
-              string.IsNullOrEmpty( PropertyRenaming.GetRenamingRule( entityType,
+              String.IsNullOrEmpty( PropertyRenaming.GetRenamingRule( entityType,
                                                                       DEFAULT_OBJECT_ID_PROPERTY_NAME_DOTNET_STYLE ) ) )
               PropertyRenaming.AddRenamingRule( entityType, DEFAULT_OBJECT_ID_PROPERTY_NAME_DOTNET_STYLE,
                                                 DEFAULT_OBJECT_ID_PROPERTY_NAME_JAVA_STYLE );
@@ -839,7 +891,7 @@ namespace BackendlessAPI.Service
 
           case DEFAULT_UPDATED_FIELD_NAME_DOTNET_STYLE:
             if(
-              string.IsNullOrEmpty( PropertyRenaming.GetRenamingRule( entityType,
+              String.IsNullOrEmpty( PropertyRenaming.GetRenamingRule( entityType,
                                                                       DEFAULT_UPDATED_FIELD_NAME_DOTNET_STYLE ) ) )
               PropertyRenaming.AddRenamingRule( entityType, DEFAULT_UPDATED_FIELD_NAME_DOTNET_STYLE,
                                                 DEFAULT_UPDATED_FIELD_NAME_JAVA_STYLE );
@@ -847,7 +899,7 @@ namespace BackendlessAPI.Service
 
           case DEFAULT_CREATED_FIELD_NAME_DOTNET_STYLE:
             if(
-              string.IsNullOrEmpty( PropertyRenaming.GetRenamingRule( entityType,
+              String.IsNullOrEmpty( PropertyRenaming.GetRenamingRule( entityType,
                                                                       DEFAULT_CREATED_FIELD_NAME_DOTNET_STYLE ) ) )
               PropertyRenaming.AddRenamingRule( entityType, DEFAULT_CREATED_FIELD_NAME_DOTNET_STYLE,
                                                 DEFAULT_CREATED_FIELD_NAME_JAVA_STYLE );
@@ -867,7 +919,7 @@ namespace BackendlessAPI.Service
         throw new ArgumentException( ExceptionMessage.WRONG_PAGE_SIZE );
     }
 
-    public static string GetTypeName( Type type )
+    public static String GetTypeName( Type type )
     {
       if( type.Equals( typeof( BackendlessUser ) ) )
         return "Users";
