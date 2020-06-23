@@ -94,6 +94,7 @@ namespace BackendlessAPI.Exception
 
     public const String NO_DEVICEID_CAPABILITY =
         "In order to use Backendless SDK in WindowsPhone environment, application should have an 'ID_CAP_IDENTITY_DEVICE' capability";
+
     public const String NULL_GEO_QUERY = "Geo query should not be null";
     public const String INCONSISTENT_GEO_RELATIVE = "Geo query should contain relative metadata and a threshold for a relative search";
     public const String NULL_BODYPARTS = "BodyParts cannot be null";
@@ -106,7 +107,8 @@ namespace BackendlessAPI.Exception
     public const String GEOFENCES_MONITORING = "Cannot start geofence monitoring for all available geofences. There is another monitoring session in progress on the client-side. Make sure to stop all monitoring sessions before starting it for all available geo fences.";
 
 	  public const String CHANNEL_NAME_TOO_LONG = "Channel names cannot be longer than 46 characters";
-
+    public const string NULL_QUERY_BUILDER = "DataQueryBuilder cannot be null or empty";
+    
     public const String NULL_MAP = "Entity dictionary cannot be null";
     public const String NULL_OBJECT_ID_IN_OBJECT_MAP = "Object dictionary must contain String objectId and objectId cannot be null";
     public const String NULL_OBJECT_ID_IN_INSTANCE = "Instance must contain objectId and objectId can not be null";
@@ -123,5 +125,6 @@ namespace BackendlessAPI.Exception
     public const String NULL_PARENT_TABLE_NAME = "Parent table name can not be null or empty";
     public const String NULL_RELATION_COLUMN_NAME = "Relation column name can not be null or empty";
     public const String RELATION_USE_LIST_OF_MAPS = "Unable to execute the relation operation. Use the relation method which accepts a list of Map child objects";
+
   }
 }

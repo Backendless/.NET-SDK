@@ -181,7 +181,7 @@ namespace BackendlessAPI.Service
     {
       AddWeborbPropertyMapping<T>();
       Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "update",
-                           new Object[] {GetTypeName( typeof( T ) ), entity}, true, callback );
+                           new object[] {GetTypeName( typeof( T ) ), entity}, true, callback );
     }
     #endregion
     #region Remove by Object
@@ -206,9 +206,9 @@ namespace BackendlessAPI.Service
     }
     #endregion 
     #region Remove by objectId
-    internal long Remove<T>( string objectId )
+    internal long Remove<T>( String objectId )
     {
-      if( string.IsNullOrEmpty( objectId ) )
+      if( String.IsNullOrEmpty( objectId ) )
         throw new ArgumentNullException( ExceptionMessage.NULL_ID );
 
       AddWeborbPropertyMapping<T>();
@@ -216,9 +216,9 @@ namespace BackendlessAPI.Service
                                        new Object[] { GetTypeName( typeof( T ) ), objectId } );
     }
 
-    internal void Remove<T>( string objectId, AsyncCallback<long> callback )
+    internal void Remove<T>( String objectId, AsyncCallback<long> callback )
     {
-      if( string.IsNullOrEmpty( objectId ) )
+      if( String.IsNullOrEmpty( objectId ) )
         throw new ArgumentNullException( ExceptionMessage.NULL_ID );
 
       AddWeborbPropertyMapping<T>();
@@ -227,12 +227,12 @@ namespace BackendlessAPI.Service
     }
     #endregion 
     #region FindById with Id
-    internal T FindById<T>( string id, IList<String> relations )
+    internal T FindById<T>( String id, IList<String> relations )
     {
       return FindById<T>( id, relations, 0 );
     }
 
-    internal T FindById<T>( string id, IList<string> relations, int? relationsDepth )
+    internal T FindById<T>( String id, IList<String> relations, int? relationsDepth )
     {
       return Invoker.InvokeSync<T>( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById", CreateArgs<T>( id, relations, relationsDepth ), true );
     }
@@ -242,7 +242,7 @@ namespace BackendlessAPI.Service
       FindById<T>( id, relations, 0, callback );
     }
 
-    internal void FindById<T>( string id, IList<string> relations, int? relationsDepth, AsyncCallback<T> callback )
+    internal void FindById<T>( String id, IList<String> relations, int? relationsDepth, AsyncCallback<T> callback )
     {
       Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById", CreateArgs<T>( id, relations, relationsDepth ), true, callback );
     }
@@ -263,30 +263,82 @@ namespace BackendlessAPI.Service
       return FindById<T>( entity, relations, 0 );
     }
 
-    internal T FindById<T>( T entity, IList<string> relations, int? relationsDepth )
+    internal T FindById<T>( T entity, IList<String> relations, int? relationsDepth )
     {
       return Invoker.InvokeSync<T>( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById", CreateArgs<T>( entity, relations, relationsDepth ), true );
     }
 
     internal void FindById<T>( T entity, AsyncCallback<T> responder )
     {
-      FindById<T>( entity, null, 0, responder );
+      FindById( entity, null, 0, responder );
     }
 
     internal void FindById<T>( T entity, int? relationsDepth, AsyncCallback<T> responder )
     {
-      FindById<T>( entity, null, relationsDepth, responder );
+      FindById( entity, null, relationsDepth, responder );
     }
 
     internal void FindById<T>( T entity, IList<String> relations, AsyncCallback<T> responder )
     {
-      FindById<T>( entity, relations, 0, responder );
+      FindById( entity, relations, 0, responder );
     }
 
-    internal void FindById<T>( T entity, IList<string> relations, int? relationsDepth, AsyncCallback<T> responder )
+    internal void FindById<T>( T entity, IList<String> relations, int? relationsDepth, AsyncCallback<T> responder )
     {
-      Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById", CreateArgs<T>( entity, relations, relationsDepth ), true, responder );
+      Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById", CreateArgs( entity, relations, relationsDepth ), true, responder );
     }
+
+    internal T FindByPrimaryKey<T>( T entity, DataQueryBuilder queryBuilder )
+    {
+      if( entity == null )
+        throw new ArgumentException( ExceptionMessage.NULL_ENTITY );
+
+      if( queryBuilder == null )
+        queryBuilder = DataQueryBuilder.Create();
+
+      BackendlessDataQuery dataQuery = queryBuilder.Build();
+      AddWeborbPropertyMapping<T>();
+      return Invoker.InvokeSync<T>( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById",
+                                                                        new Object[] { entity, dataQuery }, true );      
+    }
+
+    internal T FindByIdViaDataQueryBuilder<T>( String id, DataQueryBuilder queryBuilder )
+    {
+      if( id == null )
+        throw new ArgumentException( ExceptionMessage.NULL_ID );
+
+      if( queryBuilder == null )
+        queryBuilder = DataQueryBuilder.Create();
+
+      return Invoker.InvokeSync<T>( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById", new Object[] { id, queryBuilder }, true );
+    }
+
+    internal void FindByPrimaryKey<T>( T entity, DataQueryBuilder queryBuilder, AsyncCallback<T> callback )
+    {
+        if( entity == null )
+          throw new ArgumentException( ExceptionMessage.NULL_ENTITY );
+
+        if( queryBuilder == null )
+          queryBuilder = DataQueryBuilder.Create();
+
+        BackendlessDataQuery dataQuery = queryBuilder.Build();
+        AddWeborbPropertyMapping<T>();
+        Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById", new Object[] { entity, queryBuilder }, true, callback );
+    }
+
+    internal void FindByIdViaDataQueryBuilder<T>( String id, DataQueryBuilder queryBuilder, AsyncCallback<T> callback )
+    {
+      if( id == null )
+        throw new ArgumentException( ExceptionMessage.NULL_ID );
+
+      if( queryBuilder == null )
+        queryBuilder = DataQueryBuilder.Create();
+
+      BackendlessDataQuery dataQuery = queryBuilder.Build();
+      AddWeborbPropertyMapping<T>();
+      Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById", new Object[] { id, dataQuery }, true, callback );
+    }
+
     #endregion
     #region LoadRelations
 
