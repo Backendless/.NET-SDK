@@ -24,9 +24,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Backendless.NET.Framework4.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Backendless.NET.Framework4.5", "Projects\Backendless.NET.Framework4.5\Backendless.NET.Framework4.5.csproj", "{EC991B86-F904-49AB-93AE-109FBF5B1EA0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeometryTestProject", "Projects\GeometryTestProject\GeometryTestProject.csproj", "{C94836A8-1B51-420F-B064-881183E471A7}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{6BBB9145-3C58-4E68-86EB-0AAF3C6B49BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestProject", "Projects\TestProject\TestProject.csproj", "{1BB6CEB6-70BB-415D-82BD-57207FDB7E04}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -17,6 +17,8 @@ using BackendlessAPI.Counters;
 using BackendlessAPI.Logging;
 using BackendlessAPI.Geo;
 using BackendlessAPI.Persistence;
+using BackendlessAPI.Transaction;
+using BackendlessAPI.Transaction.Operations;
 
 #if WITHRT
 using BackendlessAPI.RT;
@@ -27,7 +29,7 @@ namespace BackendlessAPI
   public static class Backendless
   {
     public static long BACKENDLESSLOG = Weborb.Util.Logging.Log.getCode( "BACKENDLESS LOG" );
-    public static string URL = "https://api.backendless.com";
+    public static String URL = "https://api.backendless.com";
 
     public static PersistenceService Persistence;
     public static PersistenceService Data;
@@ -43,9 +45,9 @@ namespace BackendlessAPI
     #if WITHRT
     public static IRTService RT;
     #endif
-    public static string AppId { get; private set; }
+    public static String AppId { get; private set; }
 
-    public static string APIKey { get; private set; }
+    public static String APIKey { get; private set; }
 
     static Backendless()
     {
@@ -56,23 +58,35 @@ namespace BackendlessAPI
       Types.AddClientClassMapping( "flex.messaging.messages.CommandMessage", typeof( CommandMessage ) );
       Types.AddClientClassMapping( "flex.messaging.messages.ErrorMessage", typeof( ErrMessage ) );
       Types.AddClientClassMapping( "flex.messaging.io.ArrayCollection", typeof( ObjectProxy ) );
-      Types.AddClientClassMapping( "com.backendless.persistence.GeometryDTO", typeof( GeometryDTO ));
-      Types.AddClientClassMapping( "com.backendless.persistence.Point", typeof( Point ));
-      Types.AddClientClassMapping( "com.backendless.persistence.LineString", typeof( LineString ));
-      Types.AddClientClassMapping( "com.backendless.persistence.Polygon", typeof( Polygon ));
-      
+      Types.AddClientClassMapping( "com.backendless.persistence.GeometryDTO", typeof( GeometryDTO ) );
+      Types.AddClientClassMapping( "com.backendless.persistence.Point", typeof( Point ) );
+      Types.AddClientClassMapping( "com.backendless.persistence.LineString", typeof( LineString ) );
+      Types.AddClientClassMapping( "com.backendless.persistence.Polygon", typeof( Polygon ) );
+      Types.AddClientClassMapping( "com.backendless.transaction.UnitOfWork", typeof( UnitOfWork ) );
+      Types.AddClientClassMapping( "com.backendless.transaction.Operation", typeof( Operation) );
+      Types.AddClientClassMapping( "com.backendless.transaction.OperationCreate", typeof( OperationCreate ) );
+      Types.AddClientClassMapping( "com.backendless.transaction.OperationCreateBulk", typeof( OperationCreateBulk ) );
+      Types.AddClientClassMapping( "com.backendless.transaction.OperationDelete", typeof( OperationDelete ) );
+      Types.AddClientClassMapping( "com.backendless.transaction.OperationDeleteBulk", typeof( OperationDeleteBulk ) );
+      Types.AddClientClassMapping( "com.backendless.transaction.OperationUpdate", typeof( OperationUpdate ) );
+      Types.AddClientClassMapping( "com.backendless.transaction.OperationUpdateBulk", typeof( OperationUpdateBulk ) );
+      Types.AddClientClassMapping( "com.backendless.transaction.OperationFind", typeof( OperationFind ) );
+      Types.AddClientClassMapping( "com.backendless.transaction.OperationAddRelation", typeof( OperationAddRelation ) );
+      Types.AddClientClassMapping( "com.backendless.transaction.OperationSetRelation", typeof( OperationSetRelation ) );
+      Types.AddClientClassMapping( "com.backendless.transaction.OperationDeleteRelation", typeof( OperationDeleteRelation ) );
+                                              
       ORBConfig.GetInstance()
                .getObjectFactories()
                .AddArgumentObjectFactory( "Weborb.V3Types.BodyHolder", new BodyHolderFactory() );
       Types.AddAbstractTypeMapping( typeof( IDictionary ), typeof( Dictionary<object, object> ) );
     }
 
-    public static void InitApp( string applicationId, string apiKey )
+    public static void InitApp( String applicationId, String apiKey )
     {
-      if( string.IsNullOrEmpty( applicationId ) )
+      if( String.IsNullOrEmpty( applicationId ) )
         throw new ArgumentNullException( ExceptionMessage.NULL_APPLICATION_ID );
 
-      if( string.IsNullOrEmpty( apiKey ) )
+      if( String.IsNullOrEmpty( apiKey ) )
         throw new ArgumentNullException( ExceptionMessage.NULL_SECRET_KEY );
 
       Log.addLogger( Log.DEFAULTLOGGER, new ConsoleLogger() );

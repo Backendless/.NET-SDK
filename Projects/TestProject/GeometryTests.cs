@@ -4,14 +4,10 @@ using BackendlessAPI.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using BackendlessAPI.Async;
 using System.Threading.Tasks;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using BackendlessAPI.Exception;
 using System.Text;
-using System.Net.Http.Formatting;
-using System.Threading;
+
 
 namespace TestProject
 {
@@ -139,7 +135,7 @@ namespace TestProject
       foreach( Dictionary<String, Object> entry in pers )
         if( entry.ContainsValue( (String) "Geo data name" ) )
         {
-          result = new Dictionary<string, object>( entry );
+          result = new Dictionary<String, object>( entry );
           break;
         }
       Assert.AreEqual( result[ "P1" ], point, "Point WKT data are not equals" );
@@ -277,7 +273,7 @@ namespace TestProject
     [TestMethod]
     public void TestReceiveGeo()
     {
-      IList<Dictionary<string, object>> result = Backendless.Data.Of( "GeoData" ).Find();
+      IList<Dictionary<String, object>> result = Backendless.Data.Of( "GeoData" ).Find();
       String StrCoordinates = "POINT(40.41 -3.706)";
       Point point = new Point();
 
@@ -293,19 +289,19 @@ namespace TestProject
     [TestMethod]
     public void TestPointSave()
     {
-      Dictionary<string, object> pers = new Dictionary<string, object>();
+      Dictionary<String, object> pers = new Dictionary<String, object>();
 
       pers.Add( "pickupLocation", new Point().SetX( 30.05 ).SetY( 10.1 ) );
 
       pers = Backendless.Data.Of( "GeoData" ).Save( pers );
-      Dictionary<string, object> result = Backendless.Data.Of( "GeoData" ).FindById( (String) pers[ "objectId" ] );
+      Dictionary<String, object> result = Backendless.Data.Of( "GeoData" ).FindById( (String) pers[ "objectId" ] );
+
       Assert.AreEqual( (Point)result[ "pickupLocation" ], new Point().SetX( 30.05 ).SetY( 10.1 ), "Saved Point object equal to received" );
     }
     [TestMethod]
     public void TestLineStringSave()
     {
-      Dictionary<string, object> pers = new Dictionary<string, object>();
-
+      Dictionary<String, object> pers = new Dictionary<String, object>();
       List<Point> list = new List<Point>();
       list.Add( new Point().SetX( 5.0 ).SetY( 10.2 ) );
       list.Add( new Point().SetX( 3.05 ).SetY( 8.6 ) );
@@ -315,14 +311,14 @@ namespace TestProject
       pers.Add( "LineValue", finalLine );
 
       pers = Backendless.Data.Of( "GeoData" ).Save( pers );
-      Dictionary<string, object> result = Backendless.Data.Of( "GeoData" ).FindById( (String)pers[ "objectId" ] );
+      Dictionary<String, object> result = Backendless.Data.Of( "GeoData" ).FindById( (String)pers[ "objectId" ] );
+
       Assert.AreEqual( (LineString)result[ "LineValue" ], finalLine, "Saved LineString object equal to received" );
     }
     [TestMethod]
     public void TestPolygonSave()
     {
-      Dictionary<string, object> pers = new Dictionary<string, object>();
-
+      Dictionary<String, object> pers = new Dictionary<String, object>();
       List<Point> tempList = new List<Point>();
 
       tempList.Add( new Point().SetX( -77.05786152 ).SetY( 38.87261877 ) );
@@ -350,13 +346,14 @@ namespace TestProject
       pers.Add( "PolyValue", poly );
 
       pers = Backendless.Data.Of( "GeoData" ).Save( pers );
-      Dictionary<string, object> result = Backendless.Data.Of( "GeoData" ).FindById( (String) pers[ "objectId" ] );
+      Dictionary<String, object> result = Backendless.Data.Of( "GeoData" ).FindById( (String) pers[ "objectId" ] );
+
       Assert.AreEqual( (Polygon) result[ "PolyValue" ], poly, "Saved Polygon object equal to received" );
     }
     [TestMethod]
     public void PointWKTEquals()
     {
-      Dictionary<string, object> pers = new Dictionary<string, object>();
+      Dictionary<String, object> pers = new Dictionary<String, object>();
 
       WKTParser wkt = new WKTParser();
       String StrCoordinates = "POINT(30.05 10.1)";
@@ -368,7 +365,7 @@ namespace TestProject
     [TestMethod]
     public void LineStringWKTEquals()
     {
-      Dictionary<string, object> pers = new Dictionary<string, object>();
+      Dictionary<String, object> pers = new Dictionary<String, object>();
 
       WKTParser wkt = new WKTParser();
       String StrCoordinates = "LINESTRING(5 10.2,3.05 8.6,2.04 11.006)";
@@ -380,7 +377,7 @@ namespace TestProject
     [TestMethod]
     public void PolygonWKTEquals()
     {
-      Dictionary<string, object> pers = new Dictionary<string, object>();
+      Dictionary<String, object> pers = new Dictionary<String, object>();
 
       WKTParser wkt = new WKTParser();
       String StrCoordinates = "POLYGON((-77.05786152 38.87261877,-77.0546978 38.87296123,-77.05317431 38.87061405," +

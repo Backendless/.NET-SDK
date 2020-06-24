@@ -11,7 +11,10 @@ namespace Weborb.Writer
         {
             Enum enumeration = (Enum) obj;
             Type undertype = Enum.GetUnderlyingType( enumeration.GetType() );
-            MessageWriter.writeObject( Enum.GetName( obj.GetType(), Convert.ChangeType( enumeration, undertype, CultureInfo.InvariantCulture ) ), writer );;
+            Type enumType = obj.GetType();
+            Object convertedToType = Convert.ChangeType( enumeration, undertype, CultureInfo.InvariantCulture );
+            String enumName = Enum.GetName( enumType, convertedToType );
+            MessageWriter.writeObject( enumName, writer );
         }
 
         #endregion

@@ -13,10 +13,10 @@ namespace BackendlessAPI.Push
     private static EventHandler<NotificationChannelConnectionEventArgs> _onConnectionStatusChangedHandler;
     private static EventHandler<NotificationChannelUriEventArgs> _channelUriUpdateddHandler;
 
-    internal static void RegisterDevice( string channel, PushNotificationsBinding pushNotificationsBinding,
-                                         AsyncCallback<string> callback )
+    internal static void RegisterDevice( String channel, PushNotificationsBinding pushNotificationsBinding,
+                                         AsyncCallback<String> callback )
     {
-      if( string.IsNullOrEmpty( channel ) )
+      if( String.IsNullOrEmpty( channel ) )
         throw new ArgumentNullException( "Push channel cannot be null" );
 
       if( _currentRegistration == null || !_currentRegistration.IsRegistered() )
@@ -25,7 +25,7 @@ namespace BackendlessAPI.Push
         callback.ResponseHandler.Invoke( _currentRegistration.GetRegistrationId() );
     }
 
-    private static void MakeInternalRegistration( string channel, PushNotificationsBinding pushNotificationsBinding, AsyncCallback<string> callback )
+    private static void MakeInternalRegistration( String channel, PushNotificationsBinding pushNotificationsBinding, AsyncCallback<String> callback )
     {
       var httpNotificationChannel = HttpNotificationChannel.Find( channel );
 
@@ -75,10 +75,10 @@ namespace BackendlessAPI.Push
     }
 
     private static void ProceedRegistration( HttpNotificationChannel httpNotificationChannel,
-                                             AsyncCallback<string> callback )
+                                             AsyncCallback<String> callback )
     {
       Backendless.Messaging.RegisterDeviceOnServer( httpNotificationChannel.ChannelUri.ToString(),
-                                                    new AsyncCallback<string>( response =>
+                                                    new AsyncCallback<String>( response =>
                                                       {
                                                         _currentRegistration =
                                                           new RegistrationDecorator( httpNotificationChannel, response,

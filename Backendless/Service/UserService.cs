@@ -89,7 +89,7 @@ namespace BackendlessAPI.Service
     {
       CheckUserToBeProper( user, false );
 
-      if( string.IsNullOrEmpty( user.ObjectId ) )
+      if( String.IsNullOrEmpty( user.ObjectId ) )
         throw new ArgumentNullException( ExceptionMessage.WRONG_USER_ID );
 
       user.PutProperties( Invoker.InvokeSync<Dictionary<string, object>>( USER_MANAGER_SERVER_ALIAS, "update",
