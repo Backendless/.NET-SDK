@@ -343,46 +343,46 @@ namespace BackendlessAPI.Service
 
   #region LISTING
 
-    public IList<FileInfo> Listing( string path, string pattern = "*", bool recursive = false )
+    public IList<File.FileInfo> Listing( string path, string pattern = "*", bool recursive = false )
     {
       return Listing( path, pattern, recursive, BackendlessSimpleQuery.DEFAULT_PAGE_SIZE,
                       BackendlessSimpleQuery.DEFAULT_OFFSET );
     }
 
-    public IList<FileInfo> Listing( string path, String pattern, bool recursive, int pagesize, int offset )
+    public IList<File.FileInfo> Listing( string path, String pattern, bool recursive, int pagesize, int offset )
     {
-      return Invoker.InvokeSync<IList<FileInfo>>( FILE_MANAGER_SERVER_ALIAS, "listing",
+      return Invoker.InvokeSync<IList<File.FileInfo>>( FILE_MANAGER_SERVER_ALIAS, "listing",
                                                   new Object[] { path, pattern, recursive, pagesize, offset } );
     }
     
   #if !(NET_35 || NET_40)
-    public async Task<IList<FileInfo>> ListingAsync( string path, string pattern = "*", bool recursive = false )
+    public async Task<IList<File.FileInfo>> ListingAsync( string path, string pattern = "*", bool recursive = false )
     {
       return await ListingAsync( path, pattern, recursive, BackendlessSimpleQuery.DEFAULT_PAGE_SIZE,
                                  BackendlessSimpleQuery.DEFAULT_OFFSET );
     }
     
-    public async Task<IList<FileInfo>> ListingAsync( string path, String pattern, bool recursive, int pagesize, int offset )
+    public async Task<IList<File.FileInfo>> ListingAsync( string path, String pattern, bool recursive, int pagesize, int offset )
     {
       return await Task.Run( () => Listing( path, pattern, recursive, pagesize, offset ) ).ConfigureAwait( false );
     }
   #endif
 
-    public void Listing( string path, AsyncCallback<IList<FileInfo>> responder )
+    public void Listing( string path, AsyncCallback<IList<File.FileInfo>> responder )
     {
       Listing( path, "*", false, responder );
     }
 
-    public void Listing( string path, string pattern, bool recursive, AsyncCallback<IList<FileInfo>> responder )
+    public void Listing( string path, string pattern, bool recursive, AsyncCallback<IList<File.FileInfo>> responder )
     {
       Listing( path, pattern, recursive, BackendlessSimpleQuery.DEFAULT_PAGE_SIZE,
                BackendlessSimpleQuery.DEFAULT_OFFSET, responder );
     }
 
     public void Listing( string path, string pattern, bool recursive, int pagesize, int offset,
-                         AsyncCallback<IList<FileInfo>> responder )
+                         AsyncCallback<IList<File.FileInfo>> responder )
     {
-      AsyncCallback<IList<FileInfo>> listingCallback = new AsyncCallback<IList<FileInfo>>(
+      AsyncCallback<IList<File.FileInfo>> listingCallback = new AsyncCallback<IList<File.FileInfo>>(
                                                                                           files =>
                                                                                           {
                                                                                             responder?.ResponseHandler( files );

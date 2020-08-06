@@ -90,6 +90,7 @@
     <Compile Include="..\..\Backendless\Exception\NoSocketIOException.cs" />
     <Compile Include="..\..\Backendless\File\BackendlessFile.cs" />
     <Compile Include="..\..\Backendless\File\FilePermission.cs" />
+    <Compile Include="..\..\Backendless\File\FileInfo.cs" />
     <Compile Include="..\..\Backendless\File\Security\AbstractFilePermission.cs" />
     <Compile Include="..\..\Backendless\File\Security\BasePermission.cs" />
     <Compile Include="..\..\Backendless\File\Security\FileOperation.cs" />
