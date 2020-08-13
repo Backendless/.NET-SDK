@@ -92,7 +92,7 @@ namespace BackendlessAPI
       Log.addLogger( Log.DEFAULTLOGGER, new ConsoleLogger() );
       Log.startLogging( BACKENDLESSLOG );
       #if WITHRT
-      Quobject.EngineIoClientDotNet.Modules.LogManager.Enabled = true;
+      Quobject.EngineIoClientDotNet.Modules.LogManager.Enabled = false;
       #endif
       AppId = applicationId;
       APIKey = apiKey;
