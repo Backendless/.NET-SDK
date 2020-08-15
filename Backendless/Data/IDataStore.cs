@@ -67,26 +67,20 @@ namespace BackendlessAPI.Data
   #region FIND FIRST
 
     T FindFirst();
-    T FindFirst( DataQueryBuilder queryBuilder );
   #if !(NET_35 || NET_40)
     Task<T> FindFirstAsync();
-    Task<T> FindFirstAsync( DataQueryBuilder queryBuilder );
   #endif
     void FindFirst( AsyncCallback<T> responder );
-    void FindFirst( DataQueryBuilder queryBuilder, AsyncCallback<T> responder );
 
   #endregion
 
   #region FIND LAST
 
     T FindLast();
-    T FindLast( DataQueryBuilder queryBuilder );
   #if !(NET_35 || NET_40)
     Task<T> FindLastAsync();
-    Task<T> FindLastAsync( DataQueryBuilder queryBuilder );
   #endif
     void FindLast( AsyncCallback<T> responder );
-    void FindLast( DataQueryBuilder queryBuilder, AsyncCallback<T> responder );
 
   #endregion
 

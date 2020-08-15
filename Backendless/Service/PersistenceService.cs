@@ -450,45 +450,27 @@ namespace BackendlessAPI.Service
     }
     #endregion
     #region First
+
     public T First<T>()
     {
-      return First<T>( DataQueryBuilder.Create() );
-    }
-
-    public T First<T>( DataQueryBuilder queryBuilder )
-    {
-      return Invoker.InvokeSync<T>( PERSISTENCE_MANAGER_SERVER_ALIAS, "first", CreateArgs<T>( queryBuilder ), true );
+      return Invoker.InvokeSync<T>( PERSISTENCE_MANAGER_SERVER_ALIAS, "first", new Object[] { typeof(T).Name }, true );
     }
 
     public void First<T>( AsyncCallback<T> callback )
     {
-      First<T>( DataQueryBuilder.Create(), callback );
-    }
-
-    public void First<T>( DataQueryBuilder queryBuilder, AsyncCallback<T> callback )
-    {
-      Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "first", CreateArgs<T>( queryBuilder ), true, callback );
+      Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "first", new Object[] { typeof(T).Name }, true, callback );
     }
     #endregion 
     #region Last
-    public T Last<T>()
-    {
-      return Last<T>( DataQueryBuilder.Create() );
-    }
 
-    public T Last<T>( DataQueryBuilder queryBuilder )
+    public T Last<T>(  )
     {
-      return Invoker.InvokeSync<T>( PERSISTENCE_MANAGER_SERVER_ALIAS, "last", CreateArgs<T>( queryBuilder ), true );
+      return Invoker.InvokeSync<T>( PERSISTENCE_MANAGER_SERVER_ALIAS, "last", new Object[] { typeof( T ).Name }, true );
     }
 
     public void Last<T>( AsyncCallback<T> callback )
     {
-      Last<T>( DataQueryBuilder.Create(), callback );
-    }
-
-    public void Last<T>( DataQueryBuilder queryBuilder, AsyncCallback<T> callback )
-    {
-      Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "last", CreateArgs<T>( queryBuilder ), true, callback );
+      Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "last", new Object[] { typeof( T ).Name }, true, callback );
     }
     #endregion
     #region Get Object Count
