@@ -15,7 +15,6 @@ using BackendlessAPI.Utils;
 using BackendlessAPI.Caching;
 using BackendlessAPI.Counters;
 using BackendlessAPI.Logging;
-using BackendlessAPI.Geo;
 using BackendlessAPI.Persistence;
 using BackendlessAPI.Transaction;
 using BackendlessAPI.Transaction.Operations;
@@ -91,7 +90,7 @@ namespace BackendlessAPI
 
       Log.addLogger( Log.DEFAULTLOGGER, new ConsoleLogger() );
       Log.startLogging( BACKENDLESSLOG );
-      #if WITHRT
+      #if WITHRT && !(UNITY_ANDROID || UNITY_IOS)
       Quobject.EngineIoClientDotNet.Modules.LogManager.Enabled = false;
       #endif
       AppId = applicationId;
