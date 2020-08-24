@@ -149,31 +149,17 @@ namespace BackendlessAPI.Data
         return Backendless.Persistence.First<T>();
       }
 
-      public T FindFirst( DataQueryBuilder queryBuilder )
-      {
-        return Backendless.Persistence.First<T>( queryBuilder );
-      }
-
     #if !(NET_35 || NET_40)
       public async Task<T> FindFirstAsync()
       {
         return await Task.Run( () => FindFirst() ).ConfigureAwait( false );
       }
 
-      public async Task<T> FindFirstAsync( DataQueryBuilder queryBuilder )
-      {
-        return await Task.Run( () => FindFirst( queryBuilder ) ).ConfigureAwait( false );
-      }
     #endif
 
       public void FindFirst( AsyncCallback<T> responder )
       {
         Backendless.Persistence.First( responder );
-      }
-
-      public void FindFirst( DataQueryBuilder queryBuilder, AsyncCallback<T> responder )
-      {
-        Backendless.Persistence.First( queryBuilder, responder );
       }
 
     #endregion
@@ -185,21 +171,12 @@ namespace BackendlessAPI.Data
         return Backendless.Persistence.Last<T>();
       }
 
-      public T FindLast( DataQueryBuilder queryBuilder )
-      {
-        return Backendless.Persistence.Last<T>( queryBuilder );
-      }
-
     #if !(NET_35 || NET_40)
       public async Task<T> FindLastAsync()
       {
         return await Task.Run( () => FindLast() ).ConfigureAwait( false );
       }
 
-      public async Task<T> FindLastAsync( DataQueryBuilder queryBuilder )
-      {
-        return await Task.Run( () => FindLast( queryBuilder ) ).ConfigureAwait( false );
-      }
     #endif
 
       public void FindLast( AsyncCallback<T> responder )
@@ -207,10 +184,6 @@ namespace BackendlessAPI.Data
         Backendless.Persistence.Last( responder );
       }
 
-      public void FindLast( DataQueryBuilder queryBuilder, AsyncCallback<T> responder )
-      {
-        Backendless.Persistence.Last( queryBuilder, responder );
-      }
 
     #endregion
 

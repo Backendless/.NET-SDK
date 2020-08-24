@@ -219,34 +219,20 @@ namespace BackendlessAPI.Data
 
     public Dictionary<String, Object> FindFirst()
     {
-      return FindFirst( DataQueryBuilder.Create() );
-    }
-
-    public Dictionary<String, Object> FindFirst( DataQueryBuilder queryBuilder )
-    {
-      return Invoker.InvokeSync<Dictionary<String, Object>>( PERSISTENCE_MANAGER_SERVER_ALIAS, "first", CreateArgs( queryBuilder ) );
+      return Invoker.InvokeSync<Dictionary<String, Object>>( PERSISTENCE_MANAGER_SERVER_ALIAS, "first", new Object[] { tableName } );
     }
     
   #if !(NET_35 || NET_40)
+    
     public async Task<Dictionary<String, Object>> FindFirstAsync()
     {
       return await Task.Run( () => FindFirst() ).ConfigureAwait( false );
-    }
-    
-    public async Task<Dictionary<String, Object>> FindFirstAsync( DataQueryBuilder queryBuilder )
-    {
-      return await Task.Run( () => FindFirst( queryBuilder ) ).ConfigureAwait( false );
     } 
   #endif
 
     public void FindFirst( AsyncCallback<Dictionary<String, Object>> responder )
     {
-      FindFirst( DataQueryBuilder.Create(), responder );
-    }
-
-    public void FindFirst( DataQueryBuilder queryBuilder, AsyncCallback<Dictionary<String, Object>> responder )
-    {
-      Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "first", CreateArgs( queryBuilder ), responder );
+      Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "first", new Object[] { tableName }, responder );
     }
 
   #endregion
@@ -255,34 +241,20 @@ namespace BackendlessAPI.Data
 
     public Dictionary<String, Object> FindLast()
     {
-      return FindLast( DataQueryBuilder.Create() );
-    }
-
-    public Dictionary<String, Object> FindLast( DataQueryBuilder queryBuilder )
-    {
-      return Invoker.InvokeSync<Dictionary<String, Object>>( PERSISTENCE_MANAGER_SERVER_ALIAS, "last", CreateArgs( queryBuilder ) );
+      return Invoker.InvokeSync<Dictionary<String, Object>>( PERSISTENCE_MANAGER_SERVER_ALIAS, "last", new Object[] { tableName } );
     }
     
   #if !(NET_35 || NET_40)
+    
     public async Task<Dictionary<String, Object>> FindLastAsync()
     {
       return await Task.Run( () => FindLast() ).ConfigureAwait( false );
-    }
-    
-    public async Task<Dictionary<String, Object>> FindLastAsync( DataQueryBuilder queryBuilder )
-    {
-      return await Task.Run( () => FindLast( queryBuilder ) ).ConfigureAwait( false );
     } 
   #endif
 
     public void FindLast( AsyncCallback<Dictionary<String, Object>> responder )
     {
-      FindLast( DataQueryBuilder.Create(), responder );
-    }
-
-    public void FindLast( DataQueryBuilder queryBuilder, AsyncCallback<Dictionary<String, Object>> responder )
-    {
-      Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "last", CreateArgs( queryBuilder ), responder );
+      Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "last", new Object[] { tableName }, responder );
     }
 
   #endregion

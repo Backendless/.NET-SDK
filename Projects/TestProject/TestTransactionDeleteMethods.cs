@@ -95,7 +95,7 @@ namespace TestProject
       Backendless.Data.Of<Person>().Create( personList );
 
       UnitOfWork uow = new UnitOfWork();
-      uow.Delete( "Person", (String) Backendless.Data.Of( "Person" ).FindFirst()[ "objectId" ] );
+      uow.Delete( "Person", (String) Backendless.Data.Of( "Person" ).Find()[ 0 ][ "objectId" ] );
 
       UnitOfWorkResult uowResult = uow.Execute();
 
