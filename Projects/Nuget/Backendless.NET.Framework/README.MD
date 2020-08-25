@@ -1,8 +1,10 @@
 # Backendless SDK for .NET/Xamarin
 
-version 5.5.1
+version 6.0.1
 ## What's new
-* Moved the geometry types to the BackendlessAPI.Persistence namespace.
+* Fixed FindFirst/FindLast methods
+* Fixed directory listing API (wrong class used to be referenced in the response)
+* Fixed RT logging when running on a mobile device or in the Unity environment
 
 ## About Backendless
 Backendless is a cloud-based serverless platform which significantly

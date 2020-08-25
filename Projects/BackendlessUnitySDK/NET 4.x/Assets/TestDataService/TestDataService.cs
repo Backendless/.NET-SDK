@@ -11,7 +11,9 @@ public class TestDataService : MonoBehaviour {
     
 	void Start ()
     {
+        #if UNITY_EDITOR
         EditorApplication.playModeStateChanged += HandleOnPlayModeChanged;
+        #endif
         SaveTestData();
     }
 
@@ -70,6 +72,7 @@ public class TestDataService : MonoBehaviour {
             );
     }
     
+    #if UNITY_EDITOR
     void HandleOnPlayModeChanged( PlayModeStateChange stateChange )
     {
         // This method is run whenever the playmode state is changed.
@@ -78,4 +81,5 @@ public class TestDataService : MonoBehaviour {
             Backendless.RT.Disconnect();
         }
     }
+    #endif
 }
