@@ -30,6 +30,7 @@
     <DefineConstants>TRACE;PURE_CLIENT_LIB;NET_40;WITHRT</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EngineIoClientDotNet, Version=0.9.22.0, Culture=neutral, PublicKeyToken=null">
@@ -85,7 +86,7 @@
     <Compile Include="..\..\Backendless\Exception\NoSocketIOException.cs" />
     <Compile Include="..\..\Backendless\File\BackendlessFile.cs" />
     <Compile Include="..\..\Backendless\File\FilePermission.cs" />
-	<Compile Include="..\..\Backendless\File\FileInfo.cs" />
+    <Compile Include="..\..\Backendless\File\FileInfo.cs" />
     <Compile Include="..\..\Backendless\File\Security\AbstractFilePermission.cs" />
     <Compile Include="..\..\Backendless\File\Security\BasePermission.cs" />
     <Compile Include="..\..\Backendless\File\Security\FileOperation.cs" />
