@@ -4,7 +4,7 @@ using BackendlessAPI.Messaging;
 using BackendlessAPI.Service;
 using BackendlessAPI.Engine;
 
-#if UNITY_ANDROID
+#if UNITY_ANDROID || UNITY_IPHONE
 namespace BackendlessAPI.Push
 {
   internal static class Registrar
@@ -16,8 +16,12 @@ namespace BackendlessAPI.Push
       deviceRegistration.Expiration = expiration;
       deviceRegistration.DeviceToken = token;
       deviceRegistration.DeviceId = Backendless.Messaging.DeviceID;
-      deviceRegistration.Os = "ANDROID";
       deviceRegistration.Channels = channels;
+#if UNITY_ANDROID
+      deviceRegistration.Os = "ANDROID";
+#else
+      deviceRegistration.Os = "IOS";
+#endif
 
       return Invoker.InvokeSync<String>( MessagingService.DEVICE_REGISTRATION_MANAGER_SERVER_ALIAS, "registerDevice", new Object[] { deviceRegistration } );  
     }

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 #if WINDOWS_PHONE8
 using Windows.Phone.System.Analytics;
 #endif
@@ -11,7 +10,6 @@ using Weborb.Types;
 using BackendlessAPI.Messaging;
 #if WITHRT
 using BackendlessAPI.RT.Messaging;
-using System.Security.Cryptography.X509Certificates;
 using BackendlessAPI.Push;
 #endif
 #if !( NET_35 || NET_40 )
@@ -74,7 +72,7 @@ namespace BackendlessAPI.Service
 #endif
     }
 
-#if UNITY_ANDROID
+#if UNITY_ANDROID || UNITY_IPHONE
     public void UnregisterDevice()
     {
       Registrar.UnregisterDevice();
