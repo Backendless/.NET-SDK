@@ -7,33 +7,33 @@ namespace BackendlessAPI.Messaging
   public class DeviceRegistration
   {
     [SetClientClassMemberName( "id" )]
-    public string Id { get; set; }
+    public String Id { get; set; }
 
     [SetClientClassMemberName( "channels" )]
-    public List<string> Channels { get; set; }
+    public List<String> Channels { get; set; }
 
     [SetClientClassMemberName( "expiration" )]
     public DateTime? Expiration { get; set; }
 
     [SetClientClassMemberName( "os" )]
-    public string Os { get; set; }
+    public String Os { get; set; }
 
     [SetClientClassMemberName( "osVersion" )]
-    public string OsVersion { get; set; }
+    public String OsVersion { get; set; }
 
     [SetClientClassMemberName( "deviceToken" )]
-    public string DeviceToken { get; set; }
+    public String DeviceToken { get; set; }
 
     [SetClientClassMemberName( "registrationId" )]
-    public string RegistrationId { get; set; }
+    public String RegistrationId { get; set; }
 
     [SetClientClassMemberName( "deviceId" )]
-    public string DeviceId { get; set; }
+    public String DeviceId { get; set; }
 
-    public void AddChannel( string channel )
+    public void AddChannel( String channel )
     {
       if( Channels == null )
-        Channels = new List<string>();
+        Channels = new List<String>();
 
       Channels.Add( channel );
     }
