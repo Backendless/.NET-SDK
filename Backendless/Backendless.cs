@@ -90,8 +90,11 @@ namespace BackendlessAPI
 
       Log.addLogger( Log.DEFAULTLOGGER, new ConsoleLogger() );
       Log.startLogging( BACKENDLESSLOG );
-#if WITHRT && !UNITY_ANDROID && !UNITY_IPHONE
-      Quobject.EngineIoClientDotNet.Modules.LogManager.Enabled = true;
+#if WITHRT
+      if( Environment.OSVersion.Platform == PlatformID.Win32NT )
+        Quobject.EngineIoClientDotNet.Modules.LogManager.Enabled = true;
+      else
+        Quobject.EngineIoClientDotNet.Modules.LogManager.Enabled = false;
 #endif
       AppId = applicationId;
       APIKey = apiKey;
