@@ -73,7 +73,8 @@ namespace BackendlessAPI
       Types.AddClientClassMapping( "com.backendless.transaction.OperationAddRelation", typeof( OperationAddRelation ) );
       Types.AddClientClassMapping( "com.backendless.transaction.OperationSetRelation", typeof( OperationSetRelation ) );
       Types.AddClientClassMapping( "com.backendless.transaction.OperationDeleteRelation", typeof( OperationDeleteRelation ) );
-                                              
+      Types.AddClientClassMapping( "com.backendless.persistence.JsonDTOAdapter", typeof( JsonDTOAdapter ) );     
+
       ORBConfig.GetInstance()
                .getObjectFactories()
                .AddArgumentObjectFactory( "Weborb.V3Types.BodyHolder", new BodyHolderFactory() );
