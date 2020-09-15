@@ -5,11 +5,13 @@ using System.Collections.Generic;
 using Weborb.Types;
 using System.Collections;
 using Newtonsoft.Json;
+using Weborb.Service;
 
 namespace BackendlessAPI.Persistence
 {
   public class JsonDTOAdapter : ICacheableAdaptingType
   {
+    [SetClientClassMemberName("rawJsonString")]
     public String RawJsonString { get; set; }
     public bool IsAdapting { get; set; }
 

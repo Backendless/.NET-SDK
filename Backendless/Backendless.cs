@@ -61,6 +61,7 @@ namespace BackendlessAPI
       Types.AddClientClassMapping( "com.backendless.persistence.Point", typeof( Point ) );
       Types.AddClientClassMapping( "com.backendless.persistence.LineString", typeof( LineString ) );
       Types.AddClientClassMapping( "com.backendless.persistence.Polygon", typeof( Polygon ) );
+      Types.AddClientClassMapping( "com.backendless.persistence.JsonDTOAdapter", typeof( JsonDTOAdapter ) );
       Types.AddClientClassMapping( "com.backendless.transaction.UnitOfWork", typeof( UnitOfWork ) );
       Types.AddClientClassMapping( "com.backendless.transaction.Operation", typeof( Operation) );
       Types.AddClientClassMapping( "com.backendless.transaction.OperationCreate", typeof( OperationCreate ) );
@@ -73,7 +74,7 @@ namespace BackendlessAPI
       Types.AddClientClassMapping( "com.backendless.transaction.OperationAddRelation", typeof( OperationAddRelation ) );
       Types.AddClientClassMapping( "com.backendless.transaction.OperationSetRelation", typeof( OperationSetRelation ) );
       Types.AddClientClassMapping( "com.backendless.transaction.OperationDeleteRelation", typeof( OperationDeleteRelation ) );
-      Types.AddClientClassMapping( "com.backendless.persistence.JsonDTOAdapter", typeof( JsonDTOAdapter ) );     
+      
 
       ORBConfig.GetInstance()
                .getObjectFactories()
