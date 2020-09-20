@@ -30,7 +30,6 @@
     <DefineConstants>TRACE;PURE_CLIENT_LIB;NET_40;WITHRT</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EngineIoClientDotNet, Version=0.9.22.0, Culture=neutral, PublicKeyToken=null">

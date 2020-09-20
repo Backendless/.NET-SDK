@@ -72,7 +72,7 @@ namespace BackendlessAPI.Service
 #endif
     }
 
-#if UNITY_ANDROID || UNITY_IPHONE
+#if UNITY_ANDROID || UNITY_IPHONE || MOBILE
     public void UnregisterDevice()
     {
       Registrar.UnregisterDevice();

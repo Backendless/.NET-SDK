@@ -16,12 +16,18 @@ namespace BackendlessAPI.Push
       deviceRegistration.DeviceToken = token;
       deviceRegistration.DeviceId = Backendless.Messaging.DeviceID;
       deviceRegistration.Channels = channels;
-      
+
+#if UNITY_ANDROID
+      deviceRegistration.Os = "ANDROID";
+#elif UNITY_IPHONE
+      deviceRegistration.Os = "IOS";
+#else
+      deviceRegistration.Os = "IOS";
       if( Environment.OSVersion.Platform.ToString() == "Unix" )
         deviceRegistration.Os = "ANDROID";
       else
         deviceRegistration.Os = "IOS";
-
+#endif
       return Invoker.InvokeSync<String>( MessagingService.DEVICE_REGISTRATION_MANAGER_SERVER_ALIAS, "registerDevice", new Object[] { deviceRegistration } );  
     }
 
