@@ -4,22 +4,22 @@ using Weborb.Reader;
 using System.Collections.Generic;
 using Weborb.Types;
 using System.Collections;
-using Newtonsoft.Json;
+using System.Text;
 using Weborb.Service;
 
 namespace BackendlessAPI.Persistence
 {
-  public class JsonDTOAdapter : ICacheableAdaptingType
+  public class JsonDTOAdaptingType : ICacheableAdaptingType
   {
     [SetClientClassMemberName("rawJsonString")]
     public String RawJsonString { get; set; }
     public bool IsAdapting { get; set; }
 
-    public JsonDTOAdapter()
+    public JsonDTOAdaptingType()
     {
     }
 
-    public JsonDTOAdapter( String rawJsonString )
+    public JsonDTOAdaptingType( String rawJsonString )
     {
       RawJsonString = rawJsonString;
     }
@@ -48,8 +48,9 @@ namespace BackendlessAPI.Persistence
       if( RawJsonString == null )
         return null;
 
-      Object result = JsonConvert.DeserializeObject<Dictionary<String, Object>>( RawJsonString );
-      return result;
+      //Object result = JsonConvert.DeserializeObject<Dictionary<String, Object>>( RawJsonString );
+      Object result = Weborb.Util.IO.Serializer.FromBytes( Encoding.UTF8.GetBytes( RawJsonString ), Weborb.Util.IO.Serializer.JSON, true );
+      return ((IAdaptingType) result).adapt( type );
     }
 
     public IAdaptingType getCacheKey()
@@ -81,7 +82,7 @@ namespace BackendlessAPI.Persistence
       if( !( obj is Json ) )
         return false;
 
-      JsonDTOAdapter jsonDTO = (JsonDTOAdapter) obj;
+      JsonDTOAdaptingType jsonDTO = (JsonDTOAdaptingType) obj;
       return Object.Equals( RawJsonString, jsonDTO.RawJsonString );
     }
   }

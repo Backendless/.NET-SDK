@@ -14,17 +14,17 @@ namespace Weborb.Reader.JsonRPC
 
     public override Object defaultAdapt()
     {
-      if( jsonNumber == (int) jsonNumber )
-        return Convert.ToDouble( jsonNumber );
+      if( Math.Round( jsonNumber ) == jsonNumber )
+      {
+        long longValue = Convert.ToInt64( jsonNumber );
 
-      long longValue = Convert.ToInt64( jsonNumber );
+        if( longValue >= int.MinValue && longValue <= int.MaxValue )
+          return Convert.ToInt32( jsonNumber );
+        else if( longValue >= long.MinValue && longValue <= long.MaxValue )
+          return longValue;
+      }
 
-      if( longValue >= int.MinValue && longValue <= int.MaxValue )
-        return Convert.ToInt32( jsonNumber );
-      else if( longValue >= long.MinValue && longValue <= long.MaxValue )
-        return longValue;
-
-      return jsonNumber;
+      return Convert.ToDouble( jsonNumber );
     }
   }
 }
