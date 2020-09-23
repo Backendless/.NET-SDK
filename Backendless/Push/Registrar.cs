@@ -21,18 +21,7 @@ namespace BackendlessAPI.Push
       deviceRegistration.DeviceToken = token;
       deviceRegistration.DeviceId = Backendless.Messaging.DeviceID;
       deviceRegistration.Channels = channels;
-
-      try
-      {
-        Type currentDeviceType = TypeLoader.LoadType( Backendless.XAMARIN_FULLNAME );
-        if( currentDeviceType != null )
-          deviceRegistration.Os = currentDeviceType.GetProperty( "RuntimePlatform" )
-                                                   .GetValue( currentDeviceType, null ).ToString().ToUpper();
-      }
-      catch( System.Exception e )
-      {
-        throw new ArgumentException( e.Message );
-      }
+      deviceRegistration.Os = DeviceCheck.GetDeviceOs();
 
       return Invoker.InvokeSync<String>( MessagingService.DEVICE_REGISTRATION_MANAGER_SERVER_ALIAS, "registerDevice", new Object[] { deviceRegistration } );
     }

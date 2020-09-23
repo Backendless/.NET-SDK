@@ -28,7 +28,6 @@ namespace BackendlessAPI
   public static class Backendless
   {
     public static long BACKENDLESSLOG = Weborb.Util.Logging.Log.getCode( "BACKENDLESS LOG" );
-    internal const String XAMARIN_FULLNAME = "Xamarin.Forms.Device, Xamarin.Forms.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null";
     public static String URL = "https://api.backendless.com";
 
     public static PersistenceService Persistence;
@@ -92,10 +91,7 @@ namespace BackendlessAPI
       Log.addLogger( Log.DEFAULTLOGGER, new ConsoleLogger() );
       Log.startLogging( BACKENDLESSLOG );
 #if WITHRT
-      if( TypeLoader.LoadType( XAMARIN_FULLNAME ) != null)
-        Quobject.EngineIoClientDotNet.Modules.LogManager.Enabled = false;
-      else
-        Quobject.EngineIoClientDotNet.Modules.LogManager.Enabled = true;
+      Quobject.EngineIoClientDotNet.Modules.LogManager.Enabled = !DeviceCheck.IsMobile;
 #endif
       AppId = applicationId;
       APIKey = apiKey;
