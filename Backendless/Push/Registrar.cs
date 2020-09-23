@@ -1,49 +1,82 @@
 ﻿using System;
-using BackendlessAPI.Async;
-using BackendlessAPI.Exception;
-#if WINDOWS_PHONE || WINDOWS_PHONE8
-using Microsoft.Phone.Notification;
+using System.Collections.Generic;
+using BackendlessAPI.Messaging;
+using BackendlessAPI.Service;
+using BackendlessAPI.Engine;
+using System.Reflection;
+using BackendlessAPI.Geo.Fence;
+using System.Runtime.CompilerServices;
+using Weborb.Util;
+using BackendlessAPI.Utils;
 
 namespace BackendlessAPI.Push
 {
   internal static class Registrar
   {
-    private static RegistrationDecorator _currentRegistration;
-
-    private static EventHandler<NotificationChannelConnectionEventArgs> _onConnectionStatusChangedHandler;
-    private static EventHandler<NotificationChannelUriEventArgs> _channelUriUpdateddHandler;
-
-    internal static void RegisterDevice( String channel, PushNotificationsBinding pushNotificationsBinding,
-                                         AsyncCallback<String> callback )
+    internal static String RegisterDevice( String token, List<String> channels, DateTime? expiration )
     {
-      if( String.IsNullOrEmpty( channel ) )
-        throw new ArgumentNullException( "Push channel cannot be null" );
+      DeviceRegistration deviceRegistration = new DeviceRegistration();
+      deviceRegistration.Channels = channels;
+      deviceRegistration.Expiration = expiration;
+      deviceRegistration.DeviceToken = token;
+      deviceRegistration.DeviceId = Backendless.Messaging.DeviceID;
+      deviceRegistration.Channels = channels;
+      deviceRegistration.Os = DeviceCheck.GetDeviceOS();
 
-      if( _currentRegistration == null || !_currentRegistration.IsRegistered() )
-        MakeInternalRegistration( channel, pushNotificationsBinding, callback );
-      else
-        callback.ResponseHandler.Invoke( _currentRegistration.GetRegistrationId() );
+      return Invoker.InvokeSync<String>( MessagingService.DEVICE_REGISTRATION_MANAGER_SERVER_ALIAS, "registerDevice", new Object[] { deviceRegistration } );
     }
 
-    private static void MakeInternalRegistration( String channel, PushNotificationsBinding pushNotificationsBinding, AsyncCallback<String> callback )
+    internal static Boolean UnregisterDevice()
     {
-      var httpNotificationChannel = HttpNotificationChannel.Find( channel );
+      return Invoker.InvokeSync<Boolean>( MessagingService.DEVICE_REGISTRATION_MANAGER_SERVER_ALIAS, "unregisterDevice", new object[] { Backendless.Messaging.DeviceID } );
+    }
 
-      if( httpNotificationChannel == null )
-      {
-          httpNotificationChannel = new HttpNotificationChannel( channel, Backendless.URL );
-          httpNotificationChannel.ChannelUriUpdated += ( sender, args ) => ProceedRegistration( httpNotificationChannel, callback );
-          httpNotificationChannel.Open();
-      }
-      else
-      {
-          httpNotificationChannel.ChannelUriUpdated += ( sender, args ) => ProceedRegistration( httpNotificationChannel, callback );
-      }
+    internal static Int32? UnregisterDevice( IList<String> channels )
+    {
+      return Invoker.InvokeSync<Int32?>( MessagingService.DEVICE_REGISTRATION_MANAGER_SERVER_ALIAS, "unregisterDevice", new Object[] { Backendless.Messaging.DeviceID, channels } );
+    }
+  }
+}
 
-         if(pushNotificationsBinding != null)
-            pushNotificationsBinding.ApplyTo( httpNotificationChannel );
-                                 
+/*
+private static RegistrationDecorator _currentRegistration;
 
+private static EventHandler<NotificationChannelConnectionEventArgs> _onConnectionStatusChangedHandler;
+private static EventHandler<NotificationChannelUriEventArgs> _channelUriUpdateddHandler;
+
+internal static void RegisterDevice( String channel, PushNotificationsBinding pushNotificationsBinding,
+                                     AsyncCallback<String> callback )
+{
+  if( String.IsNullOrEmpty( channel ) )
+    throw new ArgumentNullException( "Push channel cannot be null" );
+
+  if( _currentRegistration == null || !_currentRegistration.IsRegistered() )
+    MakeInternalRegistration( channel, pushNotificationsBinding, callback );
+  else
+    callback.ResponseHandler.Invoke( _currentRegistration.GetRegistrationId() );
+}
+
+private static void MakeInternalRegistration( String channel, PushNotificationsBinding pushNotificationsBinding, AsyncCallback<String> callback )
+{
+  var httpNotificationChannel = HttpNotificationChannel.Find( channel );
+
+  if( httpNotificationChannel == null )
+  {
+      httpNotificationChannel = new HttpNotificationChannel( channel, Backendless.URL );
+      httpNotificationChannel.ChannelUriUpdated += ( sender, args ) => ProceedRegistration( httpNotificationChannel, callback );
+      httpNotificationChannel.Open();
+  }
+  else
+  {
+      httpNotificationChannel.ChannelUriUpdated += ( sender, args ) => ProceedRegistration( httpNotificationChannel, callback );
+  }
+
+     if(pushNotificationsBinding != null)
+        pushNotificationsBinding.ApplyTo( httpNotificationChannel );
+MY COMMENT
+*/
+
+///////COMMENTED
 /*
       if(httpNotificationChannel.ConnectionStatus.Equals( ChannelConnectionStatus.Connected ))
         ProceedRegistration( httpNotificationChannel, callback );
@@ -64,7 +97,9 @@ namespace BackendlessAPI.Push
       if(pushNotificationsBinding != null)
         pushNotificationsBinding.ApplyTo( httpNotificationChannel );
  * */
-      
+//COMENTED      
+/*
+ * MY COMMENT
       httpNotificationChannel.ErrorOccurred +=
         ( sender, args ) => callback.ErrorHandler.Invoke( new BackendlessFault( args.Message ) );
     }
@@ -122,4 +157,4 @@ namespace BackendlessAPI.Push
     }
   }
 }
-#endif
+*/

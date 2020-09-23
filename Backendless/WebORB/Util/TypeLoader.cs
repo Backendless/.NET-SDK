@@ -34,7 +34,7 @@ namespace Weborb.Util
         return type;
 
       //Following line has been commented out and new code added replacing 'Type.GetType' with 'BuildManager.GetType' 
-      type = Type.GetType( typeName, false );
+      type = Type.GetType( typeName, false);
       //			Type type = System.Web.Compilation.BuildManager.GetType( typeName, false );
 
       if ( type != null )

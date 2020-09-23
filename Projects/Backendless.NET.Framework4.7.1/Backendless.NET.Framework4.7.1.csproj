@@ -310,6 +310,7 @@
     <Compile Include="..\..\Backendless\Transaction\IsolationLevelEnum.cs" />
     <Compile Include="..\..\Backendless\Transaction\TransactionOperationError.cs" />
     <Compile Include="..\..\Backendless\Transaction\TransactionHelper.cs" />
+	<Compile Include="..\..\Backendless\Utils\DeviceCheck.cs"/>
     <Compile Include="..\..\Backendless\Utils\ILoginStorage.cs" />
     <Compile Include="..\..\Backendless\Utils\ITimeoutManager.cs" />
     <Compile Include="..\..\Backendless\Utils\Json.cs" />
