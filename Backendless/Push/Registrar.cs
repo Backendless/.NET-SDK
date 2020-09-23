@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using BackendlessAPI.Messaging;
 using BackendlessAPI.Service;
 using BackendlessAPI.Engine;
+using System.Reflection;
+using BackendlessAPI.Geo.Fence;
+using System.Runtime.CompilerServices;
+using Weborb.Util;
+using BackendlessAPI.Utils;
 
 namespace BackendlessAPI.Push
 {
@@ -17,18 +22,19 @@ namespace BackendlessAPI.Push
       deviceRegistration.DeviceId = Backendless.Messaging.DeviceID;
       deviceRegistration.Channels = channels;
 
-#if UNITY_ANDROID
-      deviceRegistration.Os = "ANDROID";
-#elif UNITY_IPHONE
-      deviceRegistration.Os = "IOS";
-#else
-      deviceRegistration.Os = "IOS";
-      if( Environment.OSVersion.Platform.ToString() == "Unix" )
-        deviceRegistration.Os = "ANDROID";
-      else
-        deviceRegistration.Os = "IOS";
-#endif
-      return Invoker.InvokeSync<String>( MessagingService.DEVICE_REGISTRATION_MANAGER_SERVER_ALIAS, "registerDevice", new Object[] { deviceRegistration } );  
+      try
+      {
+        Type currentDeviceType = DeviceCheck.DeepLoadType( Backendless.XAMARIN_FULLNAME );
+        if( currentDeviceType != null )
+          deviceRegistration.Os = currentDeviceType.GetProperty( "RuntimePlatform" )
+                                                   .GetValue( currentDeviceType, null ).ToString().ToUpper();
+      }
+      catch( System.Exception e )
+      {
+        throw new ArgumentException( e.Message );
+      }
+
+      return Invoker.InvokeSync<String>( MessagingService.DEVICE_REGISTRATION_MANAGER_SERVER_ALIAS, "registerDevice", new Object[] { deviceRegistration } );
     }
 
     internal static Boolean UnregisterDevice()
