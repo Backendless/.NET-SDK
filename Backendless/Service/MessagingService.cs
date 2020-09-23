@@ -136,9 +136,7 @@ namespace BackendlessAPI.Service
     private void RegisterDeviceLogic( String token, List<String> channels, DateTime? expiration )
     {
       if( channels == null || channels.Count == 0 || ( channels.Count == 1 && String.IsNullOrEmpty(channels[0]) ))
-      {
         channels = new List<String> { DEFAULT_CHANNEL_NAME };
-      }
 
       foreach( String channel in channels )
         checkChannelName( channel );
