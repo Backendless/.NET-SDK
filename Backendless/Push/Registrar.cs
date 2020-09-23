@@ -24,7 +24,7 @@ namespace BackendlessAPI.Push
 
       try
       {
-        Type currentDeviceType = DeviceCheck.DeepLoadType( Backendless.XAMARIN_FULLNAME );
+        Type currentDeviceType = TypeLoader.LoadType( Backendless.XAMARIN_FULLNAME );
         if( currentDeviceType != null )
           deviceRegistration.Os = currentDeviceType.GetProperty( "RuntimePlatform" )
                                                    .GetValue( currentDeviceType, null ).ToString().ToUpper();
