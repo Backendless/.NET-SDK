@@ -21,7 +21,7 @@ namespace BackendlessAPI.Push
       deviceRegistration.DeviceToken = token;
       deviceRegistration.DeviceId = Backendless.Messaging.DeviceID;
       deviceRegistration.Channels = channels;
-      deviceRegistration.Os = DeviceCheck.GetDeviceOs();
+      deviceRegistration.Os = DeviceCheck.GetDeviceOS();
 
       return Invoker.InvokeSync<String>( MessagingService.DEVICE_REGISTRATION_MANAGER_SERVER_ALIAS, "registerDevice", new Object[] { deviceRegistration } );
     }

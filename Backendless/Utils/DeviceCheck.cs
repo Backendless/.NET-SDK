@@ -8,28 +8,21 @@ namespace BackendlessAPI.Utils
   internal static class DeviceCheck
   {
     private const String XAMARIN_FULLNAME = "Xamarin.Forms.Device, Xamarin.Forms.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null";
-    
+
     internal static Boolean IsMobile
     {
       get => TypeLoader.LoadType( XAMARIN_FULLNAME ) != null;
     }
 
-    internal static String GetDeviceOs()
+    internal static String GetDeviceOS()
     {
-      try
-      {
-        Type currentDeviceType = TypeLoader.LoadType( XAMARIN_FULLNAME );
+      Type currentDeviceType = TypeLoader.LoadType( XAMARIN_FULLNAME );
 
-        if( currentDeviceType != null )
-          return currentDeviceType.GetProperty( "RuntimePlatform" )
-                                                   .GetValue( currentDeviceType, null ).ToString().ToUpper();
-      }
-      catch( System.Exception e )
-      {
-        throw new ArgumentException( e.Message );
-      }
+      if( currentDeviceType != null )
+        return currentDeviceType.GetProperty( "RuntimePlatform" )
+                                .GetValue( currentDeviceType, null ).ToString().ToUpper();
 
-      return null;
+      return "UNKNOWN";
     }
   }
 }
