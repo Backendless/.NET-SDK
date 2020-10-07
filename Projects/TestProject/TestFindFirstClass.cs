@@ -37,7 +37,7 @@ namespace TestProject
       person.name = "Alexandra";
 
       Backendless.UserService.Logout();
-      Backendless.Data.Of<Person>().Save( person );
+      var t = Backendless.Data.Of<Person>().Save( person );
       Backendless.Data.Of<Person>().FindFirst( new AsyncCallback<Person>(
       callback =>
       {

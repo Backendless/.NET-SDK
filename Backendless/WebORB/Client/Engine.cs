@@ -96,7 +96,7 @@ namespace Weborb.Client
     public static Engine Create(string gatewayUrl, IdInfo idInfo)
     {
       if (gatewayUrl.StartsWith("http://") || gatewayUrl.StartsWith("https://"))
-        return new HttpEngine(gatewayUrl, idInfo);
+        return new NewHttpEngine(gatewayUrl, idInfo);
 #if !UNIVERSALW8 && !PURE_CLIENT_LIB  && !WINDOWS_PHONE8
       if (gatewayUrl.StartsWith("rtmpt://"))
         return new RtmptEngine(gatewayUrl, idInfo);

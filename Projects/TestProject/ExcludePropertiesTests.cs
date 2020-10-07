@@ -14,6 +14,7 @@ namespace TestProject
     {
       try
       {
+        Backendless.UserService.Login( "hdhdhd@gmail.com", "123234" );
         Backendless.Data.Describe( "Person" );
         Backendless.Data.Describe( "Location" );
       }
@@ -23,7 +24,7 @@ namespace TestProject
 
         Dictionary<String, Object> data = new Dictionary<String, Object>();
         data.Add( "name", "Joe" );
-        data.Add( "age", "23" );
+        data.Add( "age", 23 );
 
         Dictionary<String, Object> dataIdParent_1 = Backendless.Data.Of( "Person" ).Save( data );//First object in the "Person" table
         //////////////////////////////////////////////////////////////////////////////////////
