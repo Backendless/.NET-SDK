@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Weborb.V3Types;
@@ -17,11 +15,11 @@ using Weborb.Exceptions;
 
 namespace Weborb.Client
 {
-  public class NewHttpEngine : Engine
+  public class HttpEngineWithClient : Engine
   {
     HttpClient httpClient = new HttpClient();
     HttpWebRequest _request;
-    public NewHttpEngine( String url, IdInfo idInfo ) : base( url, idInfo )
+    public HttpEngineWithClient( String url, IdInfo idInfo ) : base( url, idInfo )
     {
     }
 
@@ -36,7 +34,6 @@ namespace Weborb.Client
       SendRequest( CreateMessageForInvocation( className, methodName, args, messageHeaders ),
                                 requestHeaders, httpHeaders, responder, asyncStreamSetInfo );
 
-#if !( NET_35 || NET_40 )
     public override Task<T> SendRequest<T>( V3Message v3Msg, IDictionary requestHeaders, IDictionary httpHeaders,
                                                                   ResponseThreadConfigurator threadConfigurator ) =>
       SendHttpRequest<T>( v3Msg, requestHeaders, httpHeaders, threadConfigurator );
@@ -45,7 +42,6 @@ namespace Weborb.Client
                IDictionary messageHeaders, IDictionary httpHeaders, ResponseThreadConfigurator threadConfigurator ) =>
       SendRequest<T>( CreateMessageForInvocation( className, methodName, args, messageHeaders ),
                                         requestHeaders, httpHeaders, threadConfigurator );
-#endif
 
     private async void SendHttpRequest<T>( V3Message v3Msg, IDictionary requestHeaders, IDictionary httpHeaders, Responder<T> responder, AsyncStreamSetInfo<T> asyncStreamSetInfo )
     {
@@ -84,7 +80,6 @@ namespace Weborb.Client
       asyncStreamSetInfo.responder?.ResponseHandler( result );
     }
 
-#if !( NET_35 || NET_40 )
     private async Task<T> SendHttpRequest<T>( V3Message v3Msg, IDictionary requestHeaders, IDictionary httpHeaders,
                                           ResponseThreadConfigurator threadConfigurator )
     {
@@ -154,7 +149,6 @@ namespace Weborb.Client
         throw new WebORBException( GetFault( exception ) );
       }
     }
-#endif
 
     protected byte[] CreateRequest( V3Message v3Msg, IDictionary headers )
     {

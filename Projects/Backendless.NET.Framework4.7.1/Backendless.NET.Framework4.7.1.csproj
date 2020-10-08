@@ -151,7 +151,7 @@
     <Compile Include="..\..\Backendless\Exception\NoSocketIOException.cs" />
     <Compile Include="..\..\Backendless\File\BackendlessFile.cs" />
     <Compile Include="..\..\Backendless\File\FilePermission.cs" />
-	<Compile Include="..\..\Backendless\File\FileInfo.cs" />
+    <Compile Include="..\..\Backendless\File\FileInfo.cs" />
     <Compile Include="..\..\Backendless\File\Security\AbstractFilePermission.cs" />
     <Compile Include="..\..\Backendless\File\Security\BasePermission.cs" />
     <Compile Include="..\..\Backendless\File\Security\FileOperation.cs" />
@@ -310,7 +310,7 @@
     <Compile Include="..\..\Backendless\Transaction\IsolationLevelEnum.cs" />
     <Compile Include="..\..\Backendless\Transaction\TransactionOperationError.cs" />
     <Compile Include="..\..\Backendless\Transaction\TransactionHelper.cs" />
-	<Compile Include="..\..\Backendless\Utils\DeviceCheck.cs"/>
+    <Compile Include="..\..\Backendless\Utils\DeviceCheck.cs" />
     <Compile Include="..\..\Backendless\Utils\ILoginStorage.cs" />
     <Compile Include="..\..\Backendless\Utils\ITimeoutManager.cs" />
     <Compile Include="..\..\Backendless\Utils\Json.cs" />
@@ -323,7 +323,7 @@
     <Compile Include="..\..\Backendless\WebORB\Client\DefaultResponder.cs" />
     <Compile Include="..\..\Backendless\WebORB\Client\Engine.cs" />
     <Compile Include="..\..\Backendless\WebORB\Client\Fault.cs" />
-    <Compile Include="..\..\Backendless\WebORB\Client\HttpEngine.cs" />
+    <Compile Include="..\..\Backendless\WebORB\Client\HttpEngineWithClient.cs" />
     <Compile Include="..\..\Backendless\WebORB\Client\ISubscribeResponder.cs" />
     <Compile Include="..\..\Backendless\WebORB\Client\PublishingResponder.cs" />
     <Compile Include="..\..\Backendless\WebORB\Client\Responder.cs" />
