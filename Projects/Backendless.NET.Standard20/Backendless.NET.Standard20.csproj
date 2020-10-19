@@ -6,7 +6,7 @@
     <PackageVersion>6.0.1.0</PackageVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <DefineConstants>TRACE;DEBUG;NETSTANDARD2_0;PURE_CLIENT_LIB;WITHRT</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NETSTANDARD2_0;PURE_CLIENT_LIB;WITHRT;MOBILE</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <DefineConstants>TRACE;RELEASE;NETSTANDARD2_0;PURE_CLIENT_LIB;WITHRT</DefineConstants>
@@ -252,6 +252,7 @@
     <Compile Include="..\..\Backendless\Transaction\IsolationLevelEnum.cs" />
     <Compile Include="..\..\Backendless\Transaction\TransactionOperationError.cs" />
     <Compile Include="..\..\Backendless\Transaction\TransactionHelper.cs" />
+	<Compile Include="..\..\Backendless\Utils\DeviceCheck.cs"/>
     <Compile Include="..\..\Backendless\Utils\ILoginStorage.cs" />
     <Compile Include="..\..\Backendless\Utils\ITimeoutManager.cs" />
     <Compile Include="..\..\Backendless\Utils\Json.cs" />
@@ -455,6 +456,7 @@
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="System.Collections.Immutable" Version="1.5.0" />
+    <PackageReference Include="WebSocket4Net" Version="0.15.2" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="dependencies" />

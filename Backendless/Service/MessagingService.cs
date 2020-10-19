@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 #if WINDOWS_PHONE8
 using Windows.Phone.System.Analytics;
 #endif
@@ -11,8 +10,9 @@ using Weborb.Types;
 using BackendlessAPI.Messaging;
 #if WITHRT
 using BackendlessAPI.RT.Messaging;
+using BackendlessAPI.Push;
 #endif
-#if !(NET_35 || NET_40)
+#if !( NET_35 || NET_40 )
 using System.Threading.Tasks;
 #endif
 namespace BackendlessAPI.Service
@@ -21,12 +21,12 @@ namespace BackendlessAPI.Service
   {
     private static string MESSAGING_MANAGER_SERVER_ALIAS = "com.backendless.services.messaging.MessagingService";
 
-    //private static string DEVICE_REGISTRATION_MANAGER_SERVER_ALIAS = "com.backendless.services.messaging.DeviceRegistrationService";
+    internal static string DEVICE_REGISTRATION_MANAGER_SERVER_ALIAS = "com.backendless.services.messaging.DeviceRegistrationService";
     private static string EMAIL_MANAGER_SERVER_ALIAS = "com.backendless.services.mail.CustomersEmailService";
     private static string EMAIL_TEMPLATE_SENDER_SERVER_ALIAS = "com.backendless.services.mail.EmailTemplateSender";
     private static string DEFAULT_CHANNEL_NAME = "default";
     private static string deviceId;
-    //private static int CHANNEL_NAME_MAX_LENGTH = 46;
+    private static int CHANNEL_NAME_MAX_LENGTH = 46;
     //private static Messaging.DeviceRegistration _deviceRegistrationDto;
   #if UNITY
     private static AsyncCallback<string> _deviceRegisterCallback = null;
@@ -51,8 +51,7 @@ namespace BackendlessAPI.Service
                                    typeof( Messaging.PublishStatusEnum ) );
       Types.AddClientClassMapping( "com.backendless.services.messaging.Message", typeof( Messaging.Message ) );
       deviceId = Guid.NewGuid().ToString();
-
-    #if WINDOWS_PHONE8
+#if WINDOWS_PHONE8
       object deviceId;
       if (!Microsoft.Phone.Info.DeviceExtendedProperties.TryGetValue("DeviceUniqueId", out deviceId))
       {
@@ -68,12 +67,85 @@ namespace BackendlessAPI.Service
           DeviceId = BitConverter.ToString( (byte[]) deviceId ).Replace( "-", "" ),
           OsVersion = System.Environment.OSVersion.Version.Major.ToString( CultureInfo.InvariantCulture )
         };
-    #elif UNITY
+#elif UNITY
       _deviceRegistrationDto = new DeviceRegistration();
-    #endif
+#endif
     }
 
-  #if UNITY
+#if UNITY_ANDROID || UNITY_IPHONE || MOBILE
+    public void UnregisterDevice()
+    {
+      Registrar.UnregisterDevice();
+    }
+
+    public async Task UnregisterDeviceAsync()
+    {
+      await Task.Run( () => { Registrar.UnregisterDevice(); } );
+    }
+
+    public void UnregisterDevice( List<String> channels )
+    {
+      Registrar.UnregisterDevice( channels );
+    }
+
+    public async Task UnregisterDeviceAsync( List<String> channels )
+    {
+      await Task.Run( () => { Registrar.UnregisterDevice( channels ); } );
+    }
+
+    public void RegisterDevice( String token )
+    {
+      RegisterDevice( token, DEFAULT_CHANNEL_NAME );
+    }
+
+    public async Task RegisterDeviceAsync( String token )
+    {
+      await Task.Run( () => { RegisterDevice( token, DEFAULT_CHANNEL_NAME ); } );
+    }
+
+    public void RegisterDevice( String token, String channel )
+    {
+      RegisterDevice( token, new List<String> { channel } );
+    }
+    
+    public async Task RegisterDeviceAsync( String token, String channel )
+    {
+      await Task.Run( () => { RegisterDevice( token, new List<String> { channel } ); } );
+    }
+
+    public void RegisterDevice( String token, List<String> channels )
+    {
+      RegisterDevice( token, channels, null );
+    }
+
+    public async Task RegisterDeviceAsync( String token, List<String> channels )
+    {
+      await Task.Run( () => { RegisterDevice( token, channels, null ); } );
+    }
+
+    public void RegisterDevice( String token, List<String> channels, DateTime? expiration )
+    {
+      RegisterDeviceLogic( token, channels, expiration );
+    }
+
+    public async Task RegisterDeviceAsync( String token, List<String> channels, DateTime? expiration)
+    {
+      await Task.Run( () => { RegisterDeviceLogic( token, channels, expiration ); } );
+    }
+
+    private void RegisterDeviceLogic( String token, List<String> channels, DateTime? expiration )
+    {
+      if( channels == null || channels.Count == 0 || ( channels.Count == 1 && String.IsNullOrEmpty(channels[0]) ))
+        channels = new List<String> { DEFAULT_CHANNEL_NAME };
+
+      foreach( String channel in channels )
+        checkChannelName( channel );
+
+      Registrar.RegisterDevice( token, channels, expiration ); 
+    }
+#endif
+
+#if UNITY
     public void SetUnityRegisterDevice( UnityRegisterDevice unityRegisterDevice, UnityUnregisterDevice unityUnregisterDevice )
     {
       _unityRegisterDevice = unityRegisterDevice;
@@ -206,9 +278,9 @@ namespace BackendlessAPI.Service
     {
       get { return _deviceRegistrationDto; }
     }
-  #endif
+#endif
 
-  #if WINDOWS_PHONE || WINDOWS_PHONE8
+#if WINDOWS_PHONE || WINDOWS_PHONE8
     public DeviceRegistration DeviceRegistration
     {
       get { return _deviceRegistrationDto; }
@@ -324,7 +396,7 @@ namespace BackendlessAPI.Service
     }
 
 
-  #endif
+#endif
 
     public string DeviceID
     {
@@ -812,10 +884,13 @@ namespace BackendlessAPI.Service
 
   #endregion
 
-    private void checkChannelName( string channelName )
+    private void checkChannelName( String channelName )
     {
-      if( string.IsNullOrEmpty( channelName ) )
+      if( String.IsNullOrEmpty( channelName ) )
         throw new ArgumentNullException( ExceptionMessage.NULL_CHANNEL_NAME );
+
+      if( channelName.Length > CHANNEL_NAME_MAX_LENGTH )
+        throw new ArgumentException( ExceptionMessage.CHANNEL_NAME_TOO_LONG );
     }
   }
 }
