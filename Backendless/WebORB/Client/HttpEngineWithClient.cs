@@ -18,7 +18,6 @@ namespace Weborb.Client
   public class HttpEngineWithClient : Engine
   {
     HttpClient httpClient = new HttpClient();
-    HttpWebRequest _request;
     public HttpEngineWithClient( String url, IdInfo idInfo ) : base( url, idInfo )
     {
     }
@@ -26,7 +25,7 @@ namespace Weborb.Client
     public override void SendRequest<T>( V3Message v3Msg, IDictionary requestHeaders,
                                          IDictionary httpHeaders, Responder<T> responder,
                                          AsyncStreamSetInfo<T> asyncStreamSetInfo ) =>
-      ThreadPool.QueueUserWorkItem( state => SendHttpRequest( v3Msg, requestHeaders, httpHeaders, responder, asyncStreamSetInfo ) );
+       SendHttpRequest( v3Msg, requestHeaders, httpHeaders, responder, asyncStreamSetInfo );
 
     internal override void Invoke<T>( string className, string methodName, object[] args, IDictionary requestHeaders,
                                   IDictionary messageHeaders, IDictionary httpHeaders, Responder<T> responder,
@@ -116,7 +115,7 @@ namespace Weborb.Client
           var fault = new Fault( errorMessage.faultString, errorMessage.faultDetail, errorMessage.faultCode );
           throw new WebORBException( fault );
         }
-        var body = 
+        var body =
           (IAdaptingType) ( (AnonymousObject) ( (NamedObject) responseData[ 0 ] ).TypedObject ).Properties[ "body" ];
         var result = (T) body.adapt( typeof( T ) );
         return result;
