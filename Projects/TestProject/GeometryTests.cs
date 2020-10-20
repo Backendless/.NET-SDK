@@ -16,8 +16,8 @@ namespace TestProject
   {
     static HttpClient client;
     const String URL_BASE_ADRESS = "https://devtest.backendless.com";
-    const String Login = "nikita@themidnightcoders.com";
-    const String Password = "Holailusoria1411";
+    const String Login = "";
+    const String Password = "";
 
     [ClassInitialize]
     public static void TestGeometrySetupData( TestContext context )
