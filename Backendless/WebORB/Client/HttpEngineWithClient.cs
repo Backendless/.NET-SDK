@@ -83,49 +83,31 @@ namespace Weborb.Client
     private async Task<T> SendHttpRequest<T>( V3Message v3Msg, IDictionary requestHeaders, IDictionary httpHeaders,
                                           ResponseThreadConfigurator threadConfigurator )
     {
-      HttpWebRequest webReq;
-      try
-      {
-        webReq = GetWebRequest();
-      }
-      catch( Exception e )
-      {
-        throw new WebORBException( GetFault( e ) );
-      }
-
-      if( httpHeaders != null )
-        foreach( DictionaryEntry header in httpHeaders )
-          webReq.Headers[ header.Key.ToString() ] = header.Value.ToString();
-
-      webReq.CookieContainer = Cookies;
-
       byte[] requestBytes = CreateRequest( v3Msg, requestHeaders );
+      HttpRequestMessage requestMessage = new HttpRequestMessage
+      {
+        RequestUri = new Uri( GatewayUrl ),
+        Method = HttpMethod.Post,
+        Content = new ByteArrayContent( requestBytes )
+      };
 
-      // Set the ContentType property. 
-      webReq.ContentType = "application/x-amf";
-      // Set the Method property to 'POST' to post data to the URI.
-      webReq.Method = "POST";
-      // Start the asynchronous operation.    
+      requestMessage.Content.Headers.ContentType = new MediaTypeHeaderValue( "application/x-amf" );
 
-      System.IO.Stream postStream = await webReq.GetRequestStreamAsync();
+      System.IO.Stream postStream = await requestMessage.Content.ReadAsStreamAsync();
+
       try
       {
-        // End the operation.
         postStream.Write( requestBytes, 0, requestBytes.Length );
         postStream.Flush();
         postStream.Close();
 
-        HttpWebResponse response = (HttpWebResponse) await webReq.GetResponseAsync();
+        HttpResponseMessage responseMessage = await httpClient.SendAsync( requestMessage );
         threadConfigurator?.Invoke();
 
-        if( Cookies != null )
-          foreach( Cookie cookie in response.Cookies )
-            Cookies.Add( new Uri( GatewayUrl ), cookie );
-
-        var streamResponse = response.GetResponseStream();
+        var streamResponse = await responseMessage.Content.ReadAsStreamAsync();
         var parser = new RequestParser();
         var responseObject = parser.readMessage( streamResponse );
-        var responseData = (object[]) responseObject.getRequestBodyData();
+        var responseData = (Object[]) responseObject.getRequestBodyData();
         var v3 = (V3Message) ( (IAdaptingType) responseData[ 0 ] ).defaultAdapt();
 
         if( v3.isError )
@@ -134,10 +116,8 @@ namespace Weborb.Client
           var fault = new Fault( errorMessage.faultString, errorMessage.faultDetail, errorMessage.faultCode );
           throw new WebORBException( fault );
         }
-
-        var body =
+        var body = 
           (IAdaptingType) ( (AnonymousObject) ( (NamedObject) responseData[ 0 ] ).TypedObject ).Properties[ "body" ];
-
         var result = (T) body.adapt( typeof( T ) );
         return result;
       }
@@ -186,35 +166,6 @@ namespace Weborb.Client
         fault = new Fault( e.Message, e.StackTrace, INTERNAL_CLIENT_EXCEPTION_FAULT_CODE );
 
       return fault;
-    }
-
-    private HttpWebRequest GetWebRequest()
-    {
-      //      if ( _request != null )
-      //        return _request;
-#if( FULL_BUILD || WINDOWS_PHONE || PURE_CLIENT_LIB || WINDOWS_PHONE8 )
-      try
-      {
-        Uri uri = new Uri( GatewayUrl );
-        _request = (HttpWebRequest) WebRequest.Create( uri );
-      }
-      catch( Exception e )
-      {
-        System.Console.WriteLine( e );
-      }
-#else
-      if( Uri.IsWellFormedUriString( GatewayUrl, UriKind.Absolute ) )
-      {
-        _request = (HttpWebRequest) WebRequest.Create( new Uri( GatewayUrl ) );
-      }
-      else
-      {
-        Uri finalURI;
-        Uri.TryCreate( WeborbClient.Uri, GatewayUrl, out finalURI );
-        _request = (HttpWebRequest) WebRequest.Create( finalURI );
-      }
-#endif
-      return _request;
     }
   }
 }

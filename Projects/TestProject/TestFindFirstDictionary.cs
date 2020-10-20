@@ -69,7 +69,7 @@ namespace TestProject
         if( !String.IsNullOrEmpty( callback[ "objectId" ].ToString() ) )
         {
           Assert.IsTrue( (Double) callback[ "age" ] == Convert.ToDouble( person[ "age" ] ) );
-          Assert.IsTrue( callback[ "name" ] == person[ "name" ] );
+          Assert.IsTrue( callback[ "name" ].ToString() == person[ "name" ].ToString() );
         }
       },
       fault=>

@@ -15,15 +15,16 @@ namespace TestProject
   public class GeometryDataTypesTestClass
   {
     static HttpClient client;
-    const String URL_BASE_ADRESS = "https://develop.backendless.com";
-    const String Login = "";
-    const String Password = "";
+    const String URL_BASE_ADRESS = "https://devtest.backendless.com";
+    const String Login = "nikita@themidnightcoders.com";
+    const String Password = "Holailusoria1411";
 
     [ClassInitialize]
     public static void TestGeometrySetupData( TestContext context )
     {
       try
       {
+        Backendless.UserService.Logout();
         Backendless.Data.Of( "GeoData" ).Find();
       }
       catch
@@ -91,7 +92,7 @@ namespace TestProject
 
     static String LoginAndGetToken()
     {
-      HttpRequestMessage request = new HttpRequestMessage( HttpMethod.Post, "https://develop.backendless.com/console/home/login" );
+      HttpRequestMessage request = new HttpRequestMessage( HttpMethod.Post, "https://devtest.backendless.com/console/home/login" );
       request.Content = new StringContent( "{\"login\":\""+Login+"\",\"password\":\""+Password+"\"}", Encoding.UTF8, "application/json" );
 
       return client.SendAsync( request ).GetAwaiter().GetResult().Headers.GetValues( "auth-key" ).ToArray()[ 0 ];
@@ -107,7 +108,7 @@ namespace TestProject
       client.DefaultRequestHeaders.Add( "auth-key", token_Auth_Key );
 
 
-      HttpRequestMessage requestMessage = new HttpRequestMessage( HttpMethod.Post, "https://develop.backendless.com/"+TestInitialization.APP_API_KEY+"/console/data/tables/GeoData/columns" );
+      HttpRequestMessage requestMessage = new HttpRequestMessage( HttpMethod.Post, "https://devtest.backendless.com/"+TestInitialization.APP_API_KEY+"/console/data/tables/GeoData/columns" );
 
         requestMessage.Content = new StringContent( "{\"metaInfo\":{\"srsId\":4326},\"name\":\"" + columnName + "\"," +
                           "\"dataType\":\"" + typeName + "\",\"required\":false,\"unique\":false,\"indexed\":false}", Encoding.UTF8, "application/json" );

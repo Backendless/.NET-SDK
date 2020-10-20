@@ -93,18 +93,6 @@ namespace Weborb.Client
       }
     }
 
-    private Fault GetFault( Exception e )
-    {
-      Fault fault;
-
-      if( e is WebException exception && exception.Status == WebExceptionStatus.RequestCanceled )
-        fault = new Fault( TIMEOUT_FAULT_MESSAGE, TIMEOUT_FAULT_MESSAGE );
-      else
-        fault = new Fault( e.Message, e.StackTrace, INTERNAL_CLIENT_EXCEPTION_FAULT_CODE );
-
-      return fault;
-    }
-
     private void HandleException<T>(AsyncStreamSetInfo<T> asyncStreamSetInfo, Exception e)
     {
       String error = e.Message;
