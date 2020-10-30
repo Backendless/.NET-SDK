@@ -355,13 +355,13 @@ namespace BackendlessAPI.Service
     }
 
 #if !( NET_35 || NET_40 )
-    public async Task CreateEmailConfirmation( String identity )
+    public async Task CreateEmailConfirmationAsync( String identity )
     {
-      await Task.Run( () => CreateaEmailConfirmation( identity ) ).ConfigureAwait( false );
+      await Task.Run( () => CreateEmailConfirmation( identity ) ).ConfigureAwait( false );
     }
 #endif
 
-    public void CreateaEmailConfirmation( String identity )
+    public void CreateEmailConfirmation( String identity )
     {
       if( String.IsNullOrEmpty( identity ) )
         throw new ArgumentException( ExceptionMessage.NULL_OR_EMPTY_INDENTITY );
