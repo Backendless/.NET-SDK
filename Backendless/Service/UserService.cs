@@ -321,34 +321,67 @@ namespace BackendlessAPI.Service
     }
 
 #if !( NET_35 || NET_40 )
-    public async Task ResendEmailConfirmationAsync( String email )
+    public async Task ResendEmailConfirmationAsync( String identity )
     {
-      await Task.Run( () => ResendEmailConfirmation( email ) ).ConfigureAwait( false );
+      await Task.Run( () => ResendEmailConfirmation( identity ) ).ConfigureAwait( false );
     }
 #endif
 
-    public void ResendEmailConfirmation( String email )
+    public void ResendEmailConfirmation( String identity )
     {
-      if( email == null )
+      if( identity == null )
         throw new ArgumentException( ExceptionMessage.NULL_EMAIL );
 
-      Invoker.InvokeSync<Object>( USER_MANAGER_SERVER_ALIAS, "resendEmailConfirmation", new Object[] { email } );
+      Invoker.InvokeSync<Object>( USER_MANAGER_SERVER_ALIAS, "resendEmailConfirmation", new Object[] { identity } );
     }
 
-    public void ResendEmailConfirmation( String email, AsyncCallback<Object> callback )
+    public void ResendEmailConfirmation( String identity, AsyncCallback<Object> callback )
     {
       try
       {
-        if( email == null )
+        if( identity == null )
           throw new ArgumentException( ExceptionMessage.NULL_EMAIL );
 
-        Invoker.InvokeAsync( USER_MANAGER_SERVER_ALIAS, "resendEmailConfirmation", new Object[] { email }, callback );
+        Invoker.InvokeAsync( USER_MANAGER_SERVER_ALIAS, "resendEmailConfirmation", new Object[] { identity }, callback );
       }
       catch( System.Exception ex )
       {
         if( callback != null )
           callback.ErrorHandler.Invoke( new BackendlessFault( ex.Message ) );
 
+        else
+          throw;
+      }
+    }
+
+#if !( NET_35 || NET_40 )
+    public async Task CreateEmailConfirmation( String identity )
+    {
+      await Task.Run( () => CreateaEmailConfirmation( identity ) ).ConfigureAwait( false );
+    }
+#endif
+
+    public void CreateaEmailConfirmation( String identity )
+    {
+      if( String.IsNullOrEmpty( identity ) )
+        throw new ArgumentException( ExceptionMessage.NULL_OR_EMPTY_INDENTITY );
+
+      Invoker.InvokeSync<Object>( USER_MANAGER_SERVER_ALIAS, "createEmailConfirmation", new Object[] { identity } );
+    }
+
+    public void CreateEmailConfirmation( String identity, AsyncCallback<Object> callback )
+    {
+      try
+      {
+        if( String.IsNullOrEmpty( identity ) )
+          throw new ArgumentException( ExceptionMessage.NULL_OR_EMPTY_INDENTITY );
+
+        Invoker.InvokeAsync( USER_MANAGER_SERVER_ALIAS, "createEmailConfirmation", new Object[] { identity }, callback );
+      }
+      catch( System.Exception ex )
+      {
+        if( callback != null )
+          callback.ErrorHandler.Invoke( new BackendlessFault( ex.Message ) );
         else
           throw;
       }
