@@ -15,7 +15,7 @@ namespace BackendlessAPI.Service
 {
   public class UserService
   {
-    private static string USER_MANAGER_SERVER_ALIAS = "com.backendless.services.users.UserService";
+    internal static string USER_MANAGER_SERVER_ALIAS = "com.backendless.services.users.UserService";
     private ILoginStorage _loginStorage = null;
 
     public BackendlessUser CurrentUser{ get; set; }
@@ -352,6 +352,34 @@ namespace BackendlessAPI.Service
         else
           throw;
       }
+    }
+
+    public void LoginWithOAuth2( String authProviderCode, String accessToken, Dictionary<String, String> fieldsMappings,
+      AsyncCallback<BackendlessUser> callback, Boolean stayLoggedIn = false )
+    {
+      AsyncCallback<Dictionary<String, Object>> internalResponder = GetUserLoginAsyncHandler( callback, stayLoggedIn );
+      UserServiceExtra.Instance.LoginWithOAuth2( authProviderCode, accessToken, null, fieldsMappings, internalResponder );
+    }
+
+    public void LoginWithOAuth2( String authProviderCode, String accessToken, BackendlessUser guestUser, Dictionary<String, String> fieldsMappings,
+      AsyncCallback<BackendlessUser> callback, Boolean stayLoggedIn = false )
+    {
+      AsyncCallback<Dictionary<String, Object>> internalResponser = GetUserLoginAsyncHandler( callback, stayLoggedIn );
+      UserServiceExtra.Instance.LoginWithOAuth2( authProviderCode, accessToken, guestUser, fieldsMappings, internalResponser );
+    }
+
+    public void LoginWithOAuth1( String authProviderCode, String authToken, String authTokenSecret,
+      Dictionary<String, String> fieldsMappings, AsyncCallback<BackendlessUser> callback, Boolean stayLogginIn = false )
+    {
+      AsyncCallback<Dictionary<String, Object>> internalResponder = GetUserLoginAsyncHandler( callback, stayLogginIn );
+      UserServiceExtra.Instance.LoginWithOAuth1( authProviderCode, authToken, null, authTokenSecret, fieldsMappings, internalResponder );
+    }
+
+    public void LoginWithOAuth1( String authProviderCode, String authToken, String authTokenSecret, BackendlessUser guestUser,
+      Dictionary<String, String> fieldsMappings, AsyncCallback<BackendlessUser> callback, Boolean stayLoggedIn )
+    {
+      AsyncCallback<Dictionary<String, Object>> internalResponder = GetUserLoginAsyncHandler( callback, stayLoggedIn );
+      UserServiceExtra.Instance.LoginWithOAuth1( authProviderCode, authToken, guestUser, authTokenSecret, fieldsMappings, internalResponder );
     }
 
 #if !( NET_35 || NET_40 )
