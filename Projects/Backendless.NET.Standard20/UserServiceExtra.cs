@@ -38,7 +38,7 @@ namespace BackendlessAPI
       if( fieldsMappings == null )
         fieldsMappings = new Dictionary<String, String>();
 
-      Invoker.InvokeAsync( UserService.USER_MANAGER_SERVER_ALIAS, "loginWithAuth2",
+      Invoker.InvokeAsync( UserService.USER_MANAGER_SERVER_ALIAS, "loginWithOAuth2",
         new Object[] { authProviderCode, accessToken, fieldsMappings, guestUser == null ? null : guestUser.Properties },
         new AsyncCallback<Dictionary<String, Object>>(
           response =>
