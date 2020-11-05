@@ -274,6 +274,7 @@
     <Compile Include="..\..\Backendless\Service\Property\ObjectProperty.cs" />
     <Compile Include="..\..\Backendless\Service\Property\UserProperty.cs" />
     <Compile Include="..\..\Backendless\Service\UserService.cs" />
+	<Compile Include="..\..\Backendless\Service\UserServiceExtra.cs" />
     <Compile Include="..\..\Backendless\Transaction\Operations\Operation.cs" />
     <Compile Include="..\..\Backendless\Transaction\Operations\OperationCreate.cs" />
     <Compile Include="..\..\Backendless\Transaction\Operations\OperationCreateBulk.cs" />
