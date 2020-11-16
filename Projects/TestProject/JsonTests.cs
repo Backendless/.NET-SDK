@@ -383,11 +383,5 @@ namespace TestProject
 
       Backendless.Data.Of( "Table1" ).Remove( "'json' != null" );
     }
-
-    [TestMethod]
-    public void JN16()
-    {
-
-    }
   }
 }

@@ -7,8 +7,12 @@ namespace Weborb.Reader
 {
     public class ReferenceCache
     {
-        private Dictionary<IAdaptingType, Dictionary<Type, Object>> cache = new Dictionary<IAdaptingType, Dictionary<Type, object>>();
+        private Dictionary<IAdaptingType, Dictionary<Type, object>> cache;
 
+        public ReferenceCache()
+        {
+            cache = new Dictionary<IAdaptingType, Dictionary<Type, object>>();
+        }
         public bool HasObject(IAdaptingType key)
         {
             return HasObject( key, key.getDefaultType() );

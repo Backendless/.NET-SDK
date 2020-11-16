@@ -151,7 +151,7 @@
     <Compile Include="..\..\Backendless\Exception\NoSocketIOException.cs" />
     <Compile Include="..\..\Backendless\File\BackendlessFile.cs" />
     <Compile Include="..\..\Backendless\File\FilePermission.cs" />
-	<Compile Include="..\..\Backendless\File\FileInfo.cs" />
+    <Compile Include="..\..\Backendless\File\FileInfo.cs" />
     <Compile Include="..\..\Backendless\File\Security\AbstractFilePermission.cs" />
     <Compile Include="..\..\Backendless\File\Security\BasePermission.cs" />
     <Compile Include="..\..\Backendless\File\Security\FileOperation.cs" />
@@ -196,6 +196,13 @@
     <Compile Include="..\..\Backendless\Messaging\PublishStatusEnum.cs" />
     <Compile Include="..\..\Backendless\Messaging\PushPolicyEnum.cs" />
     <Compile Include="..\..\Backendless\Messaging\SubscriptionOptions.cs" />
+    <Compile Include="..\..\Backendless\Persistence\JsonDTO.cs">
+      <Link>Persistence\JsonDTO.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Backendless\Persistence\JsonDTOAdaptingType.cs">
+      <Link>Persistence\JsonDTOAdaptingType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Backendless\Persistence\JSONUpdateBuilder.cs" />
     <Compile Include="..\..\Backendless\Persistence\AbstractDataPermission.cs" />
     <Compile Include="..\..\Backendless\Persistence\BackendlessDataQuery.cs" />
     <Compile Include="..\..\Backendless\Persistence\BackendlessEntity.cs" />
