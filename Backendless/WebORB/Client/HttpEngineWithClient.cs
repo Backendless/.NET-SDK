@@ -58,8 +58,6 @@ namespace Weborb.Client
       asyncStreamSetInfo.responder = responder;
 
       var streamResponse = await responseMessage.Content.ReadAsStreamAsync();
-      var curTime = DateTime.Now.Ticks;
-      var roundTrip = ( curTime - asyncStreamSetInfo.messageSentTime ) / TimeSpan.TicksPerMillisecond;
       var parser = new RequestParser();
       var responseObject = parser.readMessage( streamResponse );
       var responseData = (object[]) responseObject.getRequestBodyData();
