@@ -269,7 +269,7 @@
     <Compile Include="..\..\Backendless\WebORB\Client\DefaultResponder.cs" />
     <Compile Include="..\..\Backendless\WebORB\Client\Engine.cs" />
     <Compile Include="..\..\Backendless\WebORB\Client\Fault.cs" />
-    <Compile Include="..\..\Backendless\WebORB\Client\HttpEngine.cs" />
+    <Compile Include="..\..\Backendless\WebORB\Client\HttpEngineWithRequest.cs" />
     <Compile Include="..\..\Backendless\WebORB\Client\ISubscribeResponder.cs" />
     <Compile Include="..\..\Backendless\WebORB\Client\PublishingResponder.cs" />
     <Compile Include="..\..\Backendless\WebORB\Client\Responder.cs" />

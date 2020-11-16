@@ -26,11 +26,17 @@ namespace TestProject
   [TestClass]
   public class RelationsTests
   {
+    [TestCleanup]
+    public void Cleanup()
+    {
+    }
+
     [ClassInitialize]
     public static void TestRealtionSetupData( TestContext context )
     {
       try
       {
+        Backendless.UserService.Logout();
         Backendless.Data.Describe( "Orders" );
         Backendless.Data.Describe( "Area" );
         Backendless.Data.Describe( "CountryLanguage" );
@@ -167,7 +173,6 @@ namespace TestProject
 
         children = new Object[] { dIdC };
         Backendless.Data.Of( "Country" ).SetRelation( dataIdChildren_4, "Capital:Capital:1", children );
-
       }
     }
 

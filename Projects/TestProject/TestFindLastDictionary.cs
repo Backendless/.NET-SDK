@@ -45,8 +45,8 @@ namespace TestProject
 
         if( !String.IsNullOrEmpty( receivedPerson[ "objectId" ].ToString() ) )
         {
-          Assert.IsTrue( receivedPerson[ "age" ] == person[ "age" ] );
-          Assert.IsTrue( receivedPerson[ "name" ] == person[ "name" ] );
+          Assert.IsTrue( (Double) receivedPerson[ "age" ] == Convert.ToDouble( person[ "age" ] ) );
+          Assert.IsTrue( receivedPerson[ "name" ].ToString() == person[ "name" ].ToString() );
         }
 
         Backendless.Data.Of( "Person" ).Remove( "age='16'" );
@@ -67,8 +67,8 @@ namespace TestProject
       {
         if( !String.IsNullOrEmpty( callback[ "objectId" ].ToString() ) )
         {
-          Assert.IsTrue( callback[ "age" ] == person[ "age" ] );
-          Assert.IsTrue( callback[ "name" ] == person[ "name" ] );
+          Assert.IsTrue( (Double) callback[ "age" ] == Convert.ToDouble( person[ "age" ] ) );
+          Assert.IsTrue( callback[ "name" ].ToString() == person[ "name" ].ToString() );
         }
       },
       fault =>

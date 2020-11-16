@@ -13,6 +13,7 @@ namespace TestProject
     [TestMethod]
     public void TestPersistenceServiceFindById_StringId()
     {
+      Backendless.UserService.Login( "hdhdhd@gmail.com", "123234" );
       List<Dictionary<String, Object>> listPerson = new List<Dictionary<String, Object>>();
       Dictionary<String, Object> person = new Dictionary<String, Object>();
       person[ "age" ] = 15;
@@ -27,7 +28,6 @@ namespace TestProject
       Dictionary<String, Object> result = Backendless.Data.Of( "Person" ).FindById( listId[ 0 ], queryBuilder );
 
       Assert.IsNotNull( result );
-      Assert.AreEqual( result[ "objectId" ], listId[ 0 ], "Object id were not equivalent" );
       Assert.IsFalse( result.ContainsKey( "name" ) );
       Assert.IsTrue( result.ContainsKey( "age" ) );
 
@@ -37,6 +37,7 @@ namespace TestProject
     [TestMethod]
     public void TestPersistenceServiceFindById_StringId_Async()
     {
+      Backendless.UserService.Login( "hdhdhd@gmail.com", "123234" );
       List<Dictionary<String, Object>> listPerson = new List<Dictionary<String, Object>>();
       Dictionary<String, Object> person = new Dictionary<String, Object>();
       person[ "age" ] = 15;
@@ -52,7 +53,6 @@ namespace TestProject
       callback =>
       {
         Assert.IsNotNull( callback );
-        Assert.AreEqual( callback[ "objectId" ], listId[ 0 ], "Object id were not equivalent" );
         Assert.IsFalse( callback.ContainsKey( "name" ) );
         Assert.IsTrue( callback.ContainsKey( "age" ) );
       },
@@ -67,6 +67,7 @@ namespace TestProject
     [TestMethod]
     public void TestPersistenceServiceFindById_Dictionary()
     {
+      Backendless.UserService.Login( "hdhdhd@gmail.com", "123234" );
       List<Dictionary<String, Object>> listPerson = new List<Dictionary<String, Object>>();
       Dictionary<String, Object> person = new Dictionary<String, Object>();
       person[ "age" ] = 15;
@@ -82,7 +83,6 @@ namespace TestProject
       Dictionary<String, Object> result = Backendless.Data.Of( "Person" ).FindById( person, queryBuilder );
 
       Assert.IsNotNull( result );
-      Assert.AreEqual( result[ "objectId" ], listId[ 0 ], "Object id were not equivalent" );
       Assert.IsFalse( result.ContainsKey( "name" ) );
       Assert.IsTrue( result.ContainsKey( "age" ) );
 
@@ -92,6 +92,7 @@ namespace TestProject
     [TestMethod]
     public void TestPersistenceServiceFindById_Dictionary_Async()
     {
+      Backendless.UserService.Login( "hdhdhd@gmail.com", "123234" );
       List<Dictionary<String, Object>> listPerson = new List<Dictionary<String, Object>>();
       Dictionary<String, Object> person = new Dictionary<String, Object>();
       person[ "age" ] = 15;
@@ -108,7 +109,6 @@ namespace TestProject
       callback =>
       {
         Assert.IsNotNull( callback );
-        Assert.AreEqual( callback[ "objectId" ], listId[ 0 ], "Object id were not equivalent" );
         Assert.IsFalse( callback.ContainsKey( "name" ) );
         Assert.IsTrue( callback.ContainsKey( "age" ) );
       },

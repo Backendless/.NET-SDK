@@ -95,13 +95,17 @@ namespace Weborb.Client
     
     public static Engine Create(string gatewayUrl, IdInfo idInfo)
     {
-      if (gatewayUrl.StartsWith("http://") || gatewayUrl.StartsWith("https://"))
-        return new HttpEngine(gatewayUrl, idInfo);
-#if !UNIVERSALW8 && !PURE_CLIENT_LIB  && !WINDOWS_PHONE8
+      if( gatewayUrl.StartsWith( "http://" ) || gatewayUrl.StartsWith( "https://" ) )
+#if !( NET_35 || NET_40 )
+        return new HttpEngineWithClient(gatewayUrl, idInfo);
+#else
+        return new HttpEngineWithRequest( gatewayUrl, idInfo );
+#endif
+#if !UNIVERSALW8 && !PURE_CLIENT_LIB && !WINDOWS_PHONE8
       if (gatewayUrl.StartsWith("rtmpt://"))
         return new RtmptEngine(gatewayUrl, idInfo);
 #endif
-#if (!UNIVERSALW8 && !WINDOWS_PHONE && !PURE_CLIENT_LIB && !WINDOWS_PHONE8)
+#if( !UNIVERSALW8 && !WINDOWS_PHONE && !PURE_CLIENT_LIB && !WINDOWS_PHONE8 )
       if (gatewayUrl.StartsWith("rtmp://"))
         return new RtmpEngine(gatewayUrl, idInfo);
 #endif
@@ -119,7 +123,7 @@ namespace Weborb.Client
       IdInfo = idInfo.MemberwiseClone();
     }
 
-#if !(UNIVERSALW8 || FULL_BUILD || PURE_CLIENT_LIB)
+#if !( UNIVERSALW8 || FULL_BUILD || PURE_CLIENT_LIB )
     public static Engine Create(string gatewayUrl, IdInfo idInfo, UserControl uiControl)
     {
       Engine engine = Create(gatewayUrl, idInfo);
@@ -132,7 +136,7 @@ namespace Weborb.Client
 
     internal abstract void Invoke<T>(string className, string methodName, object[] args, IDictionary requestHeaders, IDictionary messageHeaders, IDictionary httpHeaders, Responder<T> responder, AsyncStreamSetInfo<T> asyncStreamSetInfo);
     public abstract void SendRequest<T>( V3Message v3Msg, IDictionary requestHeaders, IDictionary httpHeaders, Responder<T> responder, AsyncStreamSetInfo<T> asyncStreamSetInfo );
-  #if !(NET_35 || NET_40)
+#if !( NET_35 || NET_40 )
     internal abstract Task<T> Invoke<T>(string className, 
                                         string methodName, 
                                         object[] args, 
@@ -145,7 +149,7 @@ namespace Weborb.Client
                                    IDictionary requestHeaders,
                                    IDictionary httpHeaders,
                                    ResponseThreadConfigurator threadConfigurator );
-  #endif
+#endif
     
     internal void SendRequest<T>( V3Message v3Msg, Responder<T> responder )
     {
@@ -233,7 +237,7 @@ namespace Weborb.Client
 
         foreach ( T adaptedObject in messagesFirstPhase )
         {
-#if !(UNIVERSALW8 || FULL_BUILD || PURE_CLIENT_LIB)
+#if !( UNIVERSALW8 || FULL_BUILD || PURE_CLIENT_LIB )
             if (UiControl != null && responder != null)
                       UiControl.Dispatcher.BeginInvoke(delegate()
                       {
@@ -256,7 +260,7 @@ namespace Weborb.Client
       if ( responder != null )
         {
           Fault fault = new Fault( e.Message, e.StackTrace, INTERNAL_CLIENT_EXCEPTION_FAULT_CODE );
-#if (!UNIVERSALW8 && !FULL_BUILD && !WINDOWS_PHONE && !PURE_CLIENT_LIB && !WINDOWS_PHONE8)
+#if( !UNIVERSALW8 && !FULL_BUILD && !WINDOWS_PHONE && !PURE_CLIENT_LIB && !WINDOWS_PHONE8 )
           if ( e is SecurityException )
             fault = new Fault(SECURITY_FAULT_MESSAGE, e.Message);
 #endif
