@@ -151,7 +151,7 @@
     <Compile Include="..\..\Backendless\Exception\NoSocketIOException.cs" />
     <Compile Include="..\..\Backendless\File\BackendlessFile.cs" />
     <Compile Include="..\..\Backendless\File\FilePermission.cs" />
-	<Compile Include="..\..\Backendless\File\FileInfo.cs" />
+    <Compile Include="..\..\Backendless\File\FileInfo.cs" />
     <Compile Include="..\..\Backendless\File\Security\AbstractFilePermission.cs" />
     <Compile Include="..\..\Backendless\File\Security\BasePermission.cs" />
     <Compile Include="..\..\Backendless\File\Security\FileOperation.cs" />
@@ -276,7 +276,6 @@
     <Compile Include="..\..\Backendless\Service\Property\ObjectProperty.cs" />
     <Compile Include="..\..\Backendless\Service\Property\UserProperty.cs" />
     <Compile Include="..\..\Backendless\Service\UserService.cs" />
-	<Compile Include="..\..\Backendless\Service\UserServiceExtra.cs" />
     <Compile Include="..\..\Backendless\Transaction\Operations\Operation.cs" />
     <Compile Include="..\..\Backendless\Transaction\Operations\OperationCreate.cs" />
     <Compile Include="..\..\Backendless\Transaction\Operations\OperationCreateBulk.cs" />
@@ -311,7 +310,7 @@
     <Compile Include="..\..\Backendless\Transaction\IsolationLevelEnum.cs" />
     <Compile Include="..\..\Backendless\Transaction\TransactionOperationError.cs" />
     <Compile Include="..\..\Backendless\Transaction\TransactionHelper.cs" />
-	<Compile Include="..\..\Backendless\Utils\DeviceCheck.cs"/>
+    <Compile Include="..\..\Backendless\Utils\DeviceCheck.cs" />
     <Compile Include="..\..\Backendless\Utils\ILoginStorage.cs" />
     <Compile Include="..\..\Backendless\Utils\ITimeoutManager.cs" />
     <Compile Include="..\..\Backendless\Utils\Json.cs" />

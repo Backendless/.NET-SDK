@@ -210,8 +210,7 @@
     <Compile Include="..\..\Backendless\Service\Property\ObjectProperty.cs" />
     <Compile Include="..\..\Backendless\Service\Property\UserProperty.cs" />
     <Compile Include="..\..\Backendless\Service\UserService.cs" />
-	<Compile Include="..\..\Backendless\Service\UserServiceExtra.cs" />
-	<Compile Include="..\..\Backendless\Utils\DeviceCheck.cs"/>
+    <Compile Include="..\..\Backendless\Utils\DeviceCheck.cs" />
     <Compile Include="..\..\Backendless\Utils\ILoginStorage.cs" />
     <Compile Include="..\..\Backendless\Utils\ITimeoutManager.cs" />
     <Compile Include="..\..\Backendless\Utils\Json.cs" />

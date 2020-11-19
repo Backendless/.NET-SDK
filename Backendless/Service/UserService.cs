@@ -15,7 +15,7 @@ namespace BackendlessAPI.Service
 {
   public class UserService
   {
-    internal static string USER_MANAGER_SERVER_ALIAS = "com.backendless.services.users.UserService";
+    private static string USER_MANAGER_SERVER_ALIAS = "com.backendless.services.users.UserService";
     private ILoginStorage _loginStorage = null;
 
     public BackendlessUser CurrentUser{ get; set; }
@@ -358,28 +358,61 @@ namespace BackendlessAPI.Service
       AsyncCallback<BackendlessUser> callback, Boolean stayLoggedIn = false )
     {
       AsyncCallback<Dictionary<String, Object>> internalResponder = GetUserLoginAsyncHandler( callback, stayLoggedIn );
-      UserServiceExtra.Instance.LoginWithOAuth2( authProviderCode, accessToken, null, fieldsMappings, internalResponder );
+      LoginWithOAuth2( authProviderCode, accessToken, null, fieldsMappings, internalResponder );
     }
 
     public void LoginWithOAuth2( String authProviderCode, String accessToken, BackendlessUser guestUser, Dictionary<String, String> fieldsMappings,
       AsyncCallback<BackendlessUser> callback, Boolean stayLoggedIn = false )
     {
       AsyncCallback<Dictionary<String, Object>> internalResponser = GetUserLoginAsyncHandler( callback, stayLoggedIn );
-      UserServiceExtra.Instance.LoginWithOAuth2( authProviderCode, accessToken, guestUser, fieldsMappings, internalResponser );
+      LoginWithOAuth2( authProviderCode, accessToken, guestUser, fieldsMappings, internalResponser );
     }
 
     public void LoginWithOAuth1( String authProviderCode, String authToken, String authTokenSecret,
       Dictionary<String, String> fieldsMappings, AsyncCallback<BackendlessUser> callback, Boolean stayLogginIn = false )
     {
       AsyncCallback<Dictionary<String, Object>> internalResponder = GetUserLoginAsyncHandler( callback, stayLogginIn );
-      UserServiceExtra.Instance.LoginWithOAuth1( authProviderCode, authToken, null, authTokenSecret, fieldsMappings, internalResponder );
+      LoginWithOAuth1( authProviderCode, authToken, null, authTokenSecret, fieldsMappings, internalResponder );
     }
 
     public void LoginWithOAuth1( String authProviderCode, String authToken, String authTokenSecret, BackendlessUser guestUser,
       Dictionary<String, String> fieldsMappings, AsyncCallback<BackendlessUser> callback, Boolean stayLoggedIn )
     {
       AsyncCallback<Dictionary<String, Object>> internalResponder = GetUserLoginAsyncHandler( callback, stayLoggedIn );
-      UserServiceExtra.Instance.LoginWithOAuth1( authProviderCode, authToken, guestUser, authTokenSecret, fieldsMappings, internalResponder );
+      LoginWithOAuth1( authProviderCode, authToken, guestUser, authTokenSecret, fieldsMappings, internalResponder );
+    }
+
+    internal void LoginWithOAuth1( String authProviderCode, String authToken, BackendlessUser guestUser,
+      String authTokenSecret, Dictionary<String, String> fieldsMappings, AsyncCallback<Dictionary<String, Object>> callback )
+    {
+      if( !authProviderCode.Equals( "twitter" ) )
+        throw new ArgumentException( $"OAuth1 provider '{authProviderCode}' is not supported" );
+
+      if( fieldsMappings == null )
+        fieldsMappings = new Dictionary<String, String>();
+
+      Invoker.InvokeAsync( UserService.USER_MANAGER_SERVER_ALIAS, "loginWithTwitter",
+                          new Object[] { authToken, authTokenSecret, fieldsMappings, guestUser == null ? null : guestUser.Properties },
+                          new AsyncCallback<Dictionary<String, Object>>(
+                          response =>
+                            callback?.ResponseHandler( response ),
+                          fault =>
+                            callback?.ErrorHandler( fault ) ) );
+    }
+
+    internal void LoginWithOAuth2( String authProviderCode, String accessToken, BackendlessUser guestUser,
+                               Dictionary<String, String> fieldsMappings, AsyncCallback<Dictionary<String, Object>> callback )
+    {
+      if( fieldsMappings == null )
+        fieldsMappings = new Dictionary<String, String>();
+
+      Invoker.InvokeAsync( UserService.USER_MANAGER_SERVER_ALIAS, "loginWithOAuth2",
+        new Object[] { authProviderCode, accessToken, fieldsMappings, guestUser == null ? null : guestUser.Properties },
+        new AsyncCallback<Dictionary<String, Object>>(
+          response =>
+            callback?.ResponseHandler( response ),
+          fault =>
+            callback?.ErrorHandler( fault ) )/*, new AdaptingResponder<>( BackendlessUser.class, new BackendlessUserAdaptingPolicy() ) */ );
     }
 
 #if !( NET_35 || NET_40 )
