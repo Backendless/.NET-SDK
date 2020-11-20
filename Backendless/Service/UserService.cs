@@ -355,18 +355,18 @@ namespace BackendlessAPI.Service
     }
 
 #if !( NET_35 || NET_40 )
-    public async Task CreateEmailConfirmationAsync( String identity )
+    public async Task<Object> CreateEmailConfirmationAsync( String identity )
     {
-      await Task.Run( () => CreateEmailConfirmation( identity ) ).ConfigureAwait( false );
+      return await Task.Run( () => CreateEmailConfirmation( identity ) ).ConfigureAwait( false );
     }
 #endif
 
-    public void CreateEmailConfirmation( String identity )
+    public Object CreateEmailConfirmation( String identity )
     {
       if( String.IsNullOrEmpty( identity ) )
         throw new ArgumentException( ExceptionMessage.NULL_OR_EMPTY_INDENTITY );
 
-      Invoker.InvokeSync<Object>( USER_MANAGER_SERVER_ALIAS, "createEmailConfirmation", new Object[] { identity } );
+      return Invoker.InvokeSync<Object>( USER_MANAGER_SERVER_ALIAS, "createEmailConfirmationURL", new Object[] { identity } );
     }
 
     public void CreateEmailConfirmation( String identity, AsyncCallback<Object> callback )
@@ -376,7 +376,7 @@ namespace BackendlessAPI.Service
         if( String.IsNullOrEmpty( identity ) )
           throw new ArgumentException( ExceptionMessage.NULL_OR_EMPTY_INDENTITY );
 
-        Invoker.InvokeAsync( USER_MANAGER_SERVER_ALIAS, "createEmailConfirmation", new Object[] { identity }, callback );
+        Invoker.InvokeAsync( USER_MANAGER_SERVER_ALIAS, "createEmailConfirmationURL", new Object[] { identity }, callback );
       }
       catch( System.Exception ex )
       {
