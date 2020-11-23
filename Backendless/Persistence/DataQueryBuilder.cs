@@ -7,6 +7,7 @@ namespace BackendlessAPI.Persistence
   {
     private PagedQueryBuilder<DataQueryBuilder> pagedQueryBuilder;
     private QueryOptionsBuilder<DataQueryBuilder> queryOptionsBuilder;
+    private Boolean distinct = false;
     private List<String> properties;
     private List<String> excludeProperties;
     private String whereClause;
@@ -31,6 +32,7 @@ namespace BackendlessAPI.Persistence
     public BackendlessDataQuery Build()
     {
       BackendlessDataQuery dataQuery = pagedQueryBuilder.Build();
+      dataQuery.Distinct = distinct;
       dataQuery.QueryOptions = queryOptionsBuilder.Build();
       dataQuery.Properties = properties;
       dataQuery.ExcludeProperties = excludeProperties;
@@ -38,6 +40,17 @@ namespace BackendlessAPI.Persistence
       dataQuery.GroupBy = groupBy;
       dataQuery.HavingClause = havingClause;
       return dataQuery;
+    }
+
+    public DataQueryBuilder SetDistinct( Boolean distinct )
+    {
+      this.distinct = distinct;
+      return this;
+    }
+
+    public Boolean GetDistinct()
+    {
+      return distinct;
     }
 
     public DataQueryBuilder SetPageSize( int pageSize )
