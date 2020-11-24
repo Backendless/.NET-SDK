@@ -200,6 +200,24 @@ namespace BackendlessAPI.RT.Data
       RemoveListeners( RTDataEvents.bulk_deleted, whereClause );
     }
     #endregion
+    #region BULK CREATE LISTENER
+    public void AddBulkCreateListener( MultipleObjectsCreated listener )
+    {
+      DataSubscription subscription =
+            new DataSubscription( RTDataEvents.bulk_created, tableName, CreateCallback( listener, typeof( BulkEvent ) ) );
+      AddEventListener( subscription );
+    }
+
+    public void RemoveBulkCreateListener( MultipleObjectsCreated listener )
+    {
+      RemoveListeners( RTDataEvents.bulk_created, listener );
+    }
+
+    public void RemoveBulkCreateListeners()
+    {
+      RemoveListeners( RTDataEvents.bulk_created );
+    }
+    #endregion
     #region CREATE CALLBACK
     private IRTCallback CreateCallback( Delegate callback )
     {
