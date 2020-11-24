@@ -8,6 +8,7 @@ namespace BackendlessAPI.RT.Data
   public delegate void ObjectDeleted<T>( T obj );
   public delegate void MultipleObjectsUpdated( BulkEvent bulkEvent );
   public delegate void MultipleObjectsDeleted( BulkEvent bulkEvent );
+  public delegate void MultipleObjectsCreated( BulkEvent bulkEvent );
   public delegate void HandleDataError( RTErrorType errorType, Exception.BackendlessFault backendlessFault );
 
   public interface IEventHandler<T>
@@ -49,6 +50,12 @@ namespace BackendlessAPI.RT.Data
     void RemoveDeleteListener( ObjectDeleted<T> callback );
 
     void RemoveDeleteListeners( string whereClause );
+
+    void AddBulkCreateListener( MultipleObjectsCreated callback );
+
+    void RemoveBulkCreateListener( MultipleObjectsCreated callback );
+
+    void RemoveBulkCreateListeners();
 
     void AddBulkUpdateListener( MultipleObjectsUpdated callback );
 
