@@ -69,9 +69,12 @@ namespace BackendlessAPI.Persistence
     [SetClientClassMemberName( "offset" )]
     public int Offset { get; set; }
 
+    [SetClientClassMemberName( "distinct" )]
+    public Boolean Distinct { get; set; } = false;
+
     public IBackendlessQuery NewInstance()
     {
-      return new BackendlessDataQuery { Properties = Properties, WhereClause = WhereClause, QueryOptions = QueryOptions, GroupBy = GroupBy, HavingClause = HavingClause };
+      return new BackendlessDataQuery { Distinct = Distinct, Properties = Properties, WhereClause = WhereClause, QueryOptions = QueryOptions, GroupBy = GroupBy, HavingClause = HavingClause };
     }
   }
 }
