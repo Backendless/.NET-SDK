@@ -656,31 +656,42 @@ namespace BackendlessAPI.Service
 
   #region PUSHTEMPLATE
 
-    public MessageStatus PushWithTemplate( string templateName )
+    public MessageStatus PushWithTemplate( String templateName )
     {
-      if( string.IsNullOrEmpty( templateName ) )
-        throw new ArgumentNullException( String.Format( ExceptionMessage.NULL_TEMPLATE, "Push template name" ) );
-
-      return Invoker.InvokeSync<MessageStatus>( MESSAGING_MANAGER_SERVER_ALIAS,
-                                                "pushWithTemplate",
-                                                new[] { templateName } );
+      return PushWithTemplate( templateName, (Dictionary<String, Object>) null );
     }
 
-    public void PushWithTemplate( string templateName, AsyncCallback<MessageStatus> callback )
+    public MessageStatus PushWithTemplate( String templateName, Dictionary<String, Object> templateValue )
     {
-      if( string.IsNullOrEmpty( templateName ) )
-        throw new ArgumentNullException( String.Format( ExceptionMessage.NULL_TEMPLATE, "Push template name" ) );
+      if( String.IsNullOrEmpty( templateName ) )
+        throw new ArgumentException( ExceptionMessage.NULL_EMPTY_TEMPLATE_NAME );
 
-      Invoker.InvokeAsync( MESSAGING_MANAGER_SERVER_ALIAS,
-                           "pushWithTemplate",
-                           new[] { templateName },
-                           callback );
+      return Invoker.InvokeSync<MessageStatus>( MESSAGING_MANAGER_SERVER_ALIAS, "pushWithTemplate", 
+                                                                                new Object[] { templateName, templateValue } );
+    }
+
+    public void PushWithTemplate( String templateName, AsyncCallback<MessageStatus> callback )
+    {
+      PushWithTemplate( templateName, null, callback );
+    }
+
+    public void PushWithTemplate( String templateName, Dictionary<String, Object> templateValue, AsyncCallback<MessageStatus> callback )
+    {
+      if( String.IsNullOrEmpty( templateName ) )
+        throw new ArgumentException( ExceptionMessage.NULL_EMPTY_TEMPLATE_NAME );
+
+      Invoker.InvokeAsync( MESSAGING_MANAGER_SERVER_ALIAS, "pushWithTemplate", new Object[] { templateName, templateValue }, callback );
     }
 
   #if !(NET_35 || NET_40)
-    public async Task<MessageStatus> PushWithTemplateAsync( string templateName )
+    public async Task<MessageStatus> PushWithTemplateAsync( String templateName )
     {
       return await Task.Run( () => PushWithTemplate( templateName ) ).ConfigureAwait( false );
+    }
+
+    public async Task<MessageStatus> PushWithTemplateAsync( String templateName, Dictionary<String, Object> templateValue )
+    {
+      return await Task.Run( () => PushWithTemplate( templateName, templateValue ) ).ConfigureAwait( false );
     }
   #endif
 
