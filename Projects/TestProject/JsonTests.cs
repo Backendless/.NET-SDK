@@ -15,7 +15,7 @@ namespace TestProject
   [TestClass]
   public class JsonTests
   {
-    private Dictionary<String, Object> CreateDefaultJson()
+    private Dictionary<String, Object> GenerateDefaultJsonData()
     {
       Dictionary<String, Object> map = new Dictionary<String, Object>();
       Dictionary<String, Object> json = new Dictionary<String, Object>
@@ -40,17 +40,35 @@ namespace TestProject
       return Backendless.Data.Of( "Table1" ).Save( map );
     }
 
+    [ClassInitialize]
+    public static void InitializeTable( TestContext context )
+    {
+      TestInitialization.CreateDefaultTable( "Table1" );
+    }
+
+    [TestInitialize]
+    public void InitializeJsonColumn()
+    {
+      TestInitialization.CreateJsonColumn( "Table1", "json" );
+    }
+
+    [ClassCleanup]
+    public static void ClassCleanup()
+    {
+      TestInitialization.DeleteTable( "Table1" );
+    }
+
     [TestMethod]
     public void JN1()
     {
-      Dictionary<String, Object> map = CreateDefaultJson();
+      Dictionary<String, Object> map = GenerateDefaultJsonData();
 
       map[ "objectId" ] = Backendless.Data.Of( "Table1" ).FindFirst()[ "objectId" ];
       map[ "json" ] = "{}";
-
       Dictionary<String, Object> newMap = Backendless.Data.Of( "Table1" ).Save( map );
+      map[ "json" ] = new Dictionary<Object, Object>();
 
-      Assert.IsTrue( ((Dictionary<Object, Object>) newMap[ "json" ])[ "rawJsonString" ].ToString() == map[ "json" ].ToString() );
+      Assert.IsTrue( ((Dictionary<Object, Object>) newMap[ "json" ]).Count == ((Dictionary<Object, Object>) map[ "json" ]).Count );
 
       Backendless.Data.Of( "Table1" ).Remove( map );
     }
@@ -58,39 +76,39 @@ namespace TestProject
     [TestMethod]
     public void JN2()
     {
-      Dictionary<String, Object> map = CreateDefaultJson();
+      Dictionary<String, Object> map = GenerateDefaultJsonData();
 
       DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
       queryBuilder.SetWhereClause( "json->'$.decimals[0]' < 13" );
 
-      var newMap = Backendless.Data.Of("Table1").Find( queryBuilder )[ 0 ];
+      map = Backendless.Data.Of("Table1").Find( queryBuilder )[ 0 ];
 
-      Assert.IsTrue( newMap != null && newMap != new Dictionary<String, Object>() );
-      Assert.IsTrue( newMap.Keys.Count == 7 );
-      Assert.IsTrue( newMap.Keys.Contains( "objectId" ) );
+      Assert.IsTrue( map["json"] != null && map["json"] != new Dictionary<Object, Object>() );
+      Assert.IsTrue( ((Dictionary<Object, Object>) map["json"]).Count == 7 );
+      Assert.IsTrue( map.Keys.Contains( "objectId" ) );
 
-      Backendless.Data.Of( "Table1" ).Remove( newMap );
+      Backendless.Data.Of( "Table1" ).Remove( "'json' != null" );
     }
 
     [TestMethod]
     public void JN3()
     {
-      Dictionary<String, Object> map = CreateDefaultJson();
+      GenerateDefaultJsonData();
 
       DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
       queryBuilder.SetWhereClause( "json->'$.timeMarks.date' = '2015-07-29'" );
       var newMap = Backendless.Data.Of( "Table1" ).Find( queryBuilder )[ 0 ];
       Assert.IsTrue( newMap != null && newMap != new Dictionary<String, Object>() );
-      Assert.IsTrue( newMap.Keys.Count == 7 );
+      Assert.IsTrue( ((Dictionary<Object, Object>) newMap["json"]).Count == 7 );
       Assert.IsTrue( newMap.Keys.Contains( "objectId" ) );
 
-      Backendless.Data.Of( "Table1" ).Remove( newMap );
+      Backendless.Data.Of( "Table1" ).Remove( "'json' != null" );
     }
 
     [TestMethod]
     public void JN4()
     {
-      Dictionary<String, Object> map = CreateDefaultJson();
+      GenerateDefaultJsonData();
 
       DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
       queryBuilder.AddProperties( "json->'$.timeMarks.time' as time" );
@@ -102,13 +120,13 @@ namespace TestProject
       Assert.IsTrue( newMap.Keys.Contains( "time" ) );
       Assert.IsTrue( newMap[ "time" ] != null );
 
-      Backendless.Data.Of( "Table1" ).Remove( newMap );
+      Backendless.Data.Of( "Table1" ).Remove( "'json' != null" );
     }
 
     [TestMethod]
     public void JN5()
     {
-      Dictionary<String, Object> map = CreateDefaultJson();
+      GenerateDefaultJsonData();
 
       DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
       queryBuilder.AddProperties( "json->'$.timeMarks.*' as allTimeMarks" );
@@ -121,13 +139,13 @@ namespace TestProject
       Assert.IsTrue( newMap.Keys.Contains( "allTimeMarks" ) );
       Assert.IsTrue( newMap[ "allTimeMarks" ] != null );
 
-      Backendless.Data.Of( "Table1" ).Remove( newMap );
+      Backendless.Data.Of( "Table1" ).Remove( "'json' != null" );
     }
 
     [TestMethod]
     public void JN6()
     {
-      Dictionary<String, Object> map = CreateDefaultJson();
+      GenerateDefaultJsonData();
 
       DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
       queryBuilder.AddProperties( "json->'$.*[1]' as allSecondValuesFromArray" );
@@ -140,13 +158,13 @@ namespace TestProject
       Assert.IsTrue( newMap.Keys.Contains( "allSecondValuesFromArray" ) );
       Assert.IsTrue( newMap[ "allSecondValuesFromArray" ] != null );
 
-      Backendless.Data.Of( "Table1" ).Remove( newMap );
+      Backendless.Data.Of( "Table1" ).Remove( "'json' != null" );
     }
 
     [TestMethod]
     public void JN7()
     {
-      Dictionary<String, Object> map = CreateDefaultJson();
+      GenerateDefaultJsonData();
 
       DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
       queryBuilder.AddProperties( "json->'$.letter' as jsonLetter" );
@@ -160,13 +178,13 @@ namespace TestProject
       Assert.IsTrue( newMap.Keys.Contains( "jsonLetter" ) );
       Assert.IsTrue( newMap[ "jsonLetter" ] != null );
 
-      Backendless.Data.Of( "Table1" ).Remove( newMap );
+      Backendless.Data.Of( "Table1" ).Remove( "'json' != null" );
     }
     
     [TestMethod]
     public void JN8()
     {
-      Dictionary<String, Object> map = CreateDefaultJson();
+      GenerateDefaultJsonData();
 
       DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
       queryBuilder.AddProperties( "json->'$.status' as jsonStatus" );
@@ -180,18 +198,18 @@ namespace TestProject
       Assert.IsTrue( newMap.Keys.Contains( "jsonStatus" ) );
       Assert.IsTrue( newMap[ "jsonStatus" ] != null );
 
-      Backendless.Data.Of( "Table1" ).Remove( newMap );
+      Backendless.Data.Of( "Table1" ).Remove( "'json' != null" );
     }
 
     [TestMethod]
     public void JN9()
     {
-      Dictionary<String, Object> json = new Dictionary<String, Object>();
+      Dictionary<String, Object> map = new Dictionary<String, Object>();
       Backendless.UserService.Login( "hdhdhd@gmail.com", "123234" );
-      json[ "jsonValue" ] = "{}";
-      json["objectId"] = Backendless.Data.Of( "Table1" ).Save( json )["objectId"];
-
-      json["jsonValue"] = JSONUpdateBuilder.SET()
+      map[ "json" ] = "{}";
+      map["json"] = Backendless.Data.Of( "Table1" ).Save( map )["objectId"];
+      
+      map["json"] = JSONUpdateBuilder.SET()
                                            .AddArgument( "$.letter", "b" )
                                            .AddArgument( "$.number", 36 )
                                            .AddArgument( "$.state", true )
@@ -199,10 +217,11 @@ namespace TestProject
                                            .AddArgument( "$.innerArray", new Object[] { 1, 2, 3 } )
                                            .Create();
 
-      var newMap = Backendless.Data.Of( "Table1" ).Save( json );
-      Assert.IsTrue( newMap[ "objectId" ].ToString() == json[ "objectId" ].ToString() );
-      Assert.IsTrue( newMap.Keys.Count == 7 );
-      Assert.IsTrue( newMap[ "jsonValue" ] != null );
+      var newMap = Backendless.Data.Of( "Table1" ).Save( map );
+      Assert.IsTrue( newMap[ "objectId" ].ToString() == map[ "objectId" ].ToString() );
+      Assert.IsTrue( newMap.Keys.Count == 6 );
+      Assert.IsTrue( newMap[ "json" ] != null );
+      Assert.IsTrue( ( (Dictionary<Object, Object>) newMap[ "json" ] ).Count == 7 );
 
       Backendless.Data.Of( "Table1" ).Remove( "'json' != null" );
     }
@@ -210,12 +229,12 @@ namespace TestProject
     [TestMethod]
     public void JN10()
     {
-      Dictionary<String, Object> json = new Dictionary<String, Object>();
+      Dictionary<String, Object> map = new Dictionary<String, Object>();
       Backendless.UserService.Login( "hdhdhd@gmail.com", "123234" );
-      json[ "jsonValue" ] = "{}";
-      json[ "objectId" ] = Backendless.Data.Of( "Table1" ).Save( json )[ "objectId" ];
+      map[ "json" ] = "{}";
+      map[ "objectId" ] = Backendless.Data.Of( "Table1" ).Save( map )[ "objectId" ];
 
-      json["jsonValue"] = JSONUpdateBuilder.SET()
+      map["json"] = JSONUpdateBuilder.SET()
                                            .AddArgument( "$.letter", "b" )
                                            .AddArgument( "$.number", 36 )
                                            .AddArgument( "$.state", true )
@@ -223,10 +242,10 @@ namespace TestProject
                                            .AddArgument( "$.innerValue", new Dictionary<String, Object> { { "value", "value" } } )
                                            .Create();
 
-      var newMap = Backendless.Data.Of( "Table1" ).Save( json );
-      Assert.IsTrue( newMap[ "objectId" ].ToString() == json[ "objectId" ].ToString() );
-      Assert.IsTrue( newMap.Keys.Count == 7 );
-      Assert.IsTrue( ((Dictionary<Object, Object>) newMap[ "jsonValue" ])["rawJsonString"] != null );
+      var newMap = Backendless.Data.Of( "Table1" ).Save( map );
+      Assert.IsTrue( newMap[ "objectId" ].ToString() == map[ "objectId" ].ToString() );
+      Assert.IsTrue( newMap.Keys.Count == 6 );
+      Assert.IsTrue( ((Dictionary<Object, Object>) newMap[ "json" ]) != null );
 
       Backendless.Data.Of( "Table1" ).Remove( "'json' != null" );
     }
@@ -234,24 +253,20 @@ namespace TestProject
     [TestMethod]
     public void JN11()
     {
-      Dictionary<String, Object> json = new Dictionary<String, Object>();
+      Dictionary<String, Object> map = new Dictionary<String, Object>();
       Backendless.UserService.Login( "hdhdhd@gmail.com", "123234" );
-      json[ "jsonValue" ] = "{}";
-      json[ "objectId" ] = Backendless.Data.Of( "Table1" ).Save( json )[ "objectId" ];
+      map[ "json" ] = "{}";
+      map[ "objectId" ] = Backendless.Data.Of( "Table1" ).Save( map )[ "objectId" ];
 
-      json[ "jsonValue" ] = JSONUpdateBuilder.INSERT()
+      map[ "json" ] = JSONUpdateBuilder.INSERT()
                                            .AddArgument( "$.state", "on" )
                                            .AddArgument( "$.number", 11 )
                                            .Create();
 
-      var newMap = Backendless.Data.Of( "Table1" ).Save( json );
-      Assert.IsTrue( newMap[ "objectId" ].ToString() == json[ "objectId" ].ToString() );
-      Assert.IsTrue( newMap.Keys.Count == 7 );
-      Assert.IsTrue( ( (Dictionary<Object, Object>) newMap[ "jsonValue" ] )[ "rawJsonString" ] != null );
-
-      Object expectedJson = "{\"state\": \"on\", \"number\": 11}";
-
-      Assert.IsTrue( expectedJson.ToString() == ((Dictionary<Object, Object>) newMap["jsonValue"])["rawJsonString"].ToString() );
+      var newMap = Backendless.Data.Of( "Table1" ).Save( map );
+      Assert.IsTrue( newMap[ "objectId" ].ToString() == map[ "objectId" ].ToString() );
+      Assert.IsTrue( newMap.Keys.Count == 6 );
+      Assert.IsTrue( ( (Dictionary<Object, Object>) newMap[ "json" ] ) != null );
 
       Backendless.Data.Of( "Table1" ).Remove( "'json' != null" );
     }
@@ -259,31 +274,28 @@ namespace TestProject
     [TestMethod]
     public void JN12()
     {
-      Dictionary<String, Object> json = new Dictionary<String, Object>();
+      Dictionary<String, Object> map = new Dictionary<String, Object>();
       Backendless.UserService.Login( "hdhdhd@gmail.com", "123234" );
       Dictionary<String, Object> serializeMap = new Dictionary<String, Object>
       {
         { "letter", "a"},
         { "number", 10 }
       };
-      json[ "jsonValue" ] = JsonConvert.SerializeObject( serializeMap );
+      map[ "json" ] = JsonConvert.SerializeObject( serializeMap );
       
 
-      serializeMap["objectId"] = Backendless.Data.Of( "Table1" ).Save( json )["objectId"];
-      json.Clear();
-      json[ "objectId" ] = serializeMap[ "objectId" ];
-      json[ "jsonValue" ] = JSONUpdateBuilder.REPLACE()
+      serializeMap["objectId"] = Backendless.Data.Of( "Table1" ).Save( map )["objectId"];
+      map.Clear();
+      map[ "objectId" ] = serializeMap[ "objectId" ];
+      map[ "json" ] = JSONUpdateBuilder.REPLACE()
                                            .AddArgument("$.number", 11)
                                            .AddArgument("$.colours","red")
                                            .Create();
 
-      var newMap = Backendless.Data.Of( "Table1" ).Save( json );
-      Assert.IsTrue( newMap[ "objectId" ].ToString() == json[ "objectId" ].ToString() );
-      Assert.IsTrue( newMap[ "objectId" ].ToString() == json[ "objectId" ].ToString() );
-      Assert.IsTrue( ( (Dictionary<Object, Object>) newMap[ "jsonValue" ] )[ "rawJsonString" ] != null );
-
-      Object expectedJson = "{\"letter\": \"a\", \"number\": 11}";
-      Assert.IsTrue( expectedJson.ToString() == ( (Dictionary<Object, Object>) newMap[ "jsonValue" ] )[ "rawJsonString" ].ToString() );
+      var newMap = Backendless.Data.Of( "Table1" ).Save( map );
+      Assert.IsTrue( newMap[ "objectId" ].ToString() == map[ "objectId" ].ToString() );
+      Assert.IsTrue( newMap[ "objectId" ].ToString() == map[ "objectId" ].ToString() );
+      Assert.IsTrue( ( (Dictionary<Object, Object>) newMap[ "json" ] ) != null );
 
       Backendless.Data.Of( "Table1" ).Remove( "'json' != null" );
     }
@@ -291,7 +303,7 @@ namespace TestProject
     [TestMethod]
     public void JN13()
     {
-      Dictionary<String, Object> json = new Dictionary<String, Object>();
+      Dictionary<String, Object> map = new Dictionary<String, Object>();
       Backendless.UserService.Login( "hdhdhd@gmail.com", "123234" );
       Dictionary<String, Object> serializeMap = new Dictionary<String, Object>
       {
@@ -299,23 +311,20 @@ namespace TestProject
         { "colours", new String[] { "green", "blue"} }
       };
 
-      json[ "jsonValue" ] = JsonConvert.SerializeObject( serializeMap );
+      map[ "json" ] = JsonConvert.SerializeObject( serializeMap );
 
-      serializeMap[ "objectId" ] = Backendless.Data.Of( "Table1" ).Save( json )[ "objectId" ];
-      json.Clear();
-      json[ "objectId" ] = serializeMap[ "objectId" ];
-      json[ "jsonValue" ] = JSONUpdateBuilder.REMOVE()
+      serializeMap[ "objectId" ] = Backendless.Data.Of( "Table1" ).Save( map )[ "objectId" ];
+      map.Clear();
+      map[ "objectId" ] = serializeMap[ "objectId" ];
+      map[ "json" ] = JSONUpdateBuilder.REMOVE()
                                            .AddArgument( "$.decimals[0]" )
                                            .AddArgument( "$.colours" )
                                            .Create();
 
-      var newMap = Backendless.Data.Of( "Table1" ).Save( json );
-      Assert.IsTrue( newMap[ "objectId" ].ToString() == json[ "objectId" ].ToString() );
-      Assert.IsTrue( newMap[ "objectId" ].ToString() == json[ "objectId" ].ToString() );
-      Assert.IsTrue( ( (Dictionary<Object, Object>) newMap[ "jsonValue" ] )[ "rawJsonString" ] != null );
-
-      Object expectedJson = "{\"decimals\": [14]}";
-      Assert.IsTrue( expectedJson.ToString() == ( (Dictionary<Object, Object>) newMap[ "jsonValue" ] )[ "rawJsonString" ].ToString() );
+      var newMap = Backendless.Data.Of( "Table1" ).Save( map );
+      Assert.IsTrue( newMap[ "objectId" ].ToString() == map[ "objectId" ].ToString() );
+      Assert.IsTrue( newMap[ "objectId" ].ToString() == map[ "objectId" ].ToString() );
+      Assert.IsTrue( ( (Dictionary<Object, Object>) newMap[ "json" ] ) != null );
 
       Backendless.Data.Of( "Table1" ).Remove( "'json' != null" );
     }
@@ -323,7 +332,7 @@ namespace TestProject
     [TestMethod]
     public void JN14()
     {
-      Dictionary<String, Object> json = new Dictionary<String, Object>();
+      Dictionary<String, Object> map = new Dictionary<String, Object>();
       Backendless.UserService.Login( "hdhdhd@gmail.com", "123234" );
       Dictionary<String, Object> serializeMap = new Dictionary<String, Object>
       {
@@ -331,55 +340,20 @@ namespace TestProject
         { "colours", new String[] { "green", "blue"} }
       };
 
-      json[ "jsonValue" ] = JsonConvert.SerializeObject( serializeMap );
+      map[ "json" ] = JsonConvert.SerializeObject( serializeMap );
 
-      serializeMap[ "objectId" ] = Backendless.Data.Of( "Table1" ).Save( json )[ "objectId" ];
-      json.Clear();
-      json[ "objectId" ] = serializeMap[ "objectId" ];
-      json[ "jsonValue" ] = JSONUpdateBuilder.ARRAY_APPEND()
+      serializeMap[ "objectId" ] = Backendless.Data.Of( "Table1" ).Save( map )[ "objectId" ];
+      map.Clear();
+      map[ "objectId" ] = serializeMap[ "objectId" ];
+      map[ "json" ] = JSONUpdateBuilder.ARRAY_APPEND()
                                            .AddArgument( "$.decimals", 432 )
                                            .AddArgument( "$.colours", "Yellow" )
                                            .Create();
 
-      var newMap = Backendless.Data.Of( "Table1" ).Save( json );
-      Assert.IsTrue( newMap[ "objectId" ].ToString() == json[ "objectId" ].ToString() );
-      Assert.IsTrue( newMap[ "objectId" ].ToString() == json[ "objectId" ].ToString() );
-      Assert.IsTrue( ( (Dictionary<Object, Object>) newMap[ "jsonValue" ] )[ "rawJsonString" ] != null );
-
-      Object expectedJson = "{\"colours\": [\"green\", \"blue\", \"Yellow\"], \"decimals\": [12.5, 14, 432]}";
-      Assert.IsTrue( expectedJson.ToString() == ( (Dictionary<Object, Object>) newMap[ "jsonValue" ] )[ "rawJsonString" ].ToString() );
-
-      Backendless.Data.Of( "Table1" ).Remove( "'json' != null" );
-    }
-
-    [TestMethod]
-    public void JN15()
-    {
-      Dictionary<String, Object> json = new Dictionary<String, Object>();
-      Backendless.UserService.Login( "hdhdhd@gmail.com", "123234" );
-      Dictionary<String, Object> serializeMap = new Dictionary<String, Object>
-      {
-        { "decimals", new Double[] { 12.5, 14 } },
-        { "colours", new String[] { "green", "blue"} }
-      };
-
-      json[ "jsonValue" ] = JsonConvert.SerializeObject( serializeMap );
-
-      serializeMap[ "objectId" ] = Backendless.Data.Of( "Table1" ).Save( json )[ "objectId" ];
-      json.Clear();
-      json[ "objectId" ] = serializeMap[ "objectId" ];
-      json[ "jsonValue" ] = JSONUpdateBuilder.ARRAY_INSERT()
-                                           .AddArgument( "$.decimals[0]", 432 )
-                                           .AddArgument( "$.colours[1]", "Yellow" )
-                                           .Create();
-
-      var newMap = Backendless.Data.Of( "Table1" ).Save( json );
-      Assert.IsTrue( newMap[ "objectId" ].ToString() == json[ "objectId" ].ToString() );
-      Assert.IsTrue( newMap[ "objectId" ].ToString() == json[ "objectId" ].ToString() );
-      Assert.IsTrue( ( (Dictionary<Object, Object>) newMap[ "jsonValue" ] )[ "rawJsonString" ] != null );
-
-      Object expectedJson = "{\"colours\": [\"green\", \"Yellow\", \"blue\"], \"decimals\": [432, 12.5, 14]}";
-      Assert.IsTrue( expectedJson.ToString() == ( (Dictionary<Object, Object>) newMap[ "jsonValue" ] )[ "rawJsonString" ].ToString() );
+      var newMap = Backendless.Data.Of( "Table1" ).Save( map );
+      Assert.IsTrue( newMap[ "objectId" ].ToString() == map[ "objectId" ].ToString() );
+      Assert.IsTrue( newMap[ "objectId" ].ToString() == map[ "objectId" ].ToString() );
+      Assert.IsTrue( ( (Dictionary<Object, Object>) newMap[ "json" ] ) != null );
 
       Backendless.Data.Of( "Table1" ).Remove( "'json' != null" );
     }

@@ -40,7 +40,7 @@ namespace TestProject
 
       Backendless.Data.Of( "Person" ).Remove( "age = '35'" );
     }
-
+    
     [TestMethod]
     public void TestUpdateSingleObject_CLass()
     {

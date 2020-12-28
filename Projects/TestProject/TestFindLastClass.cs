@@ -55,6 +55,7 @@ namespace TestProject
       Backendless.Data.Of<Person>().Remove( "age='16'" );
     }
 
+#if !(NET_35 || NET_40)
     [TestMethod]
     public void FLClassAsyncMethod()
     {
@@ -75,5 +76,6 @@ namespace TestProject
          }
        } );
     }
+#endif
   }
 }

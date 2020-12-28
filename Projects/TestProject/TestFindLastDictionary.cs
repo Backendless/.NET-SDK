@@ -30,6 +30,7 @@ namespace TestProject
       Backendless.Data.Of( "Person" ).Remove( "age='16'" );
     }
 
+#if !(NET_35 || NET_40)
     [TestMethod]
     public void FLAsyncMethodDictionary()
     {
@@ -52,6 +53,7 @@ namespace TestProject
         Backendless.Data.Of( "Person" ).Remove( "age='16'" );
       } );
     }
+#endif
 
     [TestMethod]
     public void FLAsyncCallbackDictionary()

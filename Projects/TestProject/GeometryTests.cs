@@ -15,9 +15,6 @@ namespace TestProject
   public class GeometryDataTypesTestClass
   {
     static HttpClient client;
-    const String URL_BASE_ADRESS = "https://devtest.backendless.com";
-    const String Login = "";
-    const String Password = "";
 
     [ClassInitialize]
     public static void TestGeometrySetupData( TestContext context )
@@ -90,25 +87,25 @@ namespace TestProject
       }
     }
 
-    static String LoginAndGetToken()
+    /*static String LoginAndGetToken()
     {
       HttpRequestMessage request = new HttpRequestMessage( HttpMethod.Post, "https://devtest.backendless.com/console/home/login" );
-      request.Content = new StringContent( "{\"login\":\""+Login+"\",\"password\":\""+Password+"\"}", Encoding.UTF8, "application/json" );
+      request.Content = new StringContent( "{\"login\":\""+TestInitialization.Login+"\",\"password\":\""+TestInitialization.Password+"\"}", Encoding.UTF8, "application/json" );
 
       return client.SendAsync( request ).GetAwaiter().GetResult().Headers.GetValues( "auth-key" ).ToArray()[ 0 ];
-    }
+    }*/
 
     static void CreateColumn( String typeName, String columnName, bool TableIsCreated = true )
     {
       client = new HttpClient();
-      client.BaseAddress = new Uri( URL_BASE_ADRESS );
+      client.BaseAddress = new Uri( TestInitialization.URL_BASE_ADRESS );
 
-      String token_Auth_Key = LoginAndGetToken();
+      String token_Auth_Key = TestInitialization.LoginAndGetToken();
 
       client.DefaultRequestHeaders.Add( "auth-key", token_Auth_Key );
 
 
-      HttpRequestMessage requestMessage = new HttpRequestMessage( HttpMethod.Post, "https://devtest.backendless.com/"+TestInitialization.APP_API_KEY+"/console/data/tables/GeoData/columns" );
+      HttpRequestMessage requestMessage = new HttpRequestMessage( HttpMethod.Post, $"{TestInitialization.URL_BASE_ADRESS}/"+TestInitialization.APP_API_KEY+"/console/data/tables/GeoData/columns" );
 
         requestMessage.Content = new StringContent( "{\"metaInfo\":{\"srsId\":4326},\"name\":\"" + columnName + "\"," +
                           "\"dataType\":\"" + typeName + "\",\"required\":false,\"unique\":false,\"indexed\":false}", Encoding.UTF8, "application/json" );

@@ -63,6 +63,13 @@ namespace TestProject
       }
     }
 
+    [ClassCleanup]
+    public static void ClassCleanup()
+    {
+      TestInitialization.DeleteTable( "Person" );
+      TestInitialization.DeleteTable( "Location" );
+    }
+
     [TestMethod]
     public void TestExcludeTwoFields()
     {

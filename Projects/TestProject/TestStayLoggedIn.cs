@@ -7,6 +7,7 @@ namespace TestProject
   [TestClass]
   public class TestStayLoggedIn
   {
+#if !(NET_35 || NET_40)
     [TestMethod]
     public void AsyncLoginTest()
     {
@@ -21,6 +22,8 @@ namespace TestProject
          Assert.IsTrue( Backendless.UserService.CurrentUser == responseUser );
        } );
     }
+#endif
+
     [TestMethod]
     public void DefaultLoginTest()
     {
