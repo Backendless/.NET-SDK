@@ -12,12 +12,13 @@ namespace TestProject
     public void AsyncLoginTest()
     {
       BackendlessUser user = new BackendlessUser();
-      user.Email = "testcall@gmail.com";
-      user.Password = "12345678";
-      //Backendless.UserService.Register( user );
+      user.Email = "hdhdhd@gmail.com";
+      user.Password = "123234";
+
       Task.Run( async () =>
        {
          BackendlessUser responseUser = await Backendless.UserService.LoginAsync( user.Email, user.Password, true );
+
          Assert.IsTrue( user.Email == responseUser.Email );
          Assert.IsTrue( Backendless.UserService.CurrentUser == responseUser );
        } );
@@ -28,9 +29,10 @@ namespace TestProject
     public void DefaultLoginTest()
     {
       BackendlessUser user = new BackendlessUser();
-      user.Email = "testcall@gmail.com";
-      user.Password = "12345678";
+      user.Email = "hdhdhd@gmail.com";
+      user.Password = "123234";
       BackendlessUser responseUser = Backendless.UserService.Login( user.Email, user.Password, true );
+
       Assert.IsTrue( user.Email == responseUser.Email );
       Assert.IsTrue( Backendless.UserService.CurrentUser == responseUser );
     }

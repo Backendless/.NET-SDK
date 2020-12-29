@@ -10,6 +10,24 @@ namespace TestProject
   [TestClass]
   public class TestFindLastDictionary
   {
+    [ClassInitialize]
+    public static void ClassInitialize( TestContext context )
+    {
+      Backendless.UserService.Login( "hdhdhd@gmail.com", "123234" );
+    }
+
+    [ClassCleanup]
+    public static void ClassCleanup()
+    {
+      TestInitialization.DeleteTable( "Person" );
+    }
+
+    [TestCleanup]
+    public void TestCleanup()
+    {
+      Backendless.Data.Of<Person>().Remove( "age='16'" );
+    }
+
     [TestMethod]
     public void FLWithoutParametersDictionary()
     {
@@ -17,7 +35,6 @@ namespace TestProject
       person[ "age" ] = 16;
       person[ "name" ] = "Alexandra";
 
-      Backendless.UserService.Logout();
       Backendless.Data.Of( "Person" ).Save( person );
       Dictionary<String, Object> receivedPerson = Backendless.Data.Of( "Person" ).FindLast();
 
@@ -26,8 +43,6 @@ namespace TestProject
         Assert.IsTrue( (Double) receivedPerson[ "age" ] == Convert.ToDouble( person[ "age" ] ) );
         Assert.IsTrue( receivedPerson[ "name" ].ToString() == person[ "name" ].ToString() );
       }
-
-      Backendless.Data.Of( "Person" ).Remove( "age='16'" );
     }
 
 #if !(NET_35 || NET_40)
@@ -38,7 +53,6 @@ namespace TestProject
       person[ "age" ] = 16;
       person[ "name" ] = "Alexandra";
 
-      Backendless.UserService.Logout();
       Backendless.Data.Of( "Person" ).Save( person );
       Task.Run( async () =>
       {
@@ -49,8 +63,6 @@ namespace TestProject
           Assert.IsTrue( (Double) receivedPerson[ "age" ] == Convert.ToDouble( person[ "age" ] ) );
           Assert.IsTrue( receivedPerson[ "name" ].ToString() == person[ "name" ].ToString() );
         }
-
-        Backendless.Data.Of( "Person" ).Remove( "age='16'" );
       } );
     }
 #endif
@@ -62,7 +74,6 @@ namespace TestProject
       person[ "age" ] = 16;
       person[ "name" ] = "Alexandra";
 
-      Backendless.UserService.Logout();
       Backendless.Data.Of( "Person" ).Save( person );
       Backendless.Data.Of( "Person" ).FindLast( new AsyncCallback<Dictionary<String, Object>>(
       callback =>
@@ -77,8 +88,6 @@ namespace TestProject
       {
         Assert.IsTrue( false );
       } ) );
-
-      Backendless.Data.Of( "Person" ).Remove( "age='16'" );
     }
   }
 }

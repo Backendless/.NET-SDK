@@ -17,33 +17,33 @@ namespace TestProject
       Backendless.Data.Of( "Order" ).Remove( "LastName = 'Smith'" );
     }
 
+    [ClassInitialize]
+    public static void ClassInitialize( TestContext context )
+    {
+      Backendless.UserService.Login( "hdhdhd@gmail.com", "123234" );
+      TestInitialization.CreateDefaultTable( "Person" );
+      TestInitialization.CreateDefaultTable( "Order" );
+      TestInitialization.CreateRelationColumnOneToMany( "Person", "Order", "Surname" );
+    }
+
     [TestMethod]
     public void TestAddRelation_Class()
     {
-      List<Person> listPerson = new List<Person>();
       Person personObj = new Person();
       personObj.age = 22;
       personObj.name = "Eva";
-      listPerson.Add( personObj );
 
-      IList<String> parentObjIds = Backendless.Data.Of<Person>().Create( listPerson );
-      listPerson.Clear();
-      personObj.objectId = parentObjIds[ 0 ];
+      personObj.objectId = Backendless.Data.Of<Person>().Save( personObj ).objectId;
 
-      List<Order> listOrder = new List<Order>();
       Order orderObj = new Order();
       orderObj.LastName = "Smith";
-      listOrder.Add( orderObj );
 
-      IList<String> childObjIds = Backendless.Data.Of<Order>().Create( listOrder );
-      listOrder.Clear();
-      orderObj.objectId = childObjIds[ 0 ];
-      listOrder.Add( orderObj );
+      orderObj.objectId = Backendless.Data.Of<Order>().Save( orderObj ).objectId;
 
       String relationColumn = "Surname";
 
       UnitOfWork uow = new UnitOfWork();
-      uow.AddToRelation( personObj, relationColumn, listOrder );
+      uow.AddToRelation( personObj, relationColumn, new List<Order>() { orderObj } );
       UnitOfWorkResult uowResult = uow.Execute();
 
       Assert.IsTrue( uowResult.Success );
@@ -60,34 +60,21 @@ namespace TestProject
     [TestMethod]
     public void TestAddRelation_Dictionary()
     {
-      List<Person> listPerson = new List<Person>();
       Person personObj = new Person();
       personObj.age = 22;
       personObj.name = "Eva";
-      listPerson.Add( personObj );
 
-      IList<String> parentObjIds = Backendless.Data.Of<Person>().Create( listPerson );
-      listPerson.Clear();
-      personObj.objectId = parentObjIds[ 0 ];
+      personObj.objectId = Backendless.Data.Of<Person>().Save( personObj ).objectId;
 
-      List<Order> listOrder = new List<Order>();
-      Order orderObj = new Order();
-      orderObj.LastName = "Smith";
-      listOrder.Add( orderObj );
-      List<Dictionary<String, Object>> listChildObjMap = new List<Dictionary<String, Object>>();
-      Dictionary<String, Object> childObjMap = new Dictionary<String, Object>();
-      childObjMap[ "LastName" ] = "Smith";
-      listChildObjMap.Add( childObjMap );
+      Dictionary<String, Object> order = new Dictionary<String, Object>();
+      order[ "LastName" ] = "Smith";
 
-      IList<String> childObjIds = Backendless.Data.Of( "Order" ).Create( listChildObjMap );
-      listChildObjMap.Clear();
-      childObjMap[ "objectId" ] = childObjIds[ 0 ];
-      listChildObjMap.Add( childObjMap );
+      order["objectId"] = Backendless.Data.Of( "Order" ).Save( order )["objectId"];
 
       String relationColumn = "Surname";
 
       UnitOfWork uow = new UnitOfWork();
-      uow.AddToRelation( personObj.GetType().Name, personObj.objectId, relationColumn, listChildObjMap );
+      uow.AddToRelation( personObj.GetType().Name, personObj.objectId, relationColumn, new List<Dictionary<String, Object>>() { order } );
       UnitOfWorkResult uowResult = uow.Execute();
 
       Assert.IsTrue( uowResult.Success );
@@ -105,15 +92,10 @@ namespace TestProject
     [TestMethod]
     public void TestAddRelation_OpResult()
     {
-      List<Person> listPerson = new List<Person>();
       Person personObj = new Person();
       personObj.age = 22;
       personObj.name = "Eva";
-      listPerson.Add( personObj );
-
-      IList<String> parentObjIds = Backendless.Data.Of<Person>().Create( listPerson );
-      listPerson.Clear();
-      personObj.objectId = parentObjIds[ 0 ];
+      personObj.objectId = Backendless.Data.Of<Person>().Save( personObj ).objectId;
 
       List<Order> listOrder = new List<Order>();
       Order orderObj = new Order();

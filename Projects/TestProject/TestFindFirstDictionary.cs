@@ -11,6 +11,24 @@ namespace TestProject
   [TestClass]
   public class TestFindFirstDictionary
   {
+    [ClassInitialize]
+    public static void ClassInitialize( TestContext context )
+    {
+      Backendless.UserService.Login( "hdhdhd@gmail.com", "123234" );
+    }
+
+    [ClassCleanup]
+    public static void ClassCleanup()
+    {
+      TestInitialization.DeleteTable( "Person" );
+    }
+
+    [TestCleanup]
+    public void TestCleanup()
+    {
+      Backendless.Data.Of( "Person" ).Remove( "age='16'" );
+    }
+
     [TestMethod]
     public void FFWithoutParametersDictionary()
     {
@@ -18,17 +36,14 @@ namespace TestProject
       person[ "age" ] = 16;
       person[ "name" ] = "Alexandra";
 
-      Backendless.UserService.Logout();
       Backendless.Data.Of( "Person" ).Save( person );
       Dictionary<String, Object> receivedPerson = Backendless.Data.Of( "Person" ).FindFirst();
 
       if( !String.IsNullOrEmpty( receivedPerson[ "objectId" ].ToString() ) )
       {
-        Assert.IsTrue( (Double) receivedPerson[ "age" ] == Convert.ToDouble(person[ "age" ]) );
+        Assert.IsTrue( (Double) receivedPerson[ "age" ] == Convert.ToDouble( person[ "age" ] ) );
         Assert.IsTrue( receivedPerson[ "name" ].ToString() == person[ "name" ].ToString() );
       }
-
-      Backendless.Data.Of( "Person" ).Remove( "age='16'" );
     }
 
 #if !(NET_35 || NET_40)
@@ -39,20 +54,17 @@ namespace TestProject
       person[ "age" ] = 16;
       person[ "name" ] = "Alexandra";
 
-      Backendless.UserService.Logout();
       Backendless.Data.Of( "Person" ).Save( person );
       Task.Run( async () =>
-       {
-         Dictionary<String, Object> receivedPerson = await Backendless.Data.Of( "Person" ).FindFirstAsync();
+      {
+        Dictionary<String, Object> receivedPerson = await Backendless.Data.Of( "Person" ).FindFirstAsync();
 
-         if( !String.IsNullOrEmpty( receivedPerson[ "objectId" ].ToString() ) )
-         {
-           Assert.IsTrue( receivedPerson[ "age" ] == person[ "age" ] );
-           Assert.IsTrue( receivedPerson[ "name" ] == person[ "name" ] );
-         }
-
-         Backendless.Data.Of( "Person" ).Remove( "age='16'" );
-       } );
+        if( !String.IsNullOrEmpty( receivedPerson[ "objectId" ].ToString() ) )
+        {
+          Assert.IsTrue( receivedPerson[ "age" ] == person[ "age" ] );
+          Assert.IsTrue( receivedPerson[ "name" ] == person[ "name" ] );
+        }
+      } );
     }
 #endif
 
@@ -63,10 +75,9 @@ namespace TestProject
       person[ "age" ] = 16;
       person[ "name" ] = "Alexandra";
 
-      Backendless.UserService.Logout();
       Backendless.Data.Of( "Person" ).Save( person );
       Backendless.Data.Of( "Person" ).FindFirst( new AsyncCallback<Dictionary<String, Object>>(
-      callback=>
+      callback =>
       {
         if( !String.IsNullOrEmpty( callback[ "objectId" ].ToString() ) )
         {
@@ -74,12 +85,10 @@ namespace TestProject
           Assert.IsTrue( callback[ "name" ].ToString() == person[ "name" ].ToString() );
         }
       },
-      fault=>
+      fault =>
       {
         Assert.IsTrue( false );
-      } ));
-
-      Backendless.Data.Of( "Person" ).Remove( "age='16'" );
+      } ) );
     }
   }
 }

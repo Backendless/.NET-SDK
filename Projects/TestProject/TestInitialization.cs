@@ -21,7 +21,7 @@ namespace TestProject
     private const String DOTNET_API_KEY = "";
     private const String BKNDLSS_URL = "http://apitest.backendless.com";
 
-    static HttpClient client;
+    internal static HttpClient client;
     internal const String URL_BASE_ADRESS = "https://devtest.backendless.com";
 
     private const String path = @"f:\specialproject\authdata.txt";
@@ -98,7 +98,7 @@ namespace TestProject
         Debug.WriteLine( "Start creating column..." );
 
         HttpRequestMessage request = new HttpRequestMessage( HttpMethod.Post, $"{URL_BASE_ADRESS}/{APP_API_KEY}/console/data/tables/{tableName}/columns" );
-        request.Content = new StringContent( "{\"metaInfo\":{\"localData\":{}}, \"name\":\"" + columnName + "\", \"dataType\":\"JSON\", \"dataSize\":null, \"required\":false, \"unique\":false}", Encoding.UTF8, "application/json" );
+        request.Content = new StringContent( "{\"name\":\"" + columnName + "\", \"dataType\":\"JSON\"}", Encoding.UTF8, "application/json" );
         Task.WaitAll( client.SendAsync( request ) );
 
         Debug.WriteLine( "Column has been created." );
@@ -106,6 +106,26 @@ namespace TestProject
       catch( Exception e )
       {
         Debug.WriteLine( "Column has not been created" + e.Message );
+      }
+    }
+
+    internal static void CreateRelationColumnOneToMany( String parentTableName, String childTableName, String columnName )
+    {
+      try
+      {
+        Debug.WriteLine( "Start creating relationship column..." );
+
+        HttpRequestMessage request = new HttpRequestMessage( HttpMethod.Post, $"{URL_BASE_ADRESS}/{APP_API_KEY}/console/data/tables/{parentTableName}/columns/relation" );
+        request.Content = new StringContent( "{\"name\":\"" + columnName + "\", \"dataType\":\"DATA_REF\", " +
+           "\"toTableName\":\"" + childTableName + "\", \"relationshipType\":\"ONE_TO_MANY\"}", Encoding.UTF8, "application/json" );
+
+        Task.WaitAll( client.SendAsync( request ) );
+
+        Debug.WriteLine( "Relationship column has been created." );
+      }
+      catch( Exception e )
+      {
+        Debug.WriteLine( "Relationship column has not been created" + e.Message );
       }
     }
 

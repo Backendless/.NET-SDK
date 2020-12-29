@@ -12,55 +12,48 @@ namespace TestProject
     [ClassInitialize]
     public static void TestExcludeSetupData( TestContext context )
     {
-      try
-      {
-        Backendless.UserService.Login( "hdhdhd@gmail.com", "123234" );
-        Backendless.Data.Describe( "Person" );
-        Backendless.Data.Describe( "Location" );
-      }
-      catch
-      {
-        ////////////Сreate of the parent table "Person"////////////
+      Backendless.UserService.Login( "hdhdhd@gmail.com", "123234" );
 
-        Dictionary<String, Object> data = new Dictionary<String, Object>();
-        data.Add( "name", "Joe" );
-        data.Add( "age", 23 );
+      ////////////Сreate of the parent table "Person"////////////
 
-        Dictionary<String, Object> dataIdParent_1 = Backendless.Data.Of( "Person" ).Save( data );//First object in the "Person" table
-        //////////////////////////////////////////////////////////////////////////////////////
+      Dictionary<String, Object> data = new Dictionary<String, Object>();
+      data.Add( "name", "Joe" );
+      data.Add( "age", 23 );
 
-        data.Clear();
-        data.Add( "name", "Tom" );
-        data.Add( "age", 20 );
+      Dictionary<String, Object> dataIdParent_1 = Backendless.Data.Of( "Person" ).Save( data );//First object in the "Person" table
+                                                                                               //////////////////////////////////////////////////////////////////////////////////////
 
-        Dictionary<String, Object> dataIdParent_2 = Backendless.Data.Of( "Person" ).Save( data );//Second object in the "Person" table
-        //////////////////////////////////////////////////////////////////////////////////////
+      data.Clear();
+      data.Add( "name", "Tom" );
+      data.Add( "age", 20 );
 
-        ////////////Сreate of the children table "Location"////////////
+      Dictionary<String, Object> dataIdParent_2 = Backendless.Data.Of( "Person" ).Save( data );//Second object in the "Person" table
+                                                                                               //////////////////////////////////////////////////////////////////////////////////////
 
-        data.Clear();
-        data.Add( "adress", "Curse Street" );
+      ////////////Сreate of the children table "Location"////////////
 
-        Dictionary<String, Object> dataIdChildren_1 = Backendless.Data.Of( "Location" ).Save( data );//First object in the "Location" table
-        ////////////////////////////////////////////////////////////////////////////////////////
+      data.Clear();
+      data.Add( "adress", "Curse Street" );
 
-        data.Clear();
-        data.Add( "adress", "Tom Street" );
+      Dictionary<String, Object> dataIdChildren_1 = Backendless.Data.Of( "Location" ).Save( data );//First object in the "Location" table
+                                                                                                   ////////////////////////////////////////////////////////////////////////////////////////
 
-        Dictionary<String, Object> dataIdChildren_2 = Backendless.Data.Of( "Location" ).Save( data );//Second object int the "Location" table
-        ////////////////////////////////////////////////////////////////////////////////////////
+      data.Clear();
+      data.Add( "adress", "Tom Street" );
 
-        ///Сreating a connection between the objects "Order" and "Area"///
+      Dictionary<String, Object> dataIdChildren_2 = Backendless.Data.Of( "Location" ).Save( data );//Second object int the "Location" table
+                                                                                                   ////////////////////////////////////////////////////////////////////////////////////////
 
-        Object[] children = new Object[] { dataIdChildren_1 };
+      ///Сreating a connection between the objects "Order" and "Area"///
 
-        Backendless.Data.Of( "Person" ).SetRelation( dataIdParent_1, "Location:Location:n", children );//First relation
-        ////////////////////////////////////////////////////////////////////////////////////
+      Object[] children = new Object[] { dataIdChildren_1 };
 
-        children = new Object[] { dataIdChildren_2 };
+      Backendless.Data.Of( "Person" ).SetRelation( dataIdParent_1, "Location:Location:n", children );//First relation
+                                                                                                     ////////////////////////////////////////////////////////////////////////////////////
 
-        Backendless.Data.Of( "Person" ).SetRelation( dataIdParent_2, "Location:Location:n", children );//Second relation
-      }
+      children = new Object[] { dataIdChildren_2 };
+
+      Backendless.Data.Of( "Person" ).SetRelation( dataIdParent_2, "Location:Location:n", children );//Second relation
     }
 
     [ClassCleanup]
@@ -106,8 +99,8 @@ namespace TestProject
 
       IList<Dictionary<String, Object>> res = Backendless.Data.Of( "Person" ).Find( queryBuilder );
 
-      Assert.IsTrue( res[ 0 ].ContainsKey("adress"), "First object does not contain 'adress' field" );
-      Assert.IsTrue( res[ 1 ].ContainsKey("adress"), "Second object does not contain 'adress' field" );
+      Assert.IsTrue( res[ 0 ].ContainsKey( "adress" ), "First object does not contain 'adress' field" );
+      Assert.IsTrue( res[ 1 ].ContainsKey( "adress" ), "Second object does not contain 'adress' field" );
     }
   }
 }
