@@ -2,3 +2,6 @@ language: csharp
 mono: none
 dotnet: 2.0.0
 dist: xenial
+script: 
+    - dotnet build Backendless.sln -c Debug
+    - dotnet test -c Debug --no-build test/testproject.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
