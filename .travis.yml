@@ -3,5 +3,5 @@ mono: none
 dotnet: 2.0.0
 dist: xenial
 script: 
-    - dotnet build Backendless.sln -c Release
+    - dotnet build Backendless.NET.sln -c Release
     - dotnet test TestProject.cproj -c Release -f netcoreapp2.0
