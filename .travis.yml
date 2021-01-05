@@ -4,4 +4,4 @@ dotnet: 2.0.0
 dist: xenial
 script: 
     - dotnet build Backendless.sln -c Release
-    - dotnet test test/TestProject.cproj -c Release -f netcoreapp2.0
+    - dotnet test TestProject.cproj -c Release -f netcoreapp2.0
