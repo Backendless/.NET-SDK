@@ -3,5 +3,5 @@ mono: none
 dotnet: 2.0.0
 dist: xenial
 script: 
-    - dotnet build Travis.Tests.Build/TravisBuild/TravisBuild.sln -c Release
-    - dotnet test Projects/TestProject/TestProject.cproj -c Release -f netcoreapp2.0
+    - dotnet build Travis.Tests.Build/TravisBuild/TravisBuild.sln -c Debug
+    - dotnet test Projects/TestProject/TestProject.cproj -c Debug -f netcoreapp2.0
