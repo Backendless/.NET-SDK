@@ -3,5 +3,6 @@ mono: none
 dotnet: 2.0.0
 dist: xenial
 script: 
+    - dotnet restore
     - dotnet build Travis.Tests.Build/TravisBuild/TravisBuild.sln -c Debug
     - dotnet test Projects/TestProject -c Debug -f netcoreapp2.0
