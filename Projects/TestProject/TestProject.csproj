@@ -14,12 +14,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Backendless.NET" Version="6.0.2" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="3.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
-    <PackageReference Include="coverlet.collector" Version="1.0.1" />
     <PackageReference Include="MSTest.TestFramework" Version="2.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Backendless.NET.Standard20\Backendless.NET.Standard20.csproj" />
   </ItemGroup>
 
 </Project>
