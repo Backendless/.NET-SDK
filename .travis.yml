@@ -1,6 +1,6 @@
 language: csharp
 mono: none
-os: windows
+os: linux
 dotnet: 2.0.0
 dist: xenial
 before_script: 
