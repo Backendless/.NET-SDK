@@ -5,4 +5,4 @@ dist: xenial
 script: 
     - dotnet restore
     - dotnet build Travis.Tests.Build/TravisBuild/TravisBuild.sln -c Debug
-    - dotnet test
+    - dotnet test Travis.Tests.Build/TravisBuild
