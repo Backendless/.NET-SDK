@@ -1,6 +1,7 @@
 language: csharp
 mono: none
 dotnet: 2.0.0
+install:   - nuget install Microsoft.NET.Test.Sdk
 before_script: 
     - dotnet restore ".\Travis.Tests.Build\TravisBuild\TravisBuild.sln"
 script: 
