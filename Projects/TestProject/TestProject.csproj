@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Backendless.NET.Framework4.5.2\Backendless.NET.Framework4.5.2.csproj" />
+    <ProjectReference Include="..\Backendless.NET.Standard20\Backendless.NET.Standard20.csproj" />
   </ItemGroup>
 
 </Project>
