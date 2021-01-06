@@ -1,6 +1,5 @@
 language: csharp
-mono: none
-sudo: required
+mono: latest
 dotnet: 2.0.0
 before_script: 
     - dotnet restore ".\Travis.Tests.Build\TravisBuild\TravisBuild.sln"
