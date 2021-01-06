@@ -4,4 +4,4 @@ dotnet: 2.0.0
 dist: xenial
 script: 
     - dotnet build Travis.Tests.Build/TravisBuild/TravisBuild.sln -c Debug
-    - dotnet test Projects/TestProject/TestProject.cproj -c Debug -f netcoreapp2.0
+    - dotnet test Projects/TestProject/bin/Debug/netcoreapp2.0/TestProject.dll
