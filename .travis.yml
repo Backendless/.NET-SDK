@@ -5,4 +5,4 @@ before_script:
     - dotnet restore ".\Travis.Tests.Build\TravisBuild\TravisBuild.sln"
 script: 
     - dotnet build ".\Travis.Tests.Build\TravisBuild\TravisBuild.sln" -c Debug
-    - dotnet test ".\Travis.Tests.Build\TravisBuild\TravisBuild.sln" -c Debug -v n
+    - dotnet test ".\Projects\TestProject\TestProject.csproj" -c Debug -v n
