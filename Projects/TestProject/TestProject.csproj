@@ -5,7 +5,6 @@
 
     <IsPackable>false</IsPackable>
 
-    <UserSecretsId>860bf4e4-0b19-466c-bfc7-f08275cf11a8</UserSecretsId>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
