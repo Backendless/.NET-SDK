@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using System;
 using BackendlessAPI;
 using BackendlessAPI.Async;
@@ -6,75 +6,61 @@ using System.Threading.Tasks;
 
 namespace TestProject
 {
-  [TestClass]
-  public class TestFindFirstClass
+  [Collection( "Tests" )]
+  public class TestFindFirstClass : IDisposable
   {
-    [ClassInitialize]
-    public static void ClassInitialize( TestContext context )
-    {
-      Backendless.UserService.Login( "hdhdhd@gmail.com", "123234" );
-    }
+    Person person = new Person();
 
-    [ClassCleanup]
-    public static void ClassCleanup()
-    {
-      TestInitialization.DeleteTable( "Person" );
-    }
-
-    [TestCleanup]
-    public void TestCleanup()
+    public void Dispose()
     {
       Backendless.Data.Of<Person>().Remove( "age='16'" );
     }
 
-    [TestMethod]
-    public void FFClassWithoutParameters()
+    public TestFindFirstClass()
     {
-      Person person = new Person();
       person.age = 16;
       person.name = "Alexandra";
+    }
 
+    [Fact]
+    public void FFClassWithoutParameters()
+    {
       Backendless.Data.Of<Person>().Save( person );
       Person receivedPerson = Backendless.Data.Of<Person>().FindFirst();
 
       if( !String.IsNullOrEmpty( receivedPerson.objectId ) )
       {
-        Assert.IsTrue( receivedPerson.age == person.age );
-        Assert.IsTrue( receivedPerson.name == person.name );
+        Assert.True( receivedPerson.age == person.age );
+        Assert.True( receivedPerson.name == person.name );
       }
+      else
+        Assert.True( false );
     }
 
-    [TestMethod]
+    [Fact]
     public void FFClassAsyncCallback()
     {
-      Person person = new Person();
-      person.age = 16;
-      person.name = "Alexandra";
-
       Backendless.Data.Of<Person>().Save( person );
       Backendless.Data.Of<Person>().FindFirst( new AsyncCallback<Person>(
       callback =>
       {
         if( !String.IsNullOrEmpty( callback.objectId ) )
         {
-          Assert.IsTrue( callback.age == person.age );
-          Assert.IsTrue( callback.name == person.name );
+          Assert.True( callback.age == person.age );
+          Assert.True( callback.name == person.name );
         }
+        else
+          Assert.True( false, "Callback's objectId is null" );
       },
       fault =>
       {
-        Assert.IsTrue( false );
+        Assert.True( false, "Discrepancy between the expected and the actual" );
       } ) );
     }
 
-#if !(NET_35 || NET_40)
-    [TestMethod]
+    [Fact]
     public void FFClassAsyncMethod()
     {
-      Person person = new Person();
-      person.age = 16;
-      person.name = "Alexandra";
-
       Backendless.Data.Of<Person>().Save( person );
       Task.Run( async () =>
       {
@@ -82,11 +68,12 @@ namespace TestProject
 
         if( !String.IsNullOrEmpty( receivedPerson.objectId ) )
         {
-          Assert.IsTrue( receivedPerson.age == person.age );
-          Assert.IsTrue( receivedPerson.name == person.name );
+          Assert.True( receivedPerson.age == person.age );
+          Assert.True( receivedPerson.name == person.name );
         }
+        else
+          Assert.True( false );
       } );
     }
-#endif
   }
 }

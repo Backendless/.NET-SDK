@@ -1,59 +1,46 @@
-﻿using BackendlessAPI;
-using BackendlessAPI.Async;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using BackendlessAPI;
+using BackendlessAPI.Async;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace TestProject
 {
-  [TestClass]
-  public class TestFindFirstDictionary
+  [Collection( "Tests" )]
+  public class TestFindFirstDictionary : IDisposable
   {
-    [ClassInitialize]
-    public static void ClassInitialize( TestContext context )
-    {
-      Backendless.UserService.Login( "hdhdhd@gmail.com", "123234" );
-    }
+    Dictionary<String, Object> person = new Dictionary<String, Object>();
 
-    [ClassCleanup]
-    public static void ClassCleanup()
+    public TestFindFirstDictionary()
     {
-      TestInitialization.DeleteTable( "Person" );
-    }
-
-    [TestCleanup]
-    public void TestCleanup()
-    {
-      Backendless.Data.Of( "Person" ).Remove( "age='16'" );
-    }
-
-    [TestMethod]
-    public void FFWithoutParametersDictionary()
-    {
-      Dictionary<String, Object> person = new Dictionary<String, Object>();
       person[ "age" ] = 16;
       person[ "name" ] = "Alexandra";
+    }
 
+    public void Dispose()
+    {
+      Backendless.Data.Of<Person>().Remove( "age='16'" );
+    }
+
+    [Fact]
+    public void FFWithoutParametersDictionary()
+    {
       Backendless.Data.Of( "Person" ).Save( person );
       Dictionary<String, Object> receivedPerson = Backendless.Data.Of( "Person" ).FindFirst();
 
       if( !String.IsNullOrEmpty( receivedPerson[ "objectId" ].ToString() ) )
       {
-        Assert.IsTrue( (Double) receivedPerson[ "age" ] == Convert.ToDouble( person[ "age" ] ) );
-        Assert.IsTrue( receivedPerson[ "name" ].ToString() == person[ "name" ].ToString() );
+        Assert.True( (Double) receivedPerson[ "age" ] == Convert.ToDouble( person[ "age" ] ) );
+        Assert.True( receivedPerson[ "name" ].ToString() == person[ "name" ].ToString() );
       }
+      else
+        Assert.True( false );
     }
 
-#if !(NET_35 || NET_40)
-    [TestMethod]
+    [Fact]
     public void FFAsyncMethodDictionary()
     {
-      Dictionary<String, Object> person = new Dictionary<String, Object>();
-      person[ "age" ] = 16;
-      person[ "name" ] = "Alexandra";
-
       Backendless.Data.Of( "Person" ).Save( person );
       Task.Run( async () =>
       {
@@ -61,33 +48,32 @@ namespace TestProject
 
         if( !String.IsNullOrEmpty( receivedPerson[ "objectId" ].ToString() ) )
         {
-          Assert.IsTrue( receivedPerson[ "age" ] == person[ "age" ] );
-          Assert.IsTrue( receivedPerson[ "name" ] == person[ "name" ] );
+          Assert.True( receivedPerson[ "age" ] == person[ "age" ] );
+          Assert.True( receivedPerson[ "name" ] == person[ "name" ] );
         }
+        else
+          Assert.True( false );
       } );
     }
-#endif
 
-    [TestMethod]
+    [Fact]
     public void FFAsyncCallbackDictionary()
     {
-      Dictionary<String, Object> person = new Dictionary<String, Object>();
-      person[ "age" ] = 16;
-      person[ "name" ] = "Alexandra";
-
       Backendless.Data.Of( "Person" ).Save( person );
       Backendless.Data.Of( "Person" ).FindFirst( new AsyncCallback<Dictionary<String, Object>>(
       callback =>
       {
         if( !String.IsNullOrEmpty( callback[ "objectId" ].ToString() ) )
         {
-          Assert.IsTrue( (Double) callback[ "age" ] == Convert.ToDouble( person[ "age" ] ) );
-          Assert.IsTrue( callback[ "name" ].ToString() == person[ "name" ].ToString() );
+          Assert.True( (Double) callback[ "age" ] == Convert.ToDouble( person[ "age" ] ) );
+          Assert.True( callback[ "name" ].ToString() == person[ "name" ].ToString() );
         }
+        else
+          Assert.True( false );
       },
       fault =>
       {
-        Assert.IsTrue( false );
+        Assert.True( false );
       } ) );
     }
   }

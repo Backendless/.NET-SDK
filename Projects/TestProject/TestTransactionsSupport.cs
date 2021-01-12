@@ -16,4 +16,11 @@ namespace TestProject
     public String objectId;
     public String LastName{ get; set; }
   }
+
+  public class Human
+  {
+    public String name;
+    public Int32? age;
+    public String objectId;
+  }
 }

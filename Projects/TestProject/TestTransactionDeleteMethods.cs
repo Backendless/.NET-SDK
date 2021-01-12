@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿/*using Microsoft.VisualStudio.TestTools.UnitTesting;
 using BackendlessAPI;
 using BackendlessAPI.Persistence;
 using System;
@@ -132,3 +132,4 @@ namespace TestProject
     }
   }
 }
+*/

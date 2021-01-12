@@ -1,32 +1,22 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
+using System;
 using BackendlessAPI;
 using BackendlessAPI.Persistence;
-using System;
-using System.Collections.Generic;
 using BackendlessAPI.Transaction;
+using System.Collections.Generic;
 
 namespace TestProject
 {
-  [TestClass]
-  public class TestTransactionAddRelation
+  [Collection("Tests")]
+  public class TestTransactionAddRelation : IDisposable
   {
-    [TestCleanup]
-    public void TearDown()
+    public void Dispose()
     {
       Backendless.Data.Of( "Person" ).Remove( "age = '22'" );
       Backendless.Data.Of( "Order" ).Remove( "LastName = 'Smith'" );
     }
 
-    [ClassInitialize]
-    public static void ClassInitialize( TestContext context )
-    {
-      Backendless.UserService.Login( "hdhdhd@gmail.com", "123234" );
-      TestInitialization.CreateDefaultTable( "Person" );
-      TestInitialization.CreateDefaultTable( "Order" );
-      TestInitialization.CreateRelationColumnOneToMany( "Person", "Order", "Surname" );
-    }
-
-    [TestMethod]
+    [Fact]
     public void TestAddRelation_Class()
     {
       Person personObj = new Person();
@@ -46,18 +36,18 @@ namespace TestProject
       uow.AddToRelation( personObj, relationColumn, new List<Order>() { orderObj } );
       UnitOfWorkResult uowResult = uow.Execute();
 
-      Assert.IsTrue( uowResult.Success );
-      Assert.IsNotNull( uowResult.Results );
+      Assert.True( uowResult.Success );
+      Assert.NotNull( uowResult.Results );
 
       DataQueryBuilder dqb = DataQueryBuilder.Create().SetRelationsDepth( 10 );
       dqb.SetRelationsPageSize( 10 );
 
       IList<Person> listCheckPersonObj = Backendless.Data.Of<Person>().Find( dqb );
-      Assert.IsTrue( listCheckPersonObj.Count == 1 );
-      Assert.IsTrue( listCheckPersonObj[ 0 ].Surname != null );
+      Assert.True( listCheckPersonObj.Count == 1 );
+      Assert.True( listCheckPersonObj[ 0 ].Surname != null );
     }
 
-    [TestMethod]
+    [Fact]
     public void TestAddRelation_Dictionary()
     {
       Person personObj = new Person();
@@ -77,19 +67,19 @@ namespace TestProject
       uow.AddToRelation( personObj.GetType().Name, personObj.objectId, relationColumn, new List<Dictionary<String, Object>>() { order } );
       UnitOfWorkResult uowResult = uow.Execute();
 
-      Assert.IsTrue( uowResult.Success );
-      Assert.IsNotNull( uowResult.Results );
+      Assert.True( uowResult.Success );
+      Assert.NotNull( uowResult.Results );
 
       DataQueryBuilder dqb = DataQueryBuilder.Create();
       dqb.SetRelationsPageSize( 10 );
       dqb.SetRelationsDepth( 10 );
       IList<Person> listCheckPersonObj = Backendless.Data.Of<Person>().Find( dqb );
 
-      Assert.IsTrue( listCheckPersonObj.Count == 1 );
-      Assert.IsTrue( listCheckPersonObj[0].Surname != null );
+      Assert.True( listCheckPersonObj.Count == 1 );
+      Assert.True( listCheckPersonObj[0].Surname != null );
     }
 
-    [TestMethod]
+    [Fact]
     public void TestAddRelation_OpResult()
     {
       Person personObj = new Person();
@@ -122,19 +112,19 @@ namespace TestProject
       uow.AddToRelation( personObj.GetType().Name, personObj.objectId, relationColumn, gifts );
       UnitOfWorkResult uowResult = uow.Execute();
 
-      Assert.IsTrue( uowResult.Success );
-      Assert.IsNotNull( uowResult.Results );
+      Assert.True( uowResult.Success );
+      Assert.NotNull( uowResult.Results );
 
       DataQueryBuilder dqb = DataQueryBuilder.Create();
       dqb.SetRelationsPageSize( 10 );
       dqb.SetRelationsDepth( 10 );
       IList<Person> listCheckPersonObj = Backendless.Data.Of<Person>().Find( dqb );
 
-      Assert.IsTrue( listCheckPersonObj.Count == 1 );
-      Assert.IsTrue( listCheckPersonObj[ 0 ].Surname != null );
+      Assert.True( listCheckPersonObj.Count == 1 );
+      Assert.True( listCheckPersonObj[ 0 ].Surname != null );
     }
 
-    [TestMethod]
+    [Fact]
     public void TestAddRelation_WithId()
     {
       List<Person> listPerson = new List<Person>();
@@ -167,19 +157,19 @@ namespace TestProject
       uow.AddToRelation( personObj.GetType().Name, personObj.objectId, relationColumn, new String[] { (String) childObjMap[ "objectId" ] } );
       UnitOfWorkResult uowResult = uow.Execute();
 
-      Assert.IsTrue( uowResult.Success );
-      Assert.IsNotNull( uowResult.Results );
+      Assert.True( uowResult.Success );
+      Assert.NotNull( uowResult.Results );
 
       DataQueryBuilder dqb = DataQueryBuilder.Create();
       dqb.SetRelationsPageSize( 10 );
       dqb.SetRelationsDepth( 10 );
       IList<Person> listCheckPersonObj = Backendless.Data.Of<Person>().Find( dqb );
 
-      Assert.IsTrue( listCheckPersonObj.Count == 1 );
-      Assert.IsTrue( listCheckPersonObj[ 0 ].Surname != null );
+      Assert.True( listCheckPersonObj.Count == 1 );
+      Assert.True( listCheckPersonObj[ 0 ].Surname != null );
     }
 
-    [TestMethod]
+    [Fact]
     public void TestAddToRelation_CheckError()
     {
       List<Person> listPerson = new List<Person>();
@@ -212,8 +202,8 @@ namespace TestProject
       uow.AddToRelation( "Wrong name", personObj.objectId, relationColumn, new String[] { (String) childObjMap[ "objectId" ] } );
       UnitOfWorkResult uowResult = uow.Execute();
 
-      Assert.IsFalse( uowResult.Success );
-      Assert.IsNull( uowResult.Results );
+      Assert.False( uowResult.Success );
+      Assert.Null( uowResult.Results );
     }
   }
 }
