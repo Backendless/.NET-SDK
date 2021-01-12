@@ -1,0 +1,8 @@
+language: csharp
+mono: none
+dotnet: 2.0.0
+before_script: 
+    - dotnet restore ".\Travis.Tests.Build\TravisBuild\TravisBuild.sln"
+    - dotnet build ".\Travis.Tests.Build\TravisBuild\TravisBuild.sln" -c Debug
+script: 
+    - dotnet test ".\Projects\TestProject\TestProject.csproj" -c Debug -v n
