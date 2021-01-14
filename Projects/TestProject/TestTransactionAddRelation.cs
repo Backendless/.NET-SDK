@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace TestProject
 {
-  [Collection("Tests")]
+  [Collection( "Tests" )]
   public class TestTransactionAddRelation : IDisposable
   {
     public void Dispose()
@@ -59,7 +59,7 @@ namespace TestProject
       Dictionary<String, Object> order = new Dictionary<String, Object>();
       order[ "LastName" ] = "Smith";
 
-      order["objectId"] = Backendless.Data.Of( "Order" ).Save( order )["objectId"];
+      order[ "objectId" ] = Backendless.Data.Of( "Order" ).Save( order )[ "objectId" ];
 
       String relationColumn = "Surname";
 
@@ -76,7 +76,7 @@ namespace TestProject
       IList<Person> listCheckPersonObj = Backendless.Data.Of<Person>().Find( dqb );
 
       Assert.True( listCheckPersonObj.Count == 1 );
-      Assert.True( listCheckPersonObj[0].Surname != null );
+      Assert.True( listCheckPersonObj[ 0 ].Surname != null );
     }
 
     [Fact]

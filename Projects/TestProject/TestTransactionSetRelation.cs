@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace TestProject
 {
-  [Collection("Tests")]
+  [Collection( "Tests" )]
   public class TestTransactionSetRelation : IDisposable
   {
     public void Dispose()
@@ -21,8 +21,8 @@ namespace TestProject
     public void TestSetRelation_Dictionary()
     {
       Dictionary<String, Object> objectMap = new Dictionary<String, Object>();
-      objectMap["age"] = 22;
-      objectMap["name"] = "Eva";
+      objectMap[ "age" ] = 22;
+      objectMap[ "name" ] = "Eva";
 
       objectMap[ "objectId" ] = Backendless.Data.Of( "Person" ).Save( objectMap )[ "objectId" ];
 
@@ -152,12 +152,12 @@ namespace TestProject
       personObj.name = "Eva";
 
       personObj.objectId = Backendless.Data.Of<Person>().Save( personObj ).objectId;
-      
+
       Dictionary<String, Object> childObjMap = new Dictionary<String, Object>();
       childObjMap[ "LastName" ] = "Smith";
 
       childObjMap[ "objectId" ] = Backendless.Data.Of( "Order" ).Save( childObjMap )[ "objectId" ];
-      
+
       String relationColumn = "Surname";
 
       UnitOfWork uow = new UnitOfWork();

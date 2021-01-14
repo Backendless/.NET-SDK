@@ -1,16 +1,16 @@
-﻿/*using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
+using System;
 using BackendlessAPI;
 using BackendlessAPI.Persistence;
-using System;
 using System.Collections.Generic;
 using BackendlessAPI.Transaction;
 
 namespace TestProject
 {
-  [TestClass]
+  [Collection( "Tests" )]
   public class TestTransactionCreateMethods
   {
-    [TestMethod]
+    [Fact]
     public void TestCreateSingleObject_Dictionary()
     {
       UnitOfWork uow = new UnitOfWork();
@@ -22,21 +22,21 @@ namespace TestProject
 
       UnitOfWorkResult unitOfWorkRes = uow.Execute();
 
-      Assert.IsTrue( unitOfWorkRes.Success );
-      Assert.IsNotNull( unitOfWorkRes.Results );
+      Assert.True( unitOfWorkRes.Success );
+      Assert.NotNull( unitOfWorkRes.Results );
 
       Dictionary<String, OperationResult> result = unitOfWorkRes.Results;
       OperationResult operationResult = result[ createPersonResult.OpResultId ];
 
       Dictionary<Object, Object> transactionResult = (Dictionary<Object, Object>) operationResult.Result;
 
-      Assert.IsTrue( "Joe" == (String) transactionResult[ "name" ] );
-      Assert.IsTrue( 23 == (Int32) transactionResult[ "age" ] );
+      Assert.True( "Joe" == (String) transactionResult[ "name" ] );
+      Assert.True( 23 == (Int32) transactionResult[ "age" ] );
 
       Backendless.Data.Of( "Person" ).Remove( "name = 'Joe'" );
     }
 
-    [TestMethod]
+    [Fact]
     public void TestCreateSingleObject_Class()
     {
       UnitOfWork unitOfWork = new UnitOfWork();
@@ -48,17 +48,17 @@ namespace TestProject
 
       OpResult addPersonResult = unitOfWork.Create( person );
       UnitOfWorkResult uowResult = unitOfWork.Execute();
-      Assert.IsTrue( uowResult.Success );
-      Assert.IsNotNull( uowResult.Results );
+      Assert.True( uowResult.Success );
+      Assert.NotNull( uowResult.Results );
 
       Person personObject = Backendless.Data.Of<Person>().Find( DataQueryBuilder.Create() )[ 0 ];
-      Assert.IsTrue( person.age == personObject.age );
-      Assert.IsTrue( person.name == personObject.name );
+      Assert.True( person.age == personObject.age );
+      Assert.True( person.name == personObject.name );
 
       Backendless.Data.Of( "Person" ).Remove( "name = '" + personObject.name + "'" );
     }
 
-    [TestMethod]
+    [Fact]
     public void TestCreateSingleObject_CheckError()
     {
       UnitOfWork uow = new UnitOfWork();
@@ -70,8 +70,8 @@ namespace TestProject
 
       UnitOfWorkResult unitOfWorkRes = uow.Execute();
 
-      Assert.IsFalse( unitOfWorkRes.Success );
-      Assert.IsNull( unitOfWorkRes.Results );
+      Assert.False( unitOfWorkRes.Success );
+      Assert.Null( unitOfWorkRes.Results );
     }
   }
-}*/
+}

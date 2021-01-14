@@ -1,4 +1,4 @@
-﻿/*using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using BackendlessAPI;
 using BackendlessAPI.Persistence;
 using System;
@@ -7,10 +7,10 @@ using BackendlessAPI.Transaction;
 
 namespace TestProject
 {
-  [TestClass]
+  [Collection( "Tests" )]
   public class TestTransactionCreateBulkMethods
   {
-    [TestMethod]
+    [Fact]
     public void TestCreateBulkObjects_Dictionary()
     {
       List<Dictionary<String, Object>> people = new List<Dictionary<String, Object>>();
@@ -30,8 +30,8 @@ namespace TestProject
       OpResult createPersonsObj = uow.BulkCreate( "Person", people );
       UnitOfWorkResult uowResult = uow.Execute();
 
-      Assert.IsTrue( uowResult.Success );
-      Assert.IsNotNull( uowResult.Results );
+      Assert.True( uowResult.Success );
+      Assert.NotNull( uowResult.Results );
 
       IList<Person> personList = Backendless.Data.Of<Person>().Find( DataQueryBuilder.Create() );
       Dictionary<String, OperationResult> result = uowResult.Results;
@@ -45,18 +45,17 @@ namespace TestProject
         iteratorI++;
         iteratorJ--;
       }
-      Assert.IsTrue( transactionsObjID[ iteratorI ] == personList[ 1 ].objectId );
-      Assert.IsTrue( transactionsObjID[ iteratorJ ] == personList[ 0 ].objectId );
-      Assert.IsTrue( personList[ iteratorJ ].age == (Int32) person1[ "age" ] );
-      Assert.IsTrue( personList[ iteratorI ].age == (Int32) person2[ "age" ] );
-      Assert.IsTrue( personList[ iteratorJ ].name == (String) person1[ "name" ] );
-      Assert.IsTrue( personList[ iteratorI ].name == (String) person2[ "name" ] );
+      Assert.True( transactionsObjID[ iteratorI ] == personList[ 1 ].objectId );
+      Assert.True( transactionsObjID[ iteratorJ ] == personList[ 0 ].objectId );
+      Assert.True( personList[ iteratorJ ].age == (Int32) person1[ "age" ] );
+      Assert.True( personList[ iteratorI ].age == (Int32) person2[ "age" ] );
+      Assert.True( personList[ iteratorJ ].name == (String) person1[ "name" ] );
+      Assert.True( personList[ iteratorI ].name == (String) person2[ "name" ] );
 
-      Backendless.Data.Of( "Person" ).Remove( "name = '" + personList[ 0 ].name + "'" );
-      Backendless.Data.Of( "Person" ).Remove( "name = '" + personList[ 1 ].name + "'" );
+      Backendless.Data.Of( "Person" ).Remove( "age > '0'" );
     }
 
-    [TestMethod]
+    [Fact]
     public void TestCreateBulkObjects_Class()
     {
       UnitOfWork unitOfWork = new UnitOfWork();
@@ -77,21 +76,20 @@ namespace TestProject
       OpResult createPersonObjects = unitOfWork.BulkCreate( people );
       UnitOfWorkResult uowResult = unitOfWork.Execute();
 
-      Assert.IsTrue( uowResult.Success );
-      Assert.IsNotNull( uowResult.Results );
+      Assert.True( uowResult.Success );
+      Assert.NotNull( uowResult.Results );
 
       IList<Person> personList = Backendless.Data.Of<Person>().Find( DataQueryBuilder.Create() );
       Dictionary<String, OperationResult> result = uowResult.Results;
       OperationResult operationResult = result[ createPersonObjects.OpResultId ];
       String[] transactionsObjID = (String[]) operationResult.Result;
 
-      Assert.IsTrue( transactionsObjID[ 0 ] == personList[ 0 ].objectId || transactionsObjID[ 0 ] == personList[ 1 ].objectId );
-      Assert.IsTrue( transactionsObjID[ 1 ] == personList[ 0 ].objectId || transactionsObjID[ 1 ] == personList[ 1 ].objectId );
-      Backendless.Data.Of( "Person" ).Remove( "name = '" + personList[ 0 ].name + "'" );
-      Backendless.Data.Of( "Person" ).Remove( "name = '" + personList[ 1 ].name + "'" );
+      Assert.True( transactionsObjID[ 0 ] == personList[ 0 ].objectId || transactionsObjID[ 0 ] == personList[ 1 ].objectId );
+      Assert.True( transactionsObjID[ 1 ] == personList[ 0 ].objectId || transactionsObjID[ 1 ] == personList[ 1 ].objectId );
+      Backendless.Data.Of( "Person" ).Remove( "age > '0'" );
     }
 
-    [TestMethod]
+    [Fact]
     public void TestCreateBulkObjects_CheckError()
     {
       UnitOfWork uow = new UnitOfWork();
@@ -107,9 +105,8 @@ namespace TestProject
 
       UnitOfWorkResult unitOfWorkRes = uow.Execute();
 
-      Assert.IsFalse( unitOfWorkRes.Success );
-      Assert.IsNull( unitOfWorkRes.Results );
+      Assert.False( unitOfWorkRes.Success );
+      Assert.Null( unitOfWorkRes.Results );
     }
   }
 }
-*/

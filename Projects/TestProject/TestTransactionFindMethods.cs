@@ -1,4 +1,4 @@
-﻿/*using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using BackendlessAPI;
 using BackendlessAPI.Persistence;
 using System;
@@ -9,13 +9,12 @@ using System.Linq;
 
 namespace TestProject
 {
-  [TestClass]
+  [Collection( "Tests" )]
   public class TestTransactionFindMethods
   {
-    [TestMethod]
+    [Fact]
     public void TestFind_AllObjects()
     {
-      List<Person> listPerson = new List<Person>();
       Person personCreated1 = new Person();
       personCreated1.age = 17;
       personCreated1.name = "Alexandra";
@@ -24,36 +23,31 @@ namespace TestProject
       personCreated2.age = 24;
       personCreated2.name = "Joe";
 
-      listPerson.Add( personCreated1 );
-      listPerson.Add( personCreated2 );
-      IList<String> objectIds = Backendless.Data.Of<Person>().Create( listPerson );
+      Backendless.Data.Of<Person>().Save( personCreated1 );
+      Backendless.Data.Of<Person>().Save( personCreated2 );
 
       UnitOfWork uow = new UnitOfWork();
-      OpResult opResultCreateBulkPerson = uow.BulkCreate( listPerson );
       OpResult opResultFindPerson = uow.Find( "Person", DataQueryBuilder.Create() );
-
       UnitOfWorkResult uowResult = uow.Execute();
 
-      Assert.IsTrue( uowResult.Success );
-      Dictionary<String, OperationResult> results = uowResult.Results;
-      Assert.IsTrue( 2 == results.Count );
-
-      Dictionary<Object, Object>[] resultFind = (Dictionary<Object, Object>[]) results[ opResultFindPerson.OpResultId ].Result;
-      Assert.IsTrue( 4 == resultFind.Length );
+      Assert.True( uowResult.Success );
+      var results = (Dictionary<Object, Object>[]) uowResult.Results[ opResultFindPerson.OpResultId ].Result;
+      Assert.True( results.Length == 2 );
+      Assert.True( ( (Dictionary<Object, Object>) results[ 0 ] ).Count == 7 );
 
       Backendless.Data.Of( "Person" ).Remove( "age > '15'" );
     }
 
-    [TestMethod]
+    [Fact]
     public void TestFind_CheckError()
     {
       UnitOfWork uow = new UnitOfWork();
+
       uow.Find( "Wrong table name", DataQueryBuilder.Create() );
       UnitOfWorkResult uowResult = uow.Execute();
 
-      Assert.IsFalse( uowResult.Success );
-      Assert.IsNull( uowResult.Results );
+      Assert.False( uowResult.Success );
+      Assert.Null( uowResult.Results );
     }
   }
 }
-*/

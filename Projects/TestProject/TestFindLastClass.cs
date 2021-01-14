@@ -30,11 +30,11 @@ namespace TestProject
 
       if( !String.IsNullOrEmpty( receivedPerson.objectId ) )
       {
-        Assert.True( receivedPerson.age == person.age );
-        Assert.True( receivedPerson.name == person.name );
+        Assert.True( receivedPerson.age == person.age, "Actual field 'age' is not equal expected" );
+        Assert.True( receivedPerson.name == person.name, "Actual field 'name' is not equal expected" );
       }
       else
-        Assert.True( false );
+        Assert.True( false, "Person is null" );
     }
 
     [Fact]
@@ -46,15 +46,15 @@ namespace TestProject
       {
         if( !String.IsNullOrEmpty( callback.objectId ) )
         {
-          Assert.True( callback.age == person.age );
-          Assert.True( callback.name == person.name );
+          Assert.True( callback.age == person.age, "Actual field 'age' is not equal expected" );
+          Assert.True( callback.name == person.name, "Actual field 'name' is not equal expected" );
         }
         else
-          Assert.True( false );
+          Assert.True( false, "Person's objectId is null" );
       },
       fault =>
       {
-        Assert.True( false );
+        Assert.True( false, "Person is null" );
       } ) );
     }
 
@@ -68,11 +68,11 @@ namespace TestProject
 
          if( !String.IsNullOrEmpty( receivedPerson.objectId ) )
          {
-           Assert.True( receivedPerson.age == person.age );
-           Assert.True( receivedPerson.name == person.name );
+           Assert.True( receivedPerson.age == person.age, "Actual field 'age' is not equal expected" );
+           Assert.True( receivedPerson.name == person.name, "Actual field 'name' is not equal expected" );
          }
          else
-           Assert.True( false );
+           Assert.True( false, "Person object is null" );
        } );
     }
   }

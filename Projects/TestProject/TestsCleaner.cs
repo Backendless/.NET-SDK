@@ -1,20 +1,9 @@
-﻿using System;
-using Xunit;
-using System.Collections.Generic;
-using System.Text;
+﻿using Xunit;
 
 namespace TestProject
 {
   public class TestsCleaner
   {
-    public class FindCleanup : IDisposable
-    {
-      public void Dispose()
-      {
-        Test_sHelper.DeleteTable( "Human" );
-      }
-    }
-
     [CollectionDefinition( "Tests" )]
     public class PersistenceFindCleanupRunner : ICollectionFixture<TestInitialization>
     {

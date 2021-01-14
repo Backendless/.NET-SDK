@@ -30,11 +30,11 @@ namespace TestProject
 
       if( !String.IsNullOrEmpty( receivedPerson[ "objectId" ].ToString() ) )
       {
-        Assert.True( (Double) receivedPerson[ "age" ] == Convert.ToDouble( person[ "age" ] ) );
-        Assert.True( receivedPerson[ "name" ].ToString() == person[ "name" ].ToString() );
+        Assert.True( (Double) receivedPerson[ "age" ] == Convert.ToDouble( person[ "age" ] ), "Actual field 'age' is not equal expected" );
+        Assert.True( receivedPerson[ "name" ].ToString() == person[ "name" ].ToString(), "Actual field 'name' is not equal expected" );
       }
       else
-        Assert.True( false );
+        Assert.True( false, "Person's objectId is null" );
     }
 
     [Fact]
@@ -47,11 +47,11 @@ namespace TestProject
 
         if( !String.IsNullOrEmpty( receivedPerson[ "objectId" ].ToString() ) )
         {
-          Assert.True( (Double) receivedPerson[ "age" ] == Convert.ToDouble( person[ "age" ] ) );
-          Assert.True( receivedPerson[ "name" ].ToString() == person[ "name" ].ToString() );
+          Assert.True( (Double) receivedPerson[ "age" ] == Convert.ToDouble( person[ "age" ] ), "Actual field 'age' is not equal expected" );
+          Assert.True( receivedPerson[ "name" ].ToString() == person[ "name" ].ToString(), "Actual field 'name' is not equal expected" );
         }
         else
-          Assert.True( false );
+          Assert.True( false, "Person's objectId is null" );
       } );
     }
 
@@ -64,15 +64,15 @@ namespace TestProject
       {
         if( !String.IsNullOrEmpty( callback[ "objectId" ].ToString() ) )
         {
-          Assert.True( (Double) callback[ "age" ] == Convert.ToDouble( person[ "age" ] ) );
-          Assert.True( callback[ "name" ].ToString() == person[ "name" ].ToString() );
+          Assert.True( (Double) callback[ "age" ] == Convert.ToDouble( person[ "age" ] ), "Actual field 'age' is not equal expected" );
+          Assert.True( callback[ "name" ].ToString() == person[ "name" ].ToString(), "Actual field 'name' is not equal expected" );
         }
         else
-          Assert.True( false );
+          Assert.True( false, "Person's objectId is null" );
       },
       fault =>
       {
-        Assert.True( false );
+        Assert.True( false, "Person is null" );
       } ) );
     }
   }

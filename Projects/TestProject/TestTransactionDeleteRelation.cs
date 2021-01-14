@@ -1,4 +1,4 @@
-﻿/*using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using BackendlessAPI;
 using BackendlessAPI.Persistence;
 using System;
@@ -7,143 +7,108 @@ using BackendlessAPI.Transaction;
 
 namespace TestProject
 {
-  [TestClass]
-  public class TestTransactionDeleteRelation
+  [Collection( "Tests" )]
+  public class TestTransactionDeleteRelation : IDisposable
   {
-    [TestCleanup]
-    public void TearDown()
+    public void Dispose()
     {
       Backendless.Data.Of( "Person" ).Remove( "age = '22'" );
       Backendless.Data.Of( "Order" ).Remove( "LastName = 'Smith'" );
     }
 
-    [TestMethod]
+    [Fact]
     public void TestDeleteRelation_Dictionary()
     {
-      List<Dictionary<String, Object>> listObjMap = new List<Dictionary<String, Object>>();
       Dictionary<String, Object> parentObj = new Dictionary<String, Object>();
       Dictionary<String, Object> childObj = new Dictionary<String, Object>();
 
       parentObj[ "name" ] = "Eva";
       parentObj[ "age" ] = 22;
+      parentObj[ "objectId" ] = Backendless.Data.Of( "Person" ).Save( parentObj )[ "objectId" ];
 
       childObj[ "LastName" ] = "Smith";
-      listObjMap.Add( parentObj );
-
-      IList<String> parentId = Backendless.Data.Of( "Person" ).Create( listObjMap );
-
-      parentObj[ "objectId" ] = parentId[ 0 ];
-      listObjMap.Clear();
-      listObjMap.Add( childObj );
-
-      List<String> childId = (List<String>) Backendless.Data.Of( "Order" ).Create( listObjMap );
-      listObjMap.Clear();
-      childObj[ "objectId" ] = childId[ 0 ];
-      listObjMap.Add( childObj );
+      childObj[ "objectId" ] = Backendless.Data.Of( "Order" ).Save( childObj )[ "objectId" ];
 
       String relationColumnName = "Surname";
-      Backendless.Data.Of( "Person" ).AddRelation( parentObj, relationColumnName, listObjMap.ToArray() );
+      Backendless.Data.Of( "Person" ).AddRelation( parentObj, relationColumnName, new Object[] { childObj } );
 
       DataQueryBuilder dqb = DataQueryBuilder.Create();
       dqb.SetRelationsDepth( 10 );
       dqb.SetRelationsPageSize( 10 );
 
-      IList<Dictionary<String, Object>> objectBefore_DeleteRelation = Backendless.Data.Of( "Person" ).Find( dqb );
-
-      Assert.IsTrue( objectBefore_DeleteRelation[ 0 ][ "Surname" ] != null );
-
-      listObjMap.Clear();
-      childObj[ "objectId" ] = childId[ 0 ];
-      listObjMap.Add( childObj );
+      Dictionary<String, Object> objectBefore_DeleteRelation = Backendless.Data.Of( "Person" ).FindById( (String) parentObj[ "objectId" ], dqb );
+      Assert.NotNull( objectBefore_DeleteRelation[ "Surname" ] );
 
       UnitOfWork uow = new UnitOfWork();
-      uow.DeleteRelation( "Person", parentId[ 0 ], relationColumnName, listObjMap );
-
+      uow.DeleteRelation( "Person", (String) parentObj[ "objectId" ], relationColumnName, new List<Dictionary<String, Object>> { childObj } );
       UnitOfWorkResult uowResult = uow.Execute();
 
-      Assert.IsTrue( uowResult.Success );
-      Assert.IsNotNull( uowResult.Results );
+      Assert.True( uowResult.Success );
+      Assert.NotNull( uowResult.Results );
 
-      IList<Dictionary<String, Object>> objectAfter_DeleteRelation = Backendless.Data.Of( "Person" ).Find( dqb );
-      Assert.IsNull( objectAfter_DeleteRelation[ 0 ][ "Surname" ] );
+      Dictionary<String, Object> objectAfter_DeleteRelation = Backendless.Data.Of( "Person" ).FindById( (String) parentObj[ "objectId" ], dqb );
+      Assert.True( ( (Object[]) objectAfter_DeleteRelation[ "Surname" ] ).Length == 0 );
     }
 
-    [TestMethod]
+    [Fact]
     public void TestDeleteRelation_Class()
     {
-      List<Person> listObjects = new List<Person>();
       Person personObject = new Person();
       personObject.age = 22;
       personObject.name = "Jia";
-      listObjects.Add( personObject );
 
-      List<Order> childObject = new List<Order>();
       Order orderObject = new Order();
       orderObject.LastName = "Smith";
 
-      personObject.objectId = Backendless.Data.Of<Person>().Create( listObjects )[ 0 ];
-
-      childObject.Add( orderObject );
-      orderObject.objectId = Backendless.Data.Of<Order>().Create( childObject )[ 0 ];
-
-      childObject.Clear();
-      childObject.Add( orderObject );
+      personObject.objectId = Backendless.Data.Of<Person>().Save( personObject ).objectId;
+      orderObject.objectId = Backendless.Data.Of<Order>().Save( orderObject ).objectId;
 
       String relationColumn = "Surname";
 
-      Backendless.Data.Of<Person>().AddRelation( personObject, relationColumn, childObject.ToArray() );
+      Backendless.Data.Of<Person>().AddRelation( personObject, relationColumn, new Object[] { orderObject } );
 
       DataQueryBuilder dqb = DataQueryBuilder.Create();
       dqb.SetRelationsDepth( 10 );
       dqb.SetRelationsPageSize( 10 );
 
-      IList<Dictionary<String, Object>> objectBefore_DeleteRelation = Backendless.Data.Of( "Person" ).Find( dqb );
+      Dictionary<String, Object> objectBefore_DeleteRelation = Backendless.Data.Of( "Person" ).FindById( personObject.objectId, dqb );
 
-      Assert.IsTrue( objectBefore_DeleteRelation[ 0 ][ "Surname" ] != null );
+      Assert.NotNull( objectBefore_DeleteRelation[ "Surname" ] );
 
       UnitOfWork uow = new UnitOfWork();
-      uow.DeleteRelation( personObject, relationColumn, childObject );
+      uow.DeleteRelation( personObject, relationColumn, new List<Order> { orderObject } );
       UnitOfWorkResult uowResult = uow.Execute();
 
-      Assert.IsTrue( uowResult.Success );
-      Assert.IsNotNull( uowResult.Results );
+      Assert.True( uowResult.Success );
+      Assert.NotNull( uowResult.Results );
 
-      IList<Dictionary<String, Object>> objectAfter_DeleteRelation = Backendless.Data.Of( "Person" ).Find( dqb );
-      Assert.IsNull( objectAfter_DeleteRelation[ 0 ][ "Surname" ] );
+      Dictionary<String, Object> objectAfter_DeleteRelation = Backendless.Data.Of( "Person" ).FindById( personObject.objectId, dqb );
+      Assert.True( ( (Object[]) objectAfter_DeleteRelation[ "Surname" ] ).Length == 0 );
     }
 
-    [TestMethod]
+    [Fact]
     public void TestDeleteRelation_OpResult()
     {
-      List<Person> listObjects = new List<Person>();
       Person personObject = new Person();
       personObject.age = 22;
       personObject.name = "Jia";
-      listObjects.Add( personObject );
 
-      List<Order> childObject = new List<Order>();
       Order orderObject = new Order();
       orderObject.LastName = "Smith";
 
-      personObject.objectId = Backendless.Data.Of<Person>().Create( listObjects )[ 0 ];
-
-      childObject.Add( orderObject );
-      orderObject.objectId = Backendless.Data.Of<Order>().Create( childObject )[ 0 ];
-
-      childObject.Clear();
-      childObject.Add( orderObject );
+      personObject.objectId = Backendless.Data.Of<Person>().Save( personObject ).objectId;
+      orderObject.objectId = Backendless.Data.Of<Order>().Save( orderObject ).objectId;
 
       String relationColumn = "Surname";
-
-      Backendless.Data.Of<Person>().AddRelation( personObject, relationColumn, childObject.ToArray() );
+      Backendless.Data.Of<Person>().AddRelation( personObject, relationColumn, new Object[] { orderObject } );
 
       DataQueryBuilder dqb = DataQueryBuilder.Create();
       dqb.SetRelationsDepth( 10 );
       dqb.SetRelationsPageSize( 10 );
 
-      IList<Dictionary<String, Object>> objectBefore_DeleteRelation = Backendless.Data.Of( "Person" ).Find( dqb );
+      Dictionary<String, Object> objectBefore_DeleteRelation = Backendless.Data.Of( "Person" ).FindById( personObject.objectId, dqb );
 
-      Assert.IsTrue( objectBefore_DeleteRelation[ 0 ][ "Surname" ] != null );
+      Assert.NotNull( objectBefore_DeleteRelation[ "Surname" ] );
 
       DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
       queryBuilder.SetWhereClause( "LastName in ('Smith')" );
@@ -153,98 +118,78 @@ namespace TestProject
       uow.DeleteRelation( personObject.GetType().Name, personObject.objectId, relationColumn, gifts );
       UnitOfWorkResult uowResult = uow.Execute();
 
-      Assert.IsTrue( uowResult.Success );
-      Assert.IsNotNull( uowResult.Results );
+      Assert.True( uowResult.Success );
+      Assert.NotNull( uowResult.Results );
 
-      IList<Dictionary<String, Object>> objectAfter_DeleteRelation = Backendless.Data.Of( "Person" ).Find( dqb );
-      Assert.IsNull( objectAfter_DeleteRelation[ 0 ][ "Surname" ] );
+      Dictionary<String, Object> objectAfter_DeleteRelation = Backendless.Data.Of( "Person" ).FindById( personObject.objectId, dqb );
+      Assert.True( ( (Object[]) objectAfter_DeleteRelation[ "Surname" ] ).Length == 0 );
     }
 
-    [TestMethod]
+    [Fact]
     public void TestDeleteRelation_WithId()
     {
-      List<Person> listObjects = new List<Person>();
       Person personObject = new Person();
       personObject.age = 22;
       personObject.name = "Jia";
-      listObjects.Add( personObject );
 
-      List<Order> childObject = new List<Order>();
       Order orderObject = new Order();
       orderObject.LastName = "Smith";
 
-      personObject.objectId = Backendless.Data.Of<Person>().Create( listObjects )[ 0 ];
-
-      childObject.Add( orderObject );
-      orderObject.objectId = Backendless.Data.Of<Order>().Create( childObject )[ 0 ];
-
-      childObject.Clear();
-      childObject.Add( orderObject );
+      personObject.objectId = Backendless.Data.Of<Person>().Save( personObject ).objectId;
+      orderObject.objectId = Backendless.Data.Of<Order>().Save( orderObject ).objectId;
 
       String relationColumn = "Surname";
-
-      Backendless.Data.Of<Person>().AddRelation( personObject, relationColumn, childObject.ToArray() );
+      Backendless.Data.Of<Person>().AddRelation( personObject, relationColumn, new Object[] { orderObject } );
 
       DataQueryBuilder dqb = DataQueryBuilder.Create();
       dqb.SetRelationsDepth( 10 );
       dqb.SetRelationsPageSize( 10 );
 
-      IList<Dictionary<String, Object>> objectBefore_DeleteRelation = Backendless.Data.Of( "Person" ).Find( dqb );
-
-      Assert.IsTrue( objectBefore_DeleteRelation[ 0 ][ "Surname" ] != null );
+      Dictionary<String, Object> objectBefore_DeleteRelation = Backendless.Data.Of( "Person" ).FindById( personObject.objectId, dqb );
+      Assert.NotNull( objectBefore_DeleteRelation[ "Surname" ] );
 
       UnitOfWork unitOfWork = new UnitOfWork();
       unitOfWork.DeleteRelation( personObject.GetType().Name, personObject.objectId, relationColumn, new String[] { orderObject.objectId } );
       UnitOfWorkResult uowResult = unitOfWork.Execute();
 
-      Assert.IsTrue( uowResult.Success );
-      Assert.IsNotNull( uowResult.Results );
+      Assert.True( uowResult.Success );
+      Assert.NotNull( uowResult.Results );
 
-      IList<Dictionary<String, Object>> objectAfter_DeleteRelation = Backendless.Data.Of( "Person" ).Find( dqb );
-      Assert.IsNull( objectAfter_DeleteRelation[ 0 ][ "Surname" ] );
+      Dictionary<String, Object> objectAfter_DeleteRelation = Backendless.Data.Of( "Person" ).FindById( personObject.objectId, dqb );
+      Assert.True( ( (Object[]) objectAfter_DeleteRelation[ "Surname" ] ).Length == 0 );
     }
 
-    [TestMethod]
+    [Fact]
     public void TestDeleteRaltion_CheckError()
     {
-      List<Person> listObjects = new List<Person>();
       Person personObject = new Person();
       personObject.age = 22;
       personObject.name = "Jia";
-      listObjects.Add( personObject );
 
-      List<Order> childObject = new List<Order>();
       Order orderObject = new Order();
       orderObject.LastName = "Smith";
 
-      personObject.objectId = Backendless.Data.Of<Person>().Create( listObjects )[ 0 ];
+      personObject.objectId = Backendless.Data.Of<Person>().Save( personObject ).objectId;
+      orderObject.objectId = Backendless.Data.Of<Order>().Save( orderObject ).objectId;
 
-      childObject.Add( orderObject );
-      orderObject.objectId = Backendless.Data.Of<Order>().Create( childObject )[ 0 ];
-
-      childObject.Clear();
-      childObject.Add( orderObject );
-
-      Backendless.Data.Of<Person>().AddRelation( personObject, "Surname", childObject.ToArray() );
+      Backendless.Data.Of<Person>().AddRelation( personObject, "Surname", new Object[] { orderObject } );
 
       DataQueryBuilder dqb = DataQueryBuilder.Create();
       dqb.SetRelationsDepth( 10 );
       dqb.SetRelationsPageSize( 10 );
 
-      IList<Dictionary<String, Object>> objectBefore_DeleteRelation = Backendless.Data.Of( "Person" ).Find( dqb );
-
-      Assert.IsTrue( objectBefore_DeleteRelation[ 0 ][ "Surname" ] != null );
+      Dictionary<String, Object> objectBefore_DeleteRelation = Backendless.Data.Of( "Person" ).FindById( personObject.objectId, dqb );
+      Assert.NotNull( objectBefore_DeleteRelation[ "Surname" ] );
 
       UnitOfWork uow = new UnitOfWork();
-      uow.DeleteRelation( personObject, "Wrong column name" , childObject );
+      uow.DeleteRelation( personObject, "Wrong column name", new List<Order> { orderObject } );
       UnitOfWorkResult uowResult = uow.Execute();
 
-      Assert.IsFalse( uowResult.Success );
-      Assert.IsNull( uowResult.Results );
+      Assert.False( uowResult.Success );
+      Assert.Null( uowResult.Results );
 
-      IList<Dictionary<String, Object>> objectAfter_DeleteRelation = Backendless.Data.Of( "Person" ).Find( dqb );
-      Assert.IsNotNull( objectAfter_DeleteRelation[ 0 ][ "Surname" ] );
+      Dictionary<String, Object> objectAfter_DeleteRelation = Backendless.Data.Of( "Person" ).FindById( personObject.objectId, dqb );
+      Assert.NotNull( objectAfter_DeleteRelation[ "Surname" ] );
     }
   }
 }
-*/

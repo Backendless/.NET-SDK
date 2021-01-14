@@ -30,11 +30,11 @@ namespace TestProject
 
       if( !String.IsNullOrEmpty( receivedPerson.objectId ) )
       {
-        Assert.True( receivedPerson.age == person.age );
-        Assert.True( receivedPerson.name == person.name );
+        Assert.True( receivedPerson.age == person.age, "Received person object is not equal actual" );
+        Assert.True( receivedPerson.name == person.name, "Received person object is not equal actual" );
       }
       else
-        Assert.True( false );
+        Assert.True( false, "Callback's objectId is null" );
     }
 
     [Fact]
@@ -46,8 +46,8 @@ namespace TestProject
       {
         if( !String.IsNullOrEmpty( callback.objectId ) )
         {
-          Assert.True( callback.age == person.age );
-          Assert.True( callback.name == person.name );
+          Assert.True( callback.age == person.age, "Received person object is not equal actual" );
+          Assert.True( callback.name == person.name, "Received person object is not equal actual" );
         }
         else
           Assert.True( false, "Callback's objectId is null" );
@@ -68,11 +68,11 @@ namespace TestProject
 
         if( !String.IsNullOrEmpty( receivedPerson.objectId ) )
         {
-          Assert.True( receivedPerson.age == person.age );
-          Assert.True( receivedPerson.name == person.name );
+          Assert.True( receivedPerson.age == person.age, "Received person object is not equal actual" );
+          Assert.True( receivedPerson.name == person.name, "Received person object is not equal actual" );
         }
         else
-          Assert.True( false );
+          Assert.True( false, "Actual Person object is not equal expected" );
       } );
     }
   }

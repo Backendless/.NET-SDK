@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace TestProject
 {
-  [Collection("Tests")]
+  [Collection( "Tests" )]
   public class ExcludePropertiesTests : IDisposable
   {
     Dictionary<String, Object> data = new Dictionary<String, Object>();
@@ -38,11 +38,11 @@ namespace TestProject
 
       IList<Dictionary<String, Object>> res = Backendless.Data.Of( "Person" ).Find( queryBuilder );
 
-      Assert.False( res[0].ContainsKey( "name" ), "First object is contains key 'name'" );
-      Assert.False( res[0].ContainsKey( "age" ), "First object is contains key 'age'" );
-                    
-      Assert.False( res[1].ContainsKey( "name" ), "First object is contains key 'name'" );
-      Assert.False( res[1].ContainsKey( "age" ), "First object is contains key 'age'" );
+      Assert.False( res[ 0 ].ContainsKey( "name" ), "First object is contains key 'name'" );
+      Assert.False( res[ 0 ].ContainsKey( "age" ), "First object is contains key 'age'" );
+
+      Assert.False( res[ 1 ].ContainsKey( "name" ), "First object is contains key 'name'" );
+      Assert.False( res[ 1 ].ContainsKey( "age" ), "First object is contains key 'age'" );
     }
 
     [Fact]
@@ -82,6 +82,8 @@ namespace TestProject
 
       Assert.True( res[ 0 ].ContainsKey( "adress" ), "First object does not contain 'adress' field" );
       Assert.True( res[ 1 ].ContainsKey( "adress" ), "Second object does not contain 'adress' field" );
+
+      Test_sHelper.DeleteTable( "Location" );
     }
   }
 }

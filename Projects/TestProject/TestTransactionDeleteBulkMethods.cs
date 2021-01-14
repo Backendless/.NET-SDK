@@ -1,4 +1,4 @@
-﻿/*using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using BackendlessAPI;
 using BackendlessAPI.Persistence;
 using System;
@@ -7,10 +7,10 @@ using BackendlessAPI.Transaction;
 
 namespace TestProject
 {
-  [TestClass]
+  [Collection( "Tests" )]
   public class TestTransactionDeleteBulkMethods
   {
-    [TestMethod]
+    [Fact]
     public void TestDeleteBulkObjects_Dictionary()
     {
       List<Dictionary<String, Object>> objectsMaps = new List<Dictionary<String, Object>>();
@@ -27,15 +27,14 @@ namespace TestProject
       uow.BulkDelete( "Person", objectIds.ToArray() );
       UnitOfWorkResult uowResult = uow.Execute();
 
-      Assert.IsTrue( uowResult.Success );
-      Assert.IsNotNull( uowResult.Results );
-
       IList<Dictionary<String, Object>> personMaps = Backendless.Data.Of( "Person" ).Find();
 
-      Assert.IsTrue( personMaps.Count == 0 );
+      Assert.True( uowResult.Success );
+      Assert.NotNull( uowResult.Results );
+      Assert.True( personMaps.Count == 0 );
     }
 
-    [TestMethod]
+    [Fact]
     public void TestDeleteBulkObjects_Class()
     {
       List<Person> personList = new List<Person>();
@@ -55,18 +54,16 @@ namespace TestProject
 
       UnitOfWork uow = new UnitOfWork();
       uow.BulkDelete( personList );
-
       UnitOfWorkResult uowResult = uow.Execute();
-
-      Assert.IsTrue( uowResult.Success );
-      Assert.IsNotNull( uowResult.Results );
 
       IList<Person> listCheckPerson = Backendless.Data.Of<Person>().Find();
 
-      Assert.IsTrue( listCheckPerson.Count == 0 );
+      Assert.True( uowResult.Success );
+      Assert.NotNull( uowResult.Results );
+      Assert.True( listCheckPerson.Count == 0 );
     }
 
-    [TestMethod]
+    [Fact]
     public void TestDeleteBulkObjects_OpResult()
     {
       List<Person> personList = new List<Person>();
@@ -79,25 +76,24 @@ namespace TestProject
       personList.Add( firstPerson );
       personList.Add( secondPerson );
 
-      UnitOfWork uow = new UnitOfWork();
+      Backendless.Data.Of<Person>().Create( personList );
 
       DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
       queryBuilder.SetWhereClause( "age > '10'" );
 
-      OpResult invalidName = uow.Find( "Person", queryBuilder );
-
-      uow.BulkDelete( invalidName );
-
+      UnitOfWork uow = new UnitOfWork();
+      OpResult opRes = uow.Find( "Person", queryBuilder );
+      uow.BulkDelete( opRes );
       UnitOfWorkResult uowResult = uow.Execute();
 
-      Assert.IsTrue( uowResult.Success );
-      Assert.IsNotNull( uowResult.Results );
-
       IList<Person> listCheckPerson = Backendless.Data.Of<Person>().Find();
-      Assert.IsTrue( listCheckPerson.Count == 0 );
+
+      Assert.True( uowResult.Success );
+      Assert.NotNull( uowResult.Results );
+      Assert.True( listCheckPerson.Count == 0 );
     }
 
-    [TestMethod]
+    [Fact]
     public void TestDeteleBulkObjects_WithId()
     {
       List<Person> personList = new List<Person>();
@@ -111,20 +107,19 @@ namespace TestProject
       personList.Add( secondPersonObj );
 
       List<String> objIdToDel = (List<String>) Backendless.Data.Of<Person>().Create( personList );
+
       UnitOfWork uow = new UnitOfWork();
-
       uow.BulkDelete( "Person", objIdToDel.ToArray() );
-
       UnitOfWorkResult uowResult = uow.Execute();
 
-      Assert.IsTrue( uowResult.Success );
-      Assert.IsNotNull( uowResult.Results );
-
       IList<Person> listCheckPerson = Backendless.Data.Of<Person>().Find();
-      Assert.IsTrue( listCheckPerson.Count == 0 );
+
+      Assert.True( uowResult.Success );
+      Assert.NotNull( uowResult.Results );
+      Assert.True( listCheckPerson.Count == 0 );
     }
 
-    [TestMethod]
+    [Fact]
     public void TestDeleteBulkObjects_WhereClause()
     {
       List<Dictionary<String, Object>> personList = new List<Dictionary<String, Object>>();
@@ -145,19 +140,30 @@ namespace TestProject
       Backendless.Data.Of( "Person" ).Create( personList );
 
       UnitOfWork uow = new UnitOfWork();
-
       uow.BulkDelete( "Person", "age > '45'" );
-
       UnitOfWorkResult uowResult = uow.Execute();
 
-      Assert.IsTrue( uowResult.Success );
-      Assert.IsNotNull( uowResult.Results );
+      Assert.True( uowResult.Success );
+      Assert.NotNull( uowResult.Results );
 
       IList<Person> listCheckPerson = Backendless.Data.Of<Person>().Find();
-      Assert.IsTrue( listCheckPerson.Count == 1 );
+      Assert.True( listCheckPerson.Count == 1 );
 
       Backendless.Data.Of( "Person" ).Remove( "age = '20'" );
     }
+
+    [Fact]
+    public void TestDeleteBulkObjects_CheckError()
+    {
+      List<String> emptyObjectId = new List<String>();
+      emptyObjectId.Add( "empty objectId" );
+
+      UnitOfWork uow = new UnitOfWork();
+      uow.BulkDelete( "Wrong table name", emptyObjectId.ToArray() );
+      UnitOfWorkResult uowResult = uow.Execute();
+
+      Assert.False( uowResult.Success );
+      Assert.Null( uowResult.Results );
+    }
   }
 }
-*/

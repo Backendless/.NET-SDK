@@ -1,101 +1,16 @@
-/*using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using BackendlessAPI;
 using BackendlessAPI.Persistence;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Net.Http;
-using System.Text;
 
 
 namespace TestProject
 {
-  [TestClass]
-  public class GeometryDataTypesTestClass
+  [Collection( "Tests" )]
+  public class GeometryDataTypesTestClass : IClassFixture<GeometryTestsInitializator>
   {
-    [ClassInitialize]
-    public static void TestGeometrySetupData( TestContext context )
-    {
-      Backendless.UserService.Login( "hdhdhd@gmail.com", "123234" );
-
-      const String POINT_NAME = "POINT";
-      const String LINESTRING_NAME = "LINESTRING";
-      const String POLYGON_NAME = "POLYGON";
-      const String GEOMETRY_NAME = "GEOMETRY";
-
-      Dictionary<String, Object> data = new Dictionary<String, Object>();
-      data.Add( "GeoDataName", "Geo data name" );
-      Dictionary<String, Object> deleteObject = Backendless.Data.Of( "GeoData" ).Save( data );
-      Backendless.Data.Of( "GeoData" ).Remove( deleteObject );
-
-      CreateColumn( POINT_NAME, "P1" );
-
-      data.Add( "P1", new Point().SetX( 40.41 ).SetY( -3.706 ) );
-
-      CreateColumn( POINT_NAME, "pickupLocation" );
-
-      CreateColumn( LINESTRING_NAME, "LineValue" );
-
-      List<Point> list = new List<Point>();
-      list.Add( new Point().SetX( 30.1 ).SetY( 10.05 ) );
-      list.Add( new Point().SetX( 30.2 ).SetY( 10.04 ) );
-
-      LineString finalLine = new LineString( list );
-      data.Add( "LineValue", finalLine );
-
-      CreateColumn( POLYGON_NAME, "PolyValue" );
-
-      List<Point> tempList = new List<Point>();
-
-      tempList.Add( new Point().SetX( -77.05786152 ).SetY( 38.87261877 ) );
-      tempList.Add( new Point().SetX( -77.0546978 ).SetY( 38.87296123 ) );
-      tempList.Add( new Point().SetX( -77.05317431 ).SetY( 38.87061405 ) );
-      tempList.Add( new Point().SetX( -77.0555883 ).SetY( 38.86882611 ) );
-      tempList.Add( new Point().SetX( -77.05847435 ).SetY( 38.87002898 ) );
-      tempList.Add( new Point().SetX( -77.05786152 ).SetY( 38.87261877 ) );
-
-      List<Point> tempList2 = new List<Point>();
-
-      tempList2.Add( new Point().SetX( -77.05579215 ).SetY( 38.87026286 ) );
-      tempList2.Add( new Point().SetX( -77.05491238 ).SetY( 38.87087264 ) );
-      tempList2.Add( new Point().SetX( -77.05544882 ).SetY( 38.87170794 ) );
-      tempList2.Add( new Point().SetX( -77.05669337 ).SetY( 38.87156594 ) );
-      tempList2.Add( new Point().SetX( -77.05684357 ).SetY( 38.87072228 ) );
-      tempList2.Add( new Point().SetX( -77.05579215 ).SetY( 38.87026286 ) );
-
-      LineString tempLines = new LineString( tempList2 );
-      List<LineString> lines = new List<LineString>();
-      lines.Add( tempLines );
-
-      Polygon poly = new Polygon( tempList, lines );
-      data.Add( "PolyValue", poly );
-
-      CreateColumn( GEOMETRY_NAME, "GeoValue" );
-
-      data.Add( "GeoValue", new Point().SetX( 10.2 ).SetY( 48.5 ) );
-
-
-      Backendless.Data.Of( "GeoData" ).Save( data );
-    }
-
-    [ClassCleanup]
-    public static void ClassCleanup()
-    {
-      TestInitialization.DeleteTable( "GeoData" );
-    }
-
-    static void CreateColumn( String typeName, String columnName, bool TableIsCreated = true )
-    {
-      HttpRequestMessage requestMessage = new HttpRequestMessage( HttpMethod.Post, $"{TestInitialization.URL_BASE_ADRESS}/" + TestInitialization.APP_API_KEY + "/console/data/tables/GeoData/columns" );
-
-      requestMessage.Content = new StringContent( "{\"metaInfo\":{\"srsId\":4326},\"name\":\"" + columnName + "\"," +
-                        "\"dataType\":\"" + typeName + "\",\"required\":false,\"unique\":false,\"indexed\":false}", Encoding.UTF8, "application/json" );
-
-      Task.WaitAll( TestInitialization.client.SendAsync( requestMessage ) );
-    }
-
-    [TestMethod]
+    [Fact]
     public void PullAndCompareGeoObjects()
     {
       IList<Dictionary<String, Object>> pers = Backendless.Data.Of( "GeoData" ).Find();
@@ -118,34 +33,32 @@ namespace TestProject
           result = new Dictionary<String, object>( entry );
           break;
         }
-      Assert.AreEqual( result[ "P1" ], point, "Point WKT data are not equals" );
-      Assert.AreEqual( result[ "GeoValue" ], geometry, "Geometry(Point) WKT data are not equals" );
-      Assert.AreEqual( result[ "LineValue" ], line, "LineString WKT data are not equals" );
-      Assert.AreEqual( result[ "PolyValue" ], poly, "Polygon WKT data are not equals" );
+      Assert.Equal( result[ "P1" ], point );
+      Assert.Equal( result[ "GeoValue" ], geometry );
+      Assert.Equal( result[ "LineValue" ], line );
+      Assert.Equal( result[ "PolyValue" ], poly );
     }
 
-    [TestMethod]
-    public void TestMethodPoint()
+    [Fact]
+    public void FactPoint()
     {
       WKTParser wkt = new WKTParser();
 
       Geometry geometry = wkt.Read( "POINT (30.05 10.1)" );
-      Type t = typeof( Point );
-      Assert.IsInstanceOfType( geometry, t, "Type is not a \"Point\" class" );
+      Assert.IsType<Point>( geometry );
 
       Point point = (Point) geometry;
 
-      Assert.AreEqual( point.GetX(), 30.05, "Point X was not equal to double 30.05" );
-      Assert.AreEqual( point.GetY(), 10.1, "Point Y was not equal to double 10.1" );
+      Assert.Equal( 30.05, point.GetX() );
+      Assert.Equal( 10.1, point.GetY() );
     }
-    [TestMethod]
-    public void TestMethodLineString()
+    [Fact]
+    public void FactLineString()
     {
       WKTParser wkt = new WKTParser();
 
       Geometry geometry = wkt.Read( "LINESTRING(5.0 10.2, 3.05 8.6, 2.04 11.006)" );
-      Type t = typeof( LineString );
-      Assert.IsInstanceOfType( geometry, t, "Type is not a \"LineString\"" );
+      Assert.IsType<LineString>( geometry );
       List<Point> list = new List<Point>();
       list.Add( new Point().SetX( 5.0 ).SetY( 10.2 ) );
       list.Add( new Point().SetX( 3.05 ).SetY( 8.6 ) );
@@ -154,15 +67,14 @@ namespace TestProject
       LineString finalLine = new LineString( list );
       LineString line = (LineString) geometry;
 
-      Assert.AreEqual( line, finalLine, "Points was not Equal" );
+      Assert.Equal( line, finalLine );
     }
-    [TestMethod]
-    public void TestMethodPolygon()
+    [Fact]
+    public void FactPolygon()
     {
       WKTParser wkt = new WKTParser();
       Geometry geometry = wkt.Read( "POLYGON((1.01 1.02, 2.01 2.02, 3.01 3.02, 1.05 2.02), (1.013 1.014, 1.015 1.016))" );
-      Type t = typeof( Polygon );
-      Assert.IsInstanceOfType( geometry, t, "Type is not equal \"Polygon\"" );
+      Assert.IsType<Polygon>( geometry );
 
       List<Point> tempList = new List<Point>();
       tempList.Add( new Point().SetX( 1.01 ).SetY( 1.02 ) );
@@ -183,31 +95,28 @@ namespace TestProject
 
       Polygon polygon = (Polygon) geometry;
 
-      Assert.AreEqual( polygon, poly, "Object \"Polygon\" is not equal actual object" );
+      Assert.Equal( polygon, poly );
     }
-    [TestMethod]
+    [Fact]
     public void TestJSONPointMethod()
     {
       GeoJSONParser<Point> geo = new GeoJSONParser<Point>();
       Geometry geometry = geo.Read( "{ \"type\": \"Point\", \"coordinates\": [ 1.01, 1.02 ] }" );
-      Type t = typeof( Point );
-      Assert.IsInstanceOfType( geometry, t, "Type is not \"Point\" class" );
+      Assert.IsType<Point>( geometry );
 
       Point point = (Point) geometry;
 
-
-      Assert.AreEqual( point.GetX(), 1.01, "Point X was not equal to double 1.01" );
-      Assert.AreEqual( point.GetY(), 1.02, "Point Y was not equal to double 1.02" );
+      Assert.Equal( 1.01, point.GetX() );
+      Assert.Equal( 1.02, point.GetY() );
 
     }
-    [TestMethod]
+    [Fact]
     public void TestJSONLineStringMethod()
     {
       GeoJSONParser<LineString> geo = new GeoJSONParser<LineString>();
       Geometry geometry = geo.Read( "{ \"type\": \"LineString\", \"coordinates\": [ [ 1.01, 1.02 ]," +
                          "[ 2.01, 2.02 ], [ 3.01, 3.02 ], [ 4.01, 4.02 ] ] }" );
-      Type t = typeof( LineString );
-      Assert.IsInstanceOfType( geometry, t, "Type is not \"LineString\" class" );
+      Assert.IsType<LineString>( geometry );
 
       List<Point> list = new List<Point>();
       list.Add( new Point().SetX( 1.01 ).SetY( 1.02 ) );
@@ -218,16 +127,15 @@ namespace TestProject
       LineString listLineStr = new LineString( list );
       LineString line = (LineString) geometry;
 
-      Assert.AreEqual( line, listLineStr, "Points was not Equal" );
+      Assert.Equal( line, listLineStr );
     }
-    [TestMethod]
+    [Fact]
     public void TestJSONPolygonMethod()
     {
       GeoJSONParser<Polygon> geo = new GeoJSONParser<Polygon>();
       Geometry geometry = geo.Read( "{ \"type\": \"Polygon\", \"coordinates\": [ [ [ 1.01, 1.02 ]," +
                          "[ 2.01, 2.02 ], [ 2.02, 2.03 ], [ 1.015, 1.017 ] ], [ [ 1.013, 1.014 ], [ 1.015, 1.016 ] ] ] }" );
-      Type t = typeof( Polygon );
-      Assert.IsInstanceOfType( geometry, t, "Type is not \"Polygon\" class" );
+      Assert.IsType<Polygon>( geometry );
 
       List<Point> tempList = new List<Point>();
       tempList.Add( new Point().SetX( 1.01 ).SetY( 1.02 ) );
@@ -247,10 +155,10 @@ namespace TestProject
       Polygon poly = new Polygon( tempList, lines );
       Polygon polygon = (Polygon) geometry;
 
-      Assert.AreEqual( polygon, poly, "Object \"Polygon\" is not equal actual object" );
+      Assert.Equal( polygon, poly );
     }
 
-    [TestMethod]
+    [Fact]
     public void TestReceiveGeo()
     {
       IList<Dictionary<String, Object>> result = Backendless.Data.Of( "GeoData" ).Find();
@@ -264,9 +172,9 @@ namespace TestProject
           break;
         }
 
-      Assert.AreEqual( point.AsWKT(), StrCoordinates, "Expected object Point VKT is not equal to the current object" );
+      Assert.Equal( point.AsWKT(), StrCoordinates );
     }
-    [TestMethod]
+    [Fact]
     public void TestPointSave()
     {
       Dictionary<String, Object> pers = new Dictionary<String, Object>();
@@ -276,9 +184,9 @@ namespace TestProject
       pers = Backendless.Data.Of( "GeoData" ).Save( pers );
       Dictionary<String, Object> result = Backendless.Data.Of( "GeoData" ).FindById( (String) pers[ "objectId" ] );
 
-      Assert.AreEqual( (Point) result[ "pickupLocation" ], new Point().SetX( 30.05 ).SetY( 10.1 ), "Saved Point object equal to received" );
+      Assert.Equal( (Point) result[ "pickupLocation" ], new Point().SetX( 30.05 ).SetY( 10.1 ) );
     }
-    [TestMethod]
+    [Fact]
     public void TestLineStringSave()
     {
       Dictionary<String, Object> pers = new Dictionary<String, Object>();
@@ -293,9 +201,9 @@ namespace TestProject
       pers = Backendless.Data.Of( "GeoData" ).Save( pers );
       Dictionary<String, Object> result = Backendless.Data.Of( "GeoData" ).FindById( (String) pers[ "objectId" ] );
 
-      Assert.AreEqual( (LineString) result[ "LineValue" ], finalLine, "Saved LineString object equal to received" );
+      Assert.Equal( (LineString) result[ "LineValue" ], finalLine );
     }
-    [TestMethod]
+    [Fact]
     public void TestPolygonSave()
     {
       Dictionary<String, Object> pers = new Dictionary<String, Object>();
@@ -328,9 +236,9 @@ namespace TestProject
       pers = Backendless.Data.Of( "GeoData" ).Save( pers );
       Dictionary<String, Object> result = Backendless.Data.Of( "GeoData" ).FindById( (String) pers[ "objectId" ] );
 
-      Assert.AreEqual( (Polygon) result[ "PolyValue" ], poly, "Saved Polygon object equal to received" );
+      Assert.Equal( (Polygon) result[ "PolyValue" ], poly );
     }
-    [TestMethod]
+    [Fact]
     public void PointWKTEquals()
     {
       WKTParser wkt = new WKTParser();
@@ -338,9 +246,9 @@ namespace TestProject
 
       Point point = (Point) wkt.Read( StrCoordinates );
 
-      Assert.AreEqual( point.AsWKT(), StrCoordinates, "Point WKT data are not equals" );
+      Assert.Equal( point.AsWKT(), StrCoordinates );
     }
-    [TestMethod]
+    [Fact]
     public void LineStringWKTEquals()
     {
       WKTParser wkt = new WKTParser();
@@ -348,9 +256,9 @@ namespace TestProject
 
       LineString line = (LineString) wkt.Read( StrCoordinates );
 
-      Assert.AreEqual( line.AsWKT(), StrCoordinates, "LineString WKT data are not equals" );
+      Assert.Equal( line.AsWKT(), StrCoordinates );
     }
-    [TestMethod]
+    [Fact]
     public void PolygonWKTEquals()
     {
       WKTParser wkt = new WKTParser();
@@ -360,8 +268,7 @@ namespace TestProject
       "-77.05579215 38.87026286))";
 
       Polygon poly = (Polygon) wkt.Read( StrCoordinates );
-      Assert.AreEqual( poly.AsWKT(), StrCoordinates, "Polygon WKT data are not equals" );
+      Assert.Equal( poly.AsWKT(), StrCoordinates );
     }
   }
 }
-*/

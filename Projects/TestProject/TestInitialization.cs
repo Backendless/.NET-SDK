@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using BackendlessAPI;
 
 namespace TestProject
@@ -14,6 +15,9 @@ namespace TestProject
       Backendless.UserService.Login( "hdhdhd@gmail.com", "123234" );
       Test_sHelper.CreateDefaultTable( "Person" );
       Test_sHelper.CreateDefaultTable( "Order" );
+      Test_sHelper.CreateDefaultTable( "Table1" );
+      Test_sHelper.CreateDefaultColumn( "Person", "name", "string" );
+      Test_sHelper.CreateDefaultColumn( "Person", "age", "int" );
       Test_sHelper.CreateRelationColumnOneToMany( "Person", "Order", "Surname" );
     }
 
@@ -22,6 +26,7 @@ namespace TestProject
       Test_sHelper.DeleteTable( "Person" );
       Test_sHelper.DeleteTable( "Location" );
       Test_sHelper.DeleteTable( "Order" );
+      Test_sHelper.DeleteTable( "Table1" );
     }
   }
 }

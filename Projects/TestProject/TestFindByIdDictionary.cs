@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace TestProject
 {
-  [Collection("Tests")]
+  [Collection( "Tests" )]
   public class TestFindByIdDictionary : IDisposable
   {
     Dictionary<String, Object> person = new Dictionary<String, Object>();
@@ -31,8 +31,8 @@ namespace TestProject
       queryBuilder.AddProperties( "age" );
       Dictionary<String, Object> result = Backendless.Data.Of( "Person" ).FindById( person, queryBuilder );
       Assert.NotNull( result );
-      Assert.False( result.ContainsKey( "name" ) );
-      Assert.True( result.ContainsKey( "age" ) );
+      Assert.False( result.ContainsKey( "name" ), "Person is not contain 'name' key" );
+      Assert.True( result.ContainsKey( "age" ), "Person is not contain 'age' key" );
     }
 
     [Fact]
@@ -46,12 +46,12 @@ namespace TestProject
       callback =>
       {
         Assert.NotNull( callback );
-        Assert.False( callback.ContainsKey( "name" ) );
-        Assert.True( callback.ContainsKey( "age" ) );
+        Assert.False( callback.ContainsKey( "name" ), "Person is not contain 'name' key" );
+        Assert.True( callback.ContainsKey( "age" ), "Person is not contain 'age' key" );
       },
       fault =>
       {
-        throw new ArgumentException( "Error" );
+        Assert.True( false, "Person not found" );
       } ) );
     }
 
@@ -65,14 +65,14 @@ namespace TestProject
       Dictionary<String, Object> result = Backendless.Data.Of( "Person" ).FindById( person, queryBuilder );
 
       Assert.NotNull( result );
-      Assert.False( result.ContainsKey( "name" ) );
-      Assert.True( result.ContainsKey( "age" ) );
+      Assert.False( result.ContainsKey( "name" ), "Person is not contain 'name' key" );
+      Assert.True( result.ContainsKey( "age" ), "Person is not contain 'age' key" );
     }
 
     [Fact]
     public void TestFindById_Dictionary_Async()
     {
-      person["objectId"] = Backendless.Data.Of( "Person" ).Save( person )["objectId"];
+      person[ "objectId" ] = Backendless.Data.Of( "Person" ).Save( person )[ "objectId" ];
 
       DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
       queryBuilder.AddProperties( "age" );
@@ -80,12 +80,12 @@ namespace TestProject
       callback =>
       {
         Assert.NotNull( callback );
-        Assert.False( callback.ContainsKey( "name" ) );
-        Assert.True( callback.ContainsKey( "age" ) );
+        Assert.False( callback.ContainsKey( "name" ), "Person is not contain 'name' key" );
+        Assert.True( callback.ContainsKey( "age" ), "Person is not contain 'age' key" );
       },
       fault =>
       {
-        Assert.True( false );
+        Assert.True( false, "Person not found" );
       } ) );
     }
   }
