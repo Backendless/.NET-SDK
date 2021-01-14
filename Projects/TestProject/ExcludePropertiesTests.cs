@@ -82,8 +82,6 @@ namespace TestProject
 
       Assert.True( res[ 0 ].ContainsKey( "adress" ), "First object does not contain 'adress' field" );
       Assert.True( res[ 1 ].ContainsKey( "adress" ), "Second object does not contain 'adress' field" );
-
-      Test_sHelper.DeleteTable( "Location" );
     }
   }
 }

@@ -13,10 +13,10 @@ namespace TestProject
 {
   public static class Test_sHelper
   {
-    internal static readonly String APP_API_KEY = //"F8F82BF0-414F-36CB-FFE1-303FA538ED00";
+    internal static readonly String APP_API_KEY = //File.ReadLines( path ).ToList()[ 0 ];
     Environment.GetEnvironmentVariable( "TEST_APP_ID" );
 
-    internal static readonly String DOTNET_API_KEY = //"AB320716-358B-4BBF-AF9D-4F4B98F03363";
+    internal static readonly String DOTNET_API_KEY = //File.ReadLines( path ).ToList()[ 1 ];
     Environment.GetEnvironmentVariable( "TEST_DOTNET_KEY" );
 
     internal static HttpClient client;
@@ -24,10 +24,10 @@ namespace TestProject
 
     private const String path = @"f:\specialproject\authdata.txt";
     internal static readonly String Login = Environment.GetEnvironmentVariable( "TEST_AUTH_LOGIN" );
-                                      //File.ReadLines( path ).First(); //login in this file must be the first line.
+                                      //File.ReadLines( path ).ToList()[2]; //login in this file must be the first line.
 
     internal static readonly String Password = Environment.GetEnvironmentVariable( "TEST_AUTH_PASSWORD" );
-                                          //File.ReadLines( path ).Last();//password - as second line.
+                                          //File.ReadLines( path ).ToList()[3];//password - as second line.
 
     private static String _auth_token;
     internal static String Auth_Token
