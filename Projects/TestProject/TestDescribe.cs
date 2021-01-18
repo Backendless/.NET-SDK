@@ -16,7 +16,7 @@ namespace TestProject
       var checker = Backendless.Data.Describe( "Person" );
 
       Assert.IsType<List<ObjectProperty>>( checker );
-      Assert.True( checker.Count.Equals( 7 ) );
+      Assert.True( checker.Count.Equals( 8 ) );
     }
 
     [Fact]
@@ -25,7 +25,7 @@ namespace TestProject
       Backendless.Data.Describe( "Person", new AsyncCallback<List<ObjectProperty>>(
       result =>
       {
-        Assert.True( result.Count.Equals( 7 ) );
+        Assert.True( result.Count.Equals( 8 ) );
       },
       fault =>
       {

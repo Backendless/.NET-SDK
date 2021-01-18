@@ -6,7 +6,7 @@ namespace TestProject
 {
   public class TestInitialization : IDisposable
   {
-    private const String BKNDLSS_URL = "http://apitest.backendless.com";
+    private const String BKNDLSS_URL = "https://apitest.backendless.com";
 
     public TestInitialization()
     {
