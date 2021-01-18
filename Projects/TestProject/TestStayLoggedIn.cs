@@ -15,15 +15,12 @@ namespace TestProject
     }
 
     [Fact]
-    public void AsyncLoginTest()
+    public async void AsyncLoginTest()
     {
-      Task.Run( async () =>
-       {
          BackendlessUser responseUser = await Backendless.UserService.LoginAsync( user.Email, user.Password, true );
 
          Assert.True( user.Email == responseUser.Email );
          Assert.True( Backendless.UserService.CurrentUser == responseUser );
-       } );
     }
 
     [Fact]
