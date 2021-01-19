@@ -14,7 +14,7 @@ namespace TestProject
   public static class Test_sHelper
   {
     internal static readonly String APP_API_KEY = //File.ReadLines( path ).ToList()[ 0 ];
-    //Environment.GetEnvironmentVariable( "TEST_APP_ID" );
+    Environment.GetEnvironmentVariable( "TEST_APP_ID" );
 
     internal static readonly String DOTNET_API_KEY = //File.ReadLines( path ).ToList()[ 1 ];
     Environment.GetEnvironmentVariable( "TEST_DOTNET_KEY" );
