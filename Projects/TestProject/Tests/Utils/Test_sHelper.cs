@@ -13,21 +13,21 @@ namespace TestProject
 {
   public static class Test_sHelper
   {
-    internal static readonly String APP_API_KEY = //File.ReadLines( path ).ToList()[ 0 ];
-    Environment.GetEnvironmentVariable( "TEST_APP_ID" );
+    internal static readonly String APP_API_KEY = File.ReadLines( path ).ToList()[ 0 ];
+    //Environment.GetEnvironmentVariable( "TEST_APP_ID" );
 
-    internal static readonly String DOTNET_API_KEY = //File.ReadLines( path ).ToList()[ 1 ];
-    Environment.GetEnvironmentVariable( "TEST_DOTNET_KEY" );
+    internal static readonly String DOTNET_API_KEY = File.ReadLines( path ).ToList()[ 1 ];
+    //Environment.GetEnvironmentVariable( "TEST_DOTNET_KEY" );
 
     internal static HttpClient client;
     internal const String URL_BASE_ADRESS = "https://devtest.backendless.com";
 
     private const String path = @"f:\specialproject\authdata.txt";
-    internal static readonly String Login = Environment.GetEnvironmentVariable( "TEST_AUTH_LOGIN" );
-                                      //File.ReadLines( path ).ToList()[2]; //login in this file must be the first line.
+    internal static readonly String Login = File.ReadLines( path ).ToList()[ 2 ];
+    //Environment.GetEnvironmentVariable( "TEST_AUTH_LOGIN" );
 
-    internal static readonly String Password = Environment.GetEnvironmentVariable( "TEST_AUTH_PASSWORD" );
-                                          //File.ReadLines( path ).ToList()[3];//password - as second line.
+    internal static readonly String Password = File.ReadLines( path ).ToList()[3];
+    //Environment.GetEnvironmentVariable( "TEST_AUTH_PASSWORD" );
 
     private static String _auth_token;
     internal static String Auth_Token

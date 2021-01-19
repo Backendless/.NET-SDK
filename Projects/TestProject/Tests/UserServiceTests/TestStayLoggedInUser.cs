@@ -1,17 +1,22 @@
 ﻿using Xunit;
+using System;
 using BackendlessAPI;
-using System.Threading.Tasks;
 
 namespace TestProject
 {
   [Collection("Tests")]
-  public class TestStayLoggedIn
+  public class TestStayLoggedInUser : IDisposable
   {
     BackendlessUser user = new BackendlessUser();
-    public TestStayLoggedIn()
+    public TestStayLoggedInUser()
     {
       user.Email = "hdhdhd@gmail.com";
       user.Password = "123234";
+    }
+
+    public void Dispose()
+    {
+      Backendless.UserService.Logout();
     }
 
     [Fact]
