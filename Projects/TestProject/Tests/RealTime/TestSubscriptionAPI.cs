@@ -1,9 +1,9 @@
 ﻿using Xunit;
 using System;
 using BackendlessAPI;
+using System.Threading;
 using System.Collections.Generic;
 using BackendlessAPI.RT.Messaging;
-using System.Threading;
 
 namespace TestProject.Tests.RealTime
 {
