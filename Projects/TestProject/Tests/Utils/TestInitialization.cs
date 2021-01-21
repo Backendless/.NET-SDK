@@ -1,19 +1,18 @@
 using System;
-using System.Threading.Tasks;
 using BackendlessAPI;
 
-namespace TestProject
+namespace TestProject.Tests.Utils
 {
   public class TestInitialization : IDisposable
   {
     private const String BKNDLSS_URL = "https://apitest.backendless.com";
-
     public TestInitialization()
     {
       Backendless.URL = BKNDLSS_URL;
       Backendless.InitApp( Test_sHelper.APP_API_KEY, Test_sHelper.DOTNET_API_KEY );
       Backendless.UserService.Logout();
       Test_sHelper.CreateDefaultTable( "Person" );
+      Test_sHelper.orderEventHandler = Backendless.Data.Of( "Person" ).RT();
       Test_sHelper.CreateDefaultTable( "Order" );
       Test_sHelper.CreateDefaultTable( "Table1" );
       Test_sHelper.CreateDefaultColumn( "Order", "LastName", "Smith" );

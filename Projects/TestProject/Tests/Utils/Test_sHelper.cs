@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using BackendlessAPI;
 using BackendlessAPI.Persistence;
+using BackendlessAPI.RT.Data;
 
-namespace TestProject
+namespace TestProject.Tests.Utils
 {
   public static class Test_sHelper
   {
@@ -41,7 +42,7 @@ namespace TestProject
       }
       private set => _auth_token = value;
     }
-
+    public static IEventHandler<Dictionary<String, Object>> orderEventHandler;
     static Test_sHelper()
     {
       client = new HttpClient();

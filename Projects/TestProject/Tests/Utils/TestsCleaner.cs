@@ -1,6 +1,6 @@
 ﻿using Xunit;
 
-namespace TestProject
+namespace TestProject.Tests.Utils
 {
   public class TestsCleaner
   {
