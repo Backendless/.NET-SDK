@@ -46,7 +46,7 @@ namespace TestProject.Tests.Transaction
       },
       fault =>
       {
-        Assert.True( false, "An error occured during the operation" );
+        Assert.True( false, "An error was expected, but it was not" );
       } ) );
     }
 
@@ -124,7 +124,7 @@ namespace TestProject.Tests.Transaction
       },
       fault =>
       {
-        Assert.True( false, "An error occured during the operation" );
+        Assert.True( false, "An error appeared during the execution of the operation" );
       } ) );
     }
 
@@ -214,7 +214,7 @@ namespace TestProject.Tests.Transaction
       },
       fault =>
       {
-        Assert.True( false, "An error occured during the operation" );
+        Assert.True( false, "An error appeared during the execution of the operation" );
       } ) );
     }
 
@@ -290,7 +290,7 @@ namespace TestProject.Tests.Transaction
       },
       fault =>
       {
-        Assert.True( false, "An error occured, during the operation" );
+        Assert.True( false, "An error appeared during the execution of the operation" );
       } ) );
     }
   }

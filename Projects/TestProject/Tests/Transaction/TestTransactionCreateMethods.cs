@@ -64,7 +64,7 @@ namespace TestProject.Tests.Transaction
       },
       fault=>
       {
-        Assert.True( false, "Something went wrong during the execution operation" );
+        Assert.True( false, "An error appeared during the execution of the operation" );
       } ) );
 
     }
@@ -111,7 +111,7 @@ namespace TestProject.Tests.Transaction
       },
       fault=>
       {
-        Assert.True( false, "Something went wrong during the execution operation" );
+        Assert.True( false, "An error appeared during the execution of the operation" );
       } ) );
     }
 
