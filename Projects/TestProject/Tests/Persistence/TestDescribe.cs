@@ -14,8 +14,9 @@ namespace TestProject.Tests.Persistence
     {
       var checker = Backendless.Data.Describe( "Person" );
 
+      Assert.NotNull( checker );
       Assert.IsType<List<ObjectProperty>>( checker );
-      Assert.True( checker.Count.Equals( 8 ) );
+      Assert.True( checker.Count >= 8 );
     }
 
     [Fact]
@@ -24,7 +25,8 @@ namespace TestProject.Tests.Persistence
       Backendless.Data.Describe( "Person", new AsyncCallback<List<ObjectProperty>>(
       result =>
       {
-        Assert.True( result.Count.Equals( 8 ) );
+        Assert.NotNull( result );
+        Assert.True( result.Count >= 8 );
       },
       fault =>
       {

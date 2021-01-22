@@ -8,10 +8,10 @@ using System.Text;
 namespace TestProject.Tests.Persistence
 {
   [Collection( "Tests" )]
-  public class TestUpdate : IDisposable
+  public class TestUpdateBulk : IDisposable
   {
     Dictionary<String, Object> person = new Dictionary<String, Object>();
-    public TestUpdate()
+    public TestUpdateBulk()
     {
       person[ "age" ] = 18;
       person[ "name" ] = "Alexandra";
@@ -24,7 +24,7 @@ namespace TestProject.Tests.Persistence
     }
 
     [Fact]
-    public void TestUpdateBlockCall_ClassImpl()
+    public void TestBulkUpdateBlockCall_ClassImpl()
     {
       person[ "age" ] = 20;
       person[ "name" ] = "Elizabeth";
@@ -38,7 +38,7 @@ namespace TestProject.Tests.Persistence
     }
 
     [Fact]
-    public void TestUpdateCallback_ClassImpl()
+    public void TestBulkUpdateCallback_ClassImpl()
     {
       person[ "age" ] = 20;
       person[ "name" ] = "Elizabeth";
@@ -59,7 +59,7 @@ namespace TestProject.Tests.Persistence
     }
 
     [Fact]
-    public async void TestUpdateAsync_ClassImpl()
+    public async void TestBulkUpdateAsync_ClassImpl()
     {
       person[ "age" ] = 20;
       person[ "name" ] = "Elizabeth";
@@ -73,7 +73,7 @@ namespace TestProject.Tests.Persistence
     }
 
     [Fact]
-    public void TestUpdateBlockCall_DictionaryImpl()
+    public void TestBulkUpdateBlockCall_DictionaryImpl()
     {
       person[ "age" ] = 20;
       person[ "name" ] = "Elizabeth";
@@ -89,7 +89,7 @@ namespace TestProject.Tests.Persistence
     }
 
     [Fact]
-    public void TestUpdateCallback_DictionaryImpl()
+    public void TestBulkUpdateCallback_DictionaryImpl()
     {
       person[ "age" ] = 20;
       person[ "name" ] = "Elizabeth";
@@ -112,7 +112,7 @@ namespace TestProject.Tests.Persistence
     }
 
     [Fact]
-    public async void TestUpdateAsync_DictionaryImpl()
+    public async void TestBulkUpdateAsync_DictionaryImpl()
     {
       person[ "age" ] = 20;
       person[ "name" ] = "Elizabeth";
