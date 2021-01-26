@@ -661,13 +661,13 @@ namespace BackendlessAPI.Service
       return PushWithTemplate( templateName, (Dictionary<String, Object>) null );
     }
 
-    public MessageStatus PushWithTemplate( String templateName, Dictionary<String, Object> templateValue )
+    public MessageStatus PushWithTemplate( String templateName, Dictionary<String, Object> templateValues )
     {
       if( String.IsNullOrEmpty( templateName ) )
         throw new ArgumentException( ExceptionMessage.NULL_EMPTY_TEMPLATE_NAME );
 
       return Invoker.InvokeSync<MessageStatus>( MESSAGING_MANAGER_SERVER_ALIAS, "pushWithTemplate", 
-                                                                                new Object[] { templateName, templateValue } );
+                                                                                new Object[] { templateName, templateValues } );
     }
 
     public void PushWithTemplate( String templateName, AsyncCallback<MessageStatus> callback )
@@ -675,12 +675,12 @@ namespace BackendlessAPI.Service
       PushWithTemplate( templateName, null, callback );
     }
 
-    public void PushWithTemplate( String templateName, Dictionary<String, Object> templateValue, AsyncCallback<MessageStatus> callback )
+    public void PushWithTemplate( String templateName, Dictionary<String, Object> templateValues, AsyncCallback<MessageStatus> callback )
     {
       if( String.IsNullOrEmpty( templateName ) )
         throw new ArgumentException( ExceptionMessage.NULL_EMPTY_TEMPLATE_NAME );
 
-      Invoker.InvokeAsync( MESSAGING_MANAGER_SERVER_ALIAS, "pushWithTemplate", new Object[] { templateName, templateValue }, callback );
+      Invoker.InvokeAsync( MESSAGING_MANAGER_SERVER_ALIAS, "pushWithTemplate", new Object[] { templateName, templateValues }, callback );
     }
 
   #if !(NET_35 || NET_40)
@@ -689,9 +689,9 @@ namespace BackendlessAPI.Service
       return await Task.Run( () => PushWithTemplate( templateName ) ).ConfigureAwait( false );
     }
 
-    public async Task<MessageStatus> PushWithTemplateAsync( String templateName, Dictionary<String, Object> templateValue )
+    public async Task<MessageStatus> PushWithTemplateAsync( String templateName, Dictionary<String, Object> templateValues )
     {
-      return await Task.Run( () => PushWithTemplate( templateName, templateValue ) ).ConfigureAwait( false );
+      return await Task.Run( () => PushWithTemplate( templateName, templateValues ) ).ConfigureAwait( false );
     }
   #endif
 
