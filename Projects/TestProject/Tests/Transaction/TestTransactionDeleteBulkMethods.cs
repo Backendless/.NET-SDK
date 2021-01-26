@@ -36,7 +36,7 @@ namespace TestProject.Tests.Transaction
     }
 
     [Fact]
-    public void TestDeleteBulkObjects_Dictionary_Callback()
+    public void TestDeleteBulkObjects_DictionaryCallback()
     {
       List<Dictionary<String, Object>> objectsMaps = new List<Dictionary<String, Object>>();
       Dictionary<String, Object> firstMap = new Dictionary<String, Object>();
@@ -95,7 +95,7 @@ namespace TestProject.Tests.Transaction
     }
 
     [Fact]
-    public void TestDeleteBulkObjects_Class_Callback()
+    public void TestDeleteBulkObjects_ClassCallback()
     {
       List<Person> personList = new List<Person>();
       Person firstPerson = new Person();
@@ -160,7 +160,7 @@ namespace TestProject.Tests.Transaction
     }
 
     [Fact]
-    public void TestDeleteBulkObjects_OpResult_Callback()
+    public void TestDeleteBulkObjects_OpResultCallback()
     {
       List<Person> personList = new List<Person>();
       Person firstPerson = new Person();
@@ -222,7 +222,7 @@ namespace TestProject.Tests.Transaction
     }
 
     [Fact]
-    public void TestDeteleBulkObjects_WithId_Callback()
+    public void TestDeteleBulkObjects_WithIdCallback()
     {
       List<Person> personList = new List<Person>();
       Person firstPersonObj = new Person();
@@ -287,7 +287,7 @@ namespace TestProject.Tests.Transaction
     }
 
     [Fact]
-    public void TestDeleteBulkObjects_WhereClause_Callback()
+    public void TestDeleteBulkObjects_WhereClauseCallback()
     {
       List<Dictionary<String, Object>> personList = new List<Dictionary<String, Object>>();
       Dictionary<String, Object> firstPerson = new Dictionary<String, Object>();
@@ -340,7 +340,7 @@ namespace TestProject.Tests.Transaction
     }
 
     [Fact]
-    public void TestDeleteBulkObjects_CheckError_Callback()
+    public void TestDeleteBulkObjects_CheckErrorCallback()
     {
       List<String> emptyObjectId = new List<String>();
       emptyObjectId.Add( "empty objectId" );

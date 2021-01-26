@@ -43,7 +43,7 @@ namespace TestProject.Tests.Transaction
     }
 
     [Fact]
-    public void TestUpdateSingleObject_Dictionary_Callback()
+    public void TestUpdateSingleObject_DictionaryCallback()
     {
       Dictionary<String, Object> objData = new Dictionary<String, Object>();
       objData[ "age" ] = 17;
@@ -99,7 +99,7 @@ namespace TestProject.Tests.Transaction
     }
 
     [Fact]
-    public void TestUpdateSingleObject_Class_Callback()
+    public void TestUpdateSingleObject_ClassCallback()
     {
       Person person = new Person();
       person.name = "Joe";
@@ -167,7 +167,7 @@ namespace TestProject.Tests.Transaction
     }
 
     [Fact]
-    public void TestUpdateSingleObject_OpResultValueRef_Dictionary_Callback()
+    public void TestUpdateSingleObject_OpResultValueRef_DictionaryCallback()
     {
       List<Dictionary<String, Object>> objectsForCreate = new List<Dictionary<String, Object>>();
       Dictionary<String, Object> objectData = new Dictionary<String, Object>();
@@ -226,7 +226,7 @@ namespace TestProject.Tests.Transaction
     }
 
     [Fact]
-    public void TestUpdateSingleObject_CheckError_Callback()
+    public void TestUpdateSingleObject_CheckErrorCallback()
     {
       Dictionary<String, Object> changes = new Dictionary<String, Object>();
       changes[ "name" ] = "Joee";

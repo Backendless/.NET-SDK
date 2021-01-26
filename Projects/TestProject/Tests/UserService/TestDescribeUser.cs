@@ -28,7 +28,7 @@ namespace TestProject.Tests.UserService
     }
 
     [Fact]
-    public void TestDescribeBlockCall()
+    public void TestDescribe_BlockCall()
     {
       var properties = Backendless.UserService.DescribeUserClass();
 

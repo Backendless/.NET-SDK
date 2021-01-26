@@ -57,7 +57,7 @@ namespace TestProject.Tests.Transaction
     }
 
     [Fact]
-    public void TestCreateBulkObjects_Dictionary_Callback()
+    public void TestCreateBulkObjects_DictionaryCallback()
     {
       List<Dictionary<String, Object>> people = new List<Dictionary<String, Object>>();
       Dictionary<String, Object> person1 = new Dictionary<String, Object>();
@@ -140,7 +140,7 @@ namespace TestProject.Tests.Transaction
     }
 
     [Fact]
-    public void TestCreateBulkObjects_Class_Callback()
+    public void TestCreateBulkObjects_ClassCallback()
     {
       List<Person> people = new List<Person>();
       Person people1 = new Person();
@@ -194,7 +194,7 @@ namespace TestProject.Tests.Transaction
     }
 
     [Fact]
-    public void TestCreateBulkdObjects_CheckError_Callback()
+    public void TestCreateBulkdObjects_CheckErrorCallback()
     {
       List<Dictionary<String, Object>> persMap = new List<Dictionary<String, Object>>();
       Dictionary<String, Object> pers = new Dictionary<String, Object>();

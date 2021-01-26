@@ -24,7 +24,7 @@ namespace TestProject.Tests.Persistence
     }
 
     [Fact]
-    public void TestSaveBlockCall()
+    public void TestSave_BlockCall()
     {
       Dictionary<String, Object> actual = Backendless.Data.Of( "Person" ).Save( person );
 
@@ -35,7 +35,7 @@ namespace TestProject.Tests.Persistence
     }
 
     [Fact]
-    public void TestSaveCallback()
+    public void TestSave_Callback()
     {
       Backendless.Data.Of( "Person" ).Save( person, new AsyncCallback<Dictionary<String, Object>>(
         actual =>
@@ -51,7 +51,7 @@ namespace TestProject.Tests.Persistence
     }
 
     [Fact]
-    public async void TestSaveAsync()
+    public async void TestSave_Async()
     {
       Dictionary<String, Object> actual = await Backendless.Data.Of( "Person" ).SaveAsync( person );
 
@@ -61,7 +61,7 @@ namespace TestProject.Tests.Persistence
     }
 
     [Fact]
-    public void TestUpdateBlockCall()
+    public void TestUpdate_BlockCall()
     {
       Dictionary<String, Object> expected = Backendless.Data.Of( "Person" ).Save( person );
       expected[ "age" ] = 21;
@@ -73,7 +73,7 @@ namespace TestProject.Tests.Persistence
     }
 
     [Fact]
-    public void TestUpdateCallback()
+    public void TestUpdate_Callback()
     {
       Dictionary<String, Object> expected = Backendless.Data.Of( "Person" ).Save( person );
       expected[ "age" ] = 21;
@@ -92,7 +92,7 @@ namespace TestProject.Tests.Persistence
     }
 
     [Fact]
-    public async void TestUpdateAsync()
+    public async void TestUpdate_Async()
     {
       Dictionary<String, Object> expected = Backendless.Data.Of( "Person" ).Save( person );
       expected[ "age" ] = 21;
@@ -104,7 +104,7 @@ namespace TestProject.Tests.Persistence
     }
 
     [Fact]
-    public void TestUpdateAddFieldBlockCall()
+    public void TestUpdateAddField_BlockCall()
     {
       Dictionary<String, Object> expected = Backendless.Data.Of( "Person" ).Save( person );
       expected[ "New" ] = "Non-existent field";
@@ -117,7 +117,7 @@ namespace TestProject.Tests.Persistence
     }
 
     [Fact]
-    public void TestUpdateAddFieldCallback()
+    public void TestUpdateAddField_Callback()
     {
       Dictionary<String, Object> expected = Backendless.Data.Of( "Person" ).Save( person );
       expected[ "New" ] = "Non-existent field";
@@ -136,7 +136,7 @@ namespace TestProject.Tests.Persistence
     }
 
     [Fact]
-    public async void TestUpdateAddFieldAsync()
+    public async void TestUpdateAddField_Async()
     {
       Dictionary<String, Object> expected = Backendless.Data.Of( "Person" ).Save( person );
       expected["New"] = "Non-existent field";
@@ -149,7 +149,7 @@ namespace TestProject.Tests.Persistence
     }
 
     [Fact]
-    public void TestUpdateWithWrongObjectIdBlockCall()
+    public void TestUpdateWithWrongObjectId_BlockCall()
     {
       Dictionary<String, Object> expected = Backendless.Data.Of( "Person" ).Save( person );
       expected[ "objectId" ] = "The-wrong-objectId";
@@ -158,7 +158,7 @@ namespace TestProject.Tests.Persistence
     }
 
     [Fact]
-    public void TestUpdateWrongFieldNameBlockCall()
+    public void TestUpdateWrongFieldName_BlockCall()
     {
       Dictionary<String, Object> expected = Backendless.Data.Of( "Person" ).Save( person );
       expected[ "New-_" ] = "Non-existent field";
@@ -167,7 +167,7 @@ namespace TestProject.Tests.Persistence
     }
 
     [Fact]
-    public void TestUpdateWithWrongObjectIdCallback()
+    public void TestUpdateWithWrongObjectId_Callback()
     {
       Dictionary<String, Object> expected = Backendless.Data.Of( "Person" ).Save( person );
       expected[ "objectId" ] = "The-wrong-objectId";
@@ -184,7 +184,7 @@ namespace TestProject.Tests.Persistence
     }
 
     [Fact]
-    public void TestUpdateWrongFieldNameCallback()
+    public void TestUpdateWrongFieldName_Callback()
     {
       Dictionary<String, Object> expected = Backendless.Data.Of( "Person" ).Save( person );
       expected[ "New-_" ] = "Non-existent field";

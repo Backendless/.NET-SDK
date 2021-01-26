@@ -37,7 +37,7 @@ namespace TestProject.Tests.Transaction
     }
 
     [Fact]
-    public void TestCreateSingleObject_Dictionary_Callback()
+    public void TestCreateSingleObject_DictionaryCallback()
     {
       Dictionary<String, Object> pers = new Dictionary<String, Object>();
       pers[ "name" ] = "Joe";
@@ -90,7 +90,7 @@ namespace TestProject.Tests.Transaction
     }
 
     [Fact]
-    public void TestCreateSingleObject_Class_Callback()
+    public void TestCreateSingleObject_ClassCallback()
     {
       Person person = new Person();
       person.name = "Joe";
@@ -131,7 +131,7 @@ namespace TestProject.Tests.Transaction
     }
 
     [Fact]
-    public void TestCreateSingleObject_CheckError_Callback()
+    public void TestCreateSingleObject_CheckErrorCallback()
     {
       Dictionary<String, Object> pers = new Dictionary<String, Object>();
       pers[ "name" ] = "Joe";

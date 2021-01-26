@@ -51,7 +51,7 @@ namespace TestProject.Tests.Transaction
     }
 
     [Fact]
-    public void TestSetRelation_Dictionary_Callback()
+    public void TestSetRelation_DictionaryCallback()
     {
       Dictionary<String, Object> objectMap = new Dictionary<String, Object>();
       objectMap[ "age" ] = 22;
@@ -119,7 +119,7 @@ namespace TestProject.Tests.Transaction
     }
 
     [Fact]
-    public void TestSetRelation_Class_Callback()
+    public void TestSetRelation_ClassCallback()
     {
       Person personObj = new Person();
       personObj.age = 22;
@@ -189,7 +189,7 @@ namespace TestProject.Tests.Transaction
     }
 
     [Fact]
-    public void TestSetRelation_OpResult_Callback()
+    public void TestSetRelation_OpResultCallback()
     {
       Person personObj = new Person();
       personObj.age = 22;
@@ -260,7 +260,7 @@ namespace TestProject.Tests.Transaction
     }
 
     [Fact]
-    public void TestSetRelation_WithId_Callback()
+    public void TestSetRelation_WithIdCallback()
     {
       Person personObj = new Person();
       personObj.age = 22;
@@ -320,7 +320,7 @@ namespace TestProject.Tests.Transaction
     }
 
     [Fact]
-    public void TestSetRelation_CheckError_Callback()
+    public void TestSetRelation_CheckErrorCallback()
     {
       Person personObj = new Person();
       personObj.age = 22;
@@ -345,7 +345,7 @@ namespace TestProject.Tests.Transaction
       },
       fault =>
       {
-        Assert.True( false, "An error was expected, but it was not" );
+        Assert.True( false, "Expected error didn't occur" );
       } ) );
     }
   }

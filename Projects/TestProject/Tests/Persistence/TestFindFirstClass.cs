@@ -23,7 +23,7 @@ namespace TestProject.Tests.Persistence
     }
 
     [Fact]
-    public void FFClassWithoutParameters()
+    public void FindFirstWithoutParameters_BlockCall_Class()
     {
       Backendless.Data.Of<Person>().Save( person );
       Person receivedPerson = Backendless.Data.Of<Person>().FindFirst();
@@ -38,7 +38,7 @@ namespace TestProject.Tests.Persistence
     }
 
     [Fact]
-    public void FFClassAsyncCallback()
+    public void FindFirst_Callback_Class()
     {
       Backendless.Data.Of<Person>().Save( person );
       Backendless.Data.Of<Person>().FindFirst( new AsyncCallback<Person>(
@@ -59,7 +59,7 @@ namespace TestProject.Tests.Persistence
     }
 
     [Fact]
-    public void FFClassAsyncMethod()
+    public void FindFirst_Async_Class()
     {
       Backendless.Data.Of<Person>().Save( person );
       Task.Run( async () =>

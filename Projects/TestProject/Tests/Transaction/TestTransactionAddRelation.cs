@@ -48,7 +48,7 @@ namespace TestProject.Tests.Transaction
     }
 
     [Fact]
-    public void TestAddRelation_Class_Callback()
+    public void TestAddRelation_ClassCallback()
     {
       Person personObj = new Person();
       Order orderObj = new Order();
@@ -111,7 +111,7 @@ namespace TestProject.Tests.Transaction
     }
     
     [Fact]
-    public void TestAddRelation_Dictionary_Callback()
+    public void TestAddRelation_DictionaryCallback()
     {
       Person personObj = new Person();
       personObj.age = 22;
@@ -177,7 +177,7 @@ namespace TestProject.Tests.Transaction
     }
 
     [Fact]
-    public void TestAddRelation_OpResult_Callback()
+    public void TestAddRelation_OpResultCallback()
     {
       Person personObj = new Person();
       personObj.age = 22;
@@ -242,7 +242,7 @@ namespace TestProject.Tests.Transaction
     }
 
     [Fact]
-    public void TestAddRelation_WithId_Callback()
+    public void TestAddRelation_WithIdCallback()
     {
       Person personObj = new Person();
       personObj.age = 22;
@@ -298,7 +298,7 @@ namespace TestProject.Tests.Transaction
     }
 
     [Fact]
-    public void TestAddToRelation_CheckError_Callback()
+    public void TestAddToRelation_CheckErrorCallback()
     {
       Person personObj = new Person();
       personObj.age = 22;

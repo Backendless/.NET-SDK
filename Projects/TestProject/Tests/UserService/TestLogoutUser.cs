@@ -18,7 +18,7 @@ namespace TestProject.Tests.UserService
     }
 
     [Fact]
-    public void TestLogoutBlockCall()
+    public void TestLogout_BlockCall()
     {
       var currentUserBeforeLogout = Backendless.UserService.CurrentUser;
 

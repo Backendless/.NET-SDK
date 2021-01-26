@@ -25,7 +25,7 @@ namespace TestProject.Tests.UserService
     }
 
     [Fact]
-    public void TestUpdateUserBlockCall()
+    public void TestUpdateUser_BlockCall()
     {
       user.Properties[ "Id" ] = "321";
       var updUser = Backendless.UserService.Update( user );

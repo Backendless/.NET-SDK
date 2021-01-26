@@ -31,7 +31,7 @@ namespace TestProject.Tests.Transaction
     }
 
     [Fact]
-    public void TestDeleteSingleObject_Class_Callback()
+    public void TestDeleteSingleObject_ClassCallback()
     {
       Person personObj = new Person();
       personObj.age = 30;
@@ -75,7 +75,7 @@ namespace TestProject.Tests.Transaction
     }
 
     [Fact]
-    public void TestDeleteSingleObject_Dictionary_Callback()
+    public void TestDeleteSingleObject_DictionaryCallback()
     {
       Dictionary<String, Object> defaultObject = new Dictionary<String, Object>();
       defaultObject[ "name" ] = "Joe";
@@ -124,7 +124,7 @@ namespace TestProject.Tests.Transaction
     }
 
     [Fact]
-    public void TestDeleteSingleObject_OpResult_Callback()
+    public void TestDeleteSingleObject_OpResultCallback()
     {
       Person personObject = new Person();
       personObject.name = "Bob";
@@ -174,7 +174,7 @@ namespace TestProject.Tests.Transaction
     }
 
     [Fact]
-    public void TestDeleteSingleObject_WithId_Callback()
+    public void TestDeleteSingleObject_WithIdCallback()
     {
       Person defaultPersonObject = new Person();
       defaultPersonObject.age = 20;
@@ -210,7 +210,7 @@ namespace TestProject.Tests.Transaction
     }
 
     [Fact]
-    public void TestDeleteSingleObject_CheckError_Callback()
+    public void TestDeleteSingleObject_CheckErrorCallback()
     {
       UnitOfWork uow = new UnitOfWork();
       uow.Delete( "Wrong table name", "Empty objectId" );

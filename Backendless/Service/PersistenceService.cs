@@ -296,10 +296,9 @@ namespace BackendlessAPI.Service
       if( queryBuilder == null )
         queryBuilder = DataQueryBuilder.Create();
 
-      BackendlessDataQuery dataQuery = queryBuilder.Build();
       AddWeborbPropertyMapping<T>();
       return Invoker.InvokeSync<T>( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById",
-                                                                        new Object[] { entity, dataQuery }, true );      
+                                                                        new Object[] { GetTypeName( typeof( T ) ), entity, queryBuilder.Build() }, true );      
     }
 
     internal T FindByIdViaDataQueryBuilder<T>( String id, DataQueryBuilder queryBuilder )
@@ -310,7 +309,7 @@ namespace BackendlessAPI.Service
       if( queryBuilder == null )
         queryBuilder = DataQueryBuilder.Create();
 
-      return Invoker.InvokeSync<T>( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById", new Object[] { id, queryBuilder }, true );
+      return Invoker.InvokeSync<T>( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById", new Object[] { GetTypeName( typeof( T ) ), id, queryBuilder.Build() }, true );
     }
 
     internal void FindByPrimaryKey<T>( T entity, DataQueryBuilder queryBuilder, AsyncCallback<T> callback )
@@ -321,9 +320,8 @@ namespace BackendlessAPI.Service
         if( queryBuilder == null )
           queryBuilder = DataQueryBuilder.Create();
 
-        BackendlessDataQuery dataQuery = queryBuilder.Build();
         AddWeborbPropertyMapping<T>();
-        Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById", new Object[] { entity, queryBuilder }, true, callback );
+        Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById", new Object[] { GetTypeName( typeof( T ) ), entity, queryBuilder.Build() }, true, callback );
     }
 
     internal void FindByIdViaDataQueryBuilder<T>( String id, DataQueryBuilder queryBuilder, AsyncCallback<T> callback )
@@ -334,9 +332,8 @@ namespace BackendlessAPI.Service
       if( queryBuilder == null )
         queryBuilder = DataQueryBuilder.Create();
 
-      BackendlessDataQuery dataQuery = queryBuilder.Build();
       AddWeborbPropertyMapping<T>();
-      Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById", new Object[] { id, dataQuery }, true, callback );
+      Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById", new Object[] { GetTypeName( typeof( T ) ), id, queryBuilder.Build() }, true, callback );
     }
 
     #endregion

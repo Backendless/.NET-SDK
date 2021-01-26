@@ -52,7 +52,7 @@ namespace TestProject.Tests.Transaction
     }
 
     [Fact]
-    public void TestDeleteRelation_Dictionary_Callback()
+    public void TestDeleteRelation_DictionaryCallback()
     {
       Dictionary<String, Object> parentObj = new Dictionary<String, Object>();
       Dictionary<String, Object> childObj = new Dictionary<String, Object>();
@@ -128,7 +128,7 @@ namespace TestProject.Tests.Transaction
     }
 
     [Fact]
-    public void TestDeleteRelation_Class_Callback()
+    public void TestDeleteRelation_ClassCallback()
     {
       Person personObject = new Person();
       personObject.age = 22;
@@ -209,7 +209,7 @@ namespace TestProject.Tests.Transaction
     }
 
     [Fact]
-    public void TestDeleteRelation_OpResult_Callback()
+    public void TestDeleteRelation_OpResultCallback()
     {
       Person personObject = new Person();
       personObject.age = 22;
@@ -288,7 +288,7 @@ namespace TestProject.Tests.Transaction
     }
 
     [Fact]
-    public void TestDeleteRelation_WithId_Callback()
+    public void TestDeleteRelation_WithIdCallback()
     {
       Person personObject = new Person();
       personObject.age = 22;
@@ -361,7 +361,7 @@ namespace TestProject.Tests.Transaction
     }
 
     [Fact]
-    public void TestDeleteRelation_CheckError_Callback()
+    public void TestDeleteRelation_CheckErrorCallback()
     {
       Person personObject = new Person();
       personObject.age = 22;

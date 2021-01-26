@@ -2,6 +2,7 @@
 using System;
 using BackendlessAPI;
 using BackendlessAPI.Async;
+using BackendlessAPI.Exception;
 using System.Threading.Tasks;
 
 namespace TestProject.Tests.Persistence
@@ -13,7 +14,7 @@ namespace TestProject.Tests.Persistence
 
     public void Dispose()
     {
-      Backendless.Data.Of<Person>().Remove( "age='16'" );
+      Backendless.Data.Of<Person>().Remove( "age>'0'" );
     }
 
     public TestFindLastClass()
@@ -23,7 +24,7 @@ namespace TestProject.Tests.Persistence
     }
 
     [Fact]
-    public void FLClassWithoutParameters()
+    public void FindLast_BlockCall_Class()
     {
       Backendless.Data.Of<Person>().Save( person );
       Person receivedPerson = Backendless.Data.Of<Person>().FindLast();
@@ -38,7 +39,7 @@ namespace TestProject.Tests.Persistence
     }
 
     [Fact]
-    public void FLClassAsyncCallback()
+    public void FindLast_Callback_Class()
     {
       Backendless.Data.Of<Person>().Save( person );
       Backendless.Data.Of<Person>().FindLast( new AsyncCallback<Person>(
@@ -59,7 +60,7 @@ namespace TestProject.Tests.Persistence
     }
 
     [Fact]
-    public void FLClassAsyncMethod()
+    public void FindLast_Async_Class()
     {
       Backendless.Data.Of<Person>().Save( person );
       Task.Run( async () =>
@@ -74,6 +75,62 @@ namespace TestProject.Tests.Persistence
          else
            Assert.True( false, "Person object is null" );
        } );
+    }
+
+    [Fact]
+    public void FindLastWrongTableName_BlockCall_Class()
+    {
+      Assert.Throws<BackendlessException>( () => Backendless.Data.Of<Area>().FindLast() );
+    }
+
+    [Fact]
+    public void FindLastWrongTableName_Callback_Class()
+    {
+      Backendless.Data.Of<Area>().FindLast( new AsyncCallback<Area>(
+      nullable =>
+      {
+        Assert.True( false, "The expected error didn't occur" );
+      },
+      fault =>
+      {
+        Assert.NotNull( fault );
+        Assert.NotNull( fault.Message );
+        Assert.NotEmpty( fault.Message );
+      } ) );
+    }
+
+    [Fact]
+    public void FindLastWrongTableName_Async_Class()
+    {
+      Assert.ThrowsAsync<BackendlessException>( async () => await Backendless.Data.Of<Area>().FindLastAsync() );
+    }
+
+    [Fact]
+    public void FindLastEmptyTable_BlockCall_Class()
+    {
+      Assert.Throws<BackendlessException>( () => Backendless.Data.Of<Person>().FindLast() );
+    }
+
+    [Fact]
+    public void FindLastEmptyTable_Callback_Class()
+    {
+      Backendless.Data.Of<Person>().FindLast( new AsyncCallback<Person>(
+      nullable =>
+      {
+        Assert.True( false, "The expected error didn't occur" );
+      },
+      fault =>
+      {
+        Assert.NotNull( fault );
+        Assert.NotNull( fault.Message );
+        Assert.NotEmpty( fault.Message );
+      } ) );
+    }
+
+    [Fact]
+    public void FindLastEmptyTable_Async_Class()
+    {
+      Assert.ThrowsAsync<BackendlessException>( async () => await Backendless.Data.Of<Person>().FindLastAsync() );
     }
   }
 }

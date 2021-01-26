@@ -10,7 +10,7 @@ namespace TestProject.Tests.Persistence
   public class TestDescribe
   {
     [Fact]
-    public void TestDescribeBlockCall()
+    public void TestDescribe_BlockCall()
     {
       var checker = Backendless.Data.Describe( "Person" );
 

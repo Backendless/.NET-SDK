@@ -15,7 +15,7 @@ namespace TestProject.Tests.UserService
     }
 
     [Fact]
-    public void TestRegisterBlockCall()
+    public void TestRegister_BlockCall()
     {
       var receivedUser = Backendless.UserService.Register( user );
 

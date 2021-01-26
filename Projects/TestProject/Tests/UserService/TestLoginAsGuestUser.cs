@@ -16,7 +16,7 @@ namespace TestProject.Tests.UserService
     }
 
     [Fact]
-    public void TestLoginAsGuestBlockCall()
+    public void TestLoginAsGuest_BlockCall()
     {
       var user = Backendless.UserService.LoginAsGuest();
       var currentUser = Backendless.UserService.CurrentUser;

@@ -17,7 +17,7 @@ namespace TestProject.Tests.UserService
     }
 
     [Fact]
-    public void TestGetUserRolesBlockCall()
+    public void TestGetUserRoles_BlockCall()
     {
       user.Email = "hdhdhd@gmail.com";
       user.Password = "123234";

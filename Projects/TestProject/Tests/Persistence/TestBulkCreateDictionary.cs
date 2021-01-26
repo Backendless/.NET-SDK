@@ -28,7 +28,7 @@ namespace TestProject.Tests.Persistence
     }
 
     [Fact]
-    public void TestBulkCreateBlockCall()
+    public void TestBulkCreate_BlockCall()
     {
       Backendless.Data.Of( "Person" ).Create( people );
 

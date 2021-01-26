@@ -21,7 +21,7 @@ namespace TestProject.Tests.Persistence
     }
 
     [Fact]
-    public void TestSaveBlockCall()
+    public void TestSave_BlockCall()
     {
       Person actual = Backendless.Data.Of<Person>().Save( person );
 
@@ -31,7 +31,7 @@ namespace TestProject.Tests.Persistence
     }
 
     [Fact]
-    public void TestSaveCallback()
+    public void TestSave_Callback()
     {
       Backendless.Data.Of<Person>().Save( person, new AsyncCallback<Person>(
       actual =>
@@ -47,7 +47,7 @@ namespace TestProject.Tests.Persistence
     }
 
     [Fact]
-    public async void TestSaveAsync()
+    public async void TestSave_Async()
     {
       Person actual = await Backendless.Data.Of<Person>().SaveAsync( person );
       
@@ -57,7 +57,7 @@ namespace TestProject.Tests.Persistence
     }
 
     [Fact]
-    public void TestUpdateBlockCall()
+    public void TestUpdate_BlockCall()
     {
       Person expected = Backendless.Data.Of<Person>().Save( person );
       expected.age = 21;
@@ -70,7 +70,7 @@ namespace TestProject.Tests.Persistence
     }
 
     [Fact]
-    public void TestUpdateCallback()
+    public void TestUpdate_Callback()
     {
       Person expected = Backendless.Data.Of<Person>().Save( person );
       expected.age = 21;
@@ -89,7 +89,7 @@ namespace TestProject.Tests.Persistence
     }
 
     [Fact]
-    public async void TestUpdateAsync()
+    public async void TestUpdate_Async()
     {
       Person expected = Backendless.Data.Of<Person>().Save( person );
       expected.age = 21;
@@ -102,7 +102,7 @@ namespace TestProject.Tests.Persistence
     }
 
     [Fact]
-    public void TestUpdateWithWrongObjectIdBlockCall()
+    public void TestUpdateWithWrongObjectId_BlockCall()
     {
       Person wrongPerson = Backendless.Data.Of<Person>().Save( person );
       wrongPerson.objectId = "The-wrong-objectId";
@@ -111,7 +111,7 @@ namespace TestProject.Tests.Persistence
     }
 
     [Fact]
-    public void TestUpdateWithWrongObjectIdCallback()
+    public void TestUpdateWithWrongObjectId_Callback()
     {
       Person wrongPerson = Backendless.Data.Of<Person>().Save( person );
       wrongPerson.objectId = "The-wrong-objectId";
@@ -130,7 +130,7 @@ namespace TestProject.Tests.Persistence
     }
 
     [Fact]
-    public void TestUpdateWithWrongObjectIdAsync()
+    public void TestUpdateWithWrongObjectId_Async()
     {
       Person wrongPerson = Backendless.Data.Of<Person>().Save( person );
       wrongPerson.objectId = "The-wrong-objectId";

@@ -41,7 +41,7 @@ namespace TestProject.Tests.Transaction
     }
 
     [Fact]
-    public void TestFind_AllObjects_Callback()
+    public void TestFind_AllObjectsCallback()
     {
       Person personCreated1 = new Person();
       personCreated1.age = 17;
@@ -83,7 +83,7 @@ namespace TestProject.Tests.Transaction
     }
 
     [Fact]
-    public void TestFind_CheckError_Callback()
+    public void TestFind_CheckErrorCallback()
     {
       UnitOfWork uow = new UnitOfWork();
 

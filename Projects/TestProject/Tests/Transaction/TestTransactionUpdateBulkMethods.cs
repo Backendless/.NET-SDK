@@ -31,7 +31,7 @@ namespace TestProject.Tests.Transaction
     }
 
     [Fact]
-    public void TestUpdateBulkObjects_CheckError_Callback()
+    public void TestUpdateBulkObjects_CheckErrorCallback()
     {
       Dictionary<String, Object> changes = new Dictionary<String, Object>();
       changes[ "name" ] = "Joe";
@@ -87,7 +87,7 @@ namespace TestProject.Tests.Transaction
     }
 
     [Fact]
-    public void TestUpdateBulkObjects_Query_Callback()
+    public void TestUpdateBulkObjects_QueryCallback()
     {
       List<Dictionary<String, Object>> objectsForCreate = new List<Dictionary<String, Object>>();
       Dictionary<String, Object> firstObject = new Dictionary<String, Object>();
@@ -171,7 +171,7 @@ namespace TestProject.Tests.Transaction
     }
 
     [Fact]
-    public void TestUpdateBulkObjects_OpResult_Callback()
+    public void TestUpdateBulkObjects_OpResultCallback()
     {
       List<Dictionary<String, Object>> objectsForCreate = new List<Dictionary<String, Object>>();
       Dictionary<String, Object> objectFirst = new Dictionary<String, Object>();
@@ -254,7 +254,7 @@ namespace TestProject.Tests.Transaction
     }
 
     [Fact]
-    public void TestUpdateBulkObjects_Dictionary_Callback()
+    public void TestUpdateBulkObjects_DictionaryCallback()
     {
       Dictionary<String, Object> objData_First = new Dictionary<String, Object>();
       Dictionary<String, Object> objData_Second = new Dictionary<String, Object>();

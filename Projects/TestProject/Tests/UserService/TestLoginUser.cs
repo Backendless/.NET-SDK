@@ -23,7 +23,7 @@ namespace TestProject.Tests.UserService
     }
 
     [Fact]
-    public void TestLoginBlockCall()
+    public void TestLogin_BlockCall()
     {
       var receivedUser = Backendless.UserService.Login( user.Email, user.Password );
 
