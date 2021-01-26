@@ -78,19 +78,21 @@ namespace BackendlessAPI.Service
       Registrar.UnregisterDevice();
     }
 
+#if !( NET_35 || NET_40 )
     public async Task UnregisterDeviceAsync()
     {
       await Task.Run( () => { Registrar.UnregisterDevice(); } );
     }
 
-    public void UnregisterDevice( List<String> channels )
-    {
-      Registrar.UnregisterDevice( channels );
-    }
-
     public async Task UnregisterDeviceAsync( List<String> channels )
     {
       await Task.Run( () => { Registrar.UnregisterDevice( channels ); } );
+    }
+#endif
+
+    public void UnregisterDevice( List<String> channels )
+    {
+      Registrar.UnregisterDevice( channels );
     }
 
     public void RegisterDevice( String token )
@@ -98,29 +100,16 @@ namespace BackendlessAPI.Service
       RegisterDevice( token, DEFAULT_CHANNEL_NAME );
     }
 
-    public async Task RegisterDeviceAsync( String token )
-    {
-      await Task.Run( () => { RegisterDevice( token, DEFAULT_CHANNEL_NAME ); } );
-    }
 
     public void RegisterDevice( String token, String channel )
     {
       RegisterDevice( token, new List<String> { channel } );
     }
     
-    public async Task RegisterDeviceAsync( String token, String channel )
-    {
-      await Task.Run( () => { RegisterDevice( token, new List<String> { channel } ); } );
-    }
 
     public void RegisterDevice( String token, List<String> channels )
     {
       RegisterDevice( token, channels, null );
-    }
-
-    public async Task RegisterDeviceAsync( String token, List<String> channels )
-    {
-      await Task.Run( () => { RegisterDevice( token, channels, null ); } );
     }
 
     public void RegisterDevice( String token, List<String> channels, DateTime? expiration )
@@ -128,10 +117,27 @@ namespace BackendlessAPI.Service
       RegisterDeviceLogic( token, channels, expiration );
     }
 
+#if !( NET_35 || NET_40 )
+    public async Task RegisterDeviceAsync( String token )
+    {
+      await Task.Run( () => { RegisterDevice( token, DEFAULT_CHANNEL_NAME ); } );
+    }
+
+    public async Task RegisterDeviceAsync( String token, String channel )
+    {
+      await Task.Run( () => { RegisterDevice( token, new List<String> { channel } ); } );
+    }
+
+    public async Task RegisterDeviceAsync( String token, List<String> channels )
+    {
+      await Task.Run( () => { RegisterDevice( token, channels, null ); } );
+    }
+
     public async Task RegisterDeviceAsync( String token, List<String> channels, DateTime? expiration)
     {
       await Task.Run( () => { RegisterDeviceLogic( token, channels, expiration ); } );
     }
+#endif
 
     private void RegisterDeviceLogic( String token, List<String> channels, DateTime? expiration )
     {
@@ -403,7 +409,7 @@ namespace BackendlessAPI.Service
       get { return deviceId; }
     }
 
-  #region PUBLISH SYNC (DEFAULT CHANNEL)
+#region PUBLISH SYNC (DEFAULT CHANNEL)
 
     public Messaging.MessageStatus Publish( object message )
     {
@@ -426,11 +432,11 @@ namespace BackendlessAPI.Service
       return Publish( message, DEFAULT_CHANNEL_NAME, publishOptions, deliveryOptions );
     }
 
-  #endregion
+#endregion
 
-  #region PUBLISH ASYNC (DEFAULT CHANNEL)
+#region PUBLISH ASYNC (DEFAULT CHANNEL)
 
-  #if !(NET_35 || NET_40)
+#if !( NET_35 || NET_40 )
     public async Task<MessageStatus> PublishAsync( object message )
     {
       return await PublishAsync( message, DEFAULT_CHANNEL_NAME );
@@ -453,7 +459,7 @@ namespace BackendlessAPI.Service
     {
       return await PublishAsync( message, DEFAULT_CHANNEL_NAME, publishOptions, deliveryOptions );
     }
-  #endif
+#endif
     public void Publish( object message, AsyncCallback<MessageStatus> callback )
     {
       Publish( message, DEFAULT_CHANNEL_NAME, callback );
@@ -478,9 +484,9 @@ namespace BackendlessAPI.Service
       Publish( message, DEFAULT_CHANNEL_NAME, publishOptions, deliveryOptions, callback );
     }
 
-  #endregion
+#endregion
 
-  #region PUBLISH SYNC
+#region PUBLISH SYNC
 
     public Messaging.MessageStatus Publish( object message, string channelName )
     {
@@ -519,11 +525,11 @@ namespace BackendlessAPI.Service
                                                             { channelName, message, publishOptions, deliveryOptions } );
     }
 
-  #endregion
+#endregion
 
-  #region PUBLISH ASYNC
+#region PUBLISH ASYNC
 
-  #if !(NET_35 || NET_40)
+#if !( NET_35 || NET_40 )
     public async Task<MessageStatus> PublishAsync( object message, string channelName )
     {
       return await PublishAsync( message, channelName, null, null );
@@ -545,7 +551,7 @@ namespace BackendlessAPI.Service
       return await Task.Run( () => Publish( message, channelName, publishOptions, deliveryOptions ) )
                        .ConfigureAwait( false );
     }
-  #endif
+#endif
 
     public void Publish( object message, string channelName, AsyncCallback<MessageStatus> callback )
     {
@@ -577,17 +583,17 @@ namespace BackendlessAPI.Service
                              { channelName, message, publishOptions, deliveryOptions }, callback );
     }
 
-  #endregion
+#endregion
 
-  #region MESSAGE STATUS
+#region MESSAGE STATUS
 
-  #if !(NET_35 || NET_40)
+#if !( NET_35 || NET_40 )
     public async Task<MessageStatus> GetMessageStatusAsync( string messageId )
     {
       return await Task.Run( () => GetMessageStatus( messageId ) ).ConfigureAwait( false );
     }
 
-  #endif
+#endif
     public MessageStatus GetMessageStatus( string messageId )
     {
       if( messageId == null )
@@ -607,9 +613,9 @@ namespace BackendlessAPI.Service
       Invoker.InvokeAsync( MESSAGING_MANAGER_SERVER_ALIAS, "getMessageStatus", new object[] { messageId }, callback );
     }
 
-  #endregion
+#endregion
 
-  #region CANCEL MESSAGE
+#region CANCEL MESSAGE
 
     public bool Cancel( string messageId )
     {
@@ -629,18 +635,18 @@ namespace BackendlessAPI.Service
                            new Object[] { messageId }, callback );
     }
 
-  #if !(NET_35 || NET_40)
+#if !( NET_35 || NET_40 )
     public async Task<bool> CancelAsync( string messageId )
     {
       return await Task.Run( () => Cancel( messageId ) ).ConfigureAwait( false );
     }
-  #endif
+#endif
 
-  #endregion
+#endregion
 
-  #region SUBSCRIBE
+#region SUBSCRIBE
 
-  #if WITHRT
+#if WITHRT
     public IChannel Subscribe()
     {
       return Subscribe( DEFAULT_CHANNEL_NAME );
@@ -650,11 +656,11 @@ namespace BackendlessAPI.Service
     {
       return new ChannelImpl( channelName );
     }
-  #endif
+#endif
 
-  #endregion
+#endregion
 
-  #region PUSHTEMPLATE
+#region PUSHTEMPLATE
 
     public MessageStatus PushWithTemplate( String templateName )
     {
@@ -683,7 +689,7 @@ namespace BackendlessAPI.Service
       Invoker.InvokeAsync( MESSAGING_MANAGER_SERVER_ALIAS, "pushWithTemplate", new Object[] { templateName, templateValues }, callback );
     }
 
-  #if !(NET_35 || NET_40)
+#if !( NET_35 || NET_40 )
     public async Task<MessageStatus> PushWithTemplateAsync( String templateName )
     {
       return await Task.Run( () => PushWithTemplate( templateName ) ).ConfigureAwait( false );
@@ -693,12 +699,12 @@ namespace BackendlessAPI.Service
     {
       return await Task.Run( () => PushWithTemplate( templateName, templateValues ) ).ConfigureAwait( false );
     }
-  #endif
+#endif
 
-  #endregion
+#endregion
 
-  #region SEND EMAIL FROM TEMPLATE
-  #if !(NET_35 || NET_40)
+#region SEND EMAIL FROM TEMPLATE
+#if !( NET_35 || NET_40 )
     public async Task<MessageStatus> SendEmailFromTemplateAsync( string templateName, EmailEnvelope envelope )
     {
       return await SendEmailFromTemplateAsync( templateName, envelope, null );
@@ -709,7 +715,7 @@ namespace BackendlessAPI.Service
       return await Task.Run( () => SendEmailFromTemplate( templateName, envelope, templateValues ) ).ConfigureAwait( false );
     }
 
-  #endif
+#endif
     public MessageStatus SendEmailFromTemplate( string templateName, EmailEnvelope envelope )
     {
       return SendEmailFromTemplate( templateName, envelope, new Dictionary<string, string>() );
@@ -741,10 +747,10 @@ namespace BackendlessAPI.Service
       Invoker.InvokeAsync( EMAIL_TEMPLATE_SENDER_SERVER_ALIAS, "sendEmails",
                            new Object[] { templateName, envelope, templateValues }, responder );
     }
-  #endregion
-  #region SEND EMAIL
+#endregion
+#region SEND EMAIL
 
-  #if !(NET_35 || NET_40)
+#if !( NET_35 || NET_40 )
     public async Task<MessageStatus> SendTextEmailAsync( string subject, string messageBody, List<string> recipients )
     {
       return await SendEmailAsync( subject, new BodyParts( messageBody, null ), recipients, new List<string>() );
@@ -783,7 +789,7 @@ namespace BackendlessAPI.Service
     {
       return await Task.Run( () => SendEmail( subject, bodyParts, recipients, attachments ) ).ConfigureAwait( false );
     }
-  #endif
+#endif
 
     public MessageStatus SendTextEmail( string subject, string messageBody, List<string> recipients )
     {
@@ -893,7 +899,7 @@ namespace BackendlessAPI.Service
                            new Object[] { subject, bodyParts, recipients, attachments }, responder );
     }
 
-  #endregion
+#endregion
 
     private void checkChannelName( String channelName )
     {
