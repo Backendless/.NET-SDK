@@ -98,9 +98,30 @@ namespace BackendlessAPI.Data
         Backendless.Persistence.Remove( PersistenceService.GetTypeName( typeof( T ) ), whereClause, callback );
       }
 
-    #endregion
+      #endregion
 
-    #region Save
+      #region Deep Save
+
+      public T DeepSave( T entity )
+      {
+        return Backendless.Persistence.DeepSave( entity );
+      }
+
+#if !(NET_35 || NET_40 )
+      public async Task<T> DeepSaveAsync( T entity )
+      {
+        return await Task.Run( () => DeepSave( entity ) ).ConfigureAwait( false );
+      }
+#endif
+
+      public void DeepSave( T entity, AsyncCallback<T> callback )
+      {
+        Backendless.Persistence.DeepSave( entity, callback );
+      }
+
+      #endregion
+
+      #region Save
 
       public T Save( T entity )
       {

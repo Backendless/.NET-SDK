@@ -104,6 +104,28 @@ namespace BackendlessAPI.Service
       return -1;
     }
     #endregion
+
+    #region
+
+    public T DeepSave<T>( T entity )
+    {
+      if( entity == null )
+        throw new ArgumentException( ExceptionMessage.NULL_ENTITY );
+
+        return Invoker.InvokeSync<T>( PERSISTENCE_MANAGER_SERVER_ALIAS, "deepSave",
+          new Object[] { entity.GetType().Name, entity }, true );
+    }
+
+    public void DeepSave<T>( T entity, AsyncCallback<T> callback )
+    {
+      if( entity == null )
+        throw new ArgumentException( ExceptionMessage.NULL_ENTITY );
+
+      Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "deepSave", new Object[] { entity.GetType().Name, entity }, true, callback );
+    }
+
+    #endregion
+
     #region Save
     public T Save<T>( T entity )
     {

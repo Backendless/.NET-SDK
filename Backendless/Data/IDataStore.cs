@@ -42,6 +42,17 @@ namespace BackendlessAPI.Data
   #endif
     void Remove( String whereClause, AsyncCallback<Int32> callback );
 
+    #endregion
+
+    #region DEEP SAVE
+    
+    T DeepSave( T entity );
+
+#if !( NET_35 || NET_40 )
+    Task<T> DeepSaveAsync( T entity );
+#endif
+    void DeepSave( T entity, AsyncCallback<T> callback );
+
   #endregion
 
   #region SAVE OBJECT
