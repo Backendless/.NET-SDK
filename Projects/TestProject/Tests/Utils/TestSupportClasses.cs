@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Weborb.Service;
 
 namespace TestProject
 {
@@ -30,6 +31,24 @@ namespace TestProject
     public String name { get; set; }
     public Int32? age { get; set; }
     public String objectId { get; set; }
+  }
+
+  public class People
+  {
+    [SetClientClassMemberName( "objectId" )]
+    public String ObjectId { get; set; }
+    public String Name { get; set; }
+    public Int32? Age { get; set; }
+  }
+
+  public class Identity
+  {
+    [SetClientClassMemberName( "objectId" )]
+    public String ObjectId { get; set; }
+    public String Name { get; set; }
+    public Int32? Age { get; set; }
+    public Dictionary<String, Object> Friend { get; set; } = new Dictionary<String, Object>();
+    public List<Dictionary<String,Object>> Family { get; set; } = new List<Dictionary<String, Object>>();
   }
 
   public static class Comparer

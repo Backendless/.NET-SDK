@@ -28,53 +28,47 @@ namespace TestProject.Tests.Persistence
     public void FindFirstWithoutParameters_BlockCall_Dictionary()
     {
       Backendless.Data.Of( "Person" ).Save( person );
-      Dictionary<String, Object> receivedPerson = Backendless.Data.Of( "Person" ).FindFirst();
 
-      if( !String.IsNullOrEmpty( receivedPerson[ "objectId" ].ToString() ) )
-      {
-        Assert.True( (Double) receivedPerson[ "age" ] == Convert.ToDouble( person[ "age" ] ), "Actual field 'age' is not equal expected" );
-        Assert.True( receivedPerson[ "name" ].ToString() == person[ "name" ].ToString(), "Actual field 'name' is not equal expected" );
-      }
-      else
-        Assert.True( false, "Person object is null" );
+      Dictionary<String, Object> actual = Backendless.Data.Of( "Person" ).FindFirst();
+
+      Assert.NotNull( actual );
+      Assert.NotNull( actual[ "objectId" ] );
+      Assert.NotEmpty( (String) actual[ "objectId" ] );
+      Assert.True( Comparer.IsEqual( person[ "age" ], actual[ "age" ] ), "Actual field 'age' is not equal expected" );
+      Assert.Equal( person[ "name" ], actual[ "name" ] );
     }
 
     [Fact]
-    public void FindFirst_Async_Dictionary()
+    public async void FindFirst_Async_Dictionary()
     {
       Backendless.Data.Of( "Person" ).Save( person );
-      Task.Run( async () =>
-      {
-        Dictionary<String, Object> receivedPerson = await Backendless.Data.Of( "Person" ).FindFirstAsync();
 
-        if( !String.IsNullOrEmpty( receivedPerson[ "objectId" ].ToString() ) )
-        {
-          Assert.True( receivedPerson[ "age" ] == person[ "age" ], "Actual field 'age' is not equal expected" );
-          Assert.True( receivedPerson[ "name" ] == person[ "name" ], "Actual field 'name' is not equal expected" );
-        }
-        else
-          Assert.True( false, "Person object is null" );
-      } );
+      Dictionary<String, Object> actual = await Backendless.Data.Of( "Person" ).FindFirstAsync();
+
+      Assert.NotNull( actual );
+      Assert.NotNull( actual[ "objectId" ] );
+      Assert.NotEmpty( (String) actual[ "objectId" ] );
+      Assert.True( Comparer.IsEqual( person[ "age" ], actual[ "age" ] ), "Actual field 'age' is not equal expected" );
+      Assert.Equal( person[ "name" ], actual[ "name" ] );
     }
 
     [Fact]
     public void FindFirst_Callback_Dictionary()
     {
       Backendless.Data.Of( "Person" ).Save( person );
+
       Backendless.Data.Of( "Person" ).FindFirst( new AsyncCallback<Dictionary<String, Object>>(
-      callback =>
+      actual =>
       {
-        if( !String.IsNullOrEmpty( callback[ "objectId" ].ToString() ) )
-        {
-          Assert.True( (Double) callback[ "age" ] == Convert.ToDouble( person[ "age" ] ), "Actual field 'age' is not equal expected" );
-          Assert.True( callback[ "name" ].ToString() == person[ "name" ].ToString(), "Actual field 'name' is not equal expected" );
-        }
-        else
-          Assert.True( false, "Person object is null" );
+        Assert.NotNull( actual );
+        Assert.NotNull( actual[ "objectId" ] );
+        Assert.NotEmpty( (String) actual[ "objectId" ] );
+        Assert.True( Comparer.IsEqual( person[ "age" ], actual[ "age" ] ), "Actual field 'age' is not equal expected" );
+        Assert.Equal( person[ "name" ], actual[ "name" ] );
       },
       fault =>
       {
-        Assert.True( false, "Callback is null" );
+        Assert.True( false, "An error appeared during execution operation" );
       } ) );
     }
 
