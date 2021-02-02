@@ -19,7 +19,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;PURE_CLIENT_LIB;NET_35;WITHRT</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;PURE_CLIENT_LIB;NET_35;WITHRT;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>

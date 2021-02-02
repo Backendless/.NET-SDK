@@ -21,11 +21,12 @@ namespace TestProject.Tests.Persistence
     public void FindLast_BlockCall_Dictionary()
     {
       Backendless.Data.Of( "Person" ).Save( person );
+
       Dictionary<String, Object> actual = Backendless.Data.Of( "Person" ).FindLast();
 
       Assert.NotNull( actual );
-      Assert.NotEmpty( actual );
       Assert.NotNull( actual[ "objectId" ] );
+      Assert.NotEmpty( (String) actual[ "objectId" ] );
       Assert.True( Comparer.IsEqual( actual[ "age" ], person[ "age" ] ), "Actual field 'age' is not equal expected" );
       Assert.True( actual[ "name" ].ToString() == person[ "name" ].ToString(), "Actual field 'name' is not equal expected" );
 
@@ -36,12 +37,13 @@ namespace TestProject.Tests.Persistence
     public void FindLast_Callback_Dictionary()
     {
       Backendless.Data.Of( "Person" ).Save( person );
+
       Backendless.Data.Of( "Person" ).FindLast( new AsyncCallback<Dictionary<String, Object>>(
       actual =>
       {
         Assert.NotNull( actual );
-        Assert.NotEmpty( actual );
         Assert.NotNull( actual[ "objectId" ] );
+        Assert.NotEmpty( (String) actual[ "objectId" ] );
         Assert.True( Comparer.IsEqual( actual[ "age" ], person[ "age" ] ), "Actual field 'age' is not equal expected" );
         Assert.Equal( actual[ "name" ], person[ "name" ] );
 
@@ -61,8 +63,8 @@ namespace TestProject.Tests.Persistence
       Dictionary<String, Object> actual = await Backendless.Data.Of( "Person" ).FindLastAsync();
 
       Assert.NotNull( actual );
-      Assert.NotEmpty( actual );
       Assert.NotNull( actual[ "objectId" ] );
+      Assert.NotEmpty( (String) actual[ "objectId" ] );
       Assert.True( Comparer.IsEqual( actual[ "age" ], person[ "age" ] ), "Actual field 'age' is not equal expected" );
       Assert.Equal( actual[ "name" ], person[ "name" ] );
 

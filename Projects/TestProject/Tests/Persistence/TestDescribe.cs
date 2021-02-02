@@ -1,6 +1,7 @@
 ﻿using Xunit;
 using BackendlessAPI;
 using BackendlessAPI.Async;
+using BackendlessAPI.Exception;
 using System.Collections.Generic;
 using BackendlessAPI.Property;
 
@@ -31,6 +32,28 @@ namespace TestProject.Tests.Persistence
       fault =>
       {
         Assert.True( false, "An error occurred while executing the method." );
+      } ) );
+    }
+
+    [Fact]
+    public void TestDescribeNonexistentTable_BlockCall()
+    {
+      Assert.Throws<BackendlessException>( () => Backendless.Data.Describe( "Non-existent-table" ) );
+    }
+
+    [Fact]
+    public void TestDesribeNonexistentTable_Callback()
+    {
+      Backendless.Data.Describe( "Non-existent-table", new AsyncCallback<List<ObjectProperty>>(
+      nullable =>
+      {
+        Assert.True( false, "The expected error didn't occur" );
+      },
+      fault =>
+      {
+        Assert.NotNull( fault );
+        Assert.NotNull( fault.Message );
+        Assert.NotEmpty( fault.Message );
       } ) );
     }
   }
