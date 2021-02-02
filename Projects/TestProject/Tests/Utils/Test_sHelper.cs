@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using BackendlessAPI;
 using BackendlessAPI.Persistence;
 using BackendlessAPI.RT.Data;
+using System.Reflection;
+using BackendlessAPI.Exception;
 
 namespace TestProject.Tests.Utils
 {
@@ -121,15 +123,20 @@ namespace TestProject.Tests.Utils
       Task.WaitAll( client.SendAsync( requestMessage ) );
     }
 
-    internal static void CreateRelationColumnOneToMany( String parentTableName, String childTableName, String columnName )
+    internal static void CreateRelationColumn( String parentTableName, String childTableName, String columnName, Boolean IsOneToMany = true )
     {
       try
       {
+        String relationshipType = "ONE_TO_MANY";
+
+        if( !IsOneToMany )
+          relationshipType = "ONE_TO_ONE";
+
         Debug.WriteLine( "Start creating relationship column..." );
 
         HttpRequestMessage request = new HttpRequestMessage( HttpMethod.Post, $"{URL_BASE_ADRESS}/{APP_API_KEY}/console/data/tables/{parentTableName}/columns/relation" );
         request.Content = new StringContent( "{\"name\":\"" + columnName + "\", \"dataType\":\"DATA_REF\", " +
-           "\"toTableName\":\"" + childTableName + "\", \"relationshipType\":\"ONE_TO_MANY\"}", Encoding.UTF8, "application/json" );
+           "\"toTableName\":\"" + childTableName + "\", \"relationshipType\":\"" + relationshipType +"\"}", Encoding.UTF8, "application/json" );
 
         Task.WaitAll( client.SendAsync( request ) );
 
@@ -351,6 +358,34 @@ namespace TestProject.Tests.Utils
       data.Add( "GeoValue", new Point().SetX( 10.2 ).SetY( 48.5 ) );
 
       Backendless.Data.Of( "GeoData" ).Save( data );
+    }
+
+    internal static Dictionary<String, Object> ConvertInstanceToMap<E>( E instance )
+    {
+      var convertedDictionary = HandleConversionToDictionary( instance );
+
+      if( convertedDictionary.ContainsKey( "ObjectId" ) )
+        ChangeKey( convertedDictionary, "ObjectId", "objectId" );
+
+      return ( from kv in convertedDictionary where kv.Value != null select kv ).ToDictionary( prop => prop.Key, prop => prop.Value );   
+    }
+
+    private static Dictionary<String, Object> HandleConversionToDictionary<E>( E instance )
+    {
+      if( instance == null )
+        throw new ArgumentException( ExceptionMessage.NULL_INSTANCE );
+
+      return instance.GetType()
+                     .GetProperties( BindingFlags.Instance | BindingFlags.Public )
+                     .ToDictionary( prop => prop.Name, prop => prop.GetValue( instance, null ) );
+    }
+
+    internal static void ChangeKey<TKey, TValue>( this IDictionary<TKey, TValue> dictionary,
+                                      TKey fromKey, TKey toKey )
+    {
+      TValue value = dictionary[ fromKey ];
+      dictionary.Remove( fromKey );
+      dictionary[ toKey ] = value;
     }
   }
 }

@@ -2,7 +2,7 @@
 using System;
 using BackendlessAPI;
 using BackendlessAPI.Async;
-using System.Threading.Tasks;
+using BackendlessAPI.Exception;
 
 namespace TestProject.Tests.Persistence
 {
@@ -23,57 +23,107 @@ namespace TestProject.Tests.Persistence
     }
 
     [Fact]
-    public void FindFirstWithoutParameters_BlockCall_Class()
+    public void FindFirst_BlockCall_Class()
     {
       Backendless.Data.Of<Person>().Save( person );
-      Person receivedPerson = Backendless.Data.Of<Person>().FindFirst();
 
-      if( !String.IsNullOrEmpty( receivedPerson.objectId ) )
-      {
-        Assert.True( receivedPerson.age == person.age, "Received person object is not equal actual" );
-        Assert.True( receivedPerson.name == person.name, "Received person object is not equal actual" );
-      }
-      else
-        Assert.True( false, "Callback's objectId is null" );
+      Person actual = Backendless.Data.Of<Person>().FindFirst();
+
+      Assert.NotNull( actual );
+      Assert.NotNull( actual.objectId );
+      Assert.NotEmpty( actual.objectId );
+      Assert.True( Comparer.IsEqual( actual.age, person.age ) );
+      Assert.Equal( person.name, actual.name );
     }
 
     [Fact]
     public void FindFirst_Callback_Class()
     {
       Backendless.Data.Of<Person>().Save( person );
+
       Backendless.Data.Of<Person>().FindFirst( new AsyncCallback<Person>(
-      callback =>
+      actual =>
       {
-        if( !String.IsNullOrEmpty( callback.objectId ) )
-        {
-          Assert.True( callback.age == person.age, "Received person object is not equal actual" );
-          Assert.True( callback.name == person.name, "Received person object is not equal actual" );
-        }
-        else
-          Assert.True( false, "Callback's objectId is null" );
+        Assert.NotNull( actual );
+        Assert.NotNull( actual.objectId );
+        Assert.NotEmpty( actual.objectId );
+        Assert.True( Comparer.IsEqual( person.age, actual.age ) );
+        Assert.Equal( person.name, actual.name );
       },
       fault =>
       {
-        Assert.True( false, "Discrepancy between the expected and the actual" );
+        Assert.True( false, "The expected object didn't equal actual" );
       } ) );
     }
 
     [Fact]
-    public void FindFirst_Async_Class()
+    public async void FindFirst_Async_Class()
     {
       Backendless.Data.Of<Person>().Save( person );
-      Task.Run( async () =>
-      {
-        Person receivedPerson = await Backendless.Data.Of<Person>().FindFirstAsync();
 
-        if( !String.IsNullOrEmpty( receivedPerson.objectId ) )
-        {
-          Assert.True( receivedPerson.age == person.age, "Received person object is not equal actual" );
-          Assert.True( receivedPerson.name == person.name, "Received person object is not equal actual" );
-        }
-        else
-          Assert.True( false, "Actual Person object is not equal expected" );
-      } );
+      Person actual = await Backendless.Data.Of<Person>().FindFirstAsync();
+
+      Assert.NotNull( actual );
+      Assert.NotNull( actual.objectId );
+      Assert.NotEmpty( actual.objectId );
+      Assert.True( Comparer.IsEqual( person.age, actual.age ) );
+      Assert.Equal( person.name, actual.name );
+    }
+
+    [Fact]
+    public void FindFirstWrongTableName_BlockCall_Class()
+    {
+      Assert.Throws<BackendlessException>( () => Backendless.Data.Of<Area>().FindFirst() );
+    }
+
+    [Fact]
+    public void FindFirstWrongTableName_Callback_Class()
+    {
+      Backendless.Data.Of<Area>().FindFirst( new AsyncCallback<Area>(
+      nullable =>
+      {
+        Assert.True( false, "The expected error didn't occur" );
+      },
+      fault =>
+      {
+        Assert.NotNull( fault );
+        Assert.NotNull( fault.Message );
+        Assert.NotEmpty( fault.Message );
+      } ) );
+    }
+
+    [Fact]
+    public void FindFirstWrongTableName_Async_Class()
+    {
+      Assert.ThrowsAsync<BackendlessException>( async () => await Backendless.Data.Of<Area>().FindFirstAsync() );
+    }
+
+    [Fact]
+    public void FindFirstEmptyTable_BlockCall_Class()
+    {
+      Assert.Throws<BackendlessException>( () => Backendless.Data.Of<Person>().FindFirst() );
+    }
+
+    [Fact]
+    public void FindFirstEmptyTable_Callback_Class()
+    {
+      Backendless.Data.Of<Person>().FindFirst( new AsyncCallback<Person>(
+      nullable =>
+      {
+        Assert.True( false, "The expected error didn't occur" );
+      },
+      fault =>
+      {
+        Assert.NotNull( fault );
+        Assert.NotNull( fault.Message );
+        Assert.NotEmpty( fault.Message );
+      } ) );
+    }
+
+    [Fact]
+    public void FindFirstEmptyTable_Async_Class()
+    {
+      Assert.ThrowsAsync<BackendlessException>( async () => await Backendless.Data.Of<Person>().FindFirstAsync() );
     }
   }
 }

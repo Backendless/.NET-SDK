@@ -18,7 +18,7 @@ namespace TestProject.Tests.Utils
       Test_sHelper.CreateDefaultColumn( "Order", "LastName", "Smith" );
       Test_sHelper.CreateDefaultColumn( "Person", "name", "string" );
       Test_sHelper.CreateDefaultColumn( "Person", "age", "int" );
-      Test_sHelper.CreateRelationColumnOneToMany( "Person", "Order", "Surname" );
+      Test_sHelper.CreateRelationColumn( "Person", "Order", "Surname" );
     }
 
     public void Dispose()
