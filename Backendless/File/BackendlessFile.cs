@@ -1,4 +1,5 @@
-﻿using BackendlessAPI.Async;
+﻿using System;
+using BackendlessAPI.Async;
 using Weborb.Service;
 
 namespace BackendlessAPI.File
@@ -13,12 +14,12 @@ namespace BackendlessAPI.File
     [SetClientClassMemberName( "fileURL" )]
     public string FileURL { get; set; }
 
-    public void Remove()
+    public Int32 Remove()
     {
-      Backendless.Files.Remove( FileURL );
+      return Backendless.Files.Remove( FileURL );
     }
 
-    public void Remove( AsyncCallback<object> callback )
+    public void Remove( AsyncCallback<Int32> callback )
     {
       Backendless.Files.Remove( FileURL, callback );
     }

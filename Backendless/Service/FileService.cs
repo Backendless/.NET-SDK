@@ -140,73 +140,72 @@ namespace BackendlessAPI.Service
       MakeFileUpload( fileStream, remotePath, overwrite, uploadCallback, callback );
     }
 
-  #endregion
+    #endregion
 
-  #region REMOVE_FILE
+    #region REMOVE_FILE
 
-    public void Remove( string fileURL )
+    public Int32 Remove( String fileURL )
     {
-      if( string.IsNullOrEmpty( fileURL ) )
+      return this.RemoveDirectory( fileURL );
+    }
+
+#if !( NET_35 || NET_40 )
+    public async Task<Int32> RemoveAsync( String fileURL )
+    {
+      return await Task.Run( () => Remove( fileURL ) ).ConfigureAwait( false );
+    }
+#endif
+
+    public void Remove( String fileURL, AsyncCallback<Int32> callback )
+    {
+      this.RemoveDirectory( fileURL, callback );
+    }
+
+    #endregion
+
+    #region REMOVE_DIR
+
+    public Int32 RemoveDirectory( String directoryPath, String pattern, Boolean recursive )
+    {
+      if( String.IsNullOrEmpty( directoryPath ) )
         throw new ArgumentNullException( ExceptionMessage.NULL_PATH );
 
-      Invoker.InvokeSync<object>( FILE_MANAGER_SERVER_ALIAS,
+      return Invoker.InvokeSync<Int32>( FILE_MANAGER_SERVER_ALIAS,
                                   "deleteFileOrDirectory",
-                                  new object[] { fileURL } );
+                                  new Object[] { directoryPath, pattern, recursive } );
     }
 
-  #if !(NET_35 || NET_40)
-    public async Task RemoveAsync( string fileURL )
+    public Int32 RemoveDirectory( String directoryPath )
     {
-      await Task.Run( () => Remove( fileURL ) ).ConfigureAwait( false );
-    }
-  #endif
-
-    public void Remove( string fileURL, AsyncCallback<object> callback )
-    {
-      if( string.IsNullOrEmpty( fileURL ) )
-        throw new ArgumentNullException( ExceptionMessage.NULL_PATH );
-
-      Invoker.InvokeAsync<object>( FILE_MANAGER_SERVER_ALIAS,
-                                   "deleteFileOrDirectory",
-                                   new object[] { fileURL },
-                                   callback );
+      return this.RemoveDirectory( directoryPath, "*", true );
     }
 
-  #endregion
-
-  #region REMOVE_DIR
-
-    public void RemoveDirectory( string directoryPath )
-    {
-      if( string.IsNullOrEmpty( directoryPath ) )
-        throw new ArgumentNullException( ExceptionMessage.NULL_PATH );
-
-      Invoker.InvokeSync<object>( FILE_MANAGER_SERVER_ALIAS,
-                                  "deleteFileOrDirectory",
-                                  new object[] { directoryPath } );
-    }
-
-  #if !(NET_35 || NET_40)
-    public async Task RemoveDirectoryAsync( string directoryPath )
+#if !( NET_35 || NET_40 )
+    public async Task RemoveDirectoryAsync( String directoryPath )
     {
       await Task.Run( () => RemoveDirectory( directoryPath ) ).ConfigureAwait( false );
     }
-  #endif
+#endif
 
-    public void RemoveDirectory( string directoryPath, AsyncCallback<object> callback )
+    public void RemoveDirectory( String directoryPath, AsyncCallback<Int32> callback )
     {
-      if( string.IsNullOrEmpty( directoryPath ) )
+      this.RemoveDirectory( directoryPath, "*", true, callback );
+    }
+
+    public void RemoveDirectory( String directoryPath, String pattern, Boolean recursive, AsyncCallback<Int32> callback )
+    {
+      if( String.IsNullOrEmpty( directoryPath ) )
         throw new ArgumentNullException( ExceptionMessage.NULL_PATH );
 
-      Invoker.InvokeAsync<object>( FILE_MANAGER_SERVER_ALIAS,
+      Invoker.InvokeAsync<Int32>( FILE_MANAGER_SERVER_ALIAS,
                                    "deleteFileOrDirectory",
-                                   new object[] { directoryPath },
+                                   new Object[] { directoryPath, pattern, recursive },
                                    callback );
     }
 
-  #endregion
+    #endregion
 
-  #region SAVEFILE
+    #region SAVEFILE
 
     public string SaveFile( string filePathName, byte[] fileContent, bool overwrite = false )
     {
