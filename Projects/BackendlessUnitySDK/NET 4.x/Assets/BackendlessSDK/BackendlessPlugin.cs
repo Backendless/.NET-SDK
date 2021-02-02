@@ -13,7 +13,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-
 using UnityEngine;
 using System;
 using System.Collections.Generic;
@@ -24,6 +23,7 @@ using BackendlessAPI;
 using BackendlessAPI.Engine;
 using Weborb.Client;
 using Weborb.Util;
+
 
 public class BackendlessPlugin : MonoBehaviour
 {
@@ -120,7 +120,7 @@ public class BackendlessPlugin : MonoBehaviour
         /* In order to use the .NET SDK we needed some hardcoded logic here to make sure some of its code was properly compiled for AOT on iOS.
         We'd get errors like the following when trying to delete the a record from a table.
         
-        Error: Code = , Message = Attempting to call method 'Weborb.Client.HttpEngine::SendRequest<System.Int64>' for which no ahead of time (AOT) code was generated., Detail = 
+        Error: Code = , Message = Attempting to call method 'Weborb.Client.HttpEngineWithClient::SendRequest<System.Int64>' for which no ahead of time (AOT) code was generated., Detail = 
         UnityEngine.DebugLogHandler:Internal_Log(LogType, String, Object)
         UnityEngine.DebugLogHandler:LogFormat(LogType, Object, String, Object[])
         UnityEngine.Logger:Log(LogType, Object)
@@ -138,7 +138,7 @@ public class BackendlessPlugin : MonoBehaviour
 
         try {
             IdInfo idInfo = new IdInfo();
-            HttpEngine httpEngine = new Weborb.Client.HttpEngine("http://api.backendless.com", idInfo);
+            HttpEngineWithClient httpEngine = new Weborb.Client.HttpEngineWithClient("http://api.backendless.com", idInfo);
             httpEngine.SendRequest<Boolean>(null, null, null, null, null);
             httpEngine.SendRequest<Int64>(null, null, null, null, null);
         } catch (Exception e) {
