@@ -1,10 +1,12 @@
 # Backendless SDK for .NET/Xamarin
 
-version 6.0.1
+version 6.2.0
 ## What's new
-* Fixed FindFirst/FindLast methods
-* Fixed directory listing API (wrong class used to be referenced in the response)
-* Fixed RT logging when running on a mobile device or in the Unity environment
+* Added support for the JSON data type.
+* Added support for the deep-save API.
+* Added CreateEmailConfirmationURL API.
+* Added support for the OAuth login API.
+* Added the PushWithTemplate API.
 
 ## About Backendless
 Backendless is a cloud-based serverless platform which significantly
@@ -33,7 +35,22 @@ To get started you need to create a Backendless developer account at:
 
 [https://develop.backendless.com](https://develop.backendless.com)
                 
-Once logged in, you will be prompted to create a backend application.
+Once logged in, you will be prompted to create a backend application. 
+You will be able to select between different "hosting zones". A hosting
+zone determines where the backend of your app runs. There are two hosting
+zones at this time: North America and Europe.
+
+If you decide to use the European hosting zone, add the following line of code 
+in your application. Make sure it is done in the application initialization logic.
+For the applications running in the North American data center, you do not need 
+to set the URL - the SDK comes pre-configured with the North American API endpoint URL.
+
+```
+using BackendlessAPI;
+
+Backendless.URL = "https://eu-api.backendless.com";
+```
+
 Every application has a unique application ID, you will see it right 
 on the main dashboard. Additionally, there is also API Key which must
 be used in your client application. The API key is also available
