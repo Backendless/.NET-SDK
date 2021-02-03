@@ -93,7 +93,7 @@ namespace TestProject.Tests.Json
       GenerateDefaultJsonData();
 
       DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
-      queryBuilder.AddProperties( "json->'$.timeMarks.time' as time" );
+      queryBuilder.AddProperties( "json->'$.timeMarks.time' as time", "objectId" );
       var newMap = Backendless.Data.Of( "Table1" ).Find( queryBuilder )[ 0 ];
       Assert.True( newMap != null && newMap != new Dictionary<String, Object>() );
       Assert.True( newMap.Keys.Count == 3 );
@@ -109,7 +109,7 @@ namespace TestProject.Tests.Json
       GenerateDefaultJsonData();
 
       DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
-      queryBuilder.AddProperties( "json->'$.timeMarks.*' as allTimeMarks" );
+      queryBuilder.AddProperties( "json->'$.timeMarks.*' as allTimeMarks", "objectId" );
       var newMap = Backendless.Data.Of( "Table1" ).Find( queryBuilder )[ 0 ];
 
       Assert.True( newMap != null && newMap != new Dictionary<String, Object>() );
@@ -126,7 +126,7 @@ namespace TestProject.Tests.Json
       GenerateDefaultJsonData();
 
       DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
-      queryBuilder.AddProperties( "json->'$.*[1]' as allSecondValuesFromArray" );
+      queryBuilder.AddProperties( "json->'$.*[1]' as allSecondValuesFromArray", "objectId" );
       var newMap = Backendless.Data.Of( "Table1" ).Find( queryBuilder )[ 0 ];
 
       Assert.True( newMap != null && newMap != new Dictionary<String, Object>() );
@@ -143,7 +143,7 @@ namespace TestProject.Tests.Json
       GenerateDefaultJsonData();
 
       DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
-      queryBuilder.AddProperties( "json->'$.letter' as jsonLetter" );
+      queryBuilder.AddProperties( "json->'$.letter' as jsonLetter", "objectId" );
 
       var newMap = Backendless.Data.Of( "Table1" ).Find( queryBuilder )[ 0 ];
 
@@ -161,7 +161,7 @@ namespace TestProject.Tests.Json
       GenerateDefaultJsonData();
 
       DataQueryBuilder queryBuilder = DataQueryBuilder.Create();
-      queryBuilder.AddProperties( "json->'$.status' as jsonStatus" );
+      queryBuilder.AddProperties( "json->'$.status' as jsonStatus", "objectId" );
 
       var newMap = Backendless.Data.Of( "Table1" ).Find( queryBuilder )[ 0 ];
 
