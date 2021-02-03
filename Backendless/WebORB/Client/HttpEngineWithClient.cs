@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Threading;
 using System.Threading.Tasks;
 using Weborb.V3Types;
 using System.Net.Http;
@@ -25,7 +24,7 @@ namespace Weborb.Client
     public override void SendRequest<T>( V3Message v3Msg, IDictionary requestHeaders,
                                          IDictionary httpHeaders, Responder<T> responder,
                                          AsyncStreamSetInfo<T> asyncStreamSetInfo ) =>
-       SendHttpRequest( v3Msg, requestHeaders, httpHeaders, responder, asyncStreamSetInfo );
+        SendHttpRequest( v3Msg, requestHeaders, httpHeaders, responder, asyncStreamSetInfo );
 
     internal override void Invoke<T>( string className, string methodName, object[] args, IDictionary requestHeaders,
                                   IDictionary messageHeaders, IDictionary httpHeaders, Responder<T> responder,
@@ -44,6 +43,9 @@ namespace Weborb.Client
 
     private async void SendHttpRequest<T>( V3Message v3Msg, IDictionary requestHeaders, IDictionary httpHeaders, Responder<T> responder, AsyncStreamSetInfo<T> asyncStreamSetInfo )
     {
+        if( v3Msg is null && requestHeaders is null && httpHeaders is null && responder is null && asyncStreamSetInfo is null )
+          return;
+
       byte[] requestBytes = CreateRequest( v3Msg, requestHeaders );
       HttpRequestMessage requestMessage = new HttpRequestMessage
       {
