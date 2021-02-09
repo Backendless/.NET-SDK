@@ -6,7 +6,7 @@
     <PackageVersion>6.2.0.0</PackageVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <DefineConstants>TRACE;DEBUG;NETSTANDARD2_0;PURE_CLIENT_LIB;WITHRT;MOBILE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NETSTANDARD2_0;PURE_CLIENT_LIB;WITHRT;</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <DefineConstants>TRACE;RELEASE;NETSTANDARD2_0;PURE_CLIENT_LIB;WITHRT</DefineConstants>
@@ -79,7 +79,6 @@
     <Compile Include="..\..\Backendless\Logging\LogMessage.cs" />
     <Compile Include="..\..\Backendless\Messaging\BodyParts.cs" />
     <Compile Include="..\..\Backendless\Messaging\DeliveryOptions.cs" />
-    <Compile Include="..\..\Backendless\Messaging\DeviceRegistrationDto.cs" />
     <Compile Include="..\..\Backendless\Messaging\EmailEnvelope.cs">
       <Link>EmailEnvelope.cs</Link>
     </Compile>
@@ -122,7 +121,6 @@
 	<Compile Include="..\..\Backendless\Persistence\SpatialReferenceSystem.cs" />
     <Compile Include="..\..\Backendless\Persistence\WKTParser.cs" />
     <Compile Include="..\..\Backendless\Push\PushNotificationsBinding.cs" />
-    <Compile Include="..\..\Backendless\Push\Registrar.cs" />
     <Compile Include="..\..\Backendless\Push\RegistrationInfo.cs" />
     <Compile Include="..\..\Backendless\RT\AbstractListenerFactory.cs">
       <Link>AbstractListenerFactory.cs</Link>

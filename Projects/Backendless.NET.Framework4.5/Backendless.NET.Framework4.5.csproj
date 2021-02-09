@@ -127,7 +127,6 @@
     <Compile Include="..\..\Backendless\Logging\LogMessage.cs" />
     <Compile Include="..\..\Backendless\Messaging\BodyParts.cs" />
     <Compile Include="..\..\Backendless\Messaging\DeliveryOptions.cs" />
-    <Compile Include="..\..\Backendless\Messaging\DeviceRegistrationDto.cs" />
     <Compile Include="..\..\Backendless\Messaging\EmailEnvelope.cs" />
     <Compile Include="..\..\Backendless\Messaging\Message.cs" />
     <Compile Include="..\..\Backendless\Messaging\MessageStatus.cs" />
@@ -171,7 +170,6 @@
       <Link>Properties/VersionInfo.cs</Link>
     </Compile>
     <Compile Include="..\..\Backendless\Push\PushNotificationsBinding.cs" />
-    <Compile Include="..\..\Backendless\Push\Registrar.cs" />
     <Compile Include="..\..\Backendless\Push\RegistrationInfo.cs" />
     <Compile Include="..\..\Backendless\RT\AbstractListenerFactory.cs" />
     <Compile Include="..\..\Backendless\RT\AbstractRequest.cs" />

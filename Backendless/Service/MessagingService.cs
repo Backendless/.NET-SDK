@@ -1,5 +1,9 @@
 using System;
 using System.Collections.Generic;
+#if NETSTANDARD2_1
+using Plugin.DeviceInfo;
+using BackendlessAPI.Push;
+#endif
 #if WINDOWS_PHONE8
 using Windows.Phone.System.Analytics;
 #endif
@@ -10,7 +14,6 @@ using Weborb.Types;
 using BackendlessAPI.Messaging;
 #if WITHRT
 using BackendlessAPI.RT.Messaging;
-using BackendlessAPI.Push;
 #endif
 #if !( NET_35 || NET_40 )
 using System.Threading.Tasks;
@@ -39,8 +42,10 @@ namespace BackendlessAPI.Service
 
     public MessagingService()
     {
+#if NETSTANDARD2_1
       Types.AddClientClassMapping( "com.backendless.management.DeviceRegistrationDto",
                                    typeof( Messaging.DeviceRegistration ) );
+#endif
       Types.AddClientClassMapping( "com.backendless.services.messaging.MessageStatus",
                                    typeof( Messaging.MessageStatus ) );
       Types.AddClientClassMapping( "com.backendless.services.messaging.PublishOptions",
@@ -72,13 +77,12 @@ namespace BackendlessAPI.Service
 #endif
     }
 
-#if UNITY_ANDROID || UNITY_IPHONE || MOBILE
+#if (UNITY_ANDROID || UNITY_IPHONE || MOBILE) && NETSTANDARD2_1
     public void UnregisterDevice()
     {
       Registrar.UnregisterDevice();
     }
 
-#if !( NET_35 || NET_40 )
     public async Task UnregisterDeviceAsync()
     {
       await Task.Run( () => { Registrar.UnregisterDevice(); } );
@@ -88,7 +92,6 @@ namespace BackendlessAPI.Service
     {
       await Task.Run( () => { Registrar.UnregisterDevice( channels ); } );
     }
-#endif
 
     public void UnregisterDevice( List<String> channels )
     {
@@ -403,12 +406,10 @@ namespace BackendlessAPI.Service
 
 
 #endif
-
     public string DeviceID
     {
       get { return deviceId; }
     }
-
 #region PUBLISH SYNC (DEFAULT CHANNEL)
 
     public Messaging.MessageStatus Publish( object message )
