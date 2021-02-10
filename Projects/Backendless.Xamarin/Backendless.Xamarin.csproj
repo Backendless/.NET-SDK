@@ -1,18 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>netstandard2.1</TargetFramework>
+		<TargetFramework>netstandard2.0</TargetFramework>
 		<AssemblyName>Backendless</AssemblyName>
 		<RootNamespace>BackendlessAPI</RootNamespace>
 		<PackageVersion>6.2.0.0</PackageVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-	  <DefineConstants>TRACE;DEBUG;NETSTANDARD2_1;PURE_CLIENT_LIB;WITHRT;MOBILE</DefineConstants>
+	  <DefineConstants>TRACE;DEBUG;NETSTANDARD2_0;PURE_CLIENT_LIB;WITHRT;MOBILE</DefineConstants>
 	</PropertyGroup>
 
 	<PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-	  <DefineConstants>TRACE;RELEASE;NETSTANDARD2_1;PURE_CLIENT_LIB;WITHRT</DefineConstants>
+	  <DefineConstants>TRACE;RELEASE;NETSTANDARD2_0;PURE_CLIENT_LIB;WITHRT;MOBILE</DefineConstants>
 	</PropertyGroup>
 	
 	<ItemGroup>
@@ -482,9 +482,9 @@
 	<Target Name="MyAfterBuild" AfterTargets="Build">
 		<Message Text="In after build before copy">
 		</Message>
-		<Copy SourceFiles="bin/Debug/netstandard2.1/Backendless.dll" DestinationFolder="../Nuget/Backendless.NET.Framework/lib/netstandard2.1/">
+		<Copy SourceFiles="bin/Debug/netstandard2.0/Backendless.dll" DestinationFolder="../Nuget/Backendless.NET.Framework/lib/netstandard2.0/">
 		</Copy>
-		<Copy SourceFiles="bin/Debug/netstandard2.1/Backendless.dll" DestinationFolder="../Nuget/Backendless.NET.Framework/ref/netstandard2.1/">
+		<Copy SourceFiles="bin/Debug/netstandard2.0/Backendless.dll" DestinationFolder="../Nuget/Backendless.NET.Framework/ref/netstandard2.0/">
 		</Copy>
 		<Message Text="In after build after copy">
 		</Message>

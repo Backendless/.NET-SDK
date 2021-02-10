@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
-#if NETSTANDARD2_1
-using Plugin.DeviceInfo;
+#if MOBILE
 using BackendlessAPI.Push;
 #endif
 #if WINDOWS_PHONE8
@@ -42,7 +41,7 @@ namespace BackendlessAPI.Service
 
     public MessagingService()
     {
-#if NETSTANDARD2_1
+#if MOBILE
       Types.AddClientClassMapping( "com.backendless.management.DeviceRegistrationDto",
                                    typeof( Messaging.DeviceRegistration ) );
 #endif
@@ -77,7 +76,7 @@ namespace BackendlessAPI.Service
 #endif
     }
 
-#if (UNITY_ANDROID || UNITY_IPHONE || MOBILE) && NETSTANDARD2_1
+#if MOBILE
     public void UnregisterDevice()
     {
       Registrar.UnregisterDevice();
