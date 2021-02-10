@@ -43,9 +43,6 @@ namespace Weborb.Client
 
     private async void SendHttpRequest<T>( V3Message v3Msg, IDictionary requestHeaders, IDictionary httpHeaders, Responder<T> responder, AsyncStreamSetInfo<T> asyncStreamSetInfo )
     {
-        if( v3Msg is null && requestHeaders is null && httpHeaders is null && responder is null && asyncStreamSetInfo is null )
-          return;
-
       byte[] requestBytes = CreateRequest( v3Msg, requestHeaders );
       HttpRequestMessage requestMessage = new HttpRequestMessage
       {
