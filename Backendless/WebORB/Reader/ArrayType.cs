@@ -196,13 +196,13 @@ namespace Weborb.Reader
 
         object newDictionary = Activator.CreateInstance( constructedType );
         refCache.AddObject( this, type, newDictionary );
-        Type keyValuePairType = typeof( Weborb.Util.KeyValuePair );
+        Type keyValuePairType = typeof( KeyValuePair );
         MethodInfo addMethod = constructedType.GetMethod( "Add", genericArgs );
         object[] args = new object[ 2 ];
 
         for( int i = 0; i < arrayObject.Length; i++ )
         {
-          Weborb.Util.KeyValuePair kvPair = (Weborb.Util.KeyValuePair) ((IAdaptingType) arrayObject[ i ]).adapt( keyValuePairType );
+          KeyValuePair kvPair = (KeyValuePair) ((IAdaptingType) arrayObject[ i ]).adapt( keyValuePairType );
 
           args[ 0 ] = kvPair.key.adapt( genericArgs[ 0 ] );
           args[ 1 ] = kvPair.value.adapt( genericArgs[ 1 ] );
@@ -396,7 +396,7 @@ namespace Weborb.Reader
       return args.Length == 2 &&
               (arrayObject == null ||
                arrayObject.Length == 0 ||
-              ( (IAdaptingType) arrayObject[ 0 ] ).canAdaptTo( typeof( Weborb.Util.KeyValuePair ) ) );
+              ( (IAdaptingType) arrayObject[ 0 ] ).canAdaptTo( typeof( KeyValuePair ) ) );
     }
 
     private bool isHomogeneous()
