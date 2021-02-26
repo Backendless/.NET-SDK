@@ -70,28 +70,28 @@ namespace BackendlessAPI.Persistence
       Object coordinatesObj = geoJSON[ "coordinates" ];
       Object[] coordinates = null;
 
-      if ( coordinatesObj is List<Object> )
-        coordinates = ((List<Object>) coordinatesObj).ToArray();
+      if( coordinatesObj is List<Object> )
+        coordinates = ( (List<Object>) coordinatesObj ).ToArray();
+      else if( coordinatesObj is Double[] )
+        coordinates = ( (Double[]) coordinatesObj ).Select( d => (Object) d ).ToArray();
+      else if( coordinatesObj != null )
+        coordinates = ( (List<Double>) coordinatesObj ).Select( d => (Object) d ).ToArray();
 
-      else if ( coordinatesObj != null )
-        coordinates = ((List<Double>) coordinatesObj).Select( d => (Object) d ).ToArray();
-       
       if( type == null || coordinates == null )
         throw new GeoJSONParserException( "Both 'type' and 'coordinates' should be present in GeoJSON object." );
 
-      if( this.geomClass == null || this.geomClass.GetType() == typeof(Geometry) )
+      if( this.geomClass == null || this.geomClass.GetType() == typeof( Geometry ) )
       {
         switch( type )
         {
           case Point.GEOJSON_TYPE:
-            return ConstructPointFromCoordinates( coordinates );
+          return ConstructPointFromCoordinates( coordinates );
           case LineString.GEOJSON_TYPE:
-            return ConstructLineStringFromCoordinates( coordinates );
+          return ConstructLineStringFromCoordinates( coordinates );
           case Polygon.GEOJSON_TYPE:
-            return ConstructPolygonFromCoordinates( coordinates );
+          return ConstructPolygonFromCoordinates( coordinates );
         }
       }
-
       else
         throw new GeoJSONParserException( $"Unknown geometry class: '{this.geomClass}" );
 

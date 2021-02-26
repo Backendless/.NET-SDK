@@ -33,7 +33,7 @@ namespace TestProject.Tests.UserService
       var properties = Backendless.UserService.DescribeUserClass();
 
       Assert.NotNull( properties );
-      Assert.Equal( 9, properties.Count );
+      Assert.Equal( 10, properties.Count );
     }
 
     [Fact]
@@ -43,7 +43,7 @@ namespace TestProject.Tests.UserService
       properties =>
       {
         Assert.NotNull( properties );
-        Assert.Equal( 9, properties.Count );
+        Assert.Equal( 10, properties.Count );
       },
       fault =>
       {
@@ -57,7 +57,7 @@ namespace TestProject.Tests.UserService
       var properties = await Backendless.UserService.DescribeUserClassAsync();
 
       Assert.NotNull( properties );
-      Assert.Equal( 9, properties.Count );
+      Assert.Equal( 10, properties.Count );
     }
   }
 }
