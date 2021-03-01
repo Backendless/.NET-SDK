@@ -1,6 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using Weborb.Service;
+using Plugin.DeviceInfo;
+using System.Collections.Generic;
 
 namespace BackendlessAPI.Messaging
 {
@@ -28,7 +29,7 @@ namespace BackendlessAPI.Messaging
     public String RegistrationId { get; set; }
 
     [SetClientClassMemberName( "deviceId" )]
-    public String DeviceId { get; set; }
+    public String DeviceId { get; } = CrossDeviceInfo.Current.Id;
 
     public void AddChannel( String channel )
     {

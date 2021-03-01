@@ -8,6 +8,7 @@ using BackendlessAPI.Geo.Fence;
 using System.Runtime.CompilerServices;
 using Weborb.Util;
 using BackendlessAPI.Utils;
+using Plugin.DeviceInfo;
 
 namespace BackendlessAPI.Push
 {
@@ -19,9 +20,8 @@ namespace BackendlessAPI.Push
       deviceRegistration.Channels = channels;
       deviceRegistration.Expiration = expiration;
       deviceRegistration.DeviceToken = token;
-      deviceRegistration.DeviceId = Backendless.Messaging.DeviceID;
       deviceRegistration.Channels = channels;
-      deviceRegistration.Os = DeviceCheck.GetDeviceOS();
+      deviceRegistration.Os = DeviceCheck.GetDeviceOS();     
 
       return Invoker.InvokeSync<String>( MessagingService.DEVICE_REGISTRATION_MANAGER_SERVER_ALIAS, "registerDevice", new Object[] { deviceRegistration } );
     }
