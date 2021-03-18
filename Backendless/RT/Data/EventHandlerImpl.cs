@@ -30,13 +30,12 @@ namespace BackendlessAPI.RT.Data
     #region CREATE LISTENER
     public void AddCreateListener( ObjectCreated<T> listener )
     {
-      DataSubscription subscription = new DataSubscription( RTDataEvents.created, tableName, CreateCallback( listener ) );
-      AddEventListener( subscription );
+      AddCreateListener( null, listener );
     }
 
     public void AddCreateListener( String whereClause, ObjectCreated<T> listener )
     {
-      DataSubscription subscription = new DataSubscription( RTDataEvents.created, tableName, CreateCallback( listener ) )
+      DataSubscription subscription = new DataSubscription( RTDataEvents.created, tableName, CreateTypedCallback<T>( listener, type ) )
               .WithWhere( whereClause );
 
       AddEventListener( subscription );
@@ -65,13 +64,12 @@ namespace BackendlessAPI.RT.Data
     #region UPDATE LISTENER
     public void AddUpdateListener( ObjectUpdated<T> listener )
     {
-      DataSubscription subscription = new DataSubscription( RTDataEvents.updated, tableName, CreateCallback( listener ) );
-      AddEventListener( subscription );
+      AddUpdateListener( null, listener );
     }
 
     public void AddUpdateListener( String whereClause, ObjectUpdated<T> listener )
     {
-      DataSubscription subscription = new DataSubscription( RTDataEvents.updated, tableName, CreateCallback( listener ) ).WithWhere( whereClause );
+      DataSubscription subscription = new DataSubscription( RTDataEvents.updated, tableName, CreateTypedCallback<T>( listener, type ) ).WithWhere( whereClause );
       AddEventListener( subscription );
     }
 
@@ -98,13 +96,12 @@ namespace BackendlessAPI.RT.Data
     #region DELETE LISTENER
     public void AddDeleteListener( ObjectDeleted<T> listener )
     {
-      DataSubscription subscription = new DataSubscription( RTDataEvents.deleted, tableName, CreateCallback( listener ) );
-      AddEventListener( subscription );
+      AddDeleteListener( null, listener );
     }
 
     public void AddDeleteListener( String whereClause, ObjectDeleted<T> listener )
     {
-      DataSubscription subscription = new DataSubscription( RTDataEvents.deleted, tableName, CreateCallback( listener ) )
+      DataSubscription subscription = new DataSubscription( RTDataEvents.deleted, tableName, CreateTypedCallback<T>( listener, type ) )
               .WithWhere( whereClause );
 
       AddEventListener( subscription );
@@ -133,13 +130,12 @@ namespace BackendlessAPI.RT.Data
     #region BULK UPDATE LISTENER
     public void AddBulkUpdateListener( MultipleObjectsUpdated listener )
     {
-      DataSubscription subscription = new DataSubscription( RTDataEvents.bulk_updated, tableName, CreateCallback( listener, typeof( BulkEvent ) ) );
-      AddEventListener( subscription );
+      AddBulkUpdateListener( null, listener );
     }
 
     public void AddBulkUpdateListener( String whereClause, MultipleObjectsUpdated listener )
     {
-      DataSubscription subscription = new DataSubscription( RTDataEvents.bulk_updated, tableName, CreateCallback( listener, typeof( BulkEvent ) ) )
+      DataSubscription subscription = new DataSubscription( RTDataEvents.bulk_updated, tableName, CreateTypedCallback<BulkEvent>( listener, typeof( BulkEvent ) ) )
             .WithWhere( whereClause );
 
       AddEventListener( subscription );
@@ -168,13 +164,12 @@ namespace BackendlessAPI.RT.Data
     #region BULK DELETE LISTENER
     public void AddBulkDeleteListener( MultipleObjectsDeleted listener )
     {
-      DataSubscription subscription = new DataSubscription( RTDataEvents.bulk_deleted, tableName, CreateCallback( listener, typeof( BulkEvent ) ) );
-      AddEventListener( subscription );
+      AddBulkDeleteListener( null, listener );
     }
 
     public void AddBulkDeleteListener( String whereClause, MultipleObjectsDeleted listener )
     {
-      DataSubscription subscription = new DataSubscription( RTDataEvents.bulk_deleted, tableName, CreateCallback( listener, typeof( BulkEvent ) ) )
+      DataSubscription subscription = new DataSubscription( RTDataEvents.bulk_deleted, tableName, CreateTypedCallback<BulkEvent>( listener, typeof( BulkEvent ) ) )
               .WithWhere( whereClause );
 
       AddEventListener( subscription );
@@ -204,7 +199,8 @@ namespace BackendlessAPI.RT.Data
     public void AddBulkCreateListener( MultipleObjectsCreated listener )
     {
       DataSubscription subscription =
-            new DataSubscription( RTDataEvents.bulk_created, tableName, CreateCallback( listener, typeof( BulkEvent ) ) );
+        new DataSubscription( RTDataEvents.bulk_created, tableName, CreateTypedCallback<IList<String>>( listener, typeof( IList<String> ) ) );
+
       AddEventListener( subscription );
     }
 
@@ -218,20 +214,16 @@ namespace BackendlessAPI.RT.Data
       RemoveListeners( RTDataEvents.bulk_created );
     }
     #endregion
-    #region CREATE CALLBACK
-    private IRTCallback CreateCallback( Delegate callback )
-    {
-      return CreateCallback( callback, type );
-    }
 
-    private IRTCallback CreateCallback( Delegate callback, Type type )
+    #region CREATE CALLBACK
+    private IRTCallback CreateTypedCallback<U>( Delegate callback, Type type )
     {
-      return new RTCallback<T>( callback,
+      return new RTCallback<U>( callback,
       response =>
       {
         try
         {
-          T adaptedResponse = (T) response.adapt( type );
+          U adaptedResponse = (U) response.adapt( type );
           callback.DynamicInvoke( adaptedResponse );
         }
         catch( System.Exception ex )
@@ -245,7 +237,7 @@ namespace BackendlessAPI.RT.Data
       } );
     }
 
-    internal void HandleFault( Delegate callback, Exception.BackendlessFault backendlessFault )
+    private void HandleFault( Delegate callback, Exception.BackendlessFault backendlessFault )
     {
       if( errorHandler == null )
         return;
@@ -256,13 +248,15 @@ namespace BackendlessAPI.RT.Data
         errorHandler( RTErrorType.OBJECTUPDATED, backendlessFault );
       else if( callback is ObjectDeleted<T> )
         errorHandler( RTErrorType.OBJECTDELETED, backendlessFault );
+      else if( callback is MultipleObjectsCreated )
+        errorHandler( RTErrorType.BULKCREATE, backendlessFault );
       else if( callback is MultipleObjectsUpdated )
         errorHandler( RTErrorType.BULKUPDATE, backendlessFault );
       else if( callback is MultipleObjectsDeleted )
         errorHandler( RTErrorType.BULKDELETE, backendlessFault );
     }
-
     #endregion
+
     #region REMOVE LISTENERS (PRIVATE)
     private void RemoveListeners( RTDataEvents dataEvent )
     {
@@ -275,7 +269,7 @@ namespace BackendlessAPI.RT.Data
       RemoveEventListener( ( subscriptionToCheck ) =>
       {
         return IsEventSubscription( subscriptionToCheck, dataEvent ) &&
-          whereClause.Equals( ((DataSubscription) subscriptionToCheck).WhereClause );
+          whereClause.Equals( ( (DataSubscription) subscriptionToCheck ).WhereClause );
       } );
     }
 
@@ -297,14 +291,14 @@ namespace BackendlessAPI.RT.Data
       {
         return IsEventSubscription( subscriptionToCheck, dataEvent ) &&
           subscriptionToCheck.Callback.UsersCallback.Equals( listener ) &&
-                             whereClause.Equals( ((DataSubscription) subscriptionToCheck).WhereClause );
+                             whereClause.Equals( ( (DataSubscription) subscriptionToCheck ).WhereClause );
       } );
     }
     #endregion
 
     private Boolean IsEventSubscription( RTSubscription subscription, RTDataEvents dataEvent )
     {
-      if( !(subscription is DataSubscription) )
+      if( !( subscription is DataSubscription ) )
         return false;
 
       DataSubscription dataSubscription = (DataSubscription) subscription;
