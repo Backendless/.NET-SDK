@@ -5,7 +5,7 @@ namespace BackendlessAPI.RT.Data
   {
     public DataSubscription( RTDataEvents rtDataEvent, String tableName, IRTCallback callback ) : base( SubscriptionNames.OBJECTS_CHANGES, callback )
     {
-      PutOption( "event", Enum.GetName( typeof( RTDataEvents ), rtDataEvent ) );
+      PutOption( "event", Enum.GetName( typeof( RTDataEvents ), rtDataEvent ).Replace( "_", "-" ) );
       PutOption( "tableName", tableName );
     }
 
@@ -24,15 +24,15 @@ namespace BackendlessAPI.RT.Data
       }
     }
 
-    public String TableName 
+    public String TableName
     {
-      get 
+      get
       {
         return (String) GetOption( "tableName" );
       }
     }
 
-    public String WhereClause 
+    public String WhereClause
     {
       get
       {
