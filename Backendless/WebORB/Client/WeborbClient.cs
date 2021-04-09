@@ -683,7 +683,14 @@ namespace Weborb.Client
     {
       AsyncStreamSetInfo<T> asyncStreamSetInfo = new AsyncStreamSetInfo<T>();
       asyncStreamSetInfo.responseThreadConfigurator = responseThreadConfigurator;
-      _engine.Invoke( className, methodName, args, null, messageHeaders, httpRequestHeaders, responder, asyncStreamSetInfo );
+      try
+      {
+        _engine.Invoke( className, methodName, args, null, messageHeaders, httpRequestHeaders, responder, asyncStreamSetInfo );
+      }
+      catch( System.Exception ex )
+      {
+        throw ex;
+      }
     }
     #if !(NET_35 || NET_40)
     public async Task<T> Invoke<T>( String className, String methodName, Object[] args, IDictionary httpRequestHeaders, IDictionary messageHeaders, ResponseThreadConfigurator responseThreadConfigurator )
