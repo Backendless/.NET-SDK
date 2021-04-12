@@ -41,14 +41,7 @@ namespace Weborb.Client
                                   AsyncStreamSetInfo<T> asyncStreamSetInfo )
     {
       var messageForInvocation = CreateMessageForInvocation( className, methodName, args, messageHeaders );
-      try
-      {
-        SendRequest( messageForInvocation, requestHeaders, httpHeaders, responder, asyncStreamSetInfo );
-      }
-      catch( System.Exception ex )
-      {
-        throw ex;
-      }
+      SendRequest( messageForInvocation, requestHeaders, httpHeaders, responder, asyncStreamSetInfo );
     }
 
     public override Task<T> SendRequest<T>( V3Message v3Msg, IDictionary requestHeaders, IDictionary httpHeaders,

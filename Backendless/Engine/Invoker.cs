@@ -30,14 +30,7 @@ namespace BackendlessAPI.Engine
 
     public static T InvokeSync<T>( string className, string methodName, object[] args )
     {
-      try
-      {
-        return InvokeSync<T>( className, methodName, args, false );
-      }
-      catch( System.Exception ex )
-      {
-        throw ex;
-      }
+      return InvokeSync<T>( className, methodName, args, false );
     }
 
     public static T InvokeSync<T>( string className, string methodName, object[] args, bool enableUnderFlowInspection )
@@ -68,7 +61,7 @@ namespace BackendlessAPI.Engine
       }
       catch( System.Exception ex )
       {
-        throw ex;
+        throw new BackendlessException( ex.Message );
       }
 
       if( backendlessFault != null )
