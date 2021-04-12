@@ -73,7 +73,7 @@ namespace Weborb.Client
       }
       catch( Exception ex )
       {
-        throw new BackendlessAPI.Exception.BackendlessException( ex.Message + "Check your internet connection");
+        throw new BackendlessAPI.Exception.BackendlessException( ex.Message + "Check your internet connection" );
       }
       //try
       //{
@@ -194,20 +194,6 @@ namespace Weborb.Client
         fault = new Fault( e.Message, e.StackTrace, INTERNAL_CLIENT_EXCEPTION_FAULT_CODE );
 
       return fault;
-    }
-
-    private Boolean CheckInternetConnection()
-    {
-      try
-      {
-        using( var client = new WebClient() )
-        using( client.OpenRead( "http://backendless.com" ) )
-          return true;
-      }
-      catch
-      {
-        return false;
-      }
     }
   }
 }
