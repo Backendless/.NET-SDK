@@ -25,15 +25,8 @@ namespace Weborb.Client
                                          IDictionary httpHeaders, Responder<T> responder,
                                          AsyncStreamSetInfo<T> asyncStreamSetInfo )
     {
-      try
-      {
-        Task task = SendHttpRequest( v3Msg, requestHeaders, httpHeaders, responder, asyncStreamSetInfo );
-        task.Wait();
-      }
-      catch( System.Exception ex )
-      {
-        throw ex;
-      }
+      Task task = SendHttpRequest( v3Msg, requestHeaders, httpHeaders, responder, asyncStreamSetInfo );
+      task.Wait();
     }
 
     internal override void Invoke<T>( string className, string methodName, object[] args, IDictionary requestHeaders,
@@ -75,16 +68,6 @@ namespace Weborb.Client
       {
         throw new BackendlessAPI.Exception.BackendlessException( ex.Message + "Check your internet connection" );
       }
-      //try
-      //{
-      //responseMessage = await httpClient.SendAsync( requestMessage );
-      /*}
-      catch(Exception ex)
-      {
-        var fault = new Fault( "No internet connection", "Check your internet connection" );
-        asyncStreamSetInfo.responder?.ErrorHandler( fault );
-        return;
-      }*/
 
       asyncStreamSetInfo.responder = responder;
 
