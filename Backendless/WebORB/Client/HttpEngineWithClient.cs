@@ -23,14 +23,19 @@ namespace Weborb.Client
 
     public override void SendRequest<T>( V3Message v3Msg, IDictionary requestHeaders,
                                          IDictionary httpHeaders, Responder<T> responder,
-                                         AsyncStreamSetInfo<T> asyncStreamSetInfo ) =>
-        SendHttpRequest( v3Msg, requestHeaders, httpHeaders, responder, asyncStreamSetInfo );
+                                         AsyncStreamSetInfo<T> asyncStreamSetInfo )
+    {
+      Task task = SendHttpRequest( v3Msg, requestHeaders, httpHeaders, responder, asyncStreamSetInfo );
+      task.Wait();
+    }
 
     internal override void Invoke<T>( string className, string methodName, object[] args, IDictionary requestHeaders,
                                   IDictionary messageHeaders, IDictionary httpHeaders, Responder<T> responder,
-                                  AsyncStreamSetInfo<T> asyncStreamSetInfo ) =>
-      SendRequest( CreateMessageForInvocation( className, methodName, args, messageHeaders ),
-                                requestHeaders, httpHeaders, responder, asyncStreamSetInfo );
+                                  AsyncStreamSetInfo<T> asyncStreamSetInfo )
+    {
+      var messageForInvocation = CreateMessageForInvocation( className, methodName, args, messageHeaders );
+      SendRequest( messageForInvocation, requestHeaders, httpHeaders, responder, asyncStreamSetInfo );
+    }
 
     public override Task<T> SendRequest<T>( V3Message v3Msg, IDictionary requestHeaders, IDictionary httpHeaders,
                                                                   ResponseThreadConfigurator threadConfigurator ) =>
@@ -41,7 +46,7 @@ namespace Weborb.Client
       SendRequest<T>( CreateMessageForInvocation( className, methodName, args, messageHeaders ),
                                         requestHeaders, httpHeaders, threadConfigurator );
 
-    private async void SendHttpRequest<T>( V3Message v3Msg, IDictionary requestHeaders, IDictionary httpHeaders, Responder<T> responder, AsyncStreamSetInfo<T> asyncStreamSetInfo )
+    private async Task SendHttpRequest<T>( V3Message v3Msg, IDictionary requestHeaders, IDictionary httpHeaders, Responder<T> responder, AsyncStreamSetInfo<T> asyncStreamSetInfo )
     {
       byte[] requestBytes = CreateRequest( v3Msg, requestHeaders );
       HttpRequestMessage requestMessage = new HttpRequestMessage
@@ -52,7 +57,17 @@ namespace Weborb.Client
       };
 
       requestMessage.Content.Headers.ContentType = new MediaTypeHeaderValue( "application/x-amf" );
-      HttpResponseMessage responseMessage = await httpClient.SendAsync( requestMessage );
+      HttpResponseMessage responseMessage;
+      try
+      {
+        Task<HttpResponseMessage> task = httpClient.SendAsync( requestMessage );
+        task.Wait();
+        responseMessage = task.Result;
+      }
+      catch( Exception ex )
+      {
+        throw new BackendlessAPI.Exception.BackendlessException( ex.Message + "Check your internet connection" );
+      }
 
       asyncStreamSetInfo.responder = responder;
 
