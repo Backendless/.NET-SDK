@@ -108,6 +108,8 @@ namespace BackendlessAPI
       if( String.IsNullOrEmpty( customDomain ) )
         throw new ArgumentNullException( "Custom domain cannot be null or empty" );
 
+      customDomain = customDomain.ToLower();
+
       if( customDomain.StartsWith( "http" ) )
         URL = customDomain;
       else

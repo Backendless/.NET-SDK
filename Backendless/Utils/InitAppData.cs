@@ -15,7 +15,10 @@ namespace BackendlessAPI
 
     internal InitAppData( String customDomain )
     {
-      FULL_QUERY_URL = customDomain + "/api";
+      if( !customDomain.EndsWith("/") )
+        FULL_QUERY_URL = customDomain + "/";
+
+      FULL_QUERY_URL = customDomain + "api";
     }
   }
 }
