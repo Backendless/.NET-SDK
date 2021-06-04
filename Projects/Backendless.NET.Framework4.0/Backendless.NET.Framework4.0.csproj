@@ -216,6 +216,7 @@
     <Compile Include="..\..\Backendless\Service\UserService.cs" />
     <Compile Include="..\..\Backendless\Utils\DeviceCheck.cs" />
     <Compile Include="..\..\Backendless\Utils\ILoginStorage.cs" />
+	<Compile Include="..\..\Backendless\Utils\InitAppData.cs" />
     <Compile Include="..\..\Backendless\Utils\ITimeoutManager.cs" />
     <Compile Include="..\..\Backendless\Utils\Json.cs" />
     <Compile Include="..\..\Backendless\Utils\LoginStorage.cs" />

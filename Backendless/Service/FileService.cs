@@ -506,7 +506,7 @@ namespace BackendlessAPI.Service
       var header = sb.ToString();
       byte[] headerBytes = Encoding.UTF8.GetBytes( header );
 
-      var urlStr = Backendless.URL + "/" + Backendless.AppId + "/" + Backendless.APIKey + "/files/" +
+      var urlStr = Backendless.InitAppData.FULL_QUERY_URL + "/files/" +
                    EncodeURL( path ) + "/" + EncodeURL( fileName );
       if( overwrite )
         urlStr = urlStr + "?" + "overwrite" + "=" + overwrite;
@@ -629,7 +629,7 @@ namespace BackendlessAPI.Service
       var header = sb.ToString();
       byte[] headerBytes = Encoding.UTF8.GetBytes( header );
 
-      var urlStr = Backendless.URL + "/" + Backendless.AppId + "/" + Backendless.APIKey + "/files/" +
+      var urlStr = Backendless.InitAppData.FULL_QUERY_URL + "/files/" +
                    EncodeURL( path ) + "/" + EncodeURL( fileName );
       if( overwrite )
         urlStr = urlStr + "?overwrite=true";
