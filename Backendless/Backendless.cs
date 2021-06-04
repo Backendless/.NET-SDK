@@ -29,6 +29,7 @@ namespace BackendlessAPI
   {
     public static long BACKENDLESSLOG = Weborb.Util.Logging.Log.getCode( "BACKENDLESS LOG" );
     public static String URL = "https://api.backendless.com";
+    public static InitAppData InitAppData;
 
     public static PersistenceService Persistence;
     public static PersistenceService Data;
@@ -98,6 +99,26 @@ namespace BackendlessAPI
       AppId = applicationId;
       APIKey = apiKey;
 
+      InitAppData = new InitAppData();
+      InitApp();
+    }
+    
+    public static void InitApp( String customDomain )
+    {
+      if( String.IsNullOrEmpty( customDomain ) )
+        throw new ArgumentNullException( "Custom domain cannot be null or empty" );
+
+      if( customDomain.ToLower().StartsWith( "http" ) )
+        URL = customDomain;
+      else
+        URL = "http://" + customDomain;
+
+      InitAppData = new InitAppData( URL );
+      InitApp();
+    }
+
+    private static void InitApp()
+    {
       Persistence = new PersistenceService();
       Data = Persistence;
       Geo = new GeoService();
@@ -109,11 +130,11 @@ namespace BackendlessAPI
       Counters = CounterService.GetInstance();
       Logging = new LoggingService();
       CustomService = new CustomService();
-      
-      #if WITHRT
+
+#if WITHRT
       RT = new RTServiceImpl();
-      #endif
-  
+#endif
+
       MessageWriter.DefaultWriter = new UnderflowWriter();
       MessageWriter.AddAdditionalTypeWriter( typeof( BackendlessUser ), new BackendlessUserWriter() );
       MessageWriter.AddAdditionalTypeWriter( typeof( Geometry ), new BackendlessGeometryWriter() );
@@ -126,7 +147,7 @@ namespace BackendlessAPI
       ORBConfig.GetInstance().getObjectFactories().AddArgumentObjectFactory( typeof( Point ).FullName, new BackendlessGeometryFactory() );
       ORBConfig.GetInstance().getObjectFactories().AddArgumentObjectFactory( typeof( LineString ).FullName, new BackendlessGeometryFactory() );
       ORBConfig.GetInstance().getObjectFactories().AddArgumentObjectFactory( typeof( Polygon ).FullName, new BackendlessGeometryFactory() );
- 
+
       HeadersManager.CleanHeaders();
       LoginStorage loginStorage = new LoginStorage();
 

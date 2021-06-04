@@ -18,8 +18,7 @@ namespace BackendlessAPI.Engine
     private static readonly string DESTINATION = "GenericDestination";
 
     private static readonly WeborbClient client =
-      new WeborbClient( Backendless.URL + "/" + Backendless.AppId + "/" + Backendless.APIKey + URL_ENDING,
-                        DESTINATION );
+      new WeborbClient( Backendless.InitAppData.FULL_QUERY_URL + URL_ENDING );
 
     public static int Timeout
     {
