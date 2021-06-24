@@ -553,6 +553,9 @@ namespace BackendlessAPI.Service
 
     public void ReloadCurrentUserData()
     {
+      if( CurrentUser == null )
+        throw new ArgumentNullException( ExceptionMessage.WRONG_USER_ID );
+
       if( String.IsNullOrEmpty( CurrentUser.ObjectId ) )
         throw new ArgumentNullException( ExceptionMessage.WRONG_USER_ID );
 

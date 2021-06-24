@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Xunit;
 using BackendlessAPI;
+using BackendlessAPI.Exception;
 using System.Linq;
 
 namespace TestProject.Tests.UserService
@@ -61,6 +62,20 @@ namespace TestProject.Tests.UserService
       Assert.False( Comparer.IsEqual<String, Object>( user.Properties, currentUser.Properties ) );
       Assert.False( String.IsNullOrEmpty( currentUser.Properties[ "name" ].ToString() ), "Current user's property 'name' is empty or null" );
       Assert.True( currentUser.Properties[ "name" ].ToString() == "Updated", "Actual current user's property is not equal expected" );
+    }
+
+    [Fact]
+    public void TestReloadCurrentUser_NullCurrentUser()
+    {
+      Backendless.UserService.Logout();
+      Assert.Throws<ArgumentNullException>( () => Backendless.UserService.ReloadCurrentUserData() );
+    }
+
+    [Fact]
+    public void TestReloadCurrentUser_NullObjectId()
+    {
+      Backendless.UserService.CurrentUser.ObjectId = null;
+      Assert.Throws<ArgumentNullException>( () => Backendless.UserService.ReloadCurrentUserData() );
     }
   }
 }
