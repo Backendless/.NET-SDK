@@ -551,6 +551,21 @@ namespace BackendlessAPI.Service
       }
     }
 
+    public void ReloadCurrentUserData()
+    {
+      if( String.IsNullOrEmpty( CurrentUser.ObjectId ) )
+        throw new ArgumentNullException( ExceptionMessage.WRONG_USER_ID );
+
+      var actualUser = Backendless.Data.Of( "Users" ).FindById( CurrentUser.ObjectId );
+
+      CurrentUser.PutProperties( actualUser );
+    }
+
+    public async Task ReloadCurrentUserDataAsync()
+    {
+      await Task.Run( () => ReloadCurrentUserData() ).ConfigureAwait( false );
+    }
+
     public IList<string> GetUserRoles()
     {
       return Invoker.InvokeSync<List<string>>( USER_MANAGER_SERVER_ALIAS, "getUserRoles",
