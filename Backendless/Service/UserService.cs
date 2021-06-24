@@ -354,6 +354,19 @@ namespace BackendlessAPI.Service
       }
     }
 
+    public void GetAuthorizationUrlLink( String authProviderCode, Dictionary<String, String> fieldsMappings, List<String> scope,
+                                     AsyncCallback<String> callback )
+    {
+      if( fieldsMappings == null )
+        fieldsMappings = new Dictionary<String, String>();
+
+      if( scope == null )
+        scope = new List<String>();
+
+      Invoker.InvokeAsync( USER_MANAGER_SERVER_ALIAS, "getAuthorizationUrlLink", new Object[] { authProviderCode,
+                                                                                fieldsMappings, scope }, callback );
+    }
+
     public void LoginWithOAuth2( String authProviderCode, String accessToken, Dictionary<String, String> fieldsMappings,
       AsyncCallback<BackendlessUser> callback, Boolean stayLoggedIn = false )
     {
