@@ -40,17 +40,13 @@ namespace TestProject.Tests.RealTime
       CountdownEvent countdown = new CountdownEvent( 1 );
       IChannel channel = Backendless.Messaging.Subscribe();
 
-      while( !channel.IsJoined() )
-      {
-      }
-
       channel.AddMessageListener<String>( message =>
       {
         Assert.Equal( "mes", message );
         countdown.Signal();
       } );
 
-      Thread.Sleep( 500 );
+      Thread.Sleep(5000 );
       Backendless.Messaging.Publish( "mes" );
       countdown.Wait( 10000 );
     }

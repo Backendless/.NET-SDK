@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Weborb.Service;
 
 namespace TestProject
@@ -116,6 +117,11 @@ namespace TestProject
       if( value is Decimal )
         return true;
       return false;
+    }
+
+    public static Boolean IsEqual<TKey, TValue>( Dictionary<TKey, TValue> dict1, Dictionary<TKey, TValue> dict2 )
+    {
+      return dict1.Count == dict2.Count && dict1.Except( dict2 ).Any();
     }
   }
 }
