@@ -551,12 +551,10 @@ namespace BackendlessAPI.Service
       }
     }
 
-    public void ReloadCurrentUserData()
+    public void ReloadCurrentUser()
     {
-      if( CurrentUser == null )
-        throw new ArgumentNullException( ExceptionMessage.WRONG_USER_ID );
 
-      if( String.IsNullOrEmpty( CurrentUser.ObjectId ) )
+      if( CurrentUser == null || String.IsNullOrEmpty( CurrentUser.ObjectId ) )
         throw new ArgumentNullException( ExceptionMessage.WRONG_USER_ID );
 
       var actualUser = Backendless.Data.Of( "Users" ).FindById( CurrentUser.ObjectId );
@@ -564,10 +562,12 @@ namespace BackendlessAPI.Service
       CurrentUser.PutProperties( actualUser );
     }
 
-    public async Task ReloadCurrentUserDataAsync()
+#if !(NET_35 || NET_40)
+    public async Task ReloadCurrentUserAsync()
     {
-      await Task.Run( () => ReloadCurrentUserData() ).ConfigureAwait( false );
+      await Task.Run( () => ReloadCurrentUser() ).ConfigureAwait( false );
     }
+#endif
 
     public IList<string> GetUserRoles()
     {

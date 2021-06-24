@@ -37,7 +37,7 @@ namespace TestProject.Tests.UserService
 
       user.Properties[ "name" ] = "Updated";
       Backendless.UserService.Update( user );
-      Backendless.UserService.ReloadCurrentUserData();
+      Backendless.UserService.ReloadCurrentUser();
       currentUser = Backendless.UserService.CurrentUser;
 
       Assert.False( Comparer.IsEqual<String, Object>( user.Properties, currentUser.Properties ) );
@@ -56,7 +56,7 @@ namespace TestProject.Tests.UserService
 
       user.Properties[ "name" ] = "Updated";
       Backendless.UserService.Update( user );
-      await Backendless.UserService.ReloadCurrentUserDataAsync();
+      await Backendless.UserService.ReloadCurrentUserAsync();
       currentUser = Backendless.UserService.CurrentUser;
 
       Assert.False( Comparer.IsEqual<String, Object>( user.Properties, currentUser.Properties ) );
@@ -68,14 +68,14 @@ namespace TestProject.Tests.UserService
     public void TestReloadCurrentUser_NullCurrentUser()
     {
       Backendless.UserService.Logout();
-      Assert.Throws<ArgumentNullException>( () => Backendless.UserService.ReloadCurrentUserData() );
+      Assert.Throws<ArgumentNullException>( () => Backendless.UserService.ReloadCurrentUser() );
     }
 
     [Fact]
     public void TestReloadCurrentUser_NullObjectId()
     {
       Backendless.UserService.CurrentUser.ObjectId = null;
-      Assert.Throws<ArgumentNullException>( () => Backendless.UserService.ReloadCurrentUserData() );
+      Assert.Throws<ArgumentNullException>( () => Backendless.UserService.ReloadCurrentUser() );
     }
   }
 }
