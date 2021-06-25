@@ -354,6 +354,38 @@ namespace BackendlessAPI.Service
       }
     }
 
+    public void GetAuthorizationUrlLink( String authProviderCode, Dictionary<String, String> fieldsMappings, List<String> scope,
+                                     AsyncCallback<String> callback )
+    {
+      if( fieldsMappings == null )
+        fieldsMappings = new Dictionary<String, String>();
+
+      if( scope == null )
+        scope = new List<String>();
+
+      Invoker.InvokeAsync( USER_MANAGER_SERVER_ALIAS, "getAuthorizationUrlLink", new Object[] { authProviderCode, null, null,
+                                                                                fieldsMappings, scope }, callback );
+    }
+
+    public IList<String> GetAuthorizationUrlLink( String authProviderCode, Dictionary<String, String> fieldsMappings, List<String> scope )
+    {
+      if( fieldsMappings == null )
+        fieldsMappings = new Dictionary<String, String>();
+
+      if( scope == null )
+        scope = new List<String>();
+
+      return Invoker.InvokeSync<IList<String>>( USER_MANAGER_SERVER_ALIAS, "getAuthorizationUrlLink", new Object[] { authProviderCode, null, null,
+                                                                                fieldsMappings, scope } );
+    }
+
+#if !( NET_35 || NET_40 )
+    public async Task<IList<String>> GetAuthorizationUrlLinkAsync( String authProviderCode, Dictionary<String, String> fieldsMappings, List<String> scope )
+    {
+      return await Task.Run( () => GetAuthorizationUrlLink( authProviderCode, fieldsMappings, scope ) ).ConfigureAwait( false ); 
+    }
+#endif
+
     public void LoginWithOAuth2( String authProviderCode, String accessToken, Dictionary<String, String> fieldsMappings,
       AsyncCallback<BackendlessUser> callback, Boolean stayLoggedIn = false )
     {
