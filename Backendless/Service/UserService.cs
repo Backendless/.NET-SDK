@@ -10,6 +10,7 @@ using BackendlessAPI.Exception;
 using BackendlessAPI.Property;
 using BackendlessAPI.Utils;
 using Weborb.Types;
+using BackendlessAPI.Persistence;
 
 namespace BackendlessAPI.Service
 {
@@ -600,6 +601,37 @@ namespace BackendlessAPI.Service
       await Task.Run( () => ReloadCurrentUser() ).ConfigureAwait( false );
     }
 #endif
+
+    public IList<BackendlessUser> FindByRole( String roleName, Boolean loadRoles, DataQueryBuilder queryBuilder)
+    {
+      if( String.IsNullOrEmpty( roleName ) )
+        throw new ArgumentNullException( ExceptionMessage.NULL_ROLE_NAME );
+
+      if( queryBuilder == null )
+        queryBuilder = DataQueryBuilder.Create();
+
+      return Invoker.InvokeSync<IList<BackendlessUser>>( USER_MANAGER_SERVER_ALIAS, "findByRole", new Object[] { roleName,
+                                                                                      loadRoles, queryBuilder.Build() } );
+    }
+
+#if !( NET_35 || NET_40 )
+    public async Task<IList<BackendlessUser>> FindByRoleAsync( String roleName, Boolean loadRoles, DataQueryBuilder queryBuilder )
+    {
+      return await Task.Run( () => FindByRole( roleName, loadRoles, queryBuilder ) );
+    }
+#endif
+
+    public void FindByRole( String roleName, Boolean loadRoles, DataQueryBuilder queryBuilder, AsyncCallback<IList<BackendlessUser>> callback )
+    {
+      if( String.IsNullOrEmpty( roleName ) )
+        throw new ArgumentNullException( ExceptionMessage.NULL_ROLE_NAME );
+
+      if( queryBuilder == null )
+        queryBuilder = DataQueryBuilder.Create();
+
+      Invoker.InvokeAsync<IList<BackendlessUser>>( USER_MANAGER_SERVER_ALIAS, "findByRole",
+                                                   new Object[] { roleName, loadRoles, queryBuilder.Build() }, callback );
+    }
 
     public IList<string> GetUserRoles()
     {
