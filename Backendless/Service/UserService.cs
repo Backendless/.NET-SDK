@@ -18,7 +18,36 @@ namespace BackendlessAPI.Service
     private static string USER_MANAGER_SERVER_ALIAS = "com.backendless.services.users.UserService";
     private ILoginStorage _loginStorage = null;
 
-    public BackendlessUser CurrentUser{ get; set; }
+    private BackendlessUser _currentUser = null;
+
+    public BackendlessUser CurrentUser
+    {
+      get
+      {
+        if( _currentUser == null )
+        {
+          if( !_loginStorage.HasData )
+            return null;
+          else
+          {
+            if( Backendless.UserService.IsValidLogin() )
+            {
+              CurrentUser = Backendless.Data.Of<BackendlessUser>().FindById( LoginStorage.ObjectId );
+              return _currentUser;
+            }
+            else
+            {
+              LoginStorage.DeleteFiles();
+              return null;
+            }
+          }
+        }
+
+        return _currentUser;
+      }
+
+      set => _currentUser = value;
+    }
 
     public ILoginStorage LoginStorage
     {
