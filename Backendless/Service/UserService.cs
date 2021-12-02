@@ -26,19 +26,15 @@ namespace BackendlessAPI.Service
       {
         if( _currentUser == null )
         {
-          if( !_loginStorage.HasData )
-            return null;
-          else
+          if(LoginStorage.HasData)
           {
-            if( Backendless.UserService.IsValidLogin() )
+            try
             {
               CurrentUser = Backendless.Data.Of<BackendlessUser>().FindById( LoginStorage.ObjectId );
-              return _currentUser;
             }
-            else
+            catch
             {
               LoginStorage.DeleteFiles();
-              return null;
             }
           }
         }
