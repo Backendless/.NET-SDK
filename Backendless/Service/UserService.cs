@@ -34,7 +34,7 @@ namespace BackendlessAPI.Service
             }
             catch
             {
-              LoginStorage.DeleteFiles();
+              throw new BackendlessException( ExceptionMessage.USER_TOKEN_EXPIRED );
             }
           }
         }
