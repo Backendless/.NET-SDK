@@ -11,6 +11,8 @@ namespace BackendlessAPI.Transaction
     CREATE_BULK,
     UPDATE,
     UPDATE_BULK,
+    UPSERT,
+    UPSERT_BULK,
     DELETE,       
     DELETE_BULK,
     FIND,
@@ -47,7 +49,7 @@ namespace BackendlessAPI.Transaction
               ( new List<OperationType> { OperationType.FIND } );
 
     internal static ReadOnlyCollection<OperationType> supportListIdsResultType = new ReadOnlyCollection<OperationType>
-              ( new List<OperationType> { OperationType.CREATE_BULK } );
+              ( new List<OperationType> { OperationType.CREATE_BULK, OperationType.UPSERT_BULK } );
 
     internal static ReadOnlyCollection<OperationType> supportDeletionResultType = new ReadOnlyCollection<OperationType>
               ( new List<OperationType> { OperationType.DELETE } );
@@ -57,6 +59,6 @@ namespace BackendlessAPI.Transaction
               OperationType.ADD_RELATION, OperationType.SET_RELATION, OperationType.DELETE_RELATION } );
 
     internal static ReadOnlyCollection<OperationType> supportEntityDescriptionResultType = new ReadOnlyCollection<OperationType>
-              ( new List<OperationType> { OperationType.CREATE, OperationType.UPDATE } );
+              ( new List<OperationType> { OperationType.CREATE, OperationType.UPDATE, OperationType.UPSERT } );
   }
 }

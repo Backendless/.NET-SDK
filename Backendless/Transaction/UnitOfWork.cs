@@ -20,6 +20,7 @@ namespace BackendlessAPI.Transaction
     private UnitOfWorkCreateImpl unitOfWorkCreate;
     private UnitOfWorkDeleteImpl unitOfWorkDelete;
     private UnitOfWorkUpdateImpl unitOfWorkUpdate;
+    private UnitOfWorkUpsertImpl unitOfWorkUpsert;
     private UnitOfWorkFindImpl unitOfWorkFind;
     private UnitOfWorkAddRelationImpl unitOfWorkAddRelation;
     private UnitOfWorkSetRelationImpl unitOfWorkSetRelation;
@@ -33,6 +34,7 @@ namespace BackendlessAPI.Transaction
       unitOfWorkCreate = new UnitOfWorkCreateImpl( operations, opResultIdGenerator, clazzes );
       unitOfWorkDelete = new UnitOfWorkDeleteImpl( operations, opResultIdGenerator );
       unitOfWorkUpdate = new UnitOfWorkUpdateImpl( operations, opResultIdGenerator, clazzes );
+      unitOfWorkUpsert = new UnitOfWorkUpsertImpl( operations, opResultIdGenerator, clazzes );
       unitOfWorkFind = new UnitOfWorkFindImpl( operations, opResultIdGenerator );
       RelationOperationImpl relationOperation = new RelationOperationImpl( operations, opResultIdGenerator );
       unitOfWorkAddRelation = new UnitOfWorkAddRelationImpl( relationOperation );
@@ -179,6 +181,26 @@ namespace BackendlessAPI.Transaction
     public OpResult BulkUpdate( OpResult objectIdsForChanges, Dictionary<String, Object> changes )
     {
       return unitOfWorkUpdate.BulkUpdate( objectIdsForChanges, changes );
+    }
+
+    public OpResult Upsert<E>(E instance )
+    {
+      return unitOfWorkUpsert.Upsert( instance );
+    }
+
+    public OpResult Upsert(String tableName, Dictionary<String, Object> objectMap )
+    {
+      return unitOfWorkUpsert.Upsert( tableName, objectMap );
+    }
+
+    public OpResult BulkUpsert<E>(List<E> instances )
+    {
+      return unitOfWorkUpsert.BulkUpsert( instances );
+    }
+
+    public OpResult BulkUpsert(String tableName, List<Dictionary<String, Object>> arrayOfObjectMaps )
+    {
+      return unitOfWorkUpsert.BulkUpsert( tableName, arrayOfObjectMaps );
     }
 
     public OpResult Find( String tableName, DataQueryBuilder queryBuilder )
