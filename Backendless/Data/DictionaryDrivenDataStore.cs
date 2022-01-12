@@ -155,33 +155,43 @@ namespace BackendlessAPI.Data
       return -1;
     }
 
-  #endregion
+    #endregion
 
-  #region Save
+    #region Save
 
-    public Dictionary<String, Object> Save( Dictionary<String, Object> entity )
+    public Dictionary<String, Object> Save( Dictionary<String, Object> entity, Boolean isUpsert = false )
     {
       if( entity == null )
         throw new ArgumentNullException( ExceptionMessage.NULL_ENTITY );
 
+      String operation = "save";
+
+      if( isUpsert )
+        operation = "upsert";
+
       Object[] args = new Object[] { tableName, entity };
-      return Invoker.InvokeSync<Dictionary<String, Object>>( PERSISTENCE_MANAGER_SERVER_ALIAS, "save", args );
+      return Invoker.InvokeSync<Dictionary<String, Object>>( PERSISTENCE_MANAGER_SERVER_ALIAS, operation, args );
     }
     
   #if !(NET_35 || NET_40)
-    public async Task<Dictionary<String, Object>> SaveAsync( Dictionary<String, Object> entity )
+    public async Task<Dictionary<String, Object>> SaveAsync( Dictionary<String, Object> entity, Boolean isUpsert = false )
     {
-      return await Task.Run( () => Save( entity ) ).ConfigureAwait( false );
+      return await Task.Run( () => Save( entity, isUpsert ) ).ConfigureAwait( false );
     }
 #endif
 
-    public void Save( Dictionary<String, Object> entity, AsyncCallback<Dictionary<String, Object>> callback )
+    public void Save( Dictionary<String, Object> entity, AsyncCallback<Dictionary<String, Object>> callback, Boolean isUpsert = false )
     {
       if( entity == null )
         throw new ArgumentNullException( ExceptionMessage.NULL_ENTITY );
 
+      String operation = "save";
+
+      if( isUpsert )
+        operation = "upsert";
+
       Object[] args = new Object[] { tableName, entity };
-      Invoker.InvokeAsync<Dictionary<String, Object>>( PERSISTENCE_MANAGER_SERVER_ALIAS, "save", args, callback );
+      Invoker.InvokeAsync<Dictionary<String, Object>>( PERSISTENCE_MANAGER_SERVER_ALIAS, operation, args, callback );
     }
 
     #endregion

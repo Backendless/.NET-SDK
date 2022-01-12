@@ -123,21 +123,21 @@ namespace BackendlessAPI.Data
 
       #region Save
 
-      public T Save( T entity )
+      public T Save( T entity, Boolean isUpsert = false )
       {
-        return Backendless.Persistence.Save( entity );
+        return Backendless.Persistence.Save( entity, isUpsert );
       }
 
     #if !(NET_35 || NET_40)
-      public async Task<T> SaveAsync( T entity )
+      public async Task<T> SaveAsync( T entity, Boolean isUpsert = false )
       {
-        return await Task.Run( () => Save( entity ) ).ConfigureAwait( false );
+        return await Task.Run( () => Save( entity, isUpsert ) ).ConfigureAwait( false );
       }
-    #endif
+#endif
 
-      public void Save( T entity, AsyncCallback<T> responder )
+      public void Save( T entity, AsyncCallback<T> responder, Boolean isUpsert = false )
       {
-        Backendless.Persistence.Save( entity, responder );
+        Backendless.Persistence.Save( entity, responder, isUpsert );
       }
 
     #endregion

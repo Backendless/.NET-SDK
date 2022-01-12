@@ -57,11 +57,11 @@ namespace BackendlessAPI.Data
 
   #region SAVE OBJECT
 
-    T Save( T entity );
+    T Save( T entity, Boolean isUpsert = false );
   #if !(NET_35 || NET_40)
-    Task<T> SaveAsync( T entity );
+    Task<T> SaveAsync( T entity, Boolean isUpsert = false );
   #endif
-    void Save( T entity, AsyncCallback<T> responder );
+    void Save( T entity, AsyncCallback<T> responder, Boolean isUpsert = false );
 
   #endregion
 
