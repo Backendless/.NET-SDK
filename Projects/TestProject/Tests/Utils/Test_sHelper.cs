@@ -2,7 +2,6 @@
 using System.Text;
 using System.Net.Http;
 using System.Linq;
-using System.IO;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Collections.Generic;
@@ -11,6 +10,7 @@ using BackendlessAPI.Persistence;
 using BackendlessAPI.RT.Data;
 using System.Reflection;
 using BackendlessAPI.Exception;
+using Newtonsoft.Json.Linq;
 
 namespace TestProject.Tests.Utils
 {
@@ -386,6 +386,36 @@ namespace TestProject.Tests.Utils
       TValue value = dictionary[ fromKey ];
       dictionary.Remove( fromKey );
       dictionary[ toKey ] = value;
+    }
+
+    internal static String CreateRole( String roleName )
+    {
+      Debug.WriteLine( "Start creating new role..." );
+
+      HttpRequestMessage requestMessage = new HttpRequestMessage( HttpMethod.Put, $"{URL_BASE_ADRESS}/{APP_API_KEY}/console/security/roles/{roleName}" );
+      JObject tempJson = JObject.Parse( client.SendAsync( requestMessage ).Result.Content.ReadAsStringAsync().Result );
+      Dictionary<String, String> dictionary = JObject.FromObject( tempJson ).ToObject<Dictionary<String, String>>();
+      return dictionary[ "roleId" ];
+    }
+
+    internal static void AssignRole( String roleId, String roleName, String userId )
+    {
+      Debug.WriteLine( "Start assigning role to user..." );
+
+      HttpRequestMessage requestMessage = new HttpRequestMessage( HttpMethod.Put, $"{URL_BASE_ADRESS}/{APP_API_KEY}/console/security/assignedroles" );
+
+      requestMessage.Content = new StringContent( "{\"roles\": [{\"roleId\": \""+ roleId +"\", \"roleName\": \"" + roleName + "\", \"status\": \"ALL\"}], \"users\": [\"" + userId +"\"]}", Encoding.UTF8, "application/json" );
+
+      Task.WaitAll( client.SendAsync( requestMessage ) );
+    }
+
+    internal static void DeleteRole( String roleId )
+    {
+      Debug.WriteLine( "Start deleting role..." );
+
+      HttpRequestMessage requestMessage = new HttpRequestMessage( HttpMethod.Delete, $"{URL_BASE_ADRESS}/{APP_API_KEY}/console/security/roles/{roleId}" );
+
+      Task.WaitAll( client.SendAsync( requestMessage ) );
     }
   }
 }
