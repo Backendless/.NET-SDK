@@ -18,7 +18,7 @@ namespace BackendlessAPI
       if( !customDomain.EndsWith("/") )
         FULL_QUERY_URL = customDomain + "/";
 
-      FULL_QUERY_URL = FULL_QUERY_URL + "api";
+      FULL_QUERY_URL += "api";
     }
   }
 }

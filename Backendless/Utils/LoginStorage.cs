@@ -176,7 +176,7 @@ namespace BackendlessAPI.Utils
             typeof( System.Security.Policy.Url ) );
 #else
           IsolatedStorageFile isoFile =
-    IsolatedStorageFile.GetUserStoreForApplication();
+    IsolatedStorageFile.GetUserStoreForDomain();
 #endif
 
         //String[] dirNames = isoFile.GetDirectoryNames( "*" );
