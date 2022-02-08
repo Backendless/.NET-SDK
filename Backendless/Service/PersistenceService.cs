@@ -127,7 +127,7 @@ namespace BackendlessAPI.Service
     #endregion
 
     #region Save
-    public T Save<T>( T entity )
+    public T Save<T>( T entity, Boolean isUpsert = false )
     {
       if( entity == null )
         throw new ArgumentNullException( ExceptionMessage.NULL_ENTITY );
@@ -135,18 +135,22 @@ namespace BackendlessAPI.Service
       CheckEntityStructure<T>();
 
       //return GetEntityId( entity ) == null ? Create( entity ) : Update( entity );
-      String operation = "save";
+      String operation;
       String objectId = GetEntityId( entity );
 
-      if( objectId == null )
+      if( isUpsert )
+        operation = "upsert";
+      else if( objectId == null )
         operation = "create";
+      else
+        operation = "save";
 
       AddWeborbPropertyMapping<T>();
       return Invoker.InvokeSync<T>( PERSISTENCE_MANAGER_SERVER_ALIAS, operation,
                                     new Object[] { GetTypeName( typeof( T ) ), entity }, true );
     }
 
-    public void Save<T>( T entity, AsyncCallback<T> callback )
+    public void Save<T>( T entity, AsyncCallback<T> callback, Boolean isUpsert = false )
     {
       if( entity == null )
         throw new ArgumentNullException( ExceptionMessage.NULL_ENTITY );
@@ -158,11 +162,16 @@ namespace BackendlessAPI.Service
       else
         Update( entity, callback );*/
 
-      String operation = "save";
+      String operation;
       String objectId = GetEntityId( entity );
 
-      if( objectId == null )
+
+      if( isUpsert )
+        operation = "upsert";
+      else if( objectId == null )
         operation = "create";
+      else
+        operation = "save";
 
       AddWeborbPropertyMapping<T>();
       Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, operation,
