@@ -229,6 +229,8 @@
     <Compile Include="..\..\Backendless\Transaction\Operations\OperationSetRelation.cs" />
     <Compile Include="..\..\Backendless\Transaction\Operations\OperationUpdate.cs" />
     <Compile Include="..\..\Backendless\Transaction\Operations\OperationUpdateBulk.cs" />
+	<Compile Include="..\..\Backendless\Transaction\Operations\OperationUpsert.cs" />
+    <Compile Include="..\..\Backendless\Transaction\Operations\OperationUpsertBulk.cs" />
     <Compile Include="..\..\Backendless\Transaction\Operations\OperationFind.cs" />
     <Compile Include="..\..\Backendless\Transaction\Payload\Selector.cs" />
     <Compile Include="..\..\Backendless\Transaction\Payload\Relation.cs" />
@@ -244,6 +246,7 @@
     <Compile Include="..\..\Backendless\Transaction\UnitOfWorkExecutorImpl.cs" />
     <Compile Include="..\..\Backendless\Transaction\UnitOfWorkFindImpl.cs" />
     <Compile Include="..\..\Backendless\Transaction\UnitOfWorkUpdateImpl.cs" />
+	<Compile Include="..\..\Backendless\Transaction\UnitOfWorkUpsertImpl.cs" />
     <Compile Include="..\..\Backendless\Transaction\UnitOfWorkResult.cs" />
     <Compile Include="..\..\Backendless\Transaction\UnitOfWorkAddRelationImpl.cs" />
     <Compile Include="..\..\Backendless\Transaction\UnitOfWorkSetRelationImpl.cs" />
