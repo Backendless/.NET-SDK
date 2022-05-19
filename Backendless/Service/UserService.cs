@@ -426,20 +426,6 @@ namespace BackendlessAPI.Service
       LoginWithOAuth2( authProviderCode, accessToken, guestUser, fieldsMappings, internalResponser );
     }
 
-#if !( NET_35 || NET_40 )
-    public async Task LoginWithOAuth2Async( String authProviderCode, String accessToken, Dictionary<String, String> fieldsMappings,
-      AsyncCallback<BackendlessUser> callback, Boolean stayLoggedIn = false )
-    {
-      await Task.Run( () => LoginWithOAuth2( authProviderCode, accessToken, fieldsMappings, callback,
-                                                                          stayLoggedIn ) ).ConfigureAwait( false );
-    }
-
-    public async Task LoginWithOAuth2Async( String authProviderCode, String accessToken, BackendlessUser guestUser, Dictionary<String, String> fieldsMappings,
-      AsyncCallback<BackendlessUser> callback, Boolean stayLoggedIn = false )
-    {
-      await Task.Run( () => LoginWithOAuth2( authProviderCode, accessToken, guestUser, fieldsMappings, callback, stayLoggedIn ) ).ConfigureAwait( false );
-    }
-#endif
 
     public void LoginWithOAuth1( String authProviderCode, String authToken, String authTokenSecret,
       Dictionary<String, String> fieldsMappings, AsyncCallback<BackendlessUser> callback, Boolean stayLoggedIn = false )
@@ -454,22 +440,6 @@ namespace BackendlessAPI.Service
       AsyncCallback<Dictionary<String, Object>> internalResponder = GetUserLoginAsyncHandler( callback, stayLoggedIn );
       LoginWithOAuth1( authProviderCode, authToken, guestUser, authTokenSecret, fieldsMappings, internalResponder );
     }
-
-#if !( NET_35 || NET_40 )
-    public async Task LoginWithOAuth1Async( String authProviderCode, String authToken, String authTokenSecret,
-      Dictionary<String, String> fieldsMappings, AsyncCallback<BackendlessUser> callback, Boolean stayLoggedIn = false )
-    {
-      await Task.Run( () => LoginWithOAuth1( authProviderCode, authToken, authTokenSecret, fieldsMappings, callback, stayLoggedIn ) )
-                                         .ConfigureAwait( false );
-    }
-
-    public async Task LoginWithOAuth1Async( String authProviderCode, String authToken, String authTokenSecret, BackendlessUser guestUser,
-      Dictionary<String, String> fieldsMappings, AsyncCallback<BackendlessUser> callback, Boolean stayLoggedIn )
-    {
-      await Task.Run( () => LoginWithOAuth1( authProviderCode, authToken, authTokenSecret, guestUser, fieldsMappings,
-                                                              callback, stayLoggedIn ) ).ConfigureAwait( false );
-    }
-#endif
 
     private void LoginWithOAuth1( String authProviderCode, String authToken, BackendlessUser guestUser,
       String authTokenSecret, Dictionary<String, String> fieldsMappings, AsyncCallback<Dictionary<String, Object>> callback )
