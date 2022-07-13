@@ -18,7 +18,7 @@
     <DebugType>portable</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;PURE_CLIENT_LIB;WITHRT</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;PURE_CLIENT_LIB;WITHRT;NET_471</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -50,6 +50,9 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.CodeDom, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.CodeDom.6.0.0\lib\net461\System.CodeDom.dll</HintPath>
+    </Reference>
     <Reference Include="System.Collections.Immutable, Version=1.2.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <HintPath>..\..\packages\System.Collections.Immutable.1.5.0\lib\netstandard2.0\System.Collections.Immutable.dll</HintPath>
       <Private>True</Private>
@@ -69,6 +72,7 @@
       <HintPath>packages\System.Linq.4.3.0\lib\net463\System.Linq.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Management" />
     <Reference Include="System.Net.NameResolution, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <HintPath>packages\System.Net.NameResolution.4.3.0\lib\net46\System.Net.NameResolution.dll</HintPath>
       <Private>True</Private>
@@ -291,7 +295,7 @@
     <Compile Include="..\..\Backendless\Transaction\Operations\OperationSetRelation.cs" />
     <Compile Include="..\..\Backendless\Transaction\Operations\OperationUpdate.cs" />
     <Compile Include="..\..\Backendless\Transaction\Operations\OperationUpdateBulk.cs" />
-	<Compile Include="..\..\Backendless\Transaction\Operations\OperationUpsert.cs" />
+    <Compile Include="..\..\Backendless\Transaction\Operations\OperationUpsert.cs" />
     <Compile Include="..\..\Backendless\Transaction\Operations\OperationUpsertBulk.cs" />
     <Compile Include="..\..\Backendless\Transaction\Operations\OperationFind.cs" />
     <Compile Include="..\..\Backendless\Transaction\Payload\Selector.cs" />
@@ -308,7 +312,7 @@
     <Compile Include="..\..\Backendless\Transaction\UnitOfWorkExecutorImpl.cs" />
     <Compile Include="..\..\Backendless\Transaction\UnitOfWorkFindImpl.cs" />
     <Compile Include="..\..\Backendless\Transaction\UnitOfWorkUpdateImpl.cs" />
-	<Compile Include="..\..\Backendless\Transaction\UnitOfWorkUpsertImpl.cs" />
+    <Compile Include="..\..\Backendless\Transaction\UnitOfWorkUpsertImpl.cs" />
     <Compile Include="..\..\Backendless\Transaction\UnitOfWorkResult.cs" />
     <Compile Include="..\..\Backendless\Transaction\UnitOfWorkAddRelationImpl.cs" />
     <Compile Include="..\..\Backendless\Transaction\UnitOfWorkSetRelationImpl.cs" />
@@ -320,7 +324,7 @@
     <Compile Include="..\..\Backendless\Transaction\TransactionHelper.cs" />
     <Compile Include="..\..\Backendless\Utils\DeviceCheck.cs" />
     <Compile Include="..\..\Backendless\Utils\ILoginStorage.cs" />
-	<Compile Include="..\..\Backendless\Utils\InitAppData.cs" />
+    <Compile Include="..\..\Backendless\Utils\InitAppData.cs" />
     <Compile Include="..\..\Backendless\Utils\ITimeoutManager.cs" />
     <Compile Include="..\..\Backendless\Utils\Json.cs" />
     <Compile Include="..\..\Backendless\Utils\LoginStorage.cs" />
@@ -518,8 +522,10 @@
     <Compile Include="..\..\Backendless\WebORB\Writer\V3ObjectSerializer.cs" />
     <Compile Include="..\..\Backendless\WebORB\Writer\V3ReferenceCache.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\..\Backendless\Messaging\DeviceRegistrationDto.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
