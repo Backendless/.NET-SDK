@@ -55,9 +55,16 @@ namespace BackendlessAPI.Utils
 #else
       try
       {
-          // Retrieve an IsolatedStorageFile for the current Domain and Assembly.
-          IsolatedStorageFileStream isoStream = null;
-#if !WINDOWS_PHONE && !WINDOWS_PHONE8
+        // Retrieve an IsolatedStorageFile for the current Domain and Assembly.
+        IsolatedStorageFileStream isoStream = null;
+
+#if NET_471 && UNITY
+        var userData = System.IO.File.ReadAllLines("BackendlessUserInfoUnity.txt");
+        this.UserToken = userData[ 0 ];
+        this.ObjectId = userData[ 1 ];
+        return true;
+
+#elif !WINDOWS_PHONE && !WINDOWS_PHONE8 && !UNITY
           IsolatedStorageFile isoFile =
             IsolatedStorageFile.GetStore( IsolatedStorageScope.User |
             IsolatedStorageScope.Assembly |
@@ -111,10 +118,12 @@ namespace BackendlessAPI.Utils
         return false;
       }
 #endif
-    }
+      }
 
     public void SaveData()
     {
+      // Retrieve an IsolatedStorageFile for the current Domain and Assembly.
+      IsolatedStorageFileStream isoStream = null;
 #if UNIVERSALW8
       ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
       ApplicationDataCompositeValue userInfo = new ApplicationDataCompositeValue();
@@ -125,12 +134,15 @@ namespace BackendlessAPI.Utils
 #else
       try
       {
-#if !WINDOWS_PHONE && !WINDOWS_PHONE8
+#if NET_471  && UNITY
+        System.IO.File.WriteAllLines( "BackendlessUserInfoUnity.txt", new string[] { this.UserToken, this.ObjectId } );
+        return;
+#elif !WINDOWS_PHONE && !WINDOWS_PHONE8 && !UNITY
         IsolatedStorageFile isoFile;
         isoFile = IsolatedStorageFile.GetUserStoreForDomain();
 
         // Open or create a writable file.
-        IsolatedStorageFileStream isoStream =
+        isoStream =
             new IsolatedStorageFileStream( "BackendlessUserInfo",
             FileMode.OpenOrCreate,
             FileAccess.Write,
@@ -138,19 +150,19 @@ namespace BackendlessAPI.Utils
 #else
           IsolatedStorageFile isoFile =
     IsolatedStorageFile.GetUserStoreForApplication();
-
         IsolatedStorageFileStream isoStream = new IsolatedStorageFileStream( "BackendlessUserInfo",
             FileMode.OpenOrCreate,
             FileAccess.Write,
             isoFile );
 #endif
-
+#if !UNITY
         StreamWriter writer = new StreamWriter( isoStream );
         writer.WriteLine( this.UserToken );
         writer.WriteLine( this.ObjectId );
         // StreamWriter.Close implicitly closes isoStream.
         writer.Close();
-        isoFile.Dispose();
+        isoStream.Close();
+#endif
       }
       catch( IsolatedStorageException ex )
       {
@@ -158,7 +170,7 @@ namespace BackendlessAPI.Utils
         Console.WriteLine( ex );
       }
 #endif
-    }
+      }
 
     public void DeleteFiles()
     {
@@ -168,17 +180,19 @@ namespace BackendlessAPI.Utils
 #else
       try
       {
-#if !WINDOWS_PHONE && !WINDOWS_PHONE8 && !PURE_CLIENT_LIB
+#if NET_471 && UNITY
+        System.IO.File.Delete("BackendlessUserInfoUnity.txt");
+#elif !WINDOWS_PHONE && !WINDOWS_PHONE8 && !PURE_CLIENT_LIB && !UNITY
         IsolatedStorageFile isoFile = IsolatedStorageFile.GetStore( IsolatedStorageScope.User |
             IsolatedStorageScope.Assembly |
             IsolatedStorageScope.Domain,
             typeof( System.Security.Policy.Url ),
             typeof( System.Security.Policy.Url ) );
 #else
-          IsolatedStorageFile isoFile =
+        IsolatedStorageFile isoFile =
     IsolatedStorageFile.GetUserStoreForDomain();
 #endif
-
+#if !UNITY
         //String[] dirNames = isoFile.GetDirectoryNames( "*" );
         String[] fileNames = isoFile.GetFileNames( "*" );
 
@@ -195,13 +209,14 @@ namespace BackendlessAPI.Utils
           // Confirm that no files remain.
           fileNames = isoFile.GetFileNames( "*" );
         }
+#endif
       }
       catch( System.Exception e )
       {
         Console.WriteLine( e.ToString() );
       }
 #endif
-    }
+      }
     // This method deletes directories in the specified Isolated Storage, after first 
     // deleting the files they contain. In this example, the Archive directory is deleted. 
     // There should be no other directories in this Isolated Storage.

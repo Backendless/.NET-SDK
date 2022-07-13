@@ -29,8 +29,8 @@ namespace BackendlessAPI.Service
     private static string DEFAULT_CHANNEL_NAME = "default";
     private static string deviceId;
     private static int CHANNEL_NAME_MAX_LENGTH = 46;
-    //private static Messaging.DeviceRegistration _deviceRegistrationDto;
-  #if UNITY
+#if UNITY
+    private static Messaging.DeviceRegistration _deviceRegistrationDto;
     private static AsyncCallback<string> _deviceRegisterCallback = null;
     private static AsyncCallback<bool> _deviceUnregisterCallback = null;
     public delegate void UnityRegisterDevice( string GCMSenderID, List<String> channels, DateTime? expiration );
