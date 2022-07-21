@@ -35,7 +35,8 @@ namespace BackendlessAPI.Service
             }
             catch
             {
-              throw new BackendlessException( ExceptionMessage.USER_TOKEN_EXPIRED );
+              Console.WriteLine( "User token was expired. Logout..." );
+              Backendless.UserService.Logout();
             }
           }
         }
