@@ -9,8 +9,7 @@ using BackendlessAPI.Utils;
 using Weborb.Util.Logging;
 using Weborb.Types;
 using Weborb.Reader;
-using Quobject.EngineIoClientDotNet.ComponentEmitter;
-using Quobject.SocketIoClientDotNet.Client;
+
 
 namespace BackendlessAPI.RT
 {
@@ -167,25 +166,22 @@ namespace BackendlessAPI.RT
       }
     }
 
-    private Emitter SubOn( RTSubscription subscription )
+    private void SubOn( RTSubscription subscription )
     {
-      Emitter emitter = connectionManager.Socket.Emit( "SUB_ON", WeborbSerializationHelper.Serialize( subscription.ToArgs() ) );
+      connectionManager.Socket.EmitAsync( "SUB_ON", WeborbSerializationHelper.Serialize( subscription.ToArgs() ) );
       Log.log( Backendless.BACKENDLESSLOG, "subOn called" );
-      return emitter;
     }
 
-    private Emitter SubOff( String subscriptionId )
+    private void SubOff( String subscriptionId )
     {
-      Emitter emitter = connectionManager.Socket.Emit( "SUB_OFF", WeborbSerializationHelper.Serialize( subscriptionId ) );
+      connectionManager.Socket.EmitAsync( "SUB_OFF", WeborbSerializationHelper.Serialize( subscriptionId ) );
       Log.log( Backendless.BACKENDLESSLOG, "subOff called" );
-      return emitter;
     }
 
-    private Emitter MetReq( RTMethodRequest methodRequest )
+    private void MetReq( RTMethodRequest methodRequest )
     {
-      Emitter emitter = connectionManager.Socket.Emit( "MET_REQ", WeborbSerializationHelper.Serialize( methodRequest.ToArgs() ) );
+      connectionManager.Socket.EmitAsync( "MET_REQ", WeborbSerializationHelper.Serialize( methodRequest.ToArgs() ) );
       Log.log( Backendless.BACKENDLESSLOG, "metReq called" );
-      return emitter;
     }
 
 
@@ -197,7 +193,7 @@ namespace BackendlessAPI.RT
         return null;
       }
 
-      AnonymousObject result = (AnonymousObject) WeborbSerializationHelper.Deserialize( (byte[]) args[ 0 ] );
+      AnonymousObject result = (AnonymousObject) WeborbSerializationHelper.Deserialize( ((SocketIOClient.SocketIOResponse) args[ 0 ]).InComingBytes[0] );
 
       String id = WeborbSerializationHelper.AsString( result, "id" );
 

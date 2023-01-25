@@ -19,16 +19,7 @@
 		<PackageReference Include="Xam.Plugin.DeviceInfo" Version="4.1.1" />
 		<PackageReference Include="Xamarin.Forms" Version="4.6.0.1180" />
 		<PackageReference Include="System.Collections.Immutable" Version="1.5.0" />
-		<PackageReference Include="WebSocket4Net" Version="0.15.2" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Reference Include="EngineIoClientDotNet, Version=1.0.2.0, Culture=neutral, PublicKeyToken=null">
-			<HintPath>dependencies\EngineIoClientDotNet.dll</HintPath>
-		</Reference>
-		<Reference Include="SocketIoClientDotNet, Version=1.0.2.0, Culture=neutral, PublicKeyToken=null">
-			<HintPath>dependencies\SocketIoClientDotNet.dll</HintPath>
-		</Reference>
+		<PackageReference Include="SocketIOClient" Version="3.0.7" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -482,6 +473,9 @@
 	  <Folder Include="dependencies\" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <None Remove="SocketIOClient" />
+	</ItemGroup>
 	<Target Name="MyAfterBuild" AfterTargets="Build">
 		<Message Text="In after build before copy">
 		</Message>

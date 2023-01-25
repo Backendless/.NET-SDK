@@ -2,9 +2,6 @@
 using Weborb.Service;
 using System.Diagnostics;
 using System.Text;
-#if !UNITY
-using Plugin.DeviceInfo;
-#endif
 using System.Collections.Generic;
 
 namespace BackendlessAPI.Messaging
@@ -33,11 +30,8 @@ namespace BackendlessAPI.Messaging
     public String RegistrationId { get; set; }
 
     [SetClientClassMemberName( "deviceId" )]
-#if !UNITY
-    public String DeviceId { get; } = CrossDeviceInfo.Current.Id;
-#else
     public String DeviceId { get; } = DeviceIdGenerator();
-#endif
+
     public void AddChannel( String channel )
     {
       if( Channels == null )
@@ -53,13 +47,12 @@ namespace BackendlessAPI.Messaging
       RegistrationId = null;
       DeviceToken = null;
     }
-#if UNITY
+
     public static String DeviceIdGenerator()
     {
       Guid guid = Guid.NewGuid();
       string str = guid.ToString();
       return str;
     }
-#endif
   }
 }
