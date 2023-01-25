@@ -64,7 +64,6 @@ namespace BackendlessAPI.RT
         opts.Transports = (new string[] {"websocket"}).ToList();
         #endif
         var host = rtLookupService.Lookup() + opts.Path;
-        //opts.Query["clientId"] = 
         //if( host.StartsWith( "https://" ) )
         //  host = "http://" + host.Substring( "https://".Length );
 
