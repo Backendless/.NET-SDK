@@ -458,18 +458,15 @@
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="System.Collections.Immutable" Version="1.5.0" />
-    <PackageReference Include="WebSocket4Net" Version="0.15.2" />
+    <PackageReference Include="SocketIOClient" Version="3.0.7" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="dependencies" />
+    <Folder Include="dependencies\" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="EngineIoClientDotNet, Version=1.0.2.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>dependencies\EngineIoClientDotNet.dll</HintPath>
-    </Reference>
-    <Reference Include="SocketIoClientDotNet, Version=1.0.2.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>dependencies\SocketIoClientDotNet.dll</HintPath>
-    </Reference>
+    <None Remove="dependencies\" />
+    <None Remove="SocketIOClient" />
   </ItemGroup>
   <Target Name="MyAfterBuild" AfterTargets="Build">
     <Message Text="In after build before copy">

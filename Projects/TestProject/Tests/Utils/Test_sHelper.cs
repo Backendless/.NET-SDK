@@ -11,26 +11,27 @@ using BackendlessAPI.RT.Data;
 using System.Reflection;
 using BackendlessAPI.Exception;
 using Newtonsoft.Json.Linq;
+using System.IO;
 
 namespace TestProject.Tests.Utils
 {
   public static class Test_sHelper
   {
-    internal static readonly String APP_API_KEY = //File.ReadLines( path ).ToList()[ 0 ];
-    Environment.GetEnvironmentVariable( "TEST_APP_ID" );
+    internal static readonly String APP_API_KEY = File.ReadLines( path ).ToList()[ 0 ];
+    //Environment.GetEnvironmentVariable( "TEST_APP_ID" );
 
-    internal static readonly String DOTNET_API_KEY = //File.ReadLines( path ).ToList()[ 1 ];
-    Environment.GetEnvironmentVariable( "TEST_DOTNET_KEY" );
+    internal static readonly String DOTNET_API_KEY = File.ReadLines( path ).ToList()[ 1 ];
+    //Environment.GetEnvironmentVariable( "TEST_DOTNET_KEY" );
 
     internal static HttpClient client;
     internal const String URL_BASE_ADRESS = "https://devtest.backendless.com";
 
-    private const String path = @"f:\specialproject\authdata.txt";
-    internal static readonly String Login = //File.ReadLines( path ).ToList()[ 2 ];
-    Environment.GetEnvironmentVariable( "TEST_AUTH_LOGIN" );
+    private const String path = @"/Users/default/visual_studio/authdata.txt";
+    internal static readonly String Login = File.ReadLines( path ).ToList()[ 2 ];
+    //Environment.GetEnvironmentVariable( "TEST_AUTH_LOGIN" );
 
-    internal static readonly String Password = //File.ReadLines( path ).ToList()[3];
-    Environment.GetEnvironmentVariable( "TEST_AUTH_PASSWORD" );
+    internal static readonly String Password = File.ReadLines( path ).ToList()[3];
+    //Environment.GetEnvironmentVariable( "TEST_AUTH_PASSWORD" );
 
     private static String _auth_token;
     internal static String Auth_Token

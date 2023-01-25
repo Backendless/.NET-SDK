@@ -7,9 +7,10 @@ using System.Collections.Immutable;
 using System.Threading;
 using BackendlessAPI.Utils;
 using BackendlessAPI.Engine;
-using Quobject.SocketIoClientDotNet.Client;
 using Weborb.Util.Logging;
-using IOSocket = Quobject.SocketIoClientDotNet.Client.IO;
+using SocketIOClient;
+using SocketIOClient.Transport;
+using System.Collections.Generic;
 
 namespace BackendlessAPI.RT
 {
@@ -17,7 +18,7 @@ namespace BackendlessAPI.RT
   {
     private readonly RTLookupService rtLookupService;
     private readonly ITimeoutManager timeoutManager = new TimeoutManagerImpl();
-    private Socket socket;
+    private SocketIO socket;
     internal bool connected = false;
 
     internal SocketIOConnectionManager()
@@ -29,18 +30,20 @@ namespace BackendlessAPI.RT
       }, timeoutManager );
     }
 
-    internal Socket Socket
+    internal SocketIO Socket
     {
       get
       {
         if( IsConnected() )
           return socket;
 
-        var opts = new IOSocket.Options
+        var opts = new SocketIOOptions
         {
           Reconnection = false,
           Path = "/" + Backendless.AppId,
-          Query = new System.Collections.Generic.Dictionary<string, string>
+          Transport = TransportProtocol.WebSocket,
+          EIO = EngineIO.V3,
+          Query = new Dictionary<String, String>
           {
             [ "apiKey" ] = Backendless.APIKey,
             [ "clientId" ] = Backendless.Messaging.DeviceID,
@@ -56,26 +59,25 @@ namespace BackendlessAPI.RT
         #if( NET_45 )
           opts.Transports = Quobject.Collections.Immutable.ImmutableList.Create( "websocket" );
         #elif !(NET_40 || NET_35)
-            opts.Transports = ImmutableList.Create( "websocket" );
+            //opts.Transports = ImmutableList.Create( "websocket" );
         #else
         opts.Transports = (new string[] {"websocket"}).ToList();
         #endif
         var host = rtLookupService.Lookup() + opts.Path;
-
         //if( host.StartsWith( "https://" ) )
         //  host = "http://" + host.Substring( "https://".Length );
 
-        if( HeadersManager.GetInstance().Headers.ContainsKey( HeadersEnum.USER_TOKEN_KEY.Header ) )
+        if (HeadersManager.GetInstance().Headers.ContainsKey(HeadersEnum.USER_TOKEN_KEY.Header))
         {
-          String userToken = HeadersManager.GetInstance().Headers[ HeadersEnum.USER_TOKEN_KEY.Header ];
+          String userToken = HeadersManager.GetInstance().Headers[HeadersEnum.USER_TOKEN_KEY.Header];
 
-          if( !string.IsNullOrEmpty(userToken) )
-            opts.Query[ "userToken" ] = userToken;
+          if (!string.IsNullOrEmpty(userToken))
+            opts.Query.Concat(new Dictionary<String, String> { { "userToken", userToken } });
         }
 
         try
         {
-          socket = IOSocket.Socket( host, opts );
+          socket = new SocketIO(host, opts );
         }
         catch( System.Exception e )
         {
@@ -83,44 +85,43 @@ namespace BackendlessAPI.RT
           return Socket;
         }
 
-        socket.On( Socket.EVENT_CONNECT, ( fn ) =>
+        socket.OnConnected += (sender, args) =>
         {
-          Log.log( Backendless.BACKENDLESSLOG, "Connected event " + fn );
+          Log.log(Backendless.BACKENDLESSLOG, "Connected event " + args);
           connected = true;
           timeoutManager.Reset();
           Connected();
-        } ).On( Socket.EVENT_DISCONNECT, ( fn ) =>
+        };
+
+        socket.OnDisconnected += (sender, args) =>
         {
-          Log.log( Backendless.BACKENDLESSLOG, "Disconnected event {0}", fn );
+          Log.log(Backendless.BACKENDLESSLOG, "Disconnected event {0}", args);
           connected = false;
-          Disconnected( fn.ToString() );
+          Disconnected(args.ToString());
           Reconnect();
-        } ).On( Socket.EVENT_CONNECT_ERROR, ( fn ) =>
+        };
+
+        socket.OnError += (sender, args) =>
         {
-          Log.log( Backendless.BACKENDLESSLOG, "Connection failed {0}", fn );
+          Log.log(Backendless.BACKENDLESSLOG, "Connection failed {0}", args);
           connected = false;
-          ConnectError( fn.ToString() );
+          ConnectError(args.ToString());
           Reconnect();
-        } ).On( "SUB_RES", ( fn ) =>
+        };
+
+        socket.On("SUB_RES", args =>
         {
-          Log.log( Backendless.BACKENDLESSLOG, "Got sub res" );
-          SubscriptionResult( fn );
-        } ).On( "MET_RES", ( fn ) =>
+          Log.log(Backendless.BACKENDLESSLOG, "Got sub res");
+          SubscriptionResult(args);
+        });
+
+        socket.On("MET_RES", args =>
         {
-          Log.log( Backendless.BACKENDLESSLOG, "Got met res" );
-          InvocationResult( fn );
-        } ).On( Socket.EVENT_ERROR, ( fn ) =>
-        {
-          connected = false;
-          Log.log( Backendless.BACKENDLESSLOG, $"ERROR from RT server: {fn}" );
-          ConnectError( fn.ToString() );
-          Reconnect();
-        } ).On( Socket.EVENT_CONNECT_TIMEOUT, ( fn ) =>
-        {
-          connected = false;
-          Log.log( Backendless.BACKENDLESSLOG, "timeout" );
-        } );
-        
+          Log.log(Backendless.BACKENDLESSLOG, "Got met res");
+          InvocationResult(args);
+        });
+
+        socket.ConnectAsync();
         return socket;
       }
     }
@@ -145,15 +146,15 @@ namespace BackendlessAPI.RT
       var tempSocket = Socket;
     }
 
-    internal void Disconnect()
+    internal async void Disconnect()
     {
       Log.log( Backendless.BACKENDLESSLOG, "Try to disconnect" );
 
       if (socket != null)
       {
-        Socket tempSocket = socket;
+        SocketIO tempSocket = socket;
         socket = null;
-        tempSocket.Close();
+        await tempSocket.DisconnectAsync();
       }
     }
 
