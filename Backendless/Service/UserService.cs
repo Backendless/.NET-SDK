@@ -412,37 +412,93 @@ namespace BackendlessAPI.Service
     }
 #endif
 
+    public BackendlessUser LoginWithOAuth2(String authProviderCode, String accessToken, Dictionary<String, String> fieldsMappings, Boolean stayLoggedIn = false)
+    {
+      return RequestLoginWithOAuth2(authProviderCode, accessToken, null, fieldsMappings, stayLoggedIn);
+    }
+
+    public BackendlessUser LoginWithOAuth2(String authProviderCode, String accessToken, BackendlessUser guestUser, Dictionary<String, String> fieldsMappings, Boolean stayLoggedIn = false)
+    {
+      return RequestLoginWithOAuth2(authProviderCode, accessToken, guestUser, fieldsMappings, stayLoggedIn);
+    }
+
+    public async Task<BackendlessUser> LoginWithOAuth2Async(String authProviderCode, String accessToken, Dictionary<String, String> fieldsMappings, Boolean stayLoggedIn = false)
+    {
+      return await Task.Run(() => LoginWithOAuth2(authProviderCode, accessToken, fieldsMappings, stayLoggedIn)).ConfigureAwait(false);
+    }
+
+    public async Task<BackendlessUser> LoginWithOAuth2Async(String authProviderCode, String accessToken, BackendlessUser guestUser, Dictionary<String, String> fieldsMappings, Boolean stayLoggedIn = false)
+    {
+      return await Task.Run(() => LoginWithOAuth2(authProviderCode, accessToken, guestUser, fieldsMappings, stayLoggedIn)).ConfigureAwait(false);
+    }
+
     public void LoginWithOAuth2( String authProviderCode, String accessToken, Dictionary<String, String> fieldsMappings,
       AsyncCallback<BackendlessUser> callback, Boolean stayLoggedIn = false )
     {
       AsyncCallback<Dictionary<String, Object>> internalResponder = GetUserLoginAsyncHandler( callback, stayLoggedIn );
-      LoginWithOAuth2( authProviderCode, accessToken, null, fieldsMappings, internalResponder );
+      RequestLoginWithOAuth2( authProviderCode, accessToken, null, fieldsMappings, internalResponder );
     }
 
     public void LoginWithOAuth2( String authProviderCode, String accessToken, BackendlessUser guestUser, Dictionary<String, String> fieldsMappings,
       AsyncCallback<BackendlessUser> callback, Boolean stayLoggedIn = false )
     {
       AsyncCallback<Dictionary<String, Object>> internalResponser = GetUserLoginAsyncHandler( callback, stayLoggedIn );
-      LoginWithOAuth2( authProviderCode, accessToken, guestUser, fieldsMappings, internalResponser );
+      RequestLoginWithOAuth2( authProviderCode, accessToken, guestUser, fieldsMappings, internalResponser );
     }
 
+
+    public BackendlessUser LoginWithOAuth1(String authProviderCode, String authToken, String authTokenSecret,
+      Dictionary<String, String> fieldsMappings, Boolean stayLoggedIn = false)
+    {
+      return RequestLoginWithOAuth1(authProviderCode, authToken, authTokenSecret, null, fieldsMappings, stayLoggedIn);
+    }
+
+    public BackendlessUser LoginWithOAuth1(String authProviderCode, String authToken, String authTokenSecret, BackendlessUser guestUser, Dictionary<String, String> fieldsMappings, Boolean stayLoggedIn = false)
+    {
+      return RequestLoginWithOAuth1(authProviderCode, authToken, authTokenSecret, guestUser, fieldsMappings, stayLoggedIn);
+    }
+
+    public async Task<BackendlessUser> LoginWithOAuth1Async(String authProviderCode, String authToken, String authTokenSecret,
+      Dictionary<String, String> fieldsMappings, Boolean stayLoggedIn = false)
+    {
+      return await Task.Run(() => LoginWithOAuth1(authProviderCode, authToken, authTokenSecret, null, fieldsMappings, stayLoggedIn)).ConfigureAwait(false);
+    }
+
+    public async Task<BackendlessUser> LoginWithOAuth1Async(String authProviderCode, String authToken, String authTokenSecret, BackendlessUser guestUser, Dictionary<String, String> fieldsMappings, Boolean stayLoggedIn = false)
+    {
+      return await Task.Run(() => LoginWithOAuth1(authProviderCode, authToken, authTokenSecret, guestUser, fieldsMappings, stayLoggedIn)).ConfigureAwait(false);
+    }
 
     public void LoginWithOAuth1( String authProviderCode, String authToken, String authTokenSecret,
       Dictionary<String, String> fieldsMappings, AsyncCallback<BackendlessUser> callback, Boolean stayLoggedIn = false )
     {
       AsyncCallback<Dictionary<String, Object>> internalResponder = GetUserLoginAsyncHandler( callback, stayLoggedIn );
-      LoginWithOAuth1( authProviderCode, authToken, null, authTokenSecret, fieldsMappings, internalResponder );
+      RequestLoginWithOAuth1( authProviderCode, authToken, authTokenSecret, null, fieldsMappings, internalResponder );
     }
 
     public void LoginWithOAuth1( String authProviderCode, String authToken, String authTokenSecret, BackendlessUser guestUser,
       Dictionary<String, String> fieldsMappings, AsyncCallback<BackendlessUser> callback, Boolean stayLoggedIn )
     {
       AsyncCallback<Dictionary<String, Object>> internalResponder = GetUserLoginAsyncHandler( callback, stayLoggedIn );
-      LoginWithOAuth1( authProviderCode, authToken, guestUser, authTokenSecret, fieldsMappings, internalResponder );
+      RequestLoginWithOAuth1( authProviderCode, authToken, authTokenSecret, guestUser, fieldsMappings, internalResponder );
     }
 
-    private void LoginWithOAuth1( String authProviderCode, String authToken, BackendlessUser guestUser,
-      String authTokenSecret, Dictionary<String, String> fieldsMappings, AsyncCallback<Dictionary<String, Object>> callback )
+    private BackendlessUser RequestLoginWithOAuth1(String authProviderCode, String authToken, String authTokenSecret, BackendlessUser guestUser, Dictionary<String, String> fieldsMappings, Boolean stayLoggedIn)
+    {
+      if (!authProviderCode.Equals("twitter"))
+        throw new ArgumentException($"OAuth1 provider '{authProviderCode}' is not supported");
+
+      if (fieldsMappings == null)
+        fieldsMappings = new Dictionary<String, String>();
+
+      HandleUserLogin(Invoker.InvokeSync<Dictionary<String, Object>>(UserService.USER_MANAGER_SERVER_ALIAS, "loginWithTwitter",
+                          new Object[] { authToken, authTokenSecret, fieldsMappings, guestUser == null ? null : guestUser.Properties }),
+                          stayLoggedIn);
+
+      return CurrentUser;
+    }
+
+    private void RequestLoginWithOAuth1( String authProviderCode, String authToken, String authTokenSecret, BackendlessUser guestUser, Dictionary<String, String> fieldsMappings, AsyncCallback<Dictionary<String, Object>> callback )
     {
       if( !authProviderCode.Equals( "twitter" ) )
         throw new ArgumentException( $"OAuth1 provider '{authProviderCode}' is not supported" );
@@ -459,7 +515,19 @@ namespace BackendlessAPI.Service
                             callback?.ErrorHandler( fault ) ) );
     }
 
-    private void LoginWithOAuth2( String authProviderCode, String accessToken, BackendlessUser guestUser,
+    private BackendlessUser RequestLoginWithOAuth2(String authProviderCode, String accessToken, BackendlessUser guestUser,
+                               Dictionary<String, String> fieldsMappings, Boolean stayLoggedIn)
+    {
+      if (fieldsMappings == null)
+        fieldsMappings = new Dictionary<String, String>();
+
+      HandleUserLogin(Invoker.InvokeSync<Dictionary<String, Object>>(UserService.USER_MANAGER_SERVER_ALIAS, "loginWithOAuth2",
+        new Object[] { authProviderCode, accessToken, fieldsMappings, guestUser == null ? null : guestUser.Properties }), stayLoggedIn);
+
+      return CurrentUser;
+    }
+
+    private void RequestLoginWithOAuth2( String authProviderCode, String accessToken, BackendlessUser guestUser,
                                Dictionary<String, String> fieldsMappings, AsyncCallback<Dictionary<String, Object>> callback )
     {
       if( fieldsMappings == null )
