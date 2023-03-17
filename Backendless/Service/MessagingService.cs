@@ -707,7 +707,7 @@ namespace BackendlessAPI.Service
 #if !( NET_35 || NET_40 )
     public async Task<MessageStatus> SendEmailFromTemplateAsync( string templateName, EmailEnvelope envelope )
     {
-      return await SendEmailFromTemplateAsync( templateName, envelope, null );
+      return await Task.Run(() => SendEmailFromTemplate(templateName, envelope)).ConfigureAwait(false);
     }
 
     public async Task<MessageStatus> SendEmailFromTemplateAsync( string templateName, EmailEnvelope envelope, Dictionary<string, string> templateValues )
@@ -715,42 +715,82 @@ namespace BackendlessAPI.Service
       return await Task.Run( () => SendEmailFromTemplate( templateName, envelope, templateValues ) ).ConfigureAwait( false );
     }
 
-#endif
-    public MessageStatus SendEmailFromTemplate( string templateName, EmailEnvelope envelope )
+    public async Task<MessageStatus> SendEmailFromTemplateAsync(String templateName, EmailEnvelope envelope, List<String> attachments)
     {
-      return SendEmailFromTemplate( templateName, envelope, new Dictionary<string, string>() );
+      return await Task.Run(() => SendEmailFromTemplate(templateName, envelope, attachments)).ConfigureAwait(false);
     }
-    public MessageStatus SendEmailFromTemplate( string templateName, EmailEnvelope envelope, Dictionary<string, string> templateValues )
+
+    public async Task<MessageStatus> SendEmailFromTemplateAsync(String templateName, EmailEnvelope envelope, Dictionary<String, String> templateValues, List<String> attachments)
     {
-      if( string.IsNullOrEmpty( templateName ) )
-        throw new ArgumentNullException( ExceptionMessage.NULL_EMPTY_TEMPLATE_NAME );
+      return await Task.Run(() => SendEmailFromTemplate(templateName, envelope, templateValues, attachments)).ConfigureAwait(false);
+    }
 
-      if( envelope == null )
-        throw new ArgumentException( ExceptionMessage.NULL_EMAIL_ENVELOPE );
+#endif
+    public MessageStatus SendEmailFromTemplate( String templateName, EmailEnvelope envelope )
+    {
+      return SendEmailFromTemplateInternal( templateName, envelope, null, null );
+    }
+    public MessageStatus SendEmailFromTemplate( String templateName, EmailEnvelope envelope, Dictionary<String, String> templateValues )
+    {
 
-      return Invoker.InvokeSync<MessageStatus>( EMAIL_TEMPLATE_SENDER_SERVER_ALIAS, "sendEmails",
-                                                new Object[] { templateName, envelope, templateValues } );
+      return SendEmailFromTemplateInternal(templateName, envelope, templateValues, null);
+    }
+
+    public MessageStatus SendEmailFromTemplate(String templateName, EmailEnvelope envelope, List<String> attachments)
+    {
+      return SendEmailFromTemplateInternal(templateName, envelope, null, attachments);
+    }
+
+    public MessageStatus SendEmailFromTemplate(string templateName, EmailEnvelope envelope, Dictionary<String, String> templateValues, List<String> attachments)
+    {
+      return SendEmailFromTemplateInternal(templateName, envelope, templateValues, attachments);
+    }
+
+    private MessageStatus SendEmailFromTemplateInternal(string templateName, EmailEnvelope envelope, Dictionary<String, String> templateValues, List<String> attachments)
+    {
+      if (string.IsNullOrEmpty(templateName))
+        throw new ArgumentNullException(ExceptionMessage.NULL_EMPTY_TEMPLATE_NAME);
+
+      if (envelope == null)
+        throw new ArgumentException(ExceptionMessage.NULL_EMAIL_ENVELOPE);
+
+      return Invoker.InvokeSync<MessageStatus>(EMAIL_TEMPLATE_SENDER_SERVER_ALIAS, "sendEmails", new Object[] { templateName, envelope, templateValues, attachments});
     }
 
     public void SendEmailFromTemplate( string templateName, EmailEnvelope envelope, AsyncCallback<MessageStatus> responder )
     {
-      SendEmailFromTemplate( templateName, envelope, null, responder );
+      SendEmailFromTemplateInternal( templateName, envelope, null, null, responder );
     }
+
     public void SendEmailFromTemplate( string templateName, EmailEnvelope envelope, Dictionary<string, string> templateValues, AsyncCallback<MessageStatus> responder )
     {
-      if( string.IsNullOrEmpty( templateName ) )
-        throw new ArgumentNullException( ExceptionMessage.NULL_EMPTY_TEMPLATE_NAME );
-
-      if( envelope == null )
-        throw new ArgumentException( ExceptionMessage.NULL_EMAIL_ENVELOPE );
-
-      Invoker.InvokeAsync( EMAIL_TEMPLATE_SENDER_SERVER_ALIAS, "sendEmails",
-                           new Object[] { templateName, envelope, templateValues }, responder );
+      SendEmailFromTemplateInternal(templateName, envelope, templateValues, null, responder);
     }
-#endregion
-#region SEND EMAIL
 
-#if !( NET_35 || NET_40 )
+    public void SendEmailFromTemplate(String templateName, EmailEnvelope envelope, List<String> attachments, AsyncCallback<MessageStatus> responder)
+    {
+      SendEmailFromTemplateInternal(templateName, envelope, null, attachments, responder);
+    }
+
+    public void SendEmailFromTemplate(string templateName, EmailEnvelope envelope, Dictionary<String, String> templateValues, List<String> attachments, AsyncCallback<MessageStatus> responder)
+    {
+      SendEmailFromTemplateInternal(templateName, envelope, templateValues, attachments, responder);
+    }
+
+    private void SendEmailFromTemplateInternal(string templateName, EmailEnvelope envelope, Dictionary<String, String> templateValues, List<String> attachments, AsyncCallback<MessageStatus> responder)
+    {
+      if (string.IsNullOrEmpty(templateName))
+        throw new ArgumentNullException(ExceptionMessage.NULL_EMPTY_TEMPLATE_NAME);
+
+      if (envelope == null)
+        throw new ArgumentException(ExceptionMessage.NULL_EMAIL_ENVELOPE);
+
+      Invoker.InvokeAsync(EMAIL_TEMPLATE_SENDER_SERVER_ALIAS, "sendEmails", new Object[] { templateName, envelope, templateValues, attachments }, responder);
+    }
+    #endregion
+    #region SEND EMAIL
+
+#if !(NET_35 || NET_40)
     public async Task<MessageStatus> SendTextEmailAsync( string subject, string messageBody, List<string> recipients )
     {
       return await SendEmailAsync( subject, new BodyParts( messageBody, null ), recipients, new List<string>() );
