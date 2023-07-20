@@ -49,6 +49,7 @@ namespace BackendlessAPI.Exception
     public const String NULL_FILE_CONTENTS = "File contents cannot be null or empty";
     public const String NULL_BITMAP = "Bitmap cannot be null";
     public const String NULL_COMPRESS_FORMAT = "CompressFormat cannot be null";
+    public const String NULL_URL_TO_FILE = "URL to file cannot be null or empty";
 
     public const String NULL_IDENTITY = "Identity cannot be null";
 
