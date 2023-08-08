@@ -10,7 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Backendless.NET.Standard20", "Projects\Backendless.NET.Standard20\Backendless.NET.Standard20.csproj", "{A9D1588A-E72E-4D49-9853-57127A384E13}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Backendless.NET.Standard20", "Projects\Backendless.NET.Standard20\Backendless.NET.Standard20.csproj", "{A9D1588A-E72E-4D49-9853-57127A384E13}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Backendless.NET.Framework4.7.1", "Projects\Backendless.NET.Framework4.7.1\Backendless.NET.Framework4.7.1.csproj", "{808CF48B-3D69-4A91-A31C-0EEFAC36FE18}"
 EndProject
@@ -18,7 +18,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Backendless.NET.Framework4.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestProject", "Projects\TestProject\TestProject.csproj", "{1BB6CEB6-70BB-415D-82BD-57207FDB7E04}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Backendless.Xamarin", "Projects\Backendless.Xamarin\Backendless.Xamarin.csproj", "{1F009FAE-CEC9-4D15-829D-FB97EAD82FB7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Backendless.Xamarin", "Projects\Backendless.Xamarin\Backendless.Xamarin.csproj", "{1F009FAE-CEC9-4D15-829D-FB97EAD82FB7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
