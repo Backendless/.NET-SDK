@@ -444,9 +444,182 @@ namespace BackendlessAPI.Service
       GetFileCount( path, "*", responder );
     }
 
-  #endregion
+    #endregion
 
-  #region EXISTS
+    #region APPEND
+
+    public String Append(String filePath, String fileSourceURL)
+    {
+      if (String.IsNullOrEmpty(filePath))
+      {
+        throw new ArgumentException(ExceptionMessage.NULL_PATH);
+      }
+
+      object[] parameters = new object[] { filePath, fileSourceURL };
+
+      return AppendExecutor(parameters);
+    }
+
+    public void Append(String filePath, String fileSourceURL, AsyncCallback<String> responder)
+    {
+      if (String.IsNullOrEmpty(filePath))
+      {
+        throw new ArgumentException(ExceptionMessage.NULL_PATH);
+      }
+
+      object[] parameters = new object[] { filePath, fileSourceURL };
+
+      AppendExecutorWithCallback(parameters, responder);
+    }
+
+    public async Task<String> AppendAsync(String filePath, String fileSourceURL)
+    {
+      return await Task.Run(() => Append(filePath, fileSourceURL)).ConfigureAwait(false);
+    }
+    
+    public String Append(String directoryPath, String fileName, String fileSourceURL)
+    {
+      checkPaths(directoryPath, fileName);
+
+
+      object[] parameters = new object[] { directoryPath, fileName, fileSourceURL };
+
+      return AppendExecutor(parameters);
+    }
+
+    public void Append(String directoryPath, String fileName, String fileSourceURL, AsyncCallback<String> responder)
+    {
+      checkPaths(directoryPath, fileName);
+
+
+      object[] parameters = new object[] { directoryPath, fileName, fileSourceURL };
+
+      AppendExecutorWithCallback(parameters, responder);
+    }
+
+
+    public async Task<String> AppendAsync(String directoryPath, String fileName, String fileSourceURL)
+    {
+      return await Task.Run(() => Append(directoryPath, fileName, fileSourceURL)).ConfigureAwait(false);
+    }
+
+    public String Append(String directoryPath, String fileName, byte[] bytes)
+    {
+      checkPaths(directoryPath, fileName);
+
+      object[] parameters = new object[] { directoryPath, fileName, bytes};
+
+      return AppendExecutor(parameters);
+    }
+
+    public void Append(String directoryPath, String fileName, byte[] bytes, AsyncCallback<String> responder)
+    {
+      checkPaths(directoryPath, fileName);
+
+      object[] parameters = new object[] { directoryPath, fileName, bytes };
+
+      AppendExecutorWithCallback(parameters, responder);
+    }
+
+    public async Task<String> AppendAsync(String directoryPath, String fileName, byte[] bytes)
+    {
+      return await Task.Run(() => Append(directoryPath, fileName, bytes)).ConfigureAwait(false);
+    }
+
+    public String Append(String filePath, byte[] bytes)
+    {
+      if (String.IsNullOrEmpty(filePath))
+      {
+        throw new ArgumentException(ExceptionMessage.NULL_PATH);
+      }
+
+      object[] parameters = new object[] { filePath, bytes };
+
+      return AppendExecutor(parameters);
+    }
+
+    public void Append(String filePath, byte[] bytes, AsyncCallback<String> responder)
+    {
+      if (String.IsNullOrEmpty(filePath))
+      {
+        throw new ArgumentException(ExceptionMessage.NULL_PATH);
+      }
+
+      object[] parameters = new object[] { filePath, bytes };
+
+      AppendExecutorWithCallback(parameters, responder);
+    }
+
+    public async Task<String> AppendAsync(String filePath, byte[] bytes)
+    {
+      return await Task.Run(() => Append(filePath, bytes)).ConfigureAwait(false);
+    }
+
+    public String AppendText(String directoryPath, String fileName, String data)
+    {
+      checkPaths(directoryPath, fileName);
+
+      object[] parameters = new object[] { directoryPath, fileName, data };
+
+      return AppendExecutor(parameters);
+    }
+
+    public void AppendText(String directoryPath, String fileName, String data, AsyncCallback<String> responder)
+    {
+      checkPaths(directoryPath, fileName);
+
+      object[] parameters = new object[] { directoryPath, fileName, data };
+
+      AppendExecutorWithCallback(parameters, responder);
+    }
+
+    public async Task<String> AppendTextAsync(String directoryPath, String fileName, String data)
+    {
+      return await Task.Run(() => AppendText(directoryPath, fileName, data)).ConfigureAwait(false);
+    }
+
+    public String AppendText(String filePath, String data)
+    {
+      if (String.IsNullOrEmpty(filePath))
+      {
+        throw new ArgumentException(ExceptionMessage.NULL_PATH);
+      }
+
+      object[] parameters = new object[] { filePath, data };
+
+      return AppendExecutor(parameters);
+    }
+
+    public void AppendText(String filePath, String data, AsyncCallback<String> responder)
+    {
+      if (String.IsNullOrEmpty(filePath))
+      {
+        throw new ArgumentException(ExceptionMessage.NULL_PATH);
+      }
+
+      object[] parameters = new object[] { filePath, data };
+
+      AppendExecutorWithCallback(parameters, responder);
+    }
+
+    public async Task<String> AppendTextAsync(String filePath, String data)
+    {
+      return await Task.Run(() => AppendText(filePath, data)).ConfigureAwait(false);
+    }
+
+    private String AppendExecutor(object[] parametersList)
+    {
+      return Invoker.InvokeSync<String>(FILE_MANAGER_SERVER_ALIAS, "append", parametersList);
+    }
+
+    private void AppendExecutorWithCallback(object[] paramtersList, AsyncCallback<String> callback)
+    {
+      Invoker.InvokeAsync<String>(FILE_MANAGER_SERVER_ALIAS, "append", paramtersList, callback);
+    }
+
+    #endregion
+
+    #region EXISTS
 
     public bool Exists( string path )
     {
