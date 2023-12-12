@@ -24,7 +24,7 @@ namespace TestProject.Tests.Utils
     //Environment.GetEnvironmentVariable( "TEST_DOTNET_KEY" );
 
     internal static HttpClient client;
-    internal const String URL_BASE_ADRESS = "https://devtest.backendless.com";
+    internal const String URL_BASE_ADRESS = "https://develop.backendless.com";
 
     private const String path = @"/Users/default/visual_studio/authdata.txt";
     internal static readonly String Login = File.ReadLines( path ).ToList()[ 2 ];

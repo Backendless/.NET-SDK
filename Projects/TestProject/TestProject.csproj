@@ -18,10 +18,12 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Backendless.NET" Version="6.7.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Backendless.NET.Standard20\Backendless.NET.Standard20.csproj" />
+    <None Remove="Newtonsoft.Json" />
+    <None Remove="Backendless.NET" />
   </ItemGroup>
-
 </Project>
