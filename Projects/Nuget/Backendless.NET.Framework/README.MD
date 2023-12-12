@@ -1,12 +1,17 @@
 # Backendless SDK for .NET/Xamarin
 
-version 6.2.0
+version 6.7.0
 ## What's new
-* Added support for the JSON data type.
-* Added support for the deep-save API.
-* Added CreateEmailConfirmationURL API.
-* Added support for the OAuth login API.
-* Added the PushWithTemplate API.
+* Added Backendless.Xamarin project
+* Removed support of deprecated versions of .NET.Frameworks: 3.5, 4.0, 4.5, 4.5.2
+* Fixed problems with RT
+* Added method ReloadCurrentUserData
+* Added method GetAuthorizationUrlLink
+* Added FindByRole method.
+* Added Upsert support
+* Support Upsert and BulkUpsert for transactions
+* Refactoring of wrong signatures for methods OAuth1 and OAuth2
+* Added attachments parameter to SendEmailFromTemplate method.
 
 ## About Backendless
 Backendless is a cloud-based serverless platform which significantly

@@ -1,11 +1,13 @@
 using System;
+using System.Collections.Generic;
 using BackendlessAPI;
+using BackendlessAPI.Async;
 
 namespace TestProject.Tests.Utils
 {
   public class TestInitialization : IDisposable
   {
-    private const String BKNDLSS_URL = "https://apitest.backendless.com";
+    private const String BKNDLSS_URL = "http://api.backendless.com";
     public TestInitialization()
     {
       Backendless.URL = BKNDLSS_URL;

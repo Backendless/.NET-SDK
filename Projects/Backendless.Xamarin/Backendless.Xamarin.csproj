@@ -131,6 +131,7 @@
 		<Compile Include="..\..\Backendless\Persistence\Security\Update.cs" />
 		<Compile Include="..\..\Backendless\Persistence\SpatialReferenceSystem.cs" />
 		<Compile Include="..\..\Backendless\Persistence\WKTParser.cs" />
+		<Compile Include="..\..\Backendless\Persistence\BackendlessExpression.cs" />
 		<Compile Include="..\..\Backendless\Push\PushNotificationsBinding.cs" />
 		<Compile Include="..\..\Backendless\Push\Registrar.cs" />
 		<Compile Include="..\..\Backendless\Push\RegistrationInfo.cs" />

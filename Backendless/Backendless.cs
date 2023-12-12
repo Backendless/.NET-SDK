@@ -71,6 +71,8 @@ namespace BackendlessAPI
       Types.AddClientClassMapping( "com.backendless.transaction.OperationDeleteBulk", typeof( OperationDeleteBulk ) );
       Types.AddClientClassMapping( "com.backendless.transaction.OperationUpdate", typeof( OperationUpdate ) );
       Types.AddClientClassMapping( "com.backendless.transaction.OperationUpdateBulk", typeof( OperationUpdateBulk ) );
+      Types.AddClientClassMapping( "com.backendless.transaction.OperationUpsert", typeof( OperationUpsert ) );
+      Types.AddClientClassMapping( "com.backendless.transaction.OperationUpsertBulk", typeof( OperationUpsertBulk ) );
       Types.AddClientClassMapping( "com.backendless.transaction.OperationFind", typeof( OperationFind ) );
       Types.AddClientClassMapping( "com.backendless.transaction.OperationAddRelation", typeof( OperationAddRelation ) );
       Types.AddClientClassMapping( "com.backendless.transaction.OperationSetRelation", typeof( OperationSetRelation ) );
