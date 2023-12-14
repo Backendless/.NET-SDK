@@ -6,18 +6,21 @@ namespace BackendlessAPI.Messaging
 {
   public class EmailEnvelope
   {
-    [SetClientClassMemberName( "cc" )]
-    public List<string> Cc{ get; set; }
+    [SetClientClassMemberName("cc")]
+    public List<string> Cc { get; set; }
     
-    [SetClientClassMemberName( "bcc" )]
-    public List<string> Bcc;
+    [SetClientClassMemberName("bcc")]
+    public List<string> Bcc { get; set; }
     
-    [SetClientClassMemberName( "to" )]
-    public List<string> To;
+    [SetClientClassMemberName("to")]
+    public List<string> To { get; set; }
     
-    [SetClientClassMemberName( "query" )]
-    public string RecipientsQuery;
-    
+    [SetClientClassMemberName("query")]
+    public string RecipientsQuery { get; set; }
+
+    [SetClientClassMemberName("uniqueEmails")]
+    public Boolean UniqueEmails { get; set; } = true;
+
     public EmailEnvelope AddTo( IEnumerable<string> toAddresses )
     {
       if( To == null )
