@@ -109,6 +109,11 @@ namespace BackendlessAPI.Service
         return await MakeFileUploadAsync( memoryStream, remotePath, fileName, overwrite, uploadCallback );
       }
     }
+
+    public async Task<BackendlessFile> UploadAsync(String urlToFile, String backendlessPath, Boolean overwrite = false)
+    {
+      return await Task.Run(() => Upload(urlToFile, backendlessPath, overwrite)).ConfigureAwait(false);
+    }
   #endif
 
     public void Upload( FileStream fileStream, string remotePath, AsyncCallback<BackendlessFile> callback )
@@ -140,6 +145,35 @@ namespace BackendlessAPI.Service
       MakeFileUpload( fileStream, remotePath, overwrite, uploadCallback, callback );
     }
 
+    public BackendlessFile Upload(String urlToFile, String backendlessPath, Boolean overwrite = false)
+    {
+      if (String.IsNullOrEmpty(urlToFile))
+      {
+        throw new ArgumentNullException(ExceptionMessage.NULL_URL_TO_FILE);
+      }
+
+      if (String.IsNullOrEmpty(backendlessPath))
+      {
+        throw new ArgumentNullException(ExceptionMessage.NULL_PATH);
+      }
+
+      return Invoker.InvokeSync<BackendlessFile>(FILE_MANAGER_SERVER_ALIAS, "upload", new Object[] { urlToFile, backendlessPath, overwrite });
+    }
+
+    public void Upload(String urlToFile, String backendlessPath, AsyncCallback<BackendlessFile> callback, Boolean overwrite = false)
+    {
+      if (String.IsNullOrEmpty(urlToFile))
+      {
+        throw new ArgumentNullException(ExceptionMessage.NULL_URL_TO_FILE);
+      }
+
+      if (String.IsNullOrEmpty(backendlessPath))
+      {
+        throw new ArgumentNullException(ExceptionMessage.NULL_PATH);
+      }
+
+      Invoker.InvokeAsync(FILE_MANAGER_SERVER_ALIAS, "upload", new Object[] { urlToFile, backendlessPath, overwrite }, callback);
+    }
     #endregion
 
     #region REMOVE_FILE
