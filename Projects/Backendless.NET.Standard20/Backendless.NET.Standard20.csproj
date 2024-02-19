@@ -121,6 +121,12 @@
 	<Compile Include="..\..\Backendless\Persistence\SpatialReferenceSystem.cs" />
     <Compile Include="..\..\Backendless\Persistence\WKTParser.cs" />
     <Compile Include="..\..\Backendless\Persistence\BackendlessExpression.cs" />
+    <Compile Include="..\..\Backendless\Persistence\BackendlessGroupDataQuery.cs"/>
+    <Compile Include="..\..\Backendless\Persistence\GroupDataQueryBuilder.cs"/>
+    <Compile Include="..\..\Backendless\Persistence\GroupedData.cs"/>
+    <Compile Include="..\..\Backendless\Persistence\GroupResult.cs"/>
+    <Compile Include="..\..\Backendless\Persistence\GroupingColumnValue.cs"/>
+    <Compile Include="..\..\Backendless\Persistence\PagedGroupQueryBuilder.cs"/>
     <Compile Include="..\..\Backendless\Push\PushNotificationsBinding.cs" />
     <Compile Include="..\..\Backendless\Push\RegistrationInfo.cs" />
     <Compile Include="..\..\Backendless\RT\AbstractListenerFactory.cs">
@@ -455,6 +461,7 @@
     <Compile Include="..\..\Backendless\WebORB\Writer\TypedObjectWriter.cs" />
     <Compile Include="..\..\Backendless\WebORB\Writer\V3ObjectSerializer.cs" />
     <Compile Include="..\..\Backendless\WebORB\Writer\V3ReferenceCache.cs" />
+
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />

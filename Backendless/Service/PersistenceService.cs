@@ -368,6 +368,18 @@ namespace BackendlessAPI.Service
     }
 
     #endregion
+
+    #region Group
+    internal GroupResult Group<T>(GroupDataQueryBuilder dataQueryBuilder)
+    {
+      return Invoker.InvokeSync<GroupResult>(PERSISTENCE_MANAGER_SERVER_ALIAS, "group", new Object[] { GetTypeName(typeof(T)), dataQueryBuilder.Build() });
+    }
+
+    internal void Group<T>(GroupDataQueryBuilder dataQueryBuilder, AsyncCallback<GroupResult> callback)
+    {
+      Invoker.InvokeAsync(PERSISTENCE_MANAGER_SERVER_ALIAS, "group", new Object[] { GetTypeName(typeof(T)), dataQueryBuilder }, callback);
+    }
+    #endregion
     #region LoadRelations
 
     internal IList<T> LoadRelations<T>( String parentType, String objectId, LoadRelationsQueryBuilder<T> queryBuilder )
