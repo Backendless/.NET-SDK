@@ -14,7 +14,7 @@ namespace BackendlessAPI.Persistence
     private List<String> groupBy;
     private String havingClause;
 
-    private DataQueryBuilder()
+    protected DataQueryBuilder()
     {
       properties = new List<String>();
       excludeProperties = new List<String>();

@@ -197,6 +197,12 @@
     <Compile Include="..\..\Backendless\Persistence\SpatialReferenceSystem.cs" />
     <Compile Include="..\..\Backendless\Persistence\WKTParser.cs" />
     <Compile Include="..\..\Backendless\Persistence\BackendlessExpression.cs" />
+    <Compile Include="..\..\Backendless\Persistence\BackendlessGroupDataQuery.cs"/>
+    <Compile Include="..\..\Backendless\Persistence\GroupDataQueryBuilder.cs"/>
+    <Compile Include="..\..\Backendless\Persistence\GroupedData.cs"/>
+    <Compile Include="..\..\Backendless\Persistence\GroupResult.cs"/>
+    <Compile Include="..\..\Backendless\Persistence\GroupingColumnValue.cs"/>
+    <Compile Include="..\..\Backendless\Persistence\PagedGroupQueryBuilder.cs"/>
     <Compile Include="..\..\Backendless\Properties\VersionInfo.cs">
       <Link>Properties/VersionInfo.cs</Link>
     </Compile>

@@ -517,9 +517,26 @@ namespace BackendlessAPI.Data
       Invoker.InvokeAsync( PERSISTENCE_MANAGER_SERVER_ALIAS, "findById", CreateArgs( entity, relations, relationsDepth ), responder );
     }
 
-#endregion
+    #endregion
 
-#region Load Relations
+    #region Group
+    public GroupResult Group(GroupDataQueryBuilder dataQueryBuilder)
+    {
+      return Invoker.InvokeSync<GroupResult>(PERSISTENCE_MANAGER_SERVER_ALIAS, "group", new Object[] { tableName, dataQueryBuilder.Build() });
+    }
+
+    public async Task<GroupResult> GroupAsync(GroupDataQueryBuilder dataQueryBuilder)
+    {
+      return await Task.Run(() => Group(dataQueryBuilder)).ConfigureAwait(false);
+    }
+
+    public void Group(GroupDataQueryBuilder dataQueryBuilder, AsyncCallback<GroupResult> callback)
+    {
+      Invoker.InvokeAsync(PERSISTENCE_MANAGER_SERVER_ALIAS, "group", new Object[] { tableName, dataQueryBuilder }, callback);
+    }
+    #endregion
+
+    #region Load Relations
 
     public IList<M> LoadRelations<M>( String objectId, LoadRelationsQueryBuilder<M> queryBuilder )
     {

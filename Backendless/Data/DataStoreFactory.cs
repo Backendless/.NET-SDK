@@ -402,9 +402,27 @@ namespace BackendlessAPI.Data
         Backendless.Persistence.FindById<T>( entity, relations, relationsDepth, responder );
       }
 
-    #endregion
+      #endregion
 
-    #region LOAD RELATIONS
+      #region Group
+      public GroupResult Group(GroupDataQueryBuilder dataQueryBuilder)
+      {
+        return Backendless.Persistence.Group<T>(dataQueryBuilder);
+      }
+
+      public async Task<GroupResult> GroupAsync(GroupDataQueryBuilder dataQueryBuilder)
+      {
+        return await Task.Run(() => Group(dataQueryBuilder)).ConfigureAwait(false);
+      }
+
+      public void Group(GroupDataQueryBuilder dataQueryBuilder, AsyncCallback<GroupResult> callback)
+      {
+        Backendless.Persistence.Group<T>(dataQueryBuilder, callback);
+      }
+      #endregion
+
+
+      #region LOAD RELATIONS
 
       public IList<M> LoadRelations<M>( String objectId, LoadRelationsQueryBuilder<M> queryBuilder )
       {

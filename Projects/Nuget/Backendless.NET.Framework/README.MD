@@ -1,17 +1,13 @@
 # Backendless SDK for .NET/Xamarin
 
-version 6.7.0
+version 6.7.1
 ## What's new
-* Added Backendless.Xamarin project
-* Removed support of deprecated versions of .NET.Frameworks: 3.5, 4.0, 4.5, 4.5.2
-* Fixed problems with RT
-* Added method ReloadCurrentUserData
-* Added method GetAuthorizationUrlLink
-* Added FindByRole method.
-* Added Upsert support
-* Support Upsert and BulkUpsert for transactions
-* Refactoring of wrong signatures for methods OAuth1 and OAuth2
-* Added attachments parameter to SendEmailFromTemplate method.
+* Fixed problem with BulkUpsert for transactions.
+* Added methods Append and AppendText for FileService.
+* Added new overrides with urlToFile parameter for method Upload in FileService.
+* EmailEnvelop fields changed to properties.
+* Added new property 'UniqueEmails' to EmailEnvelope.
+* Added BackendlessExpression support.
 
 ## About Backendless
 Backendless is a cloud-based serverless platform which significantly
