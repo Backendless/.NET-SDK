@@ -172,6 +172,28 @@ namespace BackendlessAPI.Service
       return LoginStorage.ObjectId;
     }
 
+    public Dictionary<string, object> Login(string login, string password) {
+      if(CurrentUser != null) {
+        Logout();
+      }
+
+      if( string.IsNullOrEmpty( login ) ) {
+        throw new ArgumentNullException( ExceptionMessage.NULL_LOGIN );
+      }
+
+      if( string.IsNullOrEmpty( password ) ) {
+        throw new ArgumentNullException( ExceptionMessage.NULL_PASSWORD );
+      }
+
+      return Invoker.InvokeSync<Dictionary<string, object>>(USER_MANAGER_SERVER_ALIAS, "login", new object[] {login, password});
+    }
+
+    #if !(NET_35 || NET_40)
+    public async Task<Dictionary<string, object>> LoginAsync(string login, string password) {
+      return await Task.Run(() => Login(login, password)).ConfigureAwait(false);
+    }
+    #endif
+
     public BackendlessUser Login( string login, string password, bool stayLoggedIn = false )
     {
       if( CurrentUser != null )
@@ -188,6 +210,28 @@ namespace BackendlessAPI.Service
                        stayLoggedIn );
 
       return CurrentUser;
+    }
+
+    public void Login( string login, string password, AsyncCallback<Dictionary<string, object>> callback)
+    {
+      try
+      {
+        if( string.IsNullOrEmpty( login ) )
+          throw new ArgumentNullException( ExceptionMessage.NULL_LOGIN );
+
+        if( string.IsNullOrEmpty( password ) )
+          throw new ArgumentNullException( ExceptionMessage.NULL_PASSWORD );
+
+        Invoker.InvokeAsync( USER_MANAGER_SERVER_ALIAS, "login",
+                             new Object[] { login, password }, callback);
+      }
+      catch( System.Exception ex )
+      {
+        if( callback != null )
+          callback.ErrorHandler.Invoke( new BackendlessFault( ex.Message ) );
+        else
+          throw;
+      }
     }
 
   #if !(NET_35 || NET_40)
