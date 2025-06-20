@@ -8,6 +8,6 @@ namespace BackendlessAPI.File.Security
   {
     public String folder { get; set; }
     public PermissionTypes access { get; set; }
-    public FileOperation operaiton { get; set; }
+    public FileOperation operation { get; set; }
   }
 }
