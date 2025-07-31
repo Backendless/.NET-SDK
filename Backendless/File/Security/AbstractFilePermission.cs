@@ -119,7 +119,7 @@ namespace BackendlessAPI.File.Security
 
       permission.folder = fileOrDirURL;
       permission.access = permissionType;
-      permission.operaiton = operation;
+      permission.operation = operation;
 
       if( principal != null )
         return new Object[] { principal, permission };
